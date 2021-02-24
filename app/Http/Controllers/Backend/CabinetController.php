@@ -7,6 +7,7 @@ use App\BaseHelpType;
 use App\Fond;
 use App\Help;
 use App\Http\Controllers\Controller;
+use App\Review;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,9 @@ class CabinetController extends Controller
 
     public function index()
     {
-        $waitHelps = Auth::user()->helpsByStatus('wait')->with('fonds')->get();
-        $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->get();
-        $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->get();
+        $waitHelps = Auth::user()->helpsByStatus('wait')->with('fonds')->with('reviews')->get();
+        $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->with('reviews')->get();
+        $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->with('reviews')->get();
 
         return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps'));
     }
@@ -83,7 +84,24 @@ class CabinetController extends Controller
 
     }
 
-    public function helpsHistory(){
+    public function review_to_fond(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'title'=>'required|min:10',
+                'body'=>'required|min:100',
+            ]
+        );
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
+        $data = $request->all();
+        $help = Help::findOrFail($data['help_id']);
+        if($help->status != 'finished'){
+            return redirect()->back()->with('error', 'Заявка еще не завершена!');
+        }
+        $data['user_id'] = Auth::user()->id;
+        Review::create($data);
+        return redirect()->back()->with('success', 'Отзыв отправлен!');
     }
 }

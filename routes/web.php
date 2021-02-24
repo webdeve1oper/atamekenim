@@ -37,7 +37,9 @@ Route::post('post-registration-fond', 'FondAuthController@postRegistration')->na
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::get('/cabinet/fond', 'Backend\FondController@index')->name('fond_cabinet');
     Route::get('/cabinet/fond/edit', 'Backend\FondController@edit')->name('fond_setting');
-//    Route::post('/cabinet/fond/edit', 'Backend\FondController@update')->name('fond_setting');
+    Route::post('/cabinet/fond/edit', 'Backend\FondController@update')->name('fond_setting');
+    Route::post('/cabinet/fond/help-start/{id}', 'Backend\FondController@start_help')->name('start_help');
+    Route::post('/cabinet/fond/help-finish/{id}', 'Backend\FondController@finish_help')->name('finish_help');
     Route::get('logout-fond', 'FondAuthController@logout')->name('logout_fond');
 });
 
@@ -46,6 +48,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('cabinet', 'Backend\CabinetController@index')->name('cabinet');
     Route::get('cabinet/{id}/edit', 'Backend\CabinetController@editUser')->name('editUser');
     Route::post('fond/help', 'Backend\CabinetController@help')->name('helpfond');
+    Route::post('review', 'Backend\CabinetController@review_to_fond')->name('review_to_fond');
     Route::get('cabinet/reviews', 'Backend\CabinetController@reviews')->name('reviews');
     Route::get('cabinet/helps', 'Backend\CabinetController@helpsHistory')->name('history');
     Route::get('logout-user', 'UserAuthController@logout')->name('logout_user');

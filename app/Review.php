@@ -9,9 +9,10 @@ class Review extends Model
     //
     protected $table = 'reviews';
 
-    protected $fillable = ['title','body','fond_id','project_id','user_id'];
+    protected $fillable = ['title','body','help_id','user_id'];
 
-    public function fond(){
-        return $this->belongsTo(Fond::class, 'fond_id');
+
+    public function help(){
+        return $this->hasOne(Help::class);
     }
 }

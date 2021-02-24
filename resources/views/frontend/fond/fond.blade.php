@@ -67,30 +67,19 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="reviewSlick">
-                                    <div>
-                                        <div class="block">
-                                            <p class="name">Берик, Алматинская область, село Абай</p>
-                                            <p class="descr textContent">Общественная организация «Менің Атамекенім» (далее – ОО МА) –  это некоммерческая организация, целью которого является развитие социальной ответственности бизнеса и изменение отношения бизнеса к решению социальных проблем, а также стратегическое развитие института благотворительности в Казахстане.
-                                                Миссия ОО МА – развитие культуры благотворительности среди предпринимателей через позиционирование национальных ценностей в обществе и осознание непреходящих человеческих ценностей.
-                                                Приоритетные направления: - концептуальное развитие благотворительной деятельности; - развитие социальной ответственности бизнеса; - развитие волонтерского движения;</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="block">
-                                            <p class="name">Берик, Алматинская область, село Абай</p>
-                                            <p class="descr textContent">Общественная организация «Менің Атамекенім» (далее – ОО МА) –  это некоммерческая организация, целью которого является развитие социальной ответственности бизнеса и изменение отношения бизнеса к решению социальных проблем, а также стратегическое развитие института благотворительности в Казахстане.
-                                                Миссия ОО МА – развитие культуры благотворительности среди предпринимателей через позиционирование национальных ценностей в обществе и осознание непреходящих человеческих ценностей.
-                                                Приоритетные направления: - концептуальное развитие благотворительной деятельности; - развитие социальной ответственности бизнеса; - развитие волонтерского движения;</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="block">
-                                            <p class="name">Берик, Алматинская область, село Абай</p>
-                                            <p class="descr textContent">Общественная организация «Менің Атамекенім» (далее – ОО МА) –  это некоммерческая организация, целью которого является развитие социальной ответственности бизнеса и изменение отношения бизнеса к решению социальных проблем, а также стратегическое развитие института благотворительности в Казахстане.
-                                                Миссия ОО МА – развитие культуры благотворительности среди предпринимателей через позиционирование национальных ценностей в обществе и осознание непреходящих человеческих ценностей.
-                                                Приоритетные направления: - концептуальное развитие благотворительной деятельности; - развитие социальной ответственности бизнеса; - развитие волонтерского движения;</p>
-                                        </div>
-                                    </div>
+                                    @foreach($fond->helps as $help)
+                                        @foreach($help->reviews()->get() as $review)
+                                            <div>
+                                                <div class="block">
+                                                    <p class="name">{{$help->user->first_name}}, {{$help->region->title_ru}}, {{$help->city->title_ru}}</p>
+                                                    <p class="descr textContent">
+                                                        {{$help->body}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>
@@ -259,58 +248,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                    @foreach($fond->helps as $help)
+                        @if($help->status == 'process')
+                            <div class="col-sm-3">
+                                <div class="helpBlock">
+                                    <div class="content">
+                                        <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
+                                        <p>Организация: <img src="/img/logo.svg" alt=""></p>
+                                        <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>Сумма: <span>1,150,000 тг.</span></p>
+                                        <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                    </div>
+                                    <p class="date">19.10.2019</p>
+                                    <img src="/img/support1.svg" alt="" class="bkg">
+                                </div>
                             </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag green">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support2.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support3.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support4.svg" alt="" class="bkg">
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
+
                 </div>
             </div>
 
@@ -323,58 +278,23 @@
                         <p class="status">Всего заявок: <span>10000</span></p>
                         <p class="status">Выполнено: <span>10000</span></p>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                    @foreach($fond->helps as $help)
+                        @if($help->status == 'finished')
+                            <div class="col-sm-3">
+                                <div class="helpBlock">
+                                    <div class="content">
+                                        <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
+                                        <p>Организация: <img src="/img/logo.svg" alt=""></p>
+                                        <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>Сумма: <span>1,150,000 тг.</span></p>
+                                        <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                    </div>
+                                    <p class="date">19.10.2019</p>
+                                    <img src="/img/support1.svg" alt="" class="bkg">
+                                </div>
                             </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag green">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support2.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support3.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support4.svg" alt="" class="bkg">
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>

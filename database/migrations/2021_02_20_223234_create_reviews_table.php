@@ -17,8 +17,7 @@ class CreateReviewsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('body');
-            $table->integer('fond_id')->references('id')->on('fonds')->nullable();
-            $table->integer('project_id')->references('id')->on('projects')->nullable();
+            $table->integer('help_id')->references('id')->on('helps')->nullable();
             $table->integer('user_id')->references('id')->on('users');
             $table->timestamps();
         });

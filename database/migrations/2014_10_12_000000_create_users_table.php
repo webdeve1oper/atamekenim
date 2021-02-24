@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
             $table->integer('live_location_city')->references('city_id')->on('cities')->nullable();
             $table->string('education')->nullable();
             $table->string('job')->nullable();
-            $table->enum('gender', ['male', 'female'])->default('male');
+            $table->enum('gender', ['none','male', 'female'])->default('none');
             $table->string('children_count')->default(0);
             $table->string('phone')->nullable();
             $table->text('about')->nullable();

@@ -16,6 +16,7 @@ class CreateHelpFondTable extends Migration
         Schema::create('help_fond', function (Blueprint $table) {
             $table->bigInteger('fond_id')->unsigned();
             $table->bigInteger('help_id')->unsigned();
+            $table->enum('fond_status', ['disable', 'enable']);
             $table->foreign('help_id')->references('id')->on('helps')->onDelete('cascade');
             $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
             $table->timestamps();

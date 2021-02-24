@@ -17,7 +17,9 @@
                 </div>
             </div>
         </div>
-
+        <div class="container">
+            <div class="row"><div class="col-12">@include('frontend.alerts')</div></div>
+        </div>
         <div class="container-fluid default myOrganizationContent myAccountPage">
             <div class="container">
                 <div class="row">
@@ -33,19 +35,22 @@
                                 </div>
                                 <div class="col-sm-10 col-8">
                                     <p class="name">Добро пожаловать, {{Auth::user()->first_name}} {{Auth::user()->patron}}!</p>
-                                    <p class="descr">В 2020 г. Вам оказали помощь на сумму в 1 254 000 тенге</p>
+                                    <p class="descr">В {{date('Y')}} г. Вам оказали помощь на сумму в 1 254 000 тенге</p>
                                 </div>
                             </div>
                         </div>
                         <div class="greyInfoBlock mini">
                             <p class="countTag green">Исполненные <span>{{$finishedHelps->count()}}</span></p>
-                            <p class="countTag red">Вы еще не оставили отзывы к выполненным заявкам <span>2</span></p>
-                            @foreach($finishedHelps as $help)
+                            <p class="countTag red reviews d-none">Вы еще не оставили отзывы к выполненным заявкам <span></span></p>
+                            <script>
+                                var reviewCount = 0;
+                            </script>
+                            @foreach($finishedHelps as $key=> $help)
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <p class="name">Помощь:</p>
-                                            <p class="tags default mini blue">{{$help->baseHelpTypes()[0]->name_ru}}</p>
+                                            <p class="tags default mini blue">{{$help->baseHelpTypes[0]->name_ru}}</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Дата подачи:</p>
@@ -53,7 +58,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Содержание просьбы / заявление</p>
-                                            <p>{{$help->body}}</p>
+                                            <p>{!! mb_substr($help->body, 0,100) !!}...</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Сумма</p>
@@ -64,9 +69,18 @@
                                             @foreach($help->fonds as $fond)
                                                 <p>{{$fond->website}}</p>
                                             @endforeach
+                                            @if(!$help->reviews)
+                                            <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue">Оставить отзыв</button>
+                                                @endif
                                         </div>
                                     </div>
                                 </div>
+                                @if(!$help->reviews)
+                                    <script>
+                                        reviewCount +=1;
+                                        $('.reviews').removeClass('d-none').find('span').text(reviewCount);
+                                    </script>
+                                @endif
                             @endforeach
                             <a href="" class="btn-default more">Смотреть все заявки</a>
                         </div>
@@ -174,7 +188,26 @@
                 </div>
             </div>
         </div>
-
+        <div id="review" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                        <h5 class="modal-title text-center d-table m-auto">Отзыв</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('review_to_fond')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="help_id" id="help_id" value="">
+                            <input type="text" name="title" class="form-control mb-3" placeholder="Заголовок">
+                            <textarea name="body" class="form-control mb-3" id="" cols="30" placeholder="Текст" rows="10"></textarea>
+                            <input type="submit" class="btn btn-default" value="Оставить отзыв">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 @endsection

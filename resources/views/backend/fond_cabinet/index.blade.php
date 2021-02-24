@@ -1,24 +1,6 @@
-@extends('frontend.layout')
+@extends('backend.fond_cabinet.layout')
 
-@section('content')
-    <div class="fatherBlock">
-        <div class="container-fluid default accountMenu">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <ul>
-                            <li><a href="">Избранные заявки</a></li>
-                            <li><a href="">История заявок</a></li>
-                            <li><a href="">Мои поступления</a></li>
-                            <li><a href="">Сообщения</a></li>
-                            <li><a href="">Мои отзывы</a></li>
-                            <li><a href="">Мой кабинет</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+@section('fond_content')
         <div class="container-fluid default myOrganizationContent">
             <div class="container">
                 <div class="row">
@@ -45,23 +27,21 @@
                     </div>
                     <div class="col-sm-8">
                         <div class="greyInfoBlock mini">
-                            <?php $waitHelps = $fond->helpsByStatus('wait'); ?>
+                            <?php $waitHelps = $fond->helpsByStatus('wait')->get();?>
                             <p class="countTag blue">Новые заявки <span>{{$waitHelps->count()}}</span></p>
                             <a href="" class="btn-default">Поиск по всем заявкам</a>
                                 @if($waitHelps->count()>0)
-                                    <?php dd($waitHelps); ?>
                                 @foreach($waitHelps as $help)
                                     <div class="applicationBlock">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="tags default blue">Социальная помощь</p>
+                                                <p class="tags default blue">{{$help->baseHelpTypes[0]->name_ru}}</p>
 {{--                                                <p><span>{{}}</span>, 30 лет</p>--}}
-                                                <?php dd($help); ?>
-                                                <p>Акмолинская область, село Косши</p>
+                                                <p>{{$help->region->title_ru}}, {{$help->city->title_ru}}</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="name">Содержание просьбы / заявление</p>
-                                                <p>Прошу оказать помощь в приобретении ноутбука ребенку для удаленного обучения</p>
+                                                <p>{!! mb_substr($help->body, 0,100) !!}...</p>
                                             </div>
                                             <div class="col-sm-2">
                                                 <p class="name">Статус ТЖС:</p>
@@ -69,14 +49,17 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <a href="" class="btn-default">Подробнее</a>
-                                                <button class="btn-default blue">Взять в работу</button>
+                                                <form action="{{route('start_help', $help->id)}}" method="post">
+                                                    @csrf
+                                                    <button class="btn-default blue">Взять в работу</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
                                     @endif
                         </div>
-                        <?php $processHelps = $fond->helpsByStatus('process'); ?>
+                        <?php $processHelps = $fond->helpsByStatus('process')->get(); ?>
                         <div class="greyInfoBlock mini">
                             <p class="countTag red">Заявки в работе <span>{{$processHelps->count()}}</span></p>
                             @if($processHelps->count()>0)
@@ -84,13 +67,13 @@
                                     <div class="applicationBlock">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="tags default blue">@foreach($process->baseHelpTypes() as $help){{$help}}@endforeach</p>
-                                                <p><span>Мужчина</span>, {{$process->user()->name}} лет</p>
-                                                <p>Акмолинская область, село Косши</p>
+                                                <p class="tags default blue">{{$process->baseHelpTypes[0]->name_ru}}</p>
+                                                {{--<p><span>Мужчина</span>, {{$process->user()->name}} лет</p>--}}
+                                                <p>{{$process->region->title_ru}}, {{$process->city->title_ru}}</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="name">Содержание просьбы / заявление</p>
-                                                <p>Прошу оказать помощь в приобретении ноутбука ребенку для удаленного обучения</p>
+                                                <p>{!! mb_substr($process->body, 0,100) !!}...</p>
                                             </div>
                                             <div class="col-sm-2">
                                                 <p class="name">Статус ТЖС:</p>
@@ -98,7 +81,11 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <p class="name center">Статус:</p>
-                                                <p class="tags default mini grey">В работе с 11.11.2020</p>
+                                                <p class="tags default mini grey mb-2">В работе с {{\Carbon\Carbon::parse($process->date_fond_start)->format('d.m.Y')}}</p>
+                                                <form action="{{route('finish_help', $process->id)}}" method="post">
+                                                    @csrf
+                                                    <button class="btn-default blue">Выполнена</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +94,7 @@
                             @endif
                         </div>
 
-                        <?php $finishedHelps = $fond->helpsByStatus('finished'); ?>
+                        <?php $finishedHelps = $fond->helpsByStatus('finished')->get(); ?>
                         <div class="greyInfoBlock mini">
                             <p class="countTag green">Выполненные заявки <span>{{$finishedHelps->count()}}</span></p>
                             @if($finishedHelps->count()>0)
@@ -115,13 +102,13 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="tags default blue">@foreach($process->baseHelpTypes() as $help){{$help}}@endforeach</p>
-                                            <p><span>Мужчина</span>, 30 лет</p>
-                                            <p>Акмолинская область, село Косши</p>
+                                            <p class="tags default blue">{{$process->baseHelpTypes[0]->name_ru}}</p>
+                                            <p><span>{{$process->user->born=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
+                                            <p>{{$process->region->title_ru}}, {{$process->city->title_ru}}</p>
                                         </div>
                                         <div class="col-sm-4">
                                             <p class="name">Содержание просьбы / заявление</p>
-                                            <p>Прошу оказать помощь в приобретении ноутбука ребенку для удаленного обучения</p>
+                                            <p>{!! mb_substr($process->body, 0,100) !!}...</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Статус ТЖС:</p>
@@ -129,7 +116,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name center">Статус:</p>
-                                            <p class="tags default mini green">Выполнена 11.11.2020</p>
+                                            <p class="tags default mini green">Выполнена {{\Carbon\Carbon::parse($process->date_fond_finish)->format('d.m.Y')}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -174,6 +161,4 @@
             </div>
         </div>
 
-
-    </div>
 @endsection

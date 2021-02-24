@@ -23,6 +23,7 @@ class CreateHelpTable extends Migration
             $table->text('body');
             $table->enum('status', ['wait','process','finished'])->default('wait');
             $table->date('date_fond_start')->nullable();
+            $table->date('date_fond_finish')->nullable();
             $table->integer('review_id')->references('id')->on('reviews')->nullable();
             $table->timestamps();
         });

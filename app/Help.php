@@ -10,6 +10,10 @@ class Help extends Model
     protected $table = 'helps';
     protected $fillable = ['title', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status'];
 
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function fonds(){
         return $this->belongsToMany(Fond::class, 'help_fond', 'help_id','fond_id');
     }
@@ -33,9 +37,9 @@ class Help extends Model
     public function city(){
         return $this->belongsTo(City::class, 'city_id', 'city_id');
     }
-
-    public function user(){
-        return $this->belongsTo(User::class, 'id', 'user_id');
+    public function reviews(){
+        return $this->hasOne(Review::class, 'help_id', 'id');
     }
+
 
 }
