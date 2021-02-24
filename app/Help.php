@@ -1,0 +1,41 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Help extends Model
+{
+    //
+    protected $table = 'helps';
+    protected $fillable = ['title', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status'];
+
+    public function fonds(){
+        return $this->belongsToMany(Fond::class, 'help_fond', 'help_id','fond_id');
+    }
+
+    public function fond(){
+        return $this->belongsToMany(Help::class, 'help_fond', 'help_id','fond_id');
+    }
+
+    public function baseHelpTypes(){
+        return $this->belongsToMany(BaseHelpType::class, 'help_basehelptypes', 'help_id','base_help_id');
+    }
+
+    public function addHelpTypes(){
+        return $this->belongsToMany(AddHelpType::class, 'help_addhelptypes', 'help_id','add_help_id');
+    }
+
+    public function region(){
+        return $this->belongsTo(Region::class, 'region_id', 'region_id');
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id', 'city_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
+
+}
