@@ -74,7 +74,7 @@
                 <div class="col-sm-9">
                     <ul class="menu2">
                         <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
-                        <li><a href="">Им нужна помощь</a></li>
+                        <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
                         <li><a href="">Помочь проекту</a></li>
                         <li><a href="">Карта благотворительности</a></li>
                         <li><a href="">Нас поддержали</a></li>
@@ -103,7 +103,7 @@
                     <div class="col-sm-6">
                         <ul>
                             <li><a href="">О проекте</a></li>
-                            <li><a href="">Новости</a></li>
+                            <li><a href="{{route('news')}}">Новости</a></li>
                             <li><a href="">Отзывы</a></li>
                             <li><a href="">Вопрос-ответ</a></li>
                             <li><a href="">Контакты</a></li>

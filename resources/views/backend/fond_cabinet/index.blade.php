@@ -103,7 +103,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <p class="tags default blue">{{$process->baseHelpTypes[0]->name_ru}}</p>
-                                            <p><span>{{$process->user->born=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
+                                            <p><span>{{$process->user->gender=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
                                             <p>{{$process->region->title_ru}}, {{$process->city->title_ru}}</p>
                                         </div>
                                         <div class="col-sm-4">

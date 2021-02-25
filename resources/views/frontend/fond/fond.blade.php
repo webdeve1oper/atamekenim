@@ -73,7 +73,7 @@
                                                 <div class="block">
                                                     <p class="name">{{$help->user->first_name}}, {{$help->region->title_ru}}, {{$help->city->title_ru}}</p>
                                                     <p class="descr textContent">
-                                                        {{$help->body}}
+                                                        {{$review->body}}
                                                     </p>
                                                 </div>
                                             </div>

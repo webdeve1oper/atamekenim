@@ -18,6 +18,8 @@ Route::get('/o-proekte', function(){
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
 Route::get('/news', 'Frontend\MainController@news')->name('news');
+Route::get('/helps', 'Frontend\MainController@helps')->name('helps');
+Route::get('/help/{id}', 'Frontend\MainController@help')->name('help');
 Route::get('/fonds', 'Frontend\FondController@fonds')->name('fonds');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');
 
