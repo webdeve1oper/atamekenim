@@ -6,6 +6,8 @@ use App\AddHelpType;
 use App\BaseHelpType;
 use App\City;
 use App\Country;
+use App\Destination;
+use App\DestinationAttribute;
 use App\Fond;
 use App\Http\Controllers\Controller;
 use App\Region;
@@ -19,19 +21,62 @@ class FondController extends Controller
         $baseHelpTypes = BaseHelpType::select('name_ru as text', 'id')->with('addHelpTypes')->get();
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 4)->with('cities')->get();
 
-//        $addHelpTypes = AddHelpType::all();
-
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions'));
     }
 
-    public function fonds(){
-        $fonds = Fond::paginate(2);
-        $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
-        $regions = Region::where('country_id', 4)->pluck('title_ru', 'region_id');
-        $baseHelpTypes = BaseHelpType::all();
-        $addHelpTypes = AddHelpType::all();
+    public function fonds(Request $request){
+        if ($request->ajax()) {
+            $fonds = Fond::where('status', true);
+            if($request->exists('destination')){
+                $destination = $request->destination;
+                $fonds->whereHas('destinations', function($query) use ($destination){
+                    $query->whereIn('destinations.id', $destination);
+                });
+            }
 
-        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes'));
+            if($request->exists('city') and $request->exists('region')){
+                $destination = $request->city;
+                $fonds->whereIn('help_location_city', $destination);
+                $fonds->orWhereIn('help_location_city', $destination);
+            }elseif($request->exists('city')){
+                $destination = $request->city;
+                $fonds->whereIn('help_location_city', $destination);
+            }elseif($request->exists('region')){
+                $destination = $request->region;
+                $fonds->whereIn('help_location_region', $destination);
+            }
+
+
+
+            if($request->exists('destinations_attribute')){
+                $destinations_attribute = $request->destinations_attribute;
+                $fonds->whereHas('destinations_attribute', function($query) use ($destinations_attribute){
+                    $query->whereIn('destinations_attribute.id', $destinations_attribute);
+                });
+            }
+
+            if($request->exists('baseHelpTypes')){
+                $baseHelpTypes = $request->baseHelpTypes;
+                $fonds->whereHas('baseHelpTypes', function($query) use ($baseHelpTypes){
+                    $query->whereIn('base_help_types.id', $baseHelpTypes);
+                });
+            }
+
+            $fonds = $fonds->paginate(2);
+
+            return view('frontend.fond.fond_list')->with(compact('fonds'));
+        }else{
+            $fonds = Fond::paginate(2);
+            $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
+            $regions = Region::where('country_id', 4)->pluck('title_ru', 'region_id');
+            $baseHelpTypes = BaseHelpType::all();
+            $addHelpTypes = AddHelpType::all();
+            $destionations = Destination::all();
+            $destionationsAttributes = DestinationAttribute::all();
+        }
+
+
+        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes', 'destionations', 'destionationsAttributes'));
 
     }
 }

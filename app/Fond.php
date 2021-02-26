@@ -45,9 +45,20 @@ class Fond extends Authenticatable
         return $this->hasMany(Partner::class);
     }
 
+    public function images(){
+        return $this->hasMany(FondImage::class);
+    }
 
     public function helps(){
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id');
+    }
+
+    public function destinations(){
+        return $this->belongsToMany(Destination::class, 'fond_destinations', 'fond_id', 'destination_id');
+    }
+
+    public function destinations_attribute(){
+        return $this->belongsToMany(DestinationAttribute::class, 'fond_destinations_attribute', 'fond_id', 'destination_attribute_id');
     }
 
     public function helpsByStatus($status = 'wait'){
@@ -69,5 +80,13 @@ class Fond extends Authenticatable
 
     public function helpsByDate($year, $status='finished'){
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('status', '=', $status)->whereYear('helps.created_at', '=', $year);
+    }
+
+    public function region(){
+        return $this->belongsTo(Region::class, 'help_location_region', 'region_id');
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class);
     }
 }

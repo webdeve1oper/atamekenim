@@ -44,7 +44,7 @@
                         <p class="bigName">Фильтр поиска</p>
 
                         <div class="siteBarFilter">
-                            <form action="">
+                            <form action="{{route('fonds')}}" id="fonds_filter">
                                 <input type="text" class="normal" name="bin" placeholder="Поиск по названию/БИН" autocomplete="off">
                                 <p class="text">
                                     Укажите название / БИН организации
@@ -54,9 +54,14 @@
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Характеристика адресата/благополучателя<i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
-                                        <div class="content"><input type="checkbox" id="check1"><label for="check1">Все</label></div>
-                                        @foreach(config('destinations_attribute') as $i=> $destination)
-                                            <div class="content"><input type="checkbox" name="destination_attribute[]" id="check{{$i}}"><label for="check{{$i}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label></div>
+                                        <div class="content">
+                                            <input type="checkbox" name="destination_attribute[]" value="all" id="destination_attribute0"><label for="destination_attribute0">Все</label>
+                                        </div>
+                                        @foreach($destionationsAttributes as  $destination)
+                                            <div class="content">
+                                                <input type="checkbox" name="destination_attribute[]" value="{{$destination['id']}}" id="destination_attribute{{$destination['id']}}">
+                                                <label for="destination_attribute{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -65,9 +70,12 @@
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Адресат/Благополучатель <i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
-                                        <div class="content"><input type="checkbox" id="check7"><label for="check7">Все</label></div>
-                                        @foreach(config('destinations') as $i=> $destination)
-                                            <div class="content"><input type="checkbox" name="destination[]" id="check{{$i}}"><label for="check{{$i}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label></div>
+                                        <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
+                                        @foreach($destionations as $destination)
+                                            <div class="content">
+                                                <input type="checkbox" name="destination[]" value="{{$destination['id']}}" id="destination{{$destination['id']}}">
+                                                <label for="destination{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -77,10 +85,10 @@
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
                                         @foreach($cities as $id => $city)
-                                            <div class="content"><input type="checkbox" id="check{{$id}}" value="{{$id}}"><label for="check{{$id}}">{{$city}}</label></div>
+                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
                                         @endforeach
                                         @foreach($regions as $id => $city)
-                                            <div class="content"><input type="checkbox" id="check{{$id}}" value="{{$id}}"><label for="check{{$id}}">{{$city}}</label></div>
+                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -90,7 +98,7 @@
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
                                         @foreach($baseHelpTypes as $help)
-                                            <div class="content"><input type="checkbox" id="check{{$help->id}}" value="{{$help->id}}"><label for="check{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
+                                            <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help->id}}" value="{{$help->id}}"><label for="baseHelpTypes{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -99,6 +107,7 @@
                             </form>
                         </div>
                     </div>
+
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-6">
@@ -117,13 +126,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                           @include('frontend.fond.fond_list')
-                            <div class="col-sm-6 rightBlock">
-                                <button class="btn-default blue">Подать заявку на участие в реестре</button>
-                                <button class="btn-default">Больше аналитики</button>
-                            </div>
+                        <div class="row" id="fond_lists">
+                            @include('frontend.fond.fond_list')
                         </div>
+                        <script>
+                            $('#fonds_filter').submit(function(){
+                                var data = $(this).serialize();
+                                $.ajax({
+                                    url:'{{route('fonds')}}',
+                                    method: 'get',
+                                    data: data,
+                                    success: function(data){
+                                        $('#fond_lists').html(data);
+                                    }
+                                });
+                                return false;
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

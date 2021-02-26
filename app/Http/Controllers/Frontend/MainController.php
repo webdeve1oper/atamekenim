@@ -9,6 +9,7 @@ use App\Help;
 use App\Http\Controllers\Controller;
 use App\News;
 use App\Region;
+use App\Review;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -20,8 +21,6 @@ class MainController extends Controller
         $news = News::orderBy('public_date', 'desc')->limit(10)->get();
         return view('frontend.home')->with(compact('fonds', 'news', 'newFonds'));
     }
-
-
 
     public function new($slug){
         $new = News::whereSlug($slug)->first();
@@ -41,6 +40,26 @@ class MainController extends Controller
         $regions = Region::where('country_id', 4)->pluck('title_ru', 'region_id');
         $baseHelpTypes = BaseHelpType::all();
 
+        if ($request->ajax()) {
+            return view('project_list', compact('objects'));
+        }
+
         return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes'));
+    }
+
+    public function reviews(){
+        return view('frontend.develope');
+    }
+
+    public function about(){
+        return view('frontend.develope');
+    }
+
+    public function contacts(){
+        return view('frontend.develope');
+    }
+
+    public function qa(){
+        return view('frontend.develope');
     }
 }

@@ -17,10 +17,14 @@ Route::get('/o-proekte', function(){
 });
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
-Route::get('/news', 'Frontend\MainController@news')->name('news');
+Route::get('/about', 'Frontend\MainController@about')->name('about');
+Route::get('/contacts', 'Frontend\MainController@contacts')->name('contacts');
+Route::get('/question-answer', 'Frontend\MainController@qa')->name('qa');
 Route::get('/helps', 'Frontend\MainController@helps')->name('helps');
 Route::get('/help/{id}', 'Frontend\MainController@help')->name('help');
+Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');
 Route::get('/fonds', 'Frontend\FondController@fonds')->name('fonds');
+Route::get('/news', 'Frontend\MainController@news')->name('news');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');
 
 //User Auth

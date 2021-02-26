@@ -28,10 +28,10 @@
             <div class="col-sm-6">
                 <a href="/" class="logo"><img src="/img/logo.svg" alt=""></a>
                 <ul class="menu">
-                    <li><a href="/o-proekte">О проекте</a></li>
-                    <li><a href="/novosti">Новости</a></li>
-                    <li><a href="/vopros-otvet">Вопрос-ответ</a></li>
-                    <li><a href="/kontakty">Контакты</a></li>
+                    <li><a href="{{route('about')}}">О проекте</a></li>
+                    <li><a href="{{route('news')}}">Новости</a></li>
+                    <li><a href="{{route('qa')}}">Вопрос-ответ</a></li>
+                    <li><a href="{{route('contacts')}}">Контакты</a></li>
                 </ul>
                 <ul class="socials">
                     <li><a href="" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
@@ -102,11 +102,11 @@
                     </div>
                     <div class="col-sm-6">
                         <ul>
-                            <li><a href="">О проекте</a></li>
+                            <li><a href="{{route('about')}}">О проекте</a></li>
                             <li><a href="{{route('news')}}">Новости</a></li>
-                            <li><a href="">Отзывы</a></li>
-                            <li><a href="">Вопрос-ответ</a></li>
-                            <li><a href="">Контакты</a></li>
+                            <li><a href="{{route('allreviews')}}">Отзывы</a></li>
+                            <li><a href="{{route('qa')}}">Вопрос-ответ</a></li>
+                            <li><a href="{{route('contacts')}}">Контакты</a></li>
                         </ul>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
             <div class="col-sm-3">
                 <ul>
                     <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
-                    <li><a href="">Им нужна помощь</a></li>
+                    <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
                     <li><a href="">Помочь проекту</a></li>
                     <li><a href="">Карта благотворительности</a></li>
                     <li><a href="">Нас поддержали</a></li>
@@ -126,8 +126,10 @@
                     <input type="text" placeholder="Поиск по сайту">
                     <button><img src="/img/search.svg" alt=""></button>
                 </form>
+                @if(Auth::check())
                 <a href="{{route('registration_user')}}" class="authButton">Зарегистрироваться</a>
                 <a href="{{route('login')}}" class="authButton login">Войти</a>
+                @endif
             </div>
             <div class="col-sm-2">
                 <ul>

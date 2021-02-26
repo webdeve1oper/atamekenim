@@ -95,10 +95,10 @@
                         <h2>О фонде</h2>
                         <button class="btn-default" @if(Auth::user()) data-toggle="modal" data-target="#helpCallback"@else onclick="window.location = '{{route('login')}}'" @endif>Подать заявку на получение помощи</button>
                         <div class="content">
-                            <div class="imgBlock">
-                                <img src="/img/about.png" alt="">
-                                <p>Помощь сиротам 2020 г. @if($fond->video)<a href="/video/{{$fond->video}}">Смотреть видео</a> @endif</p>
-                            </div>
+{{--                            <div class="imgBlock">--}}
+{{--                                <img src="/img/about.png" alt="">--}}
+{{--                                <p>Помощь сиротам 2020 г. @if($fond->video)<a href="/video/{{$fond->video}}">Смотреть видео</a> @endif</p>--}}
+{{--                            </div>--}}
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
                                 {{$fond->about}}
@@ -209,8 +209,27 @@
 
                     <div class="col-sm-8 bottomContent">
                         <h3>Организация на карте</h3>
-                        <div class="map"></div>
+                        <div id="map" class="map"></div>
                         <button class="btn-default blue">Подать заявку на получение помощи</button>
+                        <script>
+                            ymaps.ready(init);
+
+                            function init() {
+                                var myPlacemark,
+                                    myMap = new ymaps.Map('map', {
+                                        @if($fond->longitude && $fond->latitude)
+                                        center: [{{$fond->longitude}}, {{$fond->latitude}}],
+                                        zoom: 15,
+                                        @else
+                                        center: [48.045133, 67.492732],
+                                        zoom: 5,
+                                        @endif
+                                        controls: ['searchControl']
+                                    }, {
+                                        searchControlProvider: 'yandex#search'
+                                    });
+                            }
+                        </script>
                     </div>
                     <div class="col-sm-4 bottomContent">
                         <div class="galleryBlock">
@@ -259,7 +278,7 @@
                                         <p>Сумма: <span>1,150,000 тг.</span></p>
                                         <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
-                                    <p class="date">19.10.2019</p>
+                                    <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
                                 </div>
                             </div>
@@ -275,9 +294,10 @@
                         <h4>Кому помог фонд</h4>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">Всего заявок: <span>10000</span></p>
-                        <p class="status">Выполнено: <span>10000</span></p>
+                        <p class="status">Всего заявок: <span>{{$fond->helps->count()}}</span></p>
+                        <p class="status finishedCount">Выполнено: <span>0</span></p>
                     </div>
+                    <?php $i = 0; ?>
                     @foreach($fond->helps as $help)
                         @if($help->status == 'finished')
                             <div class="col-sm-3">
@@ -289,12 +309,16 @@
                                         <p>Сумма: <span>1,150,000 тг.</span></p>
                                         <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
-                                    <p class="date">19.10.2019</p>
+                                    <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
                                 </div>
                             </div>
+                            <?php $i +=1; ?>
                         @endif
                     @endforeach
+                    <script>
+                        $('.finishedCount span').text({{$i}});
+                    </script>
                 </div>
             </div>
         </div>
@@ -380,7 +404,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Наши партнеры</h4>
+                        <h4>Партнеры организации</h4>
                         <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-12 partners">
@@ -432,7 +456,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Наши партнеры</h4>
+                        <h4>Похожие благотворительные организации</h4>
                     </div>
                     <div class="col-sm-3">
                         <div class="block">
