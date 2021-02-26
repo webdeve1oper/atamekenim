@@ -37,7 +37,7 @@ class FondController extends Controller
             if($request->exists('city') and $request->exists('region')){
                 $destination = $request->city;
                 $fonds->whereIn('help_location_city', $destination);
-                $fonds->orWhereIn('help_location_city', $destination);
+                $fonds->orWhereIn('help_location_region', $destination);
             }elseif($request->exists('city')){
                 $destination = $request->city;
                 $fonds->whereIn('help_location_city', $destination);
@@ -45,8 +45,6 @@ class FondController extends Controller
                 $destination = $request->region;
                 $fonds->whereIn('help_location_region', $destination);
             }
-
-
 
             if($request->exists('destinations_attribute')){
                 $destinations_attribute = $request->destinations_attribute;
