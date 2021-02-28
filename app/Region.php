@@ -15,7 +15,6 @@ class Region extends Model
     public function cities()
     {
         return $this->hasMany(City::class, 'region_id', 'region_id')
-            ->select('city_id as id','region_id', 'title_ru as text')
-            ->where('cities.important', 1);
+            ->select('city_id as id','region_id', 'title_ru as text');
     }
 }

@@ -51,6 +51,19 @@
                                     или укажите пункты поиска
                                 </p>
                                 <div class="siteBarList active">
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Адресат/Благополучатель <i class="fas fa-chevron-down"></i></p>
+                                    <div class="listBlock">
+                                        <p class="grey">Выберите один или несколько</p>
+                                        <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
+                                        @foreach($destionations as $destination)
+                                            <div class="content" >
+                                                <input type="checkbox" name="destination[]" value="{{$destination['id']}}" id="destination{{$destination['id']}}">
+                                                <label for="destination{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="siteBarList ">
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Характеристика адресата/благополучателя<i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
@@ -65,21 +78,6 @@
                                         @endforeach
                                     </div>
                                 </div>
-
-                                <div class="siteBarList">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Адресат/Благополучатель <i class="fas fa-chevron-down"></i></p>
-                                    <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
-                                        <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
-                                        @foreach($destionations as $destination)
-                                            <div class="content">
-                                                <input type="checkbox" name="destination[]" value="{{$destination['id']}}" id="destination{{$destination['id']}}">
-                                                <label for="destination{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
                                 <div class="siteBarList">
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Регион <i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
@@ -103,7 +101,7 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn-default blue">Найти</button>
-                                <span class="searchText">Найдено:<br>{{$fonds->total()}} организаций</span>
+                                <span class="searchText">Найдено:<br><span class="total">{{$fonds->total()}}</span> организаций</span>
                             </form>
                         </div>
                     </div>
@@ -111,7 +109,7 @@
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-6">
-                                <p class="bigName">найдено {{$fonds->total()}} НПО</p>
+                                <p class="bigName">найдено <b class="total">{{$fonds->total()}}</b> НПО</p>
                             </div>
                             <div class="col-sm-6 rightBlock">
                                 <div class="dropdown organizationDrop">
@@ -129,6 +127,92 @@
                         <div class="row" id="fond_lists">
                             @include('frontend.fond.fond_list')
                         </div>
+                        <div class="preloader">
+                            <div id="preloader">
+                                <div id="loader"></div>
+                            </div>
+                        </div>
+                        <style>
+                            #fond_lists{
+                                position: relative;
+                            }
+                            .preloader{
+                                display: none;
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                background-color: rgba(255, 255, 255, 0.42);
+                                z-index: 4;
+                                top: 0;
+                            }
+                            #preloader{
+                                margin: 50%;
+                            }
+                            #loader {
+                                display: block;
+                                position: relative;
+                                left: 50%;
+                                top: 50%;
+                                width: 150px;
+                                height: 150px;
+                                margin: -75px 0 0 -75px;
+                                border-radius: 50%;
+                                border: 3px solid transparent;
+                                border-top-color: #0053a5;
+                                -webkit-animation: spin 2s linear infinite;
+                                animation: spin 2s linear infinite;
+                            }
+                            #loader:before {
+                                content: "";
+                                position: absolute;
+                                top: 5px;
+                                left: 5px;
+                                right: 5px;
+                                bottom: 5px;
+                                border-radius: 50%;
+                                border: 3px solid transparent;
+                                border-top-color: #06c;
+                                -webkit-animation: spin 3s linear infinite;
+                                animation: spin 3s linear infinite;
+                            }
+                            #loader:after {
+                                content: "";
+                                position: absolute;
+                                top: 15px;
+                                left: 15px;
+                                right: 15px;
+                                bottom: 15px;
+                                border-radius: 50%;
+                                border: 3px solid transparent;
+                                border-top-color: #f8a872;
+                                -webkit-animation: spin 1.5s linear infinite;
+                                animation: spin 1.5s linear infinite;
+                            }
+                            @-webkit-keyframes spin {
+                                0%   {
+                                    -webkit-transform: rotate(0deg);
+                                    -ms-transform: rotate(0deg);
+                                    transform: rotate(0deg);
+                                }
+                                100% {
+                                    -webkit-transform: rotate(360deg);
+                                    -ms-transform: rotate(360deg);
+                                    transform: rotate(360deg);
+                                }
+                            }
+                            @keyframes spin {
+                                0%   {
+                                    -webkit-transform: rotate(0deg);
+                                    -ms-transform: rotate(0deg);
+                                    transform: rotate(0deg);
+                                }
+                                100% {
+                                    -webkit-transform: rotate(360deg);
+                                    -ms-transform: rotate(360deg);
+                                    transform: rotate(360deg);
+                                }
+                            }
+                        </style>
                         <script>
                             $('#fonds_filter').submit(function(){
                                 var data = $(this).serialize();
@@ -136,8 +220,15 @@
                                     url:'{{route('fonds')}}',
                                     method: 'get',
                                     data: data,
+                                    beforeSend(){
+                                        $('.preloader').show();
+                                    },
                                     success: function(data){
-                                        $('#fond_lists').html(data);
+                                        setTimeout(function(){
+                                            $('.preloader').hide();
+                                            $('#fond_lists').html(data);
+                                        }, 1000);
+
                                     }
                                 });
                                 return false;

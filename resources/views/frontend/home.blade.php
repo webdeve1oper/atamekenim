@@ -26,90 +26,58 @@
                         <p class="descr">Для удобного поиска конкретного фонда - используйте фильтр</p>
                     </div>
                     <div class="col-sm-12">
-                        <form action="">
-                            <input type="text" placeholder="Поиск по названию или БИИН">
-                            <select name="" id="select1">
-                                <option value="">Сектор деятельности</option>
-                                <option value="">Сектор деятельности</option>
-                                <option value="">Сектор деятельности</option>
+                        <form id="formSearch">
+                            <input type="text" name="bin" placeholder="Поиск по названию или БИИН">
+                            <select name="baseHelpTypes[]" id="select1">
+                                <option value="all">Сектор деятельности</option>
+                                @foreach($baseHelpTypes as $help)
+                                    <option  value="{{$help->id}}">
+                                        {{$help['name_'.app()->getLocale()]}}
+                                    </option>
+                                @endforeach
                             </select>
 
-                            <select name="" id="select2">
-                                <option value="">Адресат/Благополучатель</option>
-                                <option value="">Адресат/Благополучатель</option>
-                                <option value="">Адресат/Благополучатель</option>
+                            <select name="destination[]" id="select2">
+                                <option value="all">Адресат/благополучатель</option>
+                                @foreach($destionations as $destination)
+                                    <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                @endforeach
                             </select>
 
-                            <select name="" id="select3">
-                                <option value="">Город</option>
-                                <option value="">Город</option>
-                                <option value="">Город</option>
+                            <select name="city[]" id="select3">
+                                <option value="all">Все города</option>
+                                @foreach($cities as $id => $city)
+                                    <option value="{{$id}}">{{$city}}</option>
+                                @endforeach
                             </select>
 
                             <button>Найти</button>
                         </form>
                         <button class="btn-default openMap">Карта фондов</button>
                     </div>
-                    <div class="col-sm-6">
-                        <p class="name">Ими гордится страна</p>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                За все время
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">За все время</a>
-                                <a class="dropdown-item" href="#">За все время</a>
-                                <a class="dropdown-item" href="#">За все время</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="paginationBlock">
-                            <ul class="pagination">
-                                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                <li class="page-item"><a class="page-link" href="">2</a></li>
-                                <li class="page-item"><a class="page-link" href="">3</a></li>
-                                <li class="page-item"><a class="page-link" href="">4</a></li>
-                                <li class="page-item"><a class="page-link" href="">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link arrows" href="" rel="next" aria-label="pagination.next">›</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="organizationsList">
-                            @foreach($fonds as $key=> $fond)
-                                <div class="item">
-                                    <ul>
-                                        <li><p class="number">{{$key+1}}</p></li>
-                                        <li>
-                                            @if($fond->logo)
-                                                <img src="{{$fond->logo}}" alt="" class="logotype">
-                                            @else
-                                                <img src="/img/no-photo.png" alt="" class="logotype">
-                                            @endif
-                                        </li>
-                                        <li><a href="/fond/{{$fond->id}}" class="name">{{$fond->title}}</a></li>
-                                        <li><p>5 000 000 тг</p></li>
-                                        <li><p>Образование и культура</p></li>
-                                        <li><p>г. Нур-Султан</p></li>
-                                        <li><p>Отзывы (100+)</p></li>
-                                        <li><p class="green">95%</p></li>
-                                    </ul>
-                                </div>
-                            @endforeach
 
-                        </div>
+                    <div class="col-12" id="fond_lists">
+                        @include('frontend.home_fond_list')
                     </div>
                     <div class="col-sm-12">
                         <a class="btn-default" href="{{route('fonds')}}">Смотреть все организации <span class="miniArrow">›</span></a>
                         <button class="btn-default blue">Хочу помочь фонду</button>
                         <a href="{{route('registration_fond')}}" class="btn-default blue">Регистрация в реестре</a>
                     </div>
+                    <script>
+                        $('#formSearch').submit(function(){
+                            var data = $(this).serialize();
+                            $.ajax({
+                                url: '{{route('home')}}',
+                                method: 'get',
+                                data: data,
+                                success: function(data){
+                                    $('#fond_lists').html(data);
+                                }
+                            });
+                            return false;
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -152,7 +120,7 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="newOrganizationsBlock">
-                            @foreach($fonds as $key=> $fond)
+                            @foreach($newFonds as $key=> $fond)
                                 <div class="item">
                                     <ul>
                                         <li><p class="number">{{$key+1}}</p></li>
@@ -281,61 +249,24 @@
                         <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">Всего заявок: <span>10000</span></p>
-                        <p class="status">Выполнено: <span>10000</span></p>
+                        <p class="status">Всего заявок: <span>{{$helpsCount}}</span></p>
+                        <p class="status">Выполнено: <span>{{$helps->total()}}</span></p>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                    @foreach($helps as $help)
+                        <div class="col-sm-3">
+                            <div class="helpBlock">
+                                <div class="content">
+                                    <p>Помощь: <span class="tag blue">Образование</span></p>
+                                    <p>Организация: <img src="/img/logo.svg" alt=""></p>
+                                    <p>Кому: <span>Кайрат Жомарт</span></p>
+                                    <p>Сумма: <span>1,150,000 тг.</span></p>
+                                    <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                </div>
+                                <p class="date">19.10.2019</p>
+                                <img src="/img/support1.svg" alt="" class="bkg">
                             </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag green">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support2.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support3.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Сумма: <span>1,150,000 тг.</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">19.10.2019</p>
-                            <img src="/img/support4.svg" alt="" class="bkg">
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -348,6 +279,7 @@
                     <div class="col-sm-6 rightBlock">
                         <p class="status">На расмотрении: <span>10000</span></p>
                     </div>
+                    @foreach($newHelps as $help)
                     <div class="col-sm-3">
                         <div class="helpBlock newHelp">
                             <div class="content">
@@ -360,42 +292,7 @@
                             <img src="/img/support1.svg" alt="" class="bkg">
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag green">Образование</span></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Регион: <span>Алмата</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support2.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag red">Образование</span></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Регион: <span>Алмата</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support3.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">Образование</span></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Регион: <span>Алмата</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support4.svg" alt="" class="bkg">
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

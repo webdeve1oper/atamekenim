@@ -11,7 +11,7 @@
 |
 */
 //Static pages
-Route::get('/', 'Frontend\MainController@index');
+Route::get('/', 'Frontend\MainController@index')->name('home');
 Route::get('/o-proekte', function(){
     return view('frontend.pages.about');
 });

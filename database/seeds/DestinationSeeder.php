@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use \Illuminate\Support\Facades\DB;
+
 class DestinationSeeder extends Seeder
 {
     /**
@@ -14,7 +15,6 @@ class DestinationSeeder extends Seeder
         foreach(config('destinations') as $item){
             if(!DB::table('destinations')->where('name_ru', $item['name_ru'])->first()){
                 $destination = \App\Destination::create($item);
-                $destination->attach([1,4]);
             }
         }
     }

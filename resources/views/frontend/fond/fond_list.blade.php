@@ -82,3 +82,15 @@
     <button class="btn-default blue">Подать заявку на участие в реестре</button>
     <button class="btn-default">Больше аналитики</button>
 </div>
+    <script>
+        $(' .total').text({{$fonds->total()}});
+        $('.paginationBlock .pagination a').on('click', function(e){
+            e.preventDefault();
+            var url = $(this).attr('href');
+            $('.preloader').show();
+            $.get(url, $('#fonds_filter').serialize(), function(data){
+                $('.preloader').hide();
+                $('#fond_lists').html(data);
+            });
+        });
+    </script>
