@@ -256,7 +256,7 @@
                         <div class="col-sm-3">
                             <div class="helpBlock">
                                 <div class="content">
-                                    <p>Помощь: <span class="tag blue">Образование</span></p>
+                                    <p>Помощь: <span class="tag blue">{{$help->destinations()->first()}}</span></p>
                                     <p>Организация: <img src="/img/logo.svg" alt=""></p>
                                     <p>Кому: <span>Кайрат Жомарт</span></p>
                                     <p>Сумма: <span>1,150,000 тг.</span></p>
@@ -277,15 +277,20 @@
                         <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">На расмотрении: <span>10000</span></p>
+                        <p class="status">На расмотрении: <span>{{$newHelps->total()}}</span></p>
                     </div>
                     @foreach($newHelps as $help)
                     <div class="col-sm-3">
                         <div class="helpBlock newHelp">
                             <div class="content">
-                                <p>Помощь: <span class="tag blue">Образование</span></p>
-                                <p>Кому: <span>Кайрат Жомарт</span></p>
-                                <p>Регион: <span>Алмата</span></p>
+                                <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                <p>Кому: <span>
+                                @if(Auth::guard('fond')->check())
+                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
+                                @else
+                                    @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
+                                @endif</span></p>
+                                <p>Регион: <span>{{$help->region->title_ru}}</span></p>
                                 <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                             </div>
                             <p class="date">Открытая заявка</p>

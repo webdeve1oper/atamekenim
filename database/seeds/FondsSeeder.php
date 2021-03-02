@@ -36,6 +36,7 @@ class FondsSeeder extends Seeder
             $name = $arrayNames[rand(1,20)];
             if(!DB::table('fonds')->where('title', $name)->first()){
 //                try{
+                $region = rand(720,738);
                     $value = [];
                     $value['title'] = 'Фонд "'.$name.'"';
                     $value['status'] = 1;
@@ -49,9 +50,15 @@ class FondsSeeder extends Seeder
                     $value['email'] = 'info'.($i+1).$data['email'];
                     $value['latitude'] = $faker->latitude($min = 65, $max = 70);
                     $value['longitude'] = $faker->longitude($min = 40, $max = 60);
+                    $value['help_location_region'] = $region;
+                    $city = \App\City::whereRegionId($region)->inRandomOrder()->limit(1)->pluck('city_id')->toArray();
+                    if(count($city)>0){
+                        $value['help_location_city'] = $city[0];
+                    }
                     $data = \App\Fond::create($value);
                     $data->baseHelpTypes()->attach([rand(1,2), rand(3,4)]);
                     $data->destinations()->attach([rand(1,2), rand(3,4)]);
+
                     $data->destinations_attribute()->attach([rand(1,2), rand(3,4)]);
 //                }catch (Exception $exception){
 //                    continue;

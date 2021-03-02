@@ -11,7 +11,7 @@
                             @if(Auth::guard('fond')->check())
                                 <p class="name">{{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет</p>
                             @else
-                                <p class="name">{{$help->user->gender=='male'?'Мужчина':$help->user->gender=='female'?'Женщина':'Не указано'}},  {{\Carbon\Carbon::parse($help->user->born)->age ?? 'не указано' }} лет</p>
+                                <p class="name">@if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif,  {{\Carbon\Carbon::parse($help->user->born)->age ?? 'не указано' }} лет</p>
                             @endif
                             <p>
 
@@ -28,7 +28,7 @@
                         <div class="col-sm-3 rightBlock">
                             <p class="greyText red"><span>Кризисный 70 баллов</span></p>
                         </div>
-                        <div class="col-sm-9"><a href="" class="btn-default">Подробнее <span class="miniArrow">›</span></a></div>
+                        <div class="col-sm-9"><a href="{{route('help',$help->id)}}" class="btn-default">Подробнее <span class="miniArrow">›</span></a></div>
                         @if($help->status != 'finished')
                             <div class="col-sm-3 rightBlock"><button class="btn-default blue">Поддержать</button></div>
                         @endif
@@ -59,7 +59,4 @@
             @endif
         </ul>
     </div>
-</div>
-<div class="col-sm-6">
-
 </div>

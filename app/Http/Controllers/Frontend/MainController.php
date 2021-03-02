@@ -74,7 +74,7 @@ class MainController extends Controller
     }
 
     public function helps(Request $request){
-        $helps = Help::with('baseHelpTypes')->with('addHelpTypes')->paginate(1);
+        $helps = Help::with('baseHelpTypes')->with('addHelpTypes')->paginate(5);
         $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
         $regions = Region::where('country_id', 4)->pluck('title_ru', 'region_id');
         $baseHelpTypes = BaseHelpType::all();

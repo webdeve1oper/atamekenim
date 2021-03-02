@@ -41,5 +41,8 @@ class Help extends Model
         return $this->hasOne(Review::class, 'help_id', 'id');
     }
 
+    public function destinations(){
+        return $this->belongsToMany(Destination::class, 'help_destinations', 'help_id', 'destination_id');
+    }
 
 }

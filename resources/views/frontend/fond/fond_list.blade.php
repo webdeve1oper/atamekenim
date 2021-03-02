@@ -1,3 +1,4 @@
+@if(count($fonds)>0)
     <div class="col-sm-12">
         @foreach($fonds as $fond)
             <div class="organizationBigBlock">
@@ -23,6 +24,7 @@
                                 <p>Основная деятельность: <a href="">@foreach($fond->baseHelpTypes as $i => $help)@if($i==2) @break @endif{{$help['name_'.app()->getLocale()]}},@endforeach ...</a></p>
                             </li>
                             <li>
+
                                 <p>Регион работы: <a href="#" onclick="$('#regions{{$fond->region['region_id']}}').attr('checked', true);$('#fonds_filter').submit();">{{$fond->region['title_ru']}}</a></p>
                             </li>
                         </ul>
@@ -57,31 +59,39 @@
             </div>
         @endforeach
     </div>
-<div class="col-sm-6">
-    <div class="paginationBlock">
-        @if(method_exists($fonds,'links'))
-            @if($fonds->lastPage() > 1)
-                <ul class="pagination">
-                    @for ($i = 1; $i <= $fonds->lastPage(); $i++)
-                        <li class="page-item {{ ($fonds->currentPage() == $i) ? ' active' : '' }}">
-                            <a class="page-link" href="{{ $fonds->url($i) }}">{{$i}}</a>
+    <div class="col-sm-6">
+        <div class="paginationBlock">
+            @if(method_exists($fonds,'links'))
+                @if($fonds->lastPage() > 1)
+                    <ul class="pagination">
+                        @for ($i = 1; $i <= $fonds->lastPage(); $i++)
+                            <li class="page-item {{ ($fonds->currentPage() == $i) ? ' active' : '' }}">
+                                <a class="page-link" href="{{ $fonds->url($i) }}">{{$i}}</a>
+                            </li>
+                        @endfor
+                        <li class="page-item">
+                            <a class="page-link arrows" href="{{ $fonds->url(1) }}" rel="prev" aria-label="pagination.previous">‹</a>
                         </li>
-                    @endfor
-                    <li class="page-item">
-                        <a class="page-link arrows" href="{{ $fonds->url(1) }}" rel="prev" aria-label="pagination.previous">‹</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link arrows" href="{{ $fonds->url($fonds->currentPage()+1) }}" rel="next" aria-label="pagination.next">›</a>
-                    </li>
-                </ul>
+                        <li class="page-item">
+                            <a class="page-link arrows" href="{{ $fonds->url($fonds->currentPage()+1) }}" rel="next" aria-label="pagination.next">›</a>
+                        </li>
+                    </ul>
+                @endif
             @endif
-            @endif
+        </div>
     </div>
-</div>
-<div class="col-sm-6 rightBlock">
-    <button class="btn-default blue">Подать заявку на участие в реестре</button>
-    <button class="btn-default">Больше аналитики</button>
-</div>
+    <div class="col-sm-6 rightBlock">
+        <button class="btn-default blue">Подать заявку на участие в реестре</button>
+        <button class="btn-default">Больше аналитики</button>
+    </div>
+    @else
+    <div class="col-sm-12">
+            <div class="organizationBigBlock">
+                <h4>К сожалению ничего не найдено</h4>
+            </div>
+    </div>
+    @endif
+
     <script>
         $(' .total').text({{$fonds->total()}});
         $('.paginationBlock .pagination a').on('click', function(e){
