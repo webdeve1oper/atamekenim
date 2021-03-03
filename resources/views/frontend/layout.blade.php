@@ -34,8 +34,8 @@
                     <li><a href="{{route('contacts')}}">Контакты</a></li>
                 </ul>
                 <ul class="socials">
-                    <li><a href="" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                    <li><a href="" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 </ul>
             </div>
             <div class="col-sm-6">
@@ -75,9 +75,9 @@
                     <ul class="menu2">
                         <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
                         <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
-                        <li><a href="">Помочь проекту</a></li>
-                        <li><a href="">Карта благотворительности</a></li>
-                        <li><a href="">Нас поддержали</a></li>
+                        <li><a href="{{route('dev')}}">Помочь проекту</a></li>
+                        <li><a href="{{route('dev')}}">Карта благотворительности</a></li>
+                        <li><a href="{{route('dev')}}">Нас поддержали</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
@@ -115,9 +115,9 @@
                 <ul>
                     <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
                     <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
-                    <li><a href="">Помочь проекту</a></li>
-                    <li><a href="">Карта благотворительности</a></li>
-                    <li><a href="">Нас поддержали</a></li>
+                    <li><a href="{{route('dev')}}">Помочь проекту</a></li>
+                    <li><a href="{{route('dev')}}">Карта благотворительности</a></li>
+                    <li><a href="{{route('dev')}}">Нас поддержали</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">
@@ -133,8 +133,8 @@
             </div>
             <div class="col-sm-2">
                 <ul>
-                    <li><a href="">Call- центр</a></li>
-                    <li><a href="">Социальные сети</a></li>
+                    <li><a href="{{route('dev')}}">Call- центр</a></li>
+                    <li><a href="{{route('dev')}}">Социальные сети</a></li>
                 </ul>
             </div>
         </div>

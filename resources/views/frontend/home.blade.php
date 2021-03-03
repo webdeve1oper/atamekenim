@@ -53,7 +53,7 @@
 
                             <button>Найти</button>
                         </form>
-                        <button class="btn-default openMap">Карта фондов</button>
+                        <a href="{{route('dev')}}" class="btn-default openMap">Карта фондов</a>
                     </div>
 
                     <div class="col-12" id="fond_lists">
@@ -87,7 +87,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h2>Новые участники реестра</h2>
-                        <a href="" class="readMore">Подробнее <span class="miniArrow">›</span></a>
+                        <a href="{{route('dev')}}" class="readMore">Подробнее <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
                         <div class="dropdown">
@@ -178,8 +178,8 @@
                         <p class="descr">
                             После того, как вы подадите заявку, ее получат все организации, работающие в вашем регионе и занимающиеся решением проблем, аналогичных вашей. Как только какая-либо организация возьмет вашу заявку в работу, вы получите сообщение и с вами свяжутся представители этой организации.
                         </p>
-                        <a href="" class="btn-default blue"><img src="/img/lofin.svg" alt=""> Войти</a>
-                        <a href="" class="btn-default transparent">Зарегистрироваться</a>
+                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt=""> Войти</a>
+                        <a href="{{route('registration_user')}}" class="btn-default transparent">Зарегистрироваться</a>
                     </div>
                 </div>
             </div>
@@ -191,7 +191,7 @@
                     <div class="col-sm-5">
                         <h3>Зачем регистрировать <br>организацию в Реестре?</h3>
                         <p class="descr">После того, как вы зарегистрируете свою организацию в Реестре, она будет отображаться в списке благотворительных организаций Казахстана, пользователи смогут видеть статистику ваших проектов. Через рабочий кабинет вы будете получать заявки на получение помощи, соответствующие вашим региону, сфере деятельности и категориям благополучателей, и брать их в работу.</p>
-                        <a href="" class="btn-default blue">Подробнее</a>
+                        <a href="{{route('dev')}}" class="btn-default blue">Подробнее</a>
                     </div>
                     <div class="col-sm-7">
                         <h3>Преимущества регистрации в Реестре</h3>
@@ -246,7 +246,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4>Кому помогли</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6 rightBlock">
                         <p class="status">Всего заявок: <span>{{$helpsCount}}</span></p>
@@ -256,13 +256,17 @@
                         <div class="col-sm-3">
                             <div class="helpBlock">
                                 <div class="content">
-                                    <p>Помощь: <span class="tag blue">{{$help->destinations()->first()}}</span></p>
-                                    <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                    <p>Кому: <span>Кайрат Жомарт</span></p>
-                                    <p>Сумма: <span>1,150,000 тг.</span></p>
+                                    <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                    <p>Кому: <span>
+                                @if(Auth::guard('fond')->check())
+                                                {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
+                                            @else
+                                                @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
+                                            @endif</span></p>
+                                    <p>Регион: <span>{{$help->region->title_ru}}</span></p>
                                     <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                 </div>
-                                <p class="date">19.10.2019</p>
+                                <p class="date">Открытая заявка</p>
                                 <img src="/img/support1.svg" alt="" class="bkg">
                             </div>
                         </div>
@@ -435,7 +439,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>Наши партнеры</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">

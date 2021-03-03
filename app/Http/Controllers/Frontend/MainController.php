@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\BaseHelpType;
 use App\City;
 use App\Destination;
+use App\DestinationAttribute;
 use App\Fond;
 use App\Help;
 use App\Http\Controllers\Controller;
@@ -74,16 +75,26 @@ class MainController extends Controller
     }
 
     public function helps(Request $request){
-        $helps = Help::with('baseHelpTypes')->with('addHelpTypes')->paginate(5);
-        $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
-        $regions = Region::where('country_id', 4)->pluck('title_ru', 'region_id');
-        $baseHelpTypes = BaseHelpType::all();
-
         if ($request->ajax()) {
-            return view('project_list', compact('objects'));
-        }
+            $helps = Fond::query();
 
-        return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes'));
+            $helps->paginate(5);
+
+            return view('project_list', compact('helps'));
+        }else{
+            $helps = Help::with('baseHelpTypes')->with('addHelpTypes')->paginate(5);
+            $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
+            $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
+            $baseHelpTypes = BaseHelpType::all();
+            $destionations = Destination::all();
+            $destionationsAttributes = DestinationAttribute::all();
+
+            return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes','destionations', 'destionationsAttributes'));
+        }
+    }
+
+    public function help(){
+        return redirect()->route('dev');
     }
 
     public function reviews(){

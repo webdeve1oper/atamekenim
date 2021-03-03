@@ -15,6 +15,9 @@ Route::get('/', 'Frontend\MainController@index')->name('home');
 Route::get('/o-proekte', function(){
     return view('frontend.pages.about');
 });
+Route::get('/develope', function(){
+    return view('frontend.develope');
+})->name('dev');
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
 Route::get('/about', 'Frontend\MainController@about')->name('about');

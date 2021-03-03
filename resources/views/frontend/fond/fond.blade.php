@@ -37,9 +37,9 @@
                                 </div>
                                 <h1>{{$fond->title}}</h1>
                                 <p class="category">{{$fond->sub_title}}</p>
-                                <p>Страна: <span href="">{{$fond->country??'не указано'}}</span></p>
+                                <p>Страна: <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
                                 <p>Сайт: <a href="">{{$fond->website??'не указан'}}</a></p>
-                                <p>Регион оказания помощи: <a href="">{{$fond->help_location_country??'не указано'}}</a></p>
+                                <p>Регион оказания помощи: <a href="">{{$fond->region->title_ru??'не указано'}}</a></p>
                                 <p>Основной сектор деятельности: @foreach($fond->baseHelpTypes as $i => $help){{$help['name_'.app()->getLocale()]}},@endforeach</p>
                                 <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help){{$help['name_'.app()->getLocale()]}},@endforeach</p>
                                 <p>Закрытых заявок: <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>

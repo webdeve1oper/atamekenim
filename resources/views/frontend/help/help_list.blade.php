@@ -3,7 +3,12 @@
         <div class="organizationBigBlock humanInfo">
             <div class="row">
                 <div class="col-sm-2">
-                    <img src="/img/avatar.jpg" alt="" class="logotype">
+                    @if($help->avatar)
+                        <img src="{{$help->avatar}}" alt="" class="logotype">
+                    @else
+                        <img src="/img/no-photo.png" alt="" class="logotype">
+                    @endif
+
                 </div>
                 <div class="col-sm-10">
                     <div class="row">
