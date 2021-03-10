@@ -67,15 +67,19 @@ class FondController extends Controller
                 [
                     'title'=>'required|min:10',
                     'image'=>'mimes:jpeg,jpg,png|max:10000',
-                    'email'=>'email|fonds:unique',
+                    'requisites'=>'required'
                 ]
             );
             if($validator->fails()){
                 return redirect()->back()->withErrors($validator)->withInput();
             }
+            $requisites = [];
+            foreach($request->requisites as $requisite){
+                array_push($requisites, ['body'=>$requisite]);
+            }
 
             $data = $request->all();
-
+            $data['requisites'] = json_encode($requisites, JSON_UNESCAPED_UNICODE);
             unset($data['bin']);
             $fond = Fond::find(Auth::user()->id);
 

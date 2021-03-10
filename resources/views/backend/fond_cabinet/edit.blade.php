@@ -84,6 +84,21 @@
                                                 <span class="error">{{ $errors->first('about') }}</span>
                                             @endif
                                         </div>
+                                        <div class="form-group pb-5">
+                                            <label for="">Реквизиты:</label>
+                                            <?php $requisites =[]; ?>
+                                        @if(Auth::user()->requisites)
+                                            <?php
+                                            $requisites = json_decode(Auth::user()->requisites, true);
+                                            ?>
+                                            @foreach($requisites as $i=> $requisite)
+                                                    <textarea name="requisites[]" id="requisites{{$i}}" class="requisites form-control" cols="30" rows="10">{{$requisite['body']}}</textarea>
+                                            @endforeach
+                                        @else
+                                                <textarea name="requisites[]" id="requisites0" class="requisites form-control" cols="30" rows="10"></textarea>
+                                        @endif
+                                                <button class="btn btn-default float-right mt-2 mb-5 d-table" onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<textarea name=\'requisites[]\' id=\'requisites'+num+'\' class=\'requisites form-control\'></textarea>').insertAfter($(this).prev()); ckeditor('requisites'+num ); return false;">+ добавить еще один счет</button>
+                                            </div>
                                         <div class="form-group">
                                             <label for="">Укажите расположение организации:</label>
                                             <input type="hidden" name="longitude" value="{{Auth::user()->longitude}}" id="longitude">
@@ -114,6 +129,18 @@
                         };
                         CKEDITOR.replace('mission',options);
                         CKEDITOR.replace('about',options);
+                        @if(count($requisites)>0)
+                            @foreach($requisites as $i => $requisite)
+                        CKEDITOR.replace('requisites{{$i}}',options);
+                            @endforeach
+                        @else
+                        CKEDITOR.replace('requisites0',options);
+                        @endif
+
+                        function ckeditor(id){
+                            CKEDITOR.replace(id,options);
+                            CKEDITOR.instances[id].setData('');
+                        }
                     </script>
                     <script>
                         ymaps.ready(init);

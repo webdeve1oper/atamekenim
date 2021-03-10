@@ -15,9 +15,9 @@ class CreateUserImagesTable extends Migration
     {
         Schema::create('user_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('fond_id');
             $table->string('title')->nullable();
             $table->string('image');
+            $table->bigInteger('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

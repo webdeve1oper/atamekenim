@@ -54,5 +54,14 @@ class UserSeeder extends Seeder
                 DB::table('users')->insert($value);
             }
         }
+
+        if(!DB::table('admins')->where('email', 'admin@admin.com')->first()){
+            $data = [
+              'email'=>'admin@admin.com',
+                'password'=>Hash::make('123456'),
+                'name'=>'admin'
+            ];
+            DB::table('admins')->insert($data);
+        }
     }
 }

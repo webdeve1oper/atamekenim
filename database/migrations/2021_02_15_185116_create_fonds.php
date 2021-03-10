@@ -18,6 +18,7 @@ class CreateFonds extends Migration
             $table->string('title');
             $table->string('sub_title')->nullable();
             $table->string('logo')->nullable();
+            $table->string('organization_form')->nullable();
             $table->string('website')->nullable();
             $table->date('foundation_date')->nullable();
             $table->bigInteger('bin')->unique();
@@ -35,7 +36,9 @@ class CreateFonds extends Migration
             $table->text('mission')->nullable();
             $table->json('social')->nullable();
             $table->text('video')->nullable();
-            $table->mediumText('requisites')->nullable();
+            $table->json('requisites')->nullable();
+            $table->json('offices')->nullable();
+            $table->json('affilates')->nullable();
             $table->string('password');
             $table->boolean('status')->default(false);
             $table->rememberToken();

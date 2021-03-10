@@ -49,6 +49,10 @@ return [
         'fond'=>[
             'driver' => 'session',
             'provider' => 'fonds',
+        ],
+        'admin'=>[
+            'driver' => 'session',
+            'provider' => 'admins',
         ]
     ],
 
@@ -77,6 +81,10 @@ return [
         'fonds' => [
             'driver' => 'eloquent',
             'model' => App\Fond::class,
+        ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

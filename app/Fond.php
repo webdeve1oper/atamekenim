@@ -70,7 +70,7 @@ class Fond extends Authenticatable
     }
 
     public function baseHelpTypes(){
-        return $this->belongsToMany(BaseHelpType::class, 'fond_basehelptypes', 'fond_id', 'base_help_id');
+        return $this->belongsToMany(AddHelpType::class, 'fond_basehelptypes', 'fond_id', 'base_help_id');
     }
 
     public function addHelpTypes(){

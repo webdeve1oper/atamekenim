@@ -41,7 +41,13 @@ Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login
 Route::get('registration_fond', 'FondAuthController@registration')->name('registration_fond');
 Route::post('post-registration-fond', 'FondAuthController@postRegistration')->name('post_registration_fond');
 
+//Admin Auth
+Route::get('admin-login', 'AdminAuthController@index')->name('admin_login');
 
+
+Route::group(['prefix'=>'/admin','middleware'=>['admin']], function(){
+    Route::get('/', 'Backend\AdminController@index');
+});
 
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::get('/cabinet/fond', 'Backend\FondController@index')->name('fond_cabinet');
