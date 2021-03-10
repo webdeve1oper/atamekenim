@@ -56,8 +56,8 @@ class FondController extends Controller
     // edit Fund
     public function edit()
     {
-        $baseHelpTypes = BaseHelpType::select('name_ru as text', 'id')->with('addHelpTypes')->get();
-
+        $baseHelpTypes = BaseHelpType::with('addHelpTypes')->get()->toArray();
+//        dd($baseHelpTypes);
         return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes'));
     }
 
@@ -78,8 +78,19 @@ class FondController extends Controller
                 array_push($requisites, ['body'=>$requisite]);
             }
 
+            $offices = [];
+            foreach($request->offices as $requisite){
+                array_push($offices, ['body'=>$requisite]);
+            }
+
+            $affilates = [];
+            foreach($request->affilates as $requisite){
+                array_push($affilates, ['body'=>$requisite]);
+            }
+
             $data = $request->all();
             $data['requisites'] = json_encode($requisites, JSON_UNESCAPED_UNICODE);
+            $data['offices'] = json_encode($requisites, JSON_UNESCAPED_UNICODE);
             unset($data['bin']);
             $fond = Fond::find(Auth::user()->id);
 
@@ -87,7 +98,7 @@ class FondController extends Controller
                 $originalImage = $request->file('logo');
                 $thumbnailImage = Image::make($originalImage);
                 $thumbnailPath = public_path().'/img/fonds/';
-                $path =time().'.'.$originalImage->getClientOriginalExtension();
+                $path = time().'.'.$originalImage->getClientOriginalExtension();
                 $thumbnailImage->save($thumbnailPath.$path);
                 $data['logo'] = '/img/fonds/'.$path;
             }else{

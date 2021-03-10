@@ -66,17 +66,35 @@
                                         <div class="form-group">
                                             <label for="">Соц. сети:</label>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="">Миссия:</label>
-                                            <textarea name="mission" id="mission" class="form-control" cols="30" rows="10">
-                                                {{Auth::user()->mission}}
-                                             </textarea>
-                                            @if($errors->has('mission'))
-                                                <span class="error">{{ $errors->first('mission') }}</span>
-                                            @endif
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse4">Миссия</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse4" class="panel-collapse collapse">
+                                                    <div class="form-group">
+                                                        <textarea name="mission" id="mission" class="form-control"
+                                                                  cols="30" rows="10">
+                                                            {{Auth::user()->mission}}
+                                                         </textarea>
+                                                        @if($errors->has('mission'))
+                                                            <span class="error">{{ $errors->first('mission') }}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse3">О нас</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse3" class="panel-collapse collapse">
                                         <div class="form-group">
-                                            <label for="">О нас:</label>
                                             <textarea name="about" id="about" class="form-control" cols="30" rows="10">
                                                 {{Auth::user()->about}}
                                             </textarea>
@@ -84,34 +102,186 @@
                                                 <span class="error">{{ $errors->first('about') }}</span>
                                             @endif
                                         </div>
-                                        <div class="form-group pb-5">
-                                            <label for="">Реквизиты:</label>
-                                            <?php $requisites =[]; ?>
-                                        @if(Auth::user()->requisites)
-                                            <?php
-                                            $requisites = json_decode(Auth::user()->requisites, true);
-                                            ?>
-                                            @foreach($requisites as $i=> $requisite)
-                                                    <textarea name="requisites[]" id="requisites{{$i}}" class="requisites form-control" cols="30" rows="10">{{$requisite['body']}}</textarea>
-                                            @endforeach
-                                        @else
-                                                <textarea name="requisites[]" id="requisites0" class="requisites form-control" cols="30" rows="10"></textarea>
-                                        @endif
-                                                <button class="btn btn-default float-right mt-2 mb-5 d-table" onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<textarea name=\'requisites[]\' id=\'requisites'+num+'\' class=\'requisites form-control\'></textarea>').insertAfter($(this).prev()); ckeditor('requisites'+num ); return false;">+ добавить еще один счет</button>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse1">Реквизиты</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse1" class="panel-collapse collapse">
+                                                    <div class="row">
+                                                        <div class="col-12 d-table">
+                                                            <div class="form-group pb-5">
+                                                                <?php $requisites =[]; ?>
+                                                                @if(Auth::user()->requisites)
+                                                                    <?php
+                                                                    $requisites = json_decode(Auth::user()->requisites, true);
+                                                                    ?>
+                                                                    @foreach($requisites as $i=> $requisite)
+                                                                        <textarea name="requisites[]" id="requisites{{$i}}" class="requisites form-control" cols="30" rows="10">{{$requisite['body']}}</textarea>
+                                                                    @endforeach
+                                                                @else
+                                                                    <textarea name="requisites[]" id="requisites0" class="requisites form-control" cols="30" rows="10"></textarea>
+                                                                @endif
+                                                                <button class="btn btn-default float-right mt-2 mb-5 d-table" onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<textarea name=\'requisites[]\' id=\'requisites'+num+'\' class=\'requisites form-control\'></textarea>').insertAfter($(this).prev()); ckeditor('requisites'+num ); return false;">+ добавить еще один счет</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 d-table">
+                                                            <div class="form-group pb-5">
+                                                                <label for="">Центральный офис:</label>
+                                                                <?php $offices =[]; ?>
+                                                                @if(Auth::user()->offices)
+                                                                    <?php
+                                                                    $offices = json_decode(Auth::user()->offices, true);
+                                                                    ?>
+                                                                    @foreach($offices as $i=> $requisite)
+                                                                        <textarea name="offices[]" id="offices{{$i}}" class="requisites form-control" cols="30" rows="10">{{$requisite['body']}}</textarea>
+                                                                    @endforeach
+                                                                @else
+                                                                    <textarea name="offices[]" id="offices0" class="requisites form-control" cols="30" rows="10"></textarea>
+                                                                @endif
+                                                                <button class="btn btn-default float-right mt-2 mb-5 d-table" onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<textarea name=\'offices[]\' id=\'offices'+num+'\' class=\'requisites form-control\'></textarea>').insertAfter($(this).prev()); ckeditor('offices'+num ); return false;">+ добавить еще один центральный офис</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 d-table">
+                                                            <div class="form-group pb-5">
+                                                                <label for="">Филиал:</label>
+                                                                <?php $affilates =[]; ?>
+                                                                @if(Auth::user()->affilates)
+                                                                    <?php
+                                                                    $affilates = json_decode(Auth::user()->offices, true);
+                                                                    ?>
+                                                                    @foreach($affilates as $i=> $requisite)
+                                                                        <textarea name="affilates[]" id="affilates{{$i}}" class="requisites form-control" cols="30" rows="10">{{$requisite['body']}}</textarea>
+                                                                    @endforeach
+                                                                @else
+                                                                    <textarea name="affilates[]" id="affilates0" class="requisites form-control" cols="30" rows="10"></textarea>
+                                                                @endif
+                                                                <button class="btn btn-default float-right mt-2 mb-5 d-table" onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<textarea name=\'affilates[]\' id=\'affilates'+num+'\' class=\'requisites form-control\'></textarea>').insertAfter($(this).prev()); ckeditor('affilates'+num ); return false;">+ добавить еще один филиал</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        <div class="form-group">
-                                            <label for="">Укажите расположение организации:</label>
-                                            <input type="hidden" name="longitude" value="{{Auth::user()->longitude}}" id="longitude">
-                                            <input type="hidden" name="latitude" value="{{Auth::user()->latitude}}" id="latitude">
-                                            <div id="map" class="w-100" style="height: 300px;"></div>
+                                        </div>
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse2">Сфера оказываемой помощи</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse2" class="panel-collapse collapse">
+                                            @foreach($baseHelpTypes as $destination)
+                                                <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
+                                                @foreach($destination['add_help_types'] as $help)
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="add_help_types" value="{{$help['id']}}"> {{$help['name_ru']}}
+                                                    </label>
+                                                </div>
+                                                @endforeach
+                                            @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse6">Дополнительные сферы оказываемой помощи</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse6" class="panel-collapse collapse">
+                                                    @foreach($baseHelpTypes as $destination)
+                                                        <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
+                                                        @foreach($destination['add_help_types'] as $key => $help)
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="base_help_types" value="{{$help['id']}}"> {{$help['name_ru']}}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-group">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse7">Дополнительные сферы оказываемой помощи</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse7" class="panel-collapse collapse">
+                                                    @foreach($baseHelpTypes as $destination)
+                                                        <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
+                                                        @foreach($destination['add_help_types'] as $key => $help)
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" name="add_help_types" value="{{$help['id']}}"> {{$help['name_ru']}}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-group mb-4">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapse5">Укажите расположение организации</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse5" class="panel-collapse collapse">
+                                                <div class="form-group">
+                                                    <input type="hidden" name="longitude" value="{{Auth::user()->longitude}}" id="longitude">
+                                                    <input type="hidden" name="latitude" value="{{Auth::user()->latitude}}" id="latitude">
+                                                    <div id="map" class="w-100" style="height: 300px;"></div>
+                                                </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <input type="submit" class="btn btn-default" value="Сохранить">
                                     </div>
                                 </div>
                             </form>
                         </div>
+                        <div class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#collapse9">Проекты</a>
+                                    </h4>
+                                </div>
+                                <div id="collapse9" class="panel-collapse collapse">
+                                    @foreach($baseHelpTypes as $destination)
+                                        <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
+                                        @foreach($destination['add_help_types'] as $key => $help)
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="add_help_types" value="{{$help['id']}}"> {{$help['name_ru']}}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+
+
+
+                    <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
                     <script>
                         var options = {
                             toolbar: [
@@ -122,8 +292,8 @@
                                 { name: 'insert', items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
                                 '/',
                                 { name: 'styles', items: ['Format', 'Font', 'FontSize' ] },
-                                { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                                { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+                                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                                { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
                                 { name: 'others', items: [ '-' ] },
                             ]
                         };
@@ -135,6 +305,22 @@
                             @endforeach
                         @else
                         CKEDITOR.replace('requisites0',options);
+                        @endif
+
+                        @if(count($offices)>0)
+                        @foreach($offices as $i => $requisite)
+                        CKEDITOR.replace('offices{{$i}}',options);
+                        @endforeach
+                        @else
+                        CKEDITOR.replace('offices0',options);
+                        @endif
+
+                        @if(count($affilates)>0)
+                        @foreach($affilates as $i => $requisite)
+                        CKEDITOR.replace('affilates{{$i}}',options);
+                        @endforeach
+                        @else
+                        CKEDITOR.replace('affilates0',options);
                         @endif
 
                         function ckeditor(id){

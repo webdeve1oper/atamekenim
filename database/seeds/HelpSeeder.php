@@ -39,5 +39,11 @@ class HelpSeeder extends Seeder
             $help->baseHelpTypes()->attach([rand(1,2), rand(3,4)]);
             $help->destinations()->attach([rand(1,2), rand(3,4)]);
         }
+
+        $types = ['Финансовая розовая', 'Финансовая на постоянной основе', 'Финансовая на постоянной кредитов', 'Материальная'];
+
+        foreach($types as $type){
+            
+        }
     }
 }
