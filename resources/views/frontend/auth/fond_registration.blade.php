@@ -1,7 +1,7 @@
 <?php
 $script = "<script src='/js/masked.input.js'></script>
         <script>
-            $('#phone').mask('+7 (999) 99 99 99');
+            $('#phone').mask('+7 (999) 999 99 99');
             $.fn.setCursorPosition = function(pos) {
             if ($(this).get(0).setSelectionRange) {
               $(this).get(0).setSelectionRange(pos, pos);

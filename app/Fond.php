@@ -20,7 +20,8 @@ class Fond extends Authenticatable
         'mission', 'social',
         'affilates', 'offices',
         'video', 'requisites',
-        'password'
+        'password',
+        'org_type'
     ];
 
     protected $hidden = ['password', 'remember_token'];
