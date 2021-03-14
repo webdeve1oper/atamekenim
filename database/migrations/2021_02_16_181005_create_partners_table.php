@@ -17,6 +17,7 @@ class CreatePartnersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('fond_id');
             $table->string('image');
+            $table->integer('orders');
             $table->string('title')->nullable();
             $table->timestamps();
         });

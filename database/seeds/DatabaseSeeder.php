@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
         $this->call(BaseHelpTypeSeeder::class);
         $this->call(AddHelpTypeSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(ProjectSeeder::class);
+//        $this->call(ProjectSeeder::class);
         $this->call(NewsSeeder::class);
         $this->call(DestinationSeeder::class);
         $this->call(DestinationAttributeSeeder::class);
-        $this->call(FondsSeeder::class);
-        $this->call(HelpSeeder::class);
+//        $this->call(FondsSeeder::class);
+//        $this->call(HelpSeeder::class);
     }
 }

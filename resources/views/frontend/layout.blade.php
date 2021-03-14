@@ -6,6 +6,7 @@
     <title>Реестр Фондов</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="img/favicon.png" type="image/png">
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>

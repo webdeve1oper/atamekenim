@@ -17,6 +17,7 @@ class CreateFonds extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('sub_title')->nullable();
+            $table->string('org_type');
             $table->string('logo')->nullable();
             $table->string('organization_form')->nullable();
             $table->string('website')->nullable();

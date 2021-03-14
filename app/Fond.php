@@ -18,6 +18,7 @@ class Fond extends Authenticatable
         'title', 'sub_title', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email',
         'address', 'longitude', 'latitude', 'about',
         'mission', 'social',
+        'affilates', 'offices',
         'video', 'requisites',
         'password'
     ];

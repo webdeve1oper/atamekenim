@@ -17,20 +17,18 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->string('sub_title')->nullable();
             $table->string('website')->nullable();
+            $table->string('duration')->nullable();
             $table->string('logo')->nullable();
+            $table->bigInteger('fond_id')->unsigned();
+            $table->date('date_created')->nullable();
             $table->integer('help_location_country')->references('country_id')->on('countries')->nullable();
             $table->integer('help_location_region')->references('region_id')->on('regions')->nullable();
             $table->integer('help_location_city')->references('city_id')->on('cities')->nullable();
-            $table->integer('fond_id')->references('id')->on('fonds')->nullable();
-            $table->string('children_count')->default(0);
-            $table->string('email');
+            $table->foreign('fond_id')->references('id')->on('fonds')->nullable();
             $table->string('address')->nullable();
             $table->text('about')->nullable();
             $table->json('social')->nullable();
-            $table->text('video')->nullable();
-            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

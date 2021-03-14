@@ -46,7 +46,25 @@
                                 <p>Общая сумма оказанной благотворительной помощи: <span>3 925 647 435 тенге</span></p>
                                 <p class="inline">Количество отзывов: <span>{{$fond->reviews()->count()}}</span></p>
                                 <p class="inline">Смотреть: <a href="">хорошие/</a><a href="">плохие</a></p>
-                                <p>Социальные сети: <a href="" class="socialButtonGlobal"><i class="fab fa-facebook-f"></i></a><a href="" class="socialButtonGlobal"><i class="fab fa-instagram"></i></a></p>
+                                <p>Социальные сети:
+                                    <?php $socials = []; ?>
+                                    @if($fond->social)
+                                        <?php
+                                        $socials = json_decode($fond->social, true);
+                                        ?>
+                                        @foreach($socials as $i=> $social)
+                                                <a href="{{$social['link']}}">
+                                                    @if(strpos($social['link'], 'instagram'))
+                                                        <i class="fab fa-instagram"></i>
+                                                    @elseif(strpos($social['link'], 'facebook'))
+                                                        <i class="fab fa-facebook"></i>
+                                                    @elseif(strpos($social['link'], 'vk'))
+                                                        <i class="fab fa-vk"></i>
+                                                    @endif
+                                                </a>
+                                        @endforeach
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -101,13 +119,13 @@
 {{--                            </div>--}}
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
-                                {{$fond->about}}
+                                {!! $fond->about !!}
                             </div>
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.blueContent').slideToggle();">Читать о миссии фонда <i class="fas fa-chevron-down"></i></button>
                             <div class="blueContent">
                                 <p class="name">Миссия организации</p>
                                 <p class="textContent">
-                                    {{$fond->mission}}
+                                    {!! $fond->mission !!}
                                 </p>
                             </div>
 
@@ -186,24 +204,18 @@
                         </div>
 
                         <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.mobileGrayContent').slideToggle();">Смотреть реквизиты <i class="fas fa-chevron-down"></i></button>
+                        <?php $requisites = []; ?>
+                        @if($fond->requisites)
+                            <?php
+                            $requisites = json_decode($fond->requisites, true);
+                            ?>
+                            @foreach($requisites as $requisite)
                         <div class="grayContent mobileGrayContent">
                             <h3>Реквизиты</h3>
-                            <p>БИН: <span>{{$fond->bin}}</span></p>
-                            <p>Руководитель: <span>Чинкисбаева Л.А.</span></p>
-                            <p>Дата регистрации: <span>май 2018 года (2 года, 6 месяцев)</span></p>
-                            <p>Размер компании: <span>(0-5 чел)</span></p>
-                            <p>Сайт: <span>{{$fond->website}}</span></p>
-                            <p>Адрес: <span>г. Нур-Султан, ул. Достык 5/2, офис 6</span></p>
-                            <p>Учредители: <span>10 физических лиц</span></p>
-                            <p>Главный орган: <span>Совет учредителей</span></p>
-                            <p>Им доверяют: <span>НПП "Атамекен", МОН РК, МТСЗН РК, МИОР РК, ООО "Яндекс"</span></p>
-                            <p>Благодарственные письма/награды:<span>"Лучшее НПО" МИОР РК, "Лучшее НПО", НПП "Атамекен"</span></p>
-                            <p>СМИ о ОО МА:
-                                <a href="">tengrinews.kz/ooma/fastnews</a>
-                                <a href="">tengrinews.kz/ooma/fastnews</a>
-                            </p>
-                            <p>Социальные сети: <a href="" class="socialButtonGlobal"><i class="fab fa-facebook-f"></i></a><a href="" class="socialButtonGlobal"><i class="fab fa-instagram"></i></a></p>
+                            {!! $requisite['body'] !!}
                         </div>
+                            @endforeach
+                            @endif
                     </div>
 
 

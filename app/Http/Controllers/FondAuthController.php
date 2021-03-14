@@ -22,7 +22,7 @@ class FondAuthController extends Controller
 
     public function registration()
     {
-        return view('registration');
+        return view('frontend.auth.fond_registration');
     }
 
     public function postLogin(Request $request)
