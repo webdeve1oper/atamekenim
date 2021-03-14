@@ -42,7 +42,7 @@
                     <label for="">Регион</label>
                     <select name="help_location_region" id="region" class="form-control">
                         @foreach($regions as $region)
-                            <option value="{{$region->region_id}}" @if(Auth::user()->region->id == $region->id) selected @endif>{{$region->title_ru}}</option>
+                            <option value="{{$region->region_id}}" @if(Auth::user()->region) @if(Auth::user()->region->id == $region->id) selected @endif @endif>{{$region->title_ru}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -51,7 +51,7 @@
                     <select name="help_location_city" id="city" class="form-control">
                         <option value="">Все города</option>
                         @foreach($cities as $city)
-                            <option value="{{$city->city_id}}" class="region_{{$city->region_id}}" @if(Auth::user()->city->id == $city->id) selected @endif>{{$city->title_ru}}</option>
+                            <option value="{{$city->city_id}}" class="region_{{$city->region_id}}"@if(Auth::user()->city) @if(Auth::user()->city->id == $city->id) selected @endif @endif>{{$city->title_ru}}</option>
                         @endforeach
                     </select>
                 </div>

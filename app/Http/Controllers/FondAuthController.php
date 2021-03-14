@@ -91,6 +91,7 @@ class FondAuthController extends Controller
         }
 
         $data = $request->all();
+        $data['status'] = '1';
         $data['phone'] = str_replace(['+','(',')', ' '], ['','','',''], $data['phone']);
         $check = $this->create($data);
         if($check){

@@ -21,6 +21,7 @@ class Fond extends Authenticatable
         'affilates', 'offices',
         'video', 'requisites',
         'password',
+        'status',
         'org_type'
     ];
 
