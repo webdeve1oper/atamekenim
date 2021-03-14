@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\AddHelpType;
 use App\BaseHelpType;
 use App\City;
 use App\Destination;
@@ -18,6 +19,7 @@ class MainController extends Controller
 {
     //
     public function index(Request $request){
+
         if ($request->ajax()) {
 
             $fonds = Fond::where('status', true);
@@ -56,7 +58,7 @@ class MainController extends Controller
             $helpsCount = Help::count();
             $helps = Help::whereStatus('finished')->paginate(4);
             $newHelps = Help::whereStatus('wait')->paginate(4);
-            $baseHelpTypes = BaseHelpType::all();
+            $baseHelpTypes = AddHelpType::whereBaseHelpTypesId(0)->get();
             $news = News::orderBy('public_date', 'desc')->limit(10)->get();
             return view('frontend.home')->with(compact('fonds', 'news', 'newFonds','destionations','cities','baseHelpTypes', 'helps', 'helpsCount', 'newHelps'));
         }
@@ -87,9 +89,8 @@ class MainController extends Controller
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = BaseHelpType::all();
             $destionations = Destination::all();
-            $destionationsAttributes = DestinationAttribute::all();
 
-            return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes','destionations', 'destionationsAttributes'));
+            return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes','destionations'));
         }
     }
 

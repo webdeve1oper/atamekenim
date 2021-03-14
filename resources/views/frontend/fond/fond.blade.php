@@ -1,4 +1,5 @@
 @section('content')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" />
     <div class="fatherBlock">
         <div class="container-fluid default breadCrumbs">
             <div class="container">
@@ -32,7 +33,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <div class="miniStatusBlock">
-                                    <p class="greyText">Рейтинг: <span class="green">95</span></p>
+                                    {{--<p class="greyText">Рейтинг: <span class="green">95</span></p>--}}
                                     <a href="" class="socialButtonGlobal"><i class="fas fa-share-alt"></i></a>
                                 </div>
                                 <h1>{{$fond->title}}</h1>
@@ -40,10 +41,15 @@
                                 <p>Страна: <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
                                 <p>Сайт: <a href="">{{$fond->website??'не указан'}}</a></p>
                                 <p>Регион оказания помощи: <a href="">{{$fond->region->title_ru??'не указано'}}</a></p>
-                                <p>Основной сектор деятельности: @foreach($fond->baseHelpTypes as $i => $help){{$help['name_'.app()->getLocale()]}},@endforeach</p>
-                                <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help){{$help['name_'.app()->getLocale()]}},@endforeach</p>
+                                <p>Основной сектор деятельности:
+                                    @foreach($fond->baseHelpTypes as $i => $help)
+                                        <a  href="#"> {{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif
+                                    @endforeach
+                                </p>
+                                <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help)<a
+                                            href="">{{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</p>
                                 <p>Закрытых заявок: <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>
-                                <p>Общая сумма оказанной благотворительной помощи: <span>3 925 647 435 тенге</span></p>
+                                <p>Общая сумма оказанной благотворительной помощи: <span>{{$fond->help_cash}} тенге</span></p>
                                 <p class="inline">Количество отзывов: <span>{{$fond->reviews()->count()}}</span></p>
                                 <p class="inline">Смотреть: <a href="">хорошие/</a><a href="">плохие</a></p>
                                 <p>Социальные сети:
@@ -85,6 +91,11 @@
                             </div>
                             <div class="col-sm-12">
                                 <div class="reviewSlick">
+                                    <div class="nothingReviews">
+                                        <div class="block">
+                                            <p class="name">Нет отзывов</p>
+                                        </div>
+                                    </div>
                                     @foreach($fond->helps as $help)
                                         @foreach($help->reviews()->get() as $review)
                                             <div>
@@ -93,10 +104,14 @@
                                                     <p class="descr textContent">
                                                         {{$review->body}}
                                                     </p>
+                                                    <script>
+                                                        $('.nothingReviews').remove();
+                                                    </script>
                                                 </div>
                                             </div>
                                         @endforeach
                                     @endforeach
+
 
                                 </div>
                             </div>
@@ -113,10 +128,6 @@
                         <h2>О фонде</h2>
                         <button class="btn-default" @if(Auth::user()) data-toggle="modal" data-target="#helpCallback"@else onclick="window.location = '{{route('login')}}'" @endif>Подать заявку на получение помощи</button>
                         <div class="content">
-{{--                            <div class="imgBlock">--}}
-{{--                                <img src="/img/about.png" alt="">--}}
-{{--                                <p>Помощь сиротам 2020 г. @if($fond->video)<a href="/video/{{$fond->video}}">Смотреть видео</a> @endif</p>--}}
-{{--                            </div>--}}
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
                                 {!! $fond->about !!}
@@ -156,7 +167,7 @@
                                                             <p>Помощь: <span class="tag blue">Спорт</span></p>
                                                             <p>Название проекта: <span>{{$project->title}}</span></p>
                                                             <p>Кому: <span>Паралимпийский резерв</span></p>
-                                                            <p><b>Описание: </b>{!! substr($project->about, 0, 200) !!}...</p>
+                                                            <p><b>Описание: </b>{!! mb_substr($project->about, 0, 150) !!}...</p>
                                                             <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                                         </div>
                                                         <p class="date">Статус: <span>Архив</span></p>
@@ -172,8 +183,8 @@
                     <div class="col-sm-4">
                         <div class="redContent">
                             <h2>Поддержать организацию</h2>
-                            <p>Пожертвовано: <span>1.000.000 тенге</span></p>
-                            <p>Приняли участие: <span>150 человек</span></p>
+                            <p>Пожертвовано: <span>0 тенге</span></p>
+                            <p>Приняли участие: <span>0 человек</span></p>
                             <p>Мы связываем нуждающихся и благотворителей, чтобы
                                 социальные нужды не оставались без ответа и ни одно
                                 доброе дело – незамеченным.</p>
@@ -243,28 +254,35 @@
                             }
                         </script>
                     </div>
+                    @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
                         <div class="galleryBlock">
                             <h3>Фотографии организации</h3>
                             <div class="row">
-                                <div class="col-sm-3 col-6"><a href="" class="fondImg"><img src="/img/about.png" alt=""></a></div>
-                                <div class="col-sm-3 col-6"><a href="" class="fondImg"><img src="/img/about.png" alt=""></a></div>
-                                <div class="col-sm-3 col-6"><a href="" class="fondImg"><img src="/img/about.png" alt=""></a></div>
-                                <div class="col-sm-3 col-6"><a href="" class="fondImg openGallery"><img src="/img/about.png" alt=""><span>+20</span></a></div>
+                                @foreach($fond->images as $i=> $image)
+                                    @if($i == 3)
+                                        @break
+                                    @endif
+                                        <div class="col-sm-3 col-6"><a href="{{$image->image}}" class="fondImg openGallery" data-lightbox="gallery"><img src="{{$image->image}}" alt=""></a></div>
+                                @endforeach
+                                @if(count($fond->images)>2)
+                                <div class="col-sm-3 col-6"><a href="{{$fond->images[3]->image}}" class="fondImg openGallery" data-lightbox="gallery"><img src="{{$fond->images[3]->image}}" alt=""><span>+{{count($fond->images)-4}}</span></a></div>
+                                @endif
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
 
-
+        @if($fond->helpsByStatus('process')->first())
         <div class="container-fluid default helperBlock d-none d-sm-block">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
                         <h4>В работе</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
                     <div class="col-sm-6 rightBlock">
                         <p class="d-inline-block mr-3">Сортировка по рейтингу</p>
@@ -287,7 +305,7 @@
                                         <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
                                         <p>Организация: <img src="/img/logo.svg" alt=""></p>
                                         <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
-                                        <p>Сумма: <span>1,150,000 тг.</span></p>
+                                        {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
                                         <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
@@ -299,7 +317,8 @@
 
                 </div>
             </div>
-
+            @endif
+            @if($fond->helpsByStatus('finished')->first())
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
@@ -318,7 +337,7 @@
                                         <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
                                         <p>Организация: <img src="/img/logo.svg" alt=""></p>
                                         <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
-                                        <p>Сумма: <span>1,150,000 тг.</span></p>
+                                        {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
                                         <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
@@ -333,9 +352,10 @@
                     </script>
                 </div>
             </div>
+                @endif
         </div>
 
-        <div class="container-fluid default organizationsBlock inOrganizationsBlock d-none d-sm-block">
+        <div class="container-fluid default organizationsBlock inOrganizationsBlock d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
@@ -411,58 +431,30 @@
                 </div>
             </div>
         </div>
-
+        @if(count($fond->partners)>0)
         <div class="container-fluid default ourPartners d-none d-sm-block">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>Партнеры организации</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">
+                            @foreach($fond->partners as $partner)
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner1.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="{{$partner->image}}" alt="">
+                                    <p>{{$partner->title}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/partner2.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/partner3.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/partner1.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/partner2.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/partner3.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        @endif
 
         <div class="container-fluid default otherOrganizations d-none d-sm-block">
             <div class="container">
@@ -659,7 +651,9 @@ $script = "<script>
         placeholder: 'Тип помощи'
     });
 
-</script>";
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js' integrity='sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==' crossorigin='anonymous'></script>
+";
 ?>
 
 @extends('frontend.layout', ['script'=>$script])

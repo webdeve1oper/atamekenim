@@ -55,25 +55,16 @@
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
                                         <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
+                                        @php $i = 0 @endphp
+                                        <p><b>{{config('destinations')[$i]}}</b></p>
                                         @foreach($destionations as $destination)
+                                            @if($i != $destination->paren_id )
+                                                @php $i = $destination->paren_id @endphp
+                                                <p><b>{{config('destinations')[$i]}}</b></p>
+                                            @endif
                                             <div class="content" >
                                                 <input type="checkbox" name="destination[]" value="{{$destination['id']}}" id="destination{{$destination['id']}}">
                                                 <label for="destination{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="siteBarList ">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Характеристика адресата/благополучателя<i class="fas fa-chevron-down"></i></p>
-                                    <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
-                                        <div class="content">
-                                            <input type="checkbox" name="destination_attribute[]" value="all" id="destination_attribute0"><label for="destination_attribute0">Все</label>
-                                        </div>
-                                        @foreach($destionationsAttributes as  $destination)
-                                            <div class="content">
-                                                <input type="checkbox" name="destination_attribute[]" value="{{$destination['id']}}" id="destination_attribute{{$destination['id']}}">
-                                                <label for="destination_attribute{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
                                             </div>
                                         @endforeach
                                     </div>

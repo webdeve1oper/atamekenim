@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
 //        $this->call(ProjectSeeder::class);
         $this->call(NewsSeeder::class);
         $this->call(DestinationSeeder::class);
-        $this->call(DestinationAttributeSeeder::class);
+        $this->call(CashSeeder::class);
+//        $this->call(DestinationAttributeSeeder::class);
 //        $this->call(FondsSeeder::class);
 //        $this->call(HelpSeeder::class);
     }

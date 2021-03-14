@@ -13,13 +13,13 @@ class CreateHelpBasehelptypes extends Migration
      */
     public function up()
     {
-        Schema::create('help_basehelptypes', function (Blueprint $table) {
-            $table->bigInteger('base_help_id')->unsigned();
-            $table->bigInteger('help_id')->unsigned();
-            $table->foreign('help_id')->references('id')->on('helps')->onDelete('cascade');
-            $table->foreign('base_help_id')->references('id')->on('base_help_types')->onDelete('cascade');
-            $table->timestamps();
-        });
+//        Schema::create('help_basehelptypes', function (Blueprint $table) {
+//            $table->bigInteger('base_help_id')->unsigned();
+//            $table->bigInteger('help_id')->unsigned();
+//            $table->foreign('help_id')->references('id')->on('helps')->onDelete('cascade');
+//            $table->foreign('base_help_id')->references('id')->on('base_help_types')->onDelete('cascade');
+//            $table->timestamps();
+//        });
     }
 
     /**

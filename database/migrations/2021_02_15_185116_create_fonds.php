@@ -33,6 +33,7 @@ class CreateFonds extends Migration
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
             $table->string('help_range')->nullable();
+            $table->string('help_cash')->default(0);
             $table->text('about')->nullable();
             $table->text('mission')->nullable();
             $table->json('social')->nullable();

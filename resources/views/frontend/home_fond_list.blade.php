@@ -52,7 +52,7 @@
                         <?php $city = $fond->city; ?>
                         <li><p>@if($city)г. {{$city->title_ru}}@endif</p></li>
                         <li><p>Отзывы (0)</p></li>
-                        <li><p class="green">95%</p></li>
+                        {{--<li><p class="green">95%</p></li>--}}
                     </ul>
                 </div>
             @endforeach

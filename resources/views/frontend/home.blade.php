@@ -37,19 +37,19 @@
                                 @endforeach
                             </select>
 
-                            <select name="destination[]" id="select2">
+                            <select name="destination[]" id="select2" style="max-width: 300px;">
                                 <option value="all">Адресат/благополучатель</option>
                                 @foreach($destionations as $destination)
                                     <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                 @endforeach
                             </select>
 
-                            <select name="city[]" id="select3">
-                                <option value="all">Все города</option>
-                                @foreach($cities as $id => $city)
-                                    <option value="{{$id}}">{{$city}}</option>
-                                @endforeach
-                            </select>
+                            {{--<select name="city[]" id="select3">--}}
+                                {{--<option value="all">Все города</option>--}}
+                                {{--@foreach($cities as $id => $city)--}}
+                                    {{--<option value="{{$id}}">{{$city}}</option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
 
                             <button>Найти</button>
                         </form>
@@ -90,16 +90,16 @@
                         <a href="{{route('dev')}}" class="readMore">Подробнее <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                По сектору деятельности
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <a class="dropdown-item" href="#">За все время</a>
-                                <a class="dropdown-item" href="#">За все время</a>
-                                <a class="dropdown-item" href="#">За все время</a>
-                            </div>
-                        </div>
+                        {{--<div class="dropdown">--}}
+                            {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                {{--По сектору деятельности--}}
+                            {{--</button>--}}
+                            {{--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">--}}
+                                {{--<a class="dropdown-item" href="#">За все время</a>--}}
+                                {{--<a class="dropdown-item" href="#">За все время</a>--}}
+                                {{--<a class="dropdown-item" href="#">За все время</a>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     </div>
                     <div class="col-sm-6">
                         <div class="paginationBlock">

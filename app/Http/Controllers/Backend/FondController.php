@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\AddHelpType;
 use App\BaseHelpType;
+use App\CashHelpType;
 use App\City;
+use App\Destination;
+use App\DestinationAttribute;
 use App\Fond;
+use App\FondImage;
 use App\Help;
 use App\Partner;
 use App\Project;
@@ -63,11 +68,13 @@ class FondController extends Controller
     // edit Fund
     public function edit()
     {
-        $baseHelpTypes = BaseHelpType::with('addHelpTypes')->get()->toArray();
+        $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get()->toArray();
         $regions = Region::all();
         $cities = City::all();
+        $destinations = Destination::all();
+        $cashHelpTypes = CashHelpType::all();
 
-        return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes', 'regions', 'cities'));
+        return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes', 'regions', 'cities', 'destinations', 'cashHelpTypes'));
     }
 
     public function projects(Request $request)
@@ -102,7 +109,7 @@ class FondController extends Controller
                 $thumbnailImage->save(public_path() .$thumbnailPath .'/'. $path);
                 $data['image'] = $thumbnailPath . '/'.$path;
                 $data['fond_id'] = Auth::user()->id;
-                Partner::create($data);
+                FondImage::create($data);
                 return redirect()->back();
             } else {
                 return redirect()->back();
@@ -112,6 +119,15 @@ class FondController extends Controller
             $gallery = Auth::user()->images;
             return view('backend.fond_cabinet.gallery.index')->with(compact('gallery'));
         }
+    }
+
+    public function delete_gallery(Request $request){
+        $partner = FondImage::find($request->id);
+        if(File::exists($partner->image)) {
+            File::delete($partner->image);
+        }
+        $partner->delete();
+        return redirect()->back();
     }
 
     public function partners(Request $request)
@@ -246,6 +262,8 @@ class FondController extends Controller
 
             $fond->baseHelpTypes()->sync($request->base_help_types);
             $fond->addHelpTypes()->sync($request->add_help_types);
+            $fond->destinations()->sync($request->destinations);
+            $fond->cashHelpTypes()->sync($request->cashHelpTypes);
 
             $fond->update($data);
             return redirect()->back();

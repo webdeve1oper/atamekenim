@@ -23,7 +23,7 @@ class Help extends Model
     }
 
     public function baseHelpTypes(){
-        return $this->belongsToMany(BaseHelpType::class, 'help_basehelptypes', 'help_id','base_help_id');
+        return $this->belongsToMany(AddHelpType::class, 'help_basehelptypes', 'help_id','base_help_id');
     }
 
     public function addHelpTypes(){

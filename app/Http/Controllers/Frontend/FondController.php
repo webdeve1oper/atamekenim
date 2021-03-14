@@ -71,14 +71,13 @@ class FondController extends Controller
             $fonds = Fond::paginate(4);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
-            $baseHelpTypes = BaseHelpType::all();
+            $baseHelpTypes = AddHelpType::whereBaseHelpTypesId(0)->with('children')->get();
             $addHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
-            $destionationsAttributes = DestinationAttribute::all();
         }
 
 
-        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes', 'destionations', 'destionationsAttributes'));
+        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes', 'destionations'));
 
     }
 }

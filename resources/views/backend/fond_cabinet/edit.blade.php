@@ -252,8 +252,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 pl-0">
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
@@ -293,6 +291,74 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-sm-6 pl-0">
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse15">Виды оказываемой помощи <i class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse15" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <?php
+                                        $cashHelpTypess = [];
+                                        if(Auth::user()->cashHelpTypes){
+                                            $cashHelpTypess = array_column(Auth::user()->cashHelpTypes->toArray(), 'name_ru');
+                                        }
+                                        ?>
+                                        @php $i = 0 @endphp
+                                        @foreach($cashHelpTypes as $destination)
+                                            @if($i != $destination->paren_id )
+                                                @php $i = $destination->paren_id @endphp
+                                            @endif
+                                            <div class="checkbox">
+                                                <input type="checkbox" @if(in_array($destination['name_ru'], $cashHelpTypess)) checked
+                                                       @endif name="cashHelpTypes[]" value="{{$destination['id']}}" id="cashHelpTypes{{$destination['id']}}">
+                                                <label for="cashHelpTypes{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse13">Адресаты <i class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse13" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <?php
+                                        $destinationss = [];
+                                        if(Auth::user()->destinations){
+                                            $destinationss = array_column(Auth::user()->destinations->toArray(), 'name_ru');
+                                        }
+                                        ?>
+                                    @php $i = 0 @endphp
+                                    <p><b>{{config('destinations')[$i]}}</b></p>
+                                    @foreach($destinations as $destination)
+                                        @if($i != $destination->paren_id )
+                                            @php $i = $destination->paren_id @endphp
+                                            <p><b>{{config('destinations')[$i]}}</b></p>
+                                        @endif
+                                        <div class="checkbox">
+                                            <input type="checkbox" @if(in_array($destination['name_ru'], $destinationss)) checked
+                                                   @endif name="destinations[]" value="{{$destination['id']}}" id="destinations{{$destination['id']}}">
+                                            <label for="destinations{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                        </div>
+                                    @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
@@ -302,56 +368,27 @@
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
-                                    <?php $baseHelpTypess = array_column(Auth::user()->baseHelpTypes->toArray(), 'name_ru'); ?>
+                                    <?php $baseHelpTypess = array_column(Auth::user()->baseHelpTypes->toArray(), 'name_ru');?>
                                     @foreach($baseHelpTypes as $destination)
-                                        <?php
-                                        $split = ceil(count($destination['add_help_types']) / 2);
-                                        if($split > 0){
-                                        $base_help_types = array_chunk($destination['add_help_types'], $split);?>
                                         <div class="col-sm-12">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
-                                        </div>
-                                        <div class="col-sm-6">
-
-                                            @foreach($base_help_types[0] as $key => $help)
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input @if(in_array($destination['name_ru'], $baseHelpTypess)) checked
+                                                           @endif type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]"
+                                                           value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b>
+                                                </label>
+                                            </div>
+                                            @foreach($destination['children'] as $key => $help)
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input @if(in_array($help['name_ru'], $baseHelpTypess)) checked
+                                                        <input onChange="this.checked? $('#base_help_types{{$help["base_help_types_id"]}}').prop('checked', true): '';" @if(in_array($help['name_ru'], $baseHelpTypess)) checked
                                                                @endif type="checkbox" name="base_help_types[]"
                                                                value="{{$help['id']}}"> {{$help['name_ru']}}
                                                     </label>
                                                 </div>
                                             @endforeach
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @foreach($base_help_types[1] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input @if(in_array($help['name_ru'], $baseHelpTypess)) checked
-                                                               @endif type="checkbox" name="base_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="col-12">
                                             <hr>
                                         </div>
-                                        <?}else{
-                                        ?>
-                                        <div class="col-sm-6">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
-                                            @foreach($destination['add_help_types'] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input @if(in_array($help['name_ru'], $baseHelpTypess)) checked
-                                                               @endif type="checkbox" name="base_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <?php } ?>
                                     @endforeach
                                 </div>
                             </div>
@@ -371,54 +408,25 @@
 
                                 <div class="row">
                                     @foreach($baseHelpTypes as $destination)
-                                        <?php
-                                        $split = ceil(count($destination['add_help_types']) / 2);
-                                        if($split > 0){
-                                        $add_help_types = array_chunk($destination['add_help_types'], $split);?>
                                         <div class="col-sm-12">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
-                                        </div>
-                                        <div class="col-sm-6">
-
-                                            @foreach($add_help_types[0] as $key => $help)
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input @if(in_array($destination['name_ru'], $addHelpTypess)) checked
+                                                           @endif type="checkbox"  id="add_help_types{{$destination['id']}}" name="add_help_types[]"
+                                                           value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b>
+                                                </label>
+                                            </div>
+                                            @foreach($destination['children'] as $key => $help)
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input @if(in_array($help['name_ru'], $addHelpTypess)) checked
+                                                        <input  onChange="this.checked? $('#add_help_types{{$help["base_help_types_id"]}}').prop('checked', true): '';" @if(in_array($help['name_ru'], $addHelpTypess)) checked
                                                                @endif type="checkbox" name="add_help_types[]"
                                                                value="{{$help['id']}}"> {{$help['name_ru']}}
                                                     </label>
                                                 </div>
                                             @endforeach
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @foreach($add_help_types[1] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input @if(in_array($help['name_ru'], $addHelpTypess)) checked
-                                                               @endif type="checkbox" name="add_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="col-12">
                                             <hr>
                                         </div>
-                                        <?}else{
-                                        ?>
-                                        <div class="col-sm-6">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
-                                            @foreach($destination['add_help_types'] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input @if(in_array($help['name_ru'], $addHelpTypess)) checked
-                                                               @endif type="checkbox" name="add_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <?php } ?>
                                     @endforeach
                                 </div>
                             </div>

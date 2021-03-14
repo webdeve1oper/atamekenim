@@ -13,13 +13,13 @@ class CreateFondDestinationsAttributeTable extends Migration
      */
     public function up()
     {
-        Schema::create('fond_destinations_attribute', function (Blueprint $table) {
-            $table->bigInteger('destination_attribute_id')->unsigned();
-            $table->bigInteger('fond_id')->unsigned();
-            $table->foreign('destination_attribute_id')->references('id')->on('destinations_attribute')->onDelete('cascade');
-            $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
-            $table->timestamps();
-        });
+//        Schema::create('fond_destinations_attribute', function (Blueprint $table) {
+//            $table->bigInteger('destination_attribute_id')->unsigned();
+//            $table->bigInteger('fond_id')->unsigned();
+//            $table->foreign('destination_attribute_id')->references('id')->on('destinations_attribute')->onDelete('cascade');
+//            $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
+//            $table->timestamps();
+//        });
     }
 
     /**

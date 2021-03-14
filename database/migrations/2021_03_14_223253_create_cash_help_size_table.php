@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDestinationsTable extends Migration
+class CreateCashHelpSizeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateDestinationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('destinations', function (Blueprint $table) {
+        Schema::create('cash_help_size', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('paren_id');
             $table->string('name_ru');
             $table->string('name_kz')->nullable();
-            $table->string('name_en')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateDestinationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('destinations');
+        Schema::dropIfExists('cash_help_size');
     }
 }

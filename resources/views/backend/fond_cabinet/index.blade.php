@@ -17,7 +17,8 @@
                                 <div class="col-sm-9">
                                     <h1>Общественное объединение {{$fond->title}}</h1>
                                     <p class="descr">Поздравляем, в {{date('Y')}} году Вы реализовали {{$fond->helpsByDate(date('Y'))->count()}} заявок
-                                        <span>на общую сумму 1 045 768 тенге</span></p>
+                                        {{--<span>на общую сумму 1 045 768 тенге</span>--}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +30,7 @@
                         <div class="greyInfoBlock mini">
                             <?php $waitHelps = $fond->helpsByStatus('wait')->get();?>
                             <p class="countTag blue">Новые заявки <span>{{$waitHelps->count()}}</span></p>
-                            <a href="" class="btn-default">Поиск по всем заявкам</a>
+                            {{--<a href="" class="btn-default">Поиск по всем заявкам</a>--}}
                                 @if($waitHelps->count()>0)
                                 @foreach($waitHelps as $help)
                                     <div class="applicationBlock">
@@ -128,28 +129,28 @@
                     <div class="col-sm-4">
                         <div class="greyContent">
                             <div class="miniStatusBlock">
-                                <p class="greyText">Общий рейтинг:: <span class="green">95%</span></p>
+                                {{--<p class="greyText">Общий рейтинг:: <span class="green">95%</span></p>--}}
                             </div>
-                            <p class="date">Смотреть историю по годам:</p>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    2010-2020
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">2010-2020</a>
-                                    <a class="dropdown-item" href="#">2010-2020</a>
-                                    <a class="dropdown-item" href="#">2010-2020</a>
-                                </div>
-                            </div>
+                            {{--<p class="date">Смотреть историю по годам:</p>--}}
+                            {{--<div class="dropdown">--}}
+                                {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                    {{--2010-2020--}}
+                                {{--</button>--}}
+                                {{--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
+                                    {{--<a class="dropdown-item" href="#">2010-2020</a>--}}
+                                    {{--<a class="dropdown-item" href="#">2010-2020</a>--}}
+                                    {{--<a class="dropdown-item" href="#">2010-2020</a>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                             <div class="content">
-                                <p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>
-                                <p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>
-                                <p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>
-                                <p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>
-                                <p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>
-                                <p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>
-                                <p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>
-                                <p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>
+                                {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
+                                {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
+                                {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
+                                {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
+                                {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
+                                {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
+                                {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
+                                {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
                                 <a href="">Посмотреть похожие благотворительные организации</a>
                                 <a href="">Больше аналитики</a>
                                 <a href="">Как можно улучшить показатели?</a>

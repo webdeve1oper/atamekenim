@@ -40,19 +40,19 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Характеристика адресата/благополучателя:
-                                                </button>
-                                                <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton2">
-                                                    @foreach($destionationsAttributes as  $destination)
-                                                        <div class="content">
-                                                            <input type="checkbox" name="destination_attribute[]" value="{{$destination['id']}}" id="destination_attribute{{$destination['id']}}">
-                                                            <label for="destination_attribute{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
+                                            {{--<div class="dropdown">--}}
+                                                {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                                    {{--Характеристика адресата/благополучателя:--}}
+                                                {{--</button>--}}
+                                                {{--<div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton2">--}}
+                                                    {{--@foreach($destionationsAttributes as  $destination)--}}
+                                                        {{--<div class="content">--}}
+                                                            {{--<input type="checkbox" name="destination_attribute[]" value="{{$destination['id']}}" id="destination_attribute{{$destination['id']}}">--}}
+                                                            {{--<label for="destination_attribute{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>--}}
+                                                        {{--</div>--}}
+                                                    {{--@endforeach--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
                                             <div class="dropdown regions">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Регион проживания:

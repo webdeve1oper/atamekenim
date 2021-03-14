@@ -22,7 +22,8 @@ class Fond extends Authenticatable
         'video', 'requisites',
         'password',
         'status',
-        'org_type'
+        'org_type',
+        'help_cash'
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -60,8 +61,12 @@ class Fond extends Authenticatable
         return $this->belongsToMany(Destination::class, 'fond_destinations', 'fond_id', 'destination_id');
     }
 
-    public function destinations_attribute(){
-        return $this->belongsToMany(DestinationAttribute::class, 'fond_destinations_attribute', 'fond_id', 'destination_attribute_id');
+//    public function destinations_attribute(){
+//        return $this->belongsToMany(DestinationAttribute::class, 'fond_destinations_attribute', 'fond_id', 'destination_attribute_id');
+//    }
+
+    public function cashHelpTypes(){
+        return $this->belongsToMany(CashHelpType::class, 'fond_cashhelptypes', 'fond_id', 'cash_help_id');
     }
 
     public function helpsByStatus($status = 'wait'){
@@ -79,7 +84,6 @@ class Fond extends Authenticatable
     public function addHelpTypes(){
         return $this->belongsToMany(AddHelpType::class, 'fond_addhelptypes', 'fond_id', 'add_help_id');
     }
-
 
     public function helpsByDate($year, $status='finished'){
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('status', '=', $status)->whereYear('helps.created_at', '=', $year);

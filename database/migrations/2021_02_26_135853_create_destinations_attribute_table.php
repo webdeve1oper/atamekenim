@@ -13,13 +13,13 @@ class CreateDestinationsAttributeTable extends Migration
      */
     public function up()
     {
-        Schema::create('destinations_attribute', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name_ru');
-            $table->string('name_kz')->nullable();
-            $table->string('name_en')->nullable();
-            $table->timestamps();
-        });
+//        Schema::create('destinations_attribute', function (Blueprint $table) {
+//            $table->bigIncrements('id');
+//            $table->string('name_ru');
+//            $table->string('name_kz')->nullable();
+//            $table->string('name_en')->nullable();
+//            $table->timestamps();
+//        });
     }
 
     /**
