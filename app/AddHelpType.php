@@ -16,4 +16,8 @@ class AddHelpType extends Model
     public function children(){
         return $this->hasMany(AddHelpType::class, 'base_help_types_id','id');
     }
+
+    public function fonds(){
+        return $this->belongsToMany(Fond::class, 'fond_basehelptypes', 'add_help_id','fond_id');
+    }
 }

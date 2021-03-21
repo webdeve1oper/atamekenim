@@ -40,7 +40,8 @@
                                 <p class="category">{{$fond->sub_title}}</p>
                                 <p>Страна: <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
                                 <p>Сайт: <a href="">{{$fond->website??'не указан'}}</a></p>
-                                <p>Регион оказания помощи: <a href="">{{$fond->region->title_ru??'не указано'}}</a></p>
+                                <p>Регион оказания помощи: <a href="">@foreach($fond->regions as $i => $help)<a
+                                                href="">{{$help['title_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</a></p>
                                 <p>Основной сектор деятельности:
                                     @foreach($fond->baseHelpTypes as $i => $help)
                                         <a  href="#"> {{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif
@@ -251,6 +252,10 @@
                                     }, {
                                         searchControlProvider: 'yandex#search'
                                     });
+                                @if($fond->longitude && $fond->latitude)
+                                    myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
+                                    myMap.geoObjects.add(myPlacemark);
+                                @endif
                             }
                         </script>
                     </div>
@@ -462,30 +467,14 @@
                     <div class="col-sm-12">
                         <h4>Похожие благотворительные организации</h4>
                     </div>
+                    @foreach($relatedFonds as $relatedFond)
                     <div class="col-sm-3">
                         <div class="block">
-                            <img src="/img/bi.png" alt="">
-                            <p>"Менің Атамекенім"<span>Корпоративный благотворительный фонд</span></p>
+                            <img src="{{$relatedFond->logo}}" alt="">
+                            <p>{{$relatedFond->title}}</p>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="block">
-                            <img src="/img/bi.png" alt="">
-                            <p>"Менің Атамекенім"<span>Корпоративный благотворительный фонд</span></p>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="block">
-                            <img src="/img/bi.png" alt="">
-                            <p>"Менің Атамекенім"<span>Корпоративный благотворительный фонд</span></p>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="block">
-                            <img src="/img/bi.png" alt="">
-                            <p>"Менің Атамекенім"<span>Корпоративный благотворительный фонд</span></p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -504,42 +493,100 @@
                         <form action="{{route('helpfond')}}" method="post">
                             @csrf
                             <input type="hidden" name="fond[]" value="{{$fond->id}}">
-                            <input type="text" name="title" class="form-control mb-3" value="{{old('title')}}" placeholder="Заголовок помощи">
                             @if($errors->has('title'))
                                 <span class="error">{{ $errors->first('title') }}</span>
                             @endif
-                            <p>
-                                <select name="baseHelpTypes" class="select2 w-100" placeholder="Тип помощи" id="baseHelp">
-                                    @foreach($baseHelpTypes as $baseHelpType)
-                                        <option value="{{$baseHelpType->id}}">{{$baseHelpType->text}}</option>
+                            <div class="form-group">
+                                <label for="who_need_help">Кому нужна помощь:</label>
+                                <select name="who_need_help" id="who_need_help" class="form-control">
+                                    @foreach(config('destinations_attribute') as $value=> $title)
+                                        <option value="{{$value}}">{{$title}}</option>
                                     @endforeach
                                 </select>
-                            </p>
-                            <p>
-                                <select name="addHelpTypes[]" class="select2 w-100" placeholder="Тип помощи" multiple id="addHelp"></select>
-                            </p>
-                            <p>
+                            </div>
+                            <div class="form-group">
+                                <label for="destionations">Адресат помощи (выберите один или несколько):</label>
+                                @php $i = 0 @endphp
+                                <select name="destionations[]" class="select2 w-100" multiple placeholder="Адресат помощи" id="destionations">
+                                    @foreach($destinations as $destination)
+                                        @if($loop->index == 0)
+                                            <optgroup label="{{config('destinations')[$i]}}">
+                                        @endif
+                                        @if($i != $destination->paren_id )
+                                            @php $i = $destination->paren_id @endphp
+                                            <optgroup label="{{config('destinations')[$i]}}">
+                                        @endif
+                                        <option value="{{$destination->id}}">{{$destination->name_ru}}</option>
+                                                @if($i != $destination->paren_id )
+                                            </optgroup>
+                                        @endif
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Укажите адресата помощи</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="regions">В каком регионе необходима помощь:</label>
                                 <select name="region_id" class="select2 w-100" placeholder="Тип помощи" id="regions">
                                     @foreach($regions as $region)
                                         <option value="{{$region->region_id}}">{{$region->text}}</option>
                                     @endforeach
                                 </select>
-                            </p>
-                            <p>
-                                <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
-                            </p>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Какая помощь необходима:</label>
+                                <select name="baseHelpTypes" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelp">
+                                    @foreach($baseHelpTypes as $destionation)
+                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}} (
+                                            @foreach($destionation->children as $child)
+                                                {{$child->name_ru}}@if(!$loop->last),@endif
+                                            @endforeach
+                                            )</option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Сфера необходимой помощи</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Виды оказываемой помощи (выберите один или несколько):</label>
+                                <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="Виды оказываемой помощи" id="cashHelpTypes">
+                                    @foreach($cashHelpTypes as $destination)
+                                            <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Укажите тпи помощи</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Необхадимая сумма:</label>
+                                <select name="cashHelpSizes[]" class="select2 w-100" placeholder="Виды оказываемой помощи" id="cashHelpSizes">
+                                    @foreach($cashHelpSizes as $destination)
+                                        <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <script>
                                 var json = {!! $regions->toJson() !!};
                                 var jsonHelps = {!! $baseHelpTypes->toJson() !!};
                                 console.log(jsonHelps);
+                                $('#destionations').select2({
+                                    width: '100%',
+                                    placeholder: 'Адресат помощи'
+                                });
                                 $('#regions').select2({
                                     width: '100%',
                                     placeholder: 'Область'
                                 });
-                                $('#cities').select2({
+                                $('#cashHelpTypes').select2({
                                     width: '100%',
-                                    placeholder: 'Выберите город'
+                                    placeholder: 'Виды оказываемой помощи'
                                 });
+                                $('#cashHelpSizes').select2({
+                                    width: '100%',
+                                    placeholder: 'Виды оказываемой помощи'
+                                });
+                                // $('#cities').select2({
+                                //     width: '100%',
+                                //     placeholder: 'Выберите город'
+                                // });
                                 $('#baseHelp').select2({
                                     width: '100%',
                                     placeholder: 'Выберите сектор помощи'
@@ -549,21 +596,21 @@
                                     placeholder: 'Выберите подробный сектор помощи'
                                 });
 
-                                $('#baseHelp').change(function(){
-                                    var ind = $('#baseHelp').children('option:selected').val();
-                                    var datas = [];
-                                    jsonHelps.forEach(function(value,index){
-                                        if(value.id == ind){
-                                            ind = index;
-                                        }
-                                    });
-                                    $('#addHelp').empty();
-                                    datas.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(jsonHelps[ind].add_help_types)){
-                                        datas.push({id:value.id, text: value.name_ru});
-                                    }
-                                    $('#addHelp').select2({data: datas, allowClear: true});
-                                });
+                                // $('#baseHelp').change(function(){
+                                //     var ind = $('#baseHelp').children('option:selected').val();
+                                //     var datas = [];
+                                //     jsonHelps.forEach(function(value,index){
+                                //         if(value.id == ind){
+                                //             ind = index;
+                                //         }
+                                //     });
+                                //     $('#addHelp').empty();
+                                //     datas.push({id:'0', text: '-'});
+                                //     for (let [key, value] of Object.entries(jsonHelps[ind].add_help_types)){
+                                //         datas.push({id:value.id, text: value.name_ru});
+                                //     }
+                                //     $('#addHelp').select2({data: datas, allowClear: true});
+                                // });
                                 $('#regions').change(function(){
                                     var ind = $('#regions').children('option:selected').val();
                                     var datas = [];

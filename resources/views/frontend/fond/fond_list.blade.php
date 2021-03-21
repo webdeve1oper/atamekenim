@@ -39,11 +39,11 @@
                         <p class="missionText">{{mb_substr($fond->about, 0, 150)}}...</p>
                     </div>
                     <div class="col-sm-2 miniStatusBlock">
-                        <p class="greyText">Рейтинг: <span class="green">95</span></p>
+                        {{--<p class="greyText">Рейтинг: <span class="green">95</span></p>--}}
                         <a href="" class="miniInfo">Отзывы: {{$fond->reviews()->count()}}</a>
                     </div>
                     <div class="col-sm-2 bigStatusBlock">
-                        <p class="greyText">Сумма сбора: <span class="blue">3.5 млрд. тг.</span></p>
+                        {{--<p class="greyText">Сумма сбора: <span class="blue">3.5 млрд. тг.</span></p>--}}
                         <p class="miniInfo">{{$fond->helpsByStatus('finished')->count()}} закрытых заявок</p>
                     </div>
 

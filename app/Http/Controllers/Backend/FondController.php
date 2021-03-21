@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\AddHelpType;
 use App\BaseHelpType;
+use App\CashHelpSize;
 use App\CashHelpType;
 use App\City;
 use App\Destination;
@@ -69,12 +70,12 @@ class FondController extends Controller
     public function edit()
     {
         $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get()->toArray();
-        $regions = Region::all();
-        $cities = City::all();
+        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
+        $cashHelpSizes = CashHelpSize::all();
 
-        return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes', 'regions', 'cities', 'destinations', 'cashHelpTypes'));
+        return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
     }
 
     public function projects(Request $request)
@@ -261,6 +262,8 @@ class FondController extends Controller
             }
 
             $fond->baseHelpTypes()->sync($request->base_help_types);
+            $fond->regions()->sync($request->regions);
+//            $fond->cities()->sync($request->cities);
             $fond->addHelpTypes()->sync($request->add_help_types);
             $fond->destinations()->sync($request->destinations);
             $fond->cashHelpTypes()->sync($request->cashHelpTypes);

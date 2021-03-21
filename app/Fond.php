@@ -89,6 +89,14 @@ class Fond extends Authenticatable
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('status', '=', $status)->whereYear('helps.created_at', '=', $year);
     }
 
+    public function regions(){
+        return $this->belongsToMany(Region::class, 'fond_regions', 'fond_id', 'region_id', 'id', 'region_id');
+    }
+
+    public function cities(){
+        return $this->belongsToMany(City::class, 'fond_cities', 'fond_id', 'city_id');
+    }
+
     public function region(){
         return $this->belongsTo(Region::class, 'help_location_region', 'region_id');
     }

@@ -8,7 +8,7 @@ class Help extends Model
 {
     //
     protected $table = 'helps';
-    protected $fillable = ['title', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status'];
+    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status', 'urgency_date'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');

@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Frontend;
 
 use App\AddHelpType;
 use App\BaseHelpType;
+use App\CashHelpSize;
+use App\CashHelpType;
 use App\City;
 use App\Country;
 use App\Destination;
 use App\DestinationAttribute;
 use App\Fond;
+use App\Help;
 use App\Http\Controllers\Controller;
 use App\Region;
 use Illuminate\Http\Request;
@@ -19,10 +22,17 @@ class FondController extends Controller
     //
     public function fond($id){
         $fond = Fond::where('id',$id)->with('projects')->with('helps')->first();
-        $baseHelpTypes = BaseHelpType::select('name_ru as text', 'id')->with('addHelpTypes')->get();
+        $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get();
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
+        $destinations = Destination::all();
+        $cashHelpTypes = CashHelpType::all();
+        $cashHelpSizes = CashHelpSize::all();
+        $relatedHelpIds = $fond->baseHelpTypes->pluck('id')->toArray();
+        $relatedFonds = Fond::select('logo', 'title')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
+            $query->whereIn('base_help_id', $relatedHelpIds);
+        })->get();
 
-        return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions'));
+        return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
 
     public function fonds(Request $request){

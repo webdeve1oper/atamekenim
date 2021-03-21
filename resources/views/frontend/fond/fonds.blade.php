@@ -51,6 +51,18 @@
                                     или укажите пункты поиска
                                 </p>
                                 <div class="siteBarList active">
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Регион <i class="fas fa-chevron-down"></i></p>
+                                    <div class="listBlock">
+                                        <p class="grey">Выберите один или несколько</p>
+                                        @foreach($cities as $id => $city)
+                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
+                                        @endforeach
+                                        @foreach($regions as $id => $city)
+                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="siteBarList ">
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Адресат/Благополучатель <i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         <p class="grey">Выберите один или несколько</p>
@@ -69,18 +81,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="siteBarList">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Регион <i class="fas fa-chevron-down"></i></p>
-                                    <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
-                                        @foreach($cities as $id => $city)
-                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
-                                        @endforeach
-                                        @foreach($regions as $id => $city)
-                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
-                                        @endforeach
-                                    </div>
-                                </div>
+
 
                                 <div class="siteBarList">
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Категория помощи <i class="fas fa-chevron-down"></i></p>
