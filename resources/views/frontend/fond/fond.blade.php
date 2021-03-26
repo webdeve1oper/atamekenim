@@ -127,7 +127,7 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <h2>О фонде</h2>
-                        <button class="btn-default" @if(Auth::user()) data-toggle="modal" data-target="#helpCallback"@else onclick="window.location = '{{route('login')}}'" @endif>Подать заявку на получение помощи</button>
+                        <a href="{{route('request_help')}}" class="btn-default" @if(!Auth::user())onclick="window.location = '{{route('login')}}'" @endif>Подать заявку на получение помощи</a>
                         <div class="content">
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
@@ -234,7 +234,7 @@
                     <div class="col-sm-8 bottomContent">
                         <h3>Организация на карте</h3>
                         <div id="map" class="map"></div>
-                        <button class="btn-default blue">Подать заявку на получение помощи</button>
+                        <a href="{{route('request_help')}}" class="btn-default blue">Подать заявку на получение помощи</a>
                         <script>
                             ymaps.ready(init);
 
@@ -566,7 +566,6 @@
                             <script>
                                 var json = {!! $regions->toJson() !!};
                                 var jsonHelps = {!! $baseHelpTypes->toJson() !!};
-                                console.log(jsonHelps);
                                 $('#destionations').select2({
                                     width: '100%',
                                     placeholder: 'Адресат помощи'

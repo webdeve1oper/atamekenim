@@ -35,6 +35,23 @@ class FondController extends Controller
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
 
+    public function request_help(Request $request){
+        if ($request->ajax()) {
+//            $relatedFonds = Fond::select('logo', 'title')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
+//                $query->whereIn('base_help_id', $relatedHelpIds);
+//            })->get();
+            return view('frontend.fond.request_help_fonds')->with();
+        }
+        $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get();
+        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
+        $destinations = Destination::all();
+        $cashHelpTypes = CashHelpType::all();
+        $cashHelpSizes = CashHelpSize::all();
+
+
+        return view('frontend.fond.request_help')->with(compact( 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+    }
+
     public function fonds(Request $request){
         if ($request->ajax()) {
 
