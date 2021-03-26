@@ -533,8 +533,8 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Какая помощь необходима:</label>
-                                <select name="baseHelpTypes" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelp">
+                                <label for="baseHelpTypes">Какая помощь необходима:</label>
+                                <select name="baseHelpTypes[]" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelpTypes">
                                     @foreach($baseHelpTypes as $destionation)
                                         <option value="{{$destionation->id}}">{{$destionation->name_ru}} (
                                             @foreach($destionation->children as $child)
@@ -596,6 +596,17 @@
                                     placeholder: 'Выберите подробный сектор помощи'
                                 });
 
+                                $('#helpCallback').submit(function(){
+                                    $.ajax({
+                                       url: '{{route('innerFond', $fond->id)}}',
+                                        method: 'get',
+                                        data: $('#helpCallback').serialize(),
+                                        success: function(data){
+                                           console.log(data);
+                                        }
+                                    });
+                                    return false;
+                                });
                                 // $('#baseHelp').change(function(){
                                 //     var ind = $('#baseHelp').children('option:selected').val();
                                 //     var datas = [];
@@ -629,7 +640,7 @@
                                 });
                             </script>
                             <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>
-                            <input type="submit" class="btn btn-primary m-auto d-table" value="Отправить">
+                            <input type="submit" class="btn btn-primary m-auto d-table" value="Найти">
                         </form>
                     </div>
                     <div class="modal-footer">
