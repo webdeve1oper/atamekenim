@@ -36,20 +36,20 @@ class FondController extends Controller
 
     public function start_help($id)
     {
-//        if (Auth::user()->helps->contains($id)) {
-//            $help = Help::find($id);
-//            $help->status = 'process';
-//            $help->date_fond_start = Carbon::today();
-//            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) {
-//                return redirect()->back()->with('error', 'Заявка уже принята другим фондом');
-//            }
-//            DB::table('help_fond')->update(['fond_status' => 'enable']);
-//
-//            $help->save();
-//            return redirect()->back()->with('success', 'Успех');
-//        } else {
-//            return redirect()->back()->with('error', 'Заявка уже принята');
-//        }
+        if (Auth::user()->helps->contains($id)) {
+            $help = Help::find($id);
+            $help->status = 'process';
+            $help->date_fond_start = Carbon::today();
+            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) {
+                return redirect()->back()->with('error', 'Заявка уже принята другим фондом');
+            }
+            DB::table('help_fond')->update(['fond_status' => 'enable']);
+
+            $help->save();
+            return redirect()->back()->with('success', 'Успех');
+        } else {
+            return redirect()->back()->with('error', 'Заявка уже принята');
+        }
     }
 
     public function finish_help($id)
