@@ -27,7 +27,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <a href="/" class="logo"><img src="/img/logo.svg" alt=""></a>
+                <a href="{{route('home')}}" class="logo"><img src="/img/logo.svg" alt=""></a>
                 <ul class="menu">
                     <li><a href="{{route('about')}}">О проекте</a></li>
                     <li><a href="{{route('news')}}">Новости</a></li>
@@ -51,7 +51,14 @@
                         <p class="call"><span>Call-центр</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
                     </li>
                     <li>
-                        <a href="" class="langSwitcher">RU<i class="fas fa-chevron-down"></i></a>
+                                <a class="nav-link langSwitcher" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    {{ strtoupper(app()->getLocale()) }}<i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="/ru{{str_replace(''.app()->getLocale(), '', Request::path())}}">RU</a>
+                                    <a class="dropdown-item" href="/kz{{str_replace(''.app()->getLocale(), '', Request::path())}}">KZ</a>
+                                    <a class="dropdown-item" href="/en{{str_replace(''.app()->getLocale(), '', Request::path())}}">EN</a>
+                                </div>
                     </li>
                     <li>
                         @if(Auth::guard('fond')->check())
