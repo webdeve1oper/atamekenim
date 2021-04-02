@@ -229,4 +229,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class
     ],
 
+    'locales'=> ['ru'=> 'Русский', 'en'=>'English', 'kz'=>'Казахский'],
+
 ];

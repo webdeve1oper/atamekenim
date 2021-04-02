@@ -6,12 +6,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h1>Единая приемная всех благотворительных
-                            организаций Казахстана </h1>
-                        <p class="descr">Реестр поможет тебе найти организацию, которая решит твою проблему, помочь тем,
-                            кто оказался в тяжелой жизненной ситуации, и найти благотворительную организацию, достойную поддержки </p>
-                        <button class="btn-default blue">Подать заявку на получение помощи</button>
-                        <button class="btn-default">Принять участие</button>
+                        <h1>{{trans('home.main-h1')}}</h1>
+                        <p class="descr">{{trans('home.main-descr')}}</p>
+                        <button class="btn-default blue">{{trans('home.apply-for-assistance')}}</button>
+                        <button class="btn-default">{{trans('home.partic')}}</button>
                     </div>
                 </div>
                 <img src="/img/slide.svg" alt="" class="slideImg">
@@ -22,7 +20,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2>Реестр благотворительных организаций</h2>
+                        <h2>{{trans('home.main-h2')}}</h2>
                         <p class="descr">Для удобного поиска конкретного фонда - используйте фильтр</p>
                     </div>
                     <div class="col-sm-12">

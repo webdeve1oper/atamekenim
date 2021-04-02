@@ -59,8 +59,6 @@ class FondsSeeder extends Seeder
                     $data = \App\Fond::create($value);
                     $data->baseHelpTypes()->attach([rand(1,2), rand(3,4)]);
                     $data->destinations()->attach([rand(1,2), rand(3,4)]);
-
-                    $data->destinations_attribute()->attach([rand(1,2), rand(3,4)]);
 //                }catch (Exception $exception){
 //                    continue;
 //                }

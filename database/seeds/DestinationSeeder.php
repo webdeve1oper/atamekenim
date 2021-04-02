@@ -66,7 +66,7 @@ class DestinationSeeder extends Seeder
             foreach ($item as $value){
                 if(!DB::table('destinations')->where('name_ru', $value)->first()){
                     $data = [
-                        'paren_id' => $k,
+                        'parent_id' => $k,
                         'name_ru'=>$value,
                         'name_kz'=>$value,
                     ];

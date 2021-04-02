@@ -23,7 +23,7 @@ class FondController extends Controller
     public function fond($id){
         $fond = Fond::where('id',$id)->with('projects')->with('helps')->first();
         $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get();
-        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
+        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();
@@ -43,7 +43,7 @@ class FondController extends Controller
             return view('frontend.fond.request_help_fonds')->with();
         }
         $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get();
-        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
+        $regions = Region::select('region_id', 'title_ru as text')->with('districts')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();
@@ -90,7 +90,6 @@ class FondController extends Controller
                     $query->whereIn('base_help_types.id', $baseHelpTypes);
                 });
             }
-
             $fonds = $fonds->paginate(4);
 
             return view('frontend.fond.fond_list')->with(compact('fonds'));
@@ -99,7 +98,6 @@ class FondController extends Controller
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = AddHelpType::whereBaseHelpTypesId(0)->with('children')->get();
-            $addHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
         }
 
