@@ -40,7 +40,7 @@ class FondsSeeder extends Seeder
                     $value = [];
                     $value['title'] = 'Фонд "'.$name.'"';
                     $value['status'] = 1;
-                    $value['org_type'] = 1;
+                    $value['organ_id'] = 1;
                     $value['about'] = $data['about'];
                     $value['mission'] = $data['mission'];
                     $value['website'] = str_replace(' ','',strtolower($faker->name)).'.kz';

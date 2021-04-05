@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DestinationSeeder::class);
         $this->call(CashSeeder::class);
 //        $this->call(DestinationAttributeSeeder::class);
-//        $this->call(FondsSeeder::class);
+        $this->call(OrganLegalFormSeeder::class);
+        $this->call(FondsSeeder::class);
 //        $this->call(HelpSeeder::class);
     }
 }

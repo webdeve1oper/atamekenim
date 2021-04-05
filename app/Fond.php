@@ -15,7 +15,7 @@ class Fond extends Authenticatable
 
 
     protected $fillable = [
-        'title', 'sub_title', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email',
+        'title', 'sub_title', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email','work','fio','organ_id','foundation_date',
         'address', 'longitude', 'latitude', 'about',
         'mission', 'social',
         'affilates', 'offices',
@@ -23,6 +23,7 @@ class Fond extends Authenticatable
         'password',
         'status',
         'org_type',
+        'organ_id',
         'help_cash'
     ];
 
@@ -103,5 +104,9 @@ class Fond extends Authenticatable
 
     public function city(){
         return $this->belongsTo(City::class, 'help_location_city', 'city_id');
+    }
+
+    public function organLegalForm(){
+        return $this->belongsTo(OrganLegalForm::class);
     }
 }

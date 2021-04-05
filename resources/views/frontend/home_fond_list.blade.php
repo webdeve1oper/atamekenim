@@ -46,7 +46,7 @@
                                 <img src="/img/no-photo.png" alt="" class="logotype">
                             @endif
                         </li>
-                        <li><a href="/fond/{{$fond->id}}" class="name">{{$fond->title}}</a></li>
+                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond->title}}</a></li>
                         <li><p>5 000 000 тг</p></li>
                         <li><p>@foreach($fond->baseHelpTypes()->get() as $help){{$help->name_ru}}, @endforeach</p></li>
                         <?php $city = $fond->city; ?>
