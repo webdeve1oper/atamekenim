@@ -47,8 +47,7 @@
                                         <a  href="#"> {{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif
                                     @endforeach
                                 </p>
-                                <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help)<a
-                                            href="">{{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</p>
+                                <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help)<a href="">{{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</p>
                                 <p>Закрытых заявок: <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>
                                 <p>Общая сумма оказанной благотворительной помощи: <span>{{$fond->help_cash}} тенге</span></p>
                                 <p class="inline">Количество отзывов: <span>{{$fond->reviews()->count()}}</span></p>
@@ -513,7 +512,7 @@
                                             <optgroup label="{{config('destinations')[$i]}}">
                                         @endif
                                         @if($i != $destination->paren_id )
-                                            @php $i = $destination->paren_id @endphp
+                                            @php $destination=;$i = $destination->paren_id @endphp
                                             <optgroup label="{{config('destinations')[$i]}}">
                                         @endif
                                         <option value="{{$destination->id}}">{{$destination->name_ru}}</option>
@@ -582,10 +581,6 @@
                                     width: '100%',
                                     placeholder: 'Виды оказываемой помощи'
                                 });
-                                // $('#cities').select2({
-                                //     width: '100%',
-                                //     placeholder: 'Выберите город'
-                                // });
                                 $('#baseHelp').select2({
                                     width: '100%',
                                     placeholder: 'Выберите сектор помощи'

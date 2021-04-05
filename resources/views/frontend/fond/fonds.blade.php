@@ -231,50 +231,6 @@
             </div>
         </div>
     </div>
-    @if(Auth::user())
-
-        <div id="helpCallback" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h5 class="modal-title text-center">Подача заявления на получение помощи</h5>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('helpfond')}}" id="helpfond" method="post">
-                            @csrf
-                            <input type="hidden" name="fond[]" id="fond_id" value="">
-                            <input type="text" name="title" class="form-control mb-3" value="{{old('title')}}" placeholder="Заголовок помощи">
-                            @if($errors->has('title'))
-                                <span class="error">{{ $errors->first('title') }}</span>
-                            @endif
-                            <p>
-                                <select name="baseHelpTypes[]" class="select2 w-100" placeholder="Тип помощи" multiple id="baseHelp">
-                                    @foreach($baseHelpTypes as $baseHelpType)
-                                        <option value="{{$baseHelpType->id}}">{{$baseHelpType->name_ru}}</option>
-                                    @endforeach
-                                </select>
-                            </p>
-                            <p>
-                                <select name="addHelpTypes[]" class="select2 w-100" multiple id="addHelp">
-                                    @foreach($addHelpTypes as $addHelpType)
-                                        <option value="{{$addHelpType->id}}">{{$addHelpType->name_ru}}</option>
-                                    @endforeach
-                                </select>
-                            </p>
-                            <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>
-                            <input type="submit" class="btn btn-primary m-auto d-table" value="Отправить">
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    @endif
 @endsection
 
 <?php
