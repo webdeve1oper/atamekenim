@@ -13,3 +13,6 @@ yarn-error.log
 /.idea/workspace.xml
 /.idea
 .idea
+/public/vendor
+/public/lfm.php
+/config/lfm.php
