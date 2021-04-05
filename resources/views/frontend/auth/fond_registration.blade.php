@@ -32,12 +32,14 @@ $script = "<script src='/js/masked.input.js'></script>
                                 <form action="{{route('post_registration_fond')}}" class="w-100" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <select name="org_type" class="form-control" id="">
+                                        <select name="organ_id" class="form-control" id="">
                                             <option value="" disabled selected>Орг.-правовая форма</option>
-                                            <option value="1">Общественное объединение</option>
+                                            @foreach($organ_legal as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
                                         </select>
-                                        @if($errors->has('org_type'))
-                                            <span class="error">{{ $errors->first('org_type') }}</span>
+                                        @if($errors->has('organ_id'))
+                                            <span class="error">{{ $errors->first('organ_id') }}</span>
                                         @endif
                                     </div>
                                     <div class="form-group">
@@ -68,6 +70,22 @@ $script = "<script src='/js/masked.input.js'></script>
                                             <span class="error">{{ $errors->first('phone') }}</span>
                                         @endif
                                     </div>
+
+                                    <div class="form-group">
+                                        <input name="work" type="text" id="work" value="{{old('work')}}"
+                                               class="form-control mb-3" placeholder="Должность сотрудника организации:" autocomplete="off">
+                                        @if($errors->has('work'))
+                                            <span class="error">{{ $errors->first('work') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <input name="fio" type="text" id="fio" value="{{old('fio')}}"
+                                               class="form-control mb-3" placeholder="ФИО сотрудника организации:" autocomplete="off">
+                                        @if($errors->has('fio'))
+                                            <span class="error">{{ $errors->first('fio') }}</span>
+                                        @endif
+                                    </div>
+
                                     <div class="form-group">
                                         <input name="password" type="password" class="form-control mb-3"
                                                placeholder="Пароль">

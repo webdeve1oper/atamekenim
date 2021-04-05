@@ -80,8 +80,17 @@ class UserAuthController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
+        $bin_year = substr($request->get('iin'), 0, 2);
+        $bin_month = substr($request->get('iin'), 2, 2);
+        $bin_day = substr($request->get('iin'), 4, 2);
+        if($bin_year > 30){
+            $bin_year = '19'.$bin_year;
+        }else{
+            $bin_year = '20'.$bin_year;
+        }
         $data = $request->all();
 
+        $data['born'] = $bin_year.'-'.$bin_month.'-'.$bin_day;
         $check = $this->create($data);
         if($check){
             return redirect()->route('login')->withSuccess('Вы успешно зарегистрированы!');

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\OrganLegalForm;
 
 class FondAuthController extends Controller
 {
@@ -22,7 +23,8 @@ class FondAuthController extends Controller
 
     public function registration()
     {
-        return view('frontend.auth.fond_registration');
+        $organ_legal = OrganLegalForm::all();
+        return view('frontend.auth.fond_registration')->with(compact('organ_legal'));;
     }
 
     public function postLogin(Request $request)
@@ -66,6 +68,7 @@ class FondAuthController extends Controller
 
     public function postRegistration(Request $request)
     {
+
         Validator::extend('phone_number', function($attribute, $value, $parameters)
         {
             return is_numeric(str_replace(['+','(',')', ' '], ['','','', ''], $value));
@@ -76,10 +79,14 @@ class FondAuthController extends Controller
             'bin' => 'required|unique:fonds|min:12',
             'email' => 'required|email|unique:fonds',
             'phone' => 'required|unique:fonds|phone_number',
+            'fio' => 'required',
+            'work' => 'required',
             'password' => 'required|min:6|confirmed',
         ], [
             'title.required'=>'Заполните название организации',
             'email.required'=>'Укажите почту',
+            'fio.required'=>'Заполните (ФИО сотрудника организации)',
+            'work.required'=>'Заполните (Должность сотрудника организации)',
             'bin.required'=>'Заполните БИН',
             'phone.required'=>'Заполните БИН',
             'password.required'=>'Введите пароль',
@@ -90,8 +97,16 @@ class FondAuthController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
+        $bin_year = substr($request->get('bin'), 0, 2);
+        $bin_month = substr($request->get('bin'), 2, 2);
+        if($bin_year > 40){
+            $bin_year = '19'.$bin_year;
+        }else{
+            $bin_year = '20'.$bin_year;
+        }
         $data = $request->all();
         $data['status'] = '1';
+        $data['foundation_date'] = $bin_year.'-'.$bin_month.'-01';
         $data['phone'] = str_replace(['+','(',')', ' '], ['','','',''], $data['phone']);
         $check = $this->create($data);
         if($check){
