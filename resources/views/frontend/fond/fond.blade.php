@@ -632,7 +632,7 @@
 
                                     $('#cities').empty();
                                     datas.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(json[ind].cities)){
+                                    for (let [key, value] of Object.entries(json[ind].districts)){
                                         datas.push({id:value.id, text: value.text});
                                     }
                                     $('#cities').select2({data: datas, allowClear: true});

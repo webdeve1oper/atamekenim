@@ -70,7 +70,7 @@ class FondController extends Controller
     public function edit()
     {
         $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get()->toArray();
-        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('cities')->get();
+        $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();

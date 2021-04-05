@@ -6,7 +6,6 @@ use App\AddHelpType;
 use App\BaseHelpType;
 use App\City;
 use App\Destination;
-use App\DestinationAttribute;
 use App\Fond;
 use App\Help;
 use App\Http\Controllers\Controller;
@@ -19,6 +18,7 @@ class MainController extends Controller
 {
     //
     public function index(Request $request){
+
 
         if ($request->ajax()) {
 

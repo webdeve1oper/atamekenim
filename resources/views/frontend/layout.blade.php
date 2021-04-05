@@ -29,10 +29,10 @@
             <div class="col-sm-6">
                 <a href="{{route('home')}}" class="logo"><img src="/img/logo.svg" alt=""></a>
                 <ul class="menu">
-                    <li><a href="{{route('about')}}">О проекте</a></li>
-                    <li><a href="{{route('news')}}">Новости</a></li>
-                    <li><a href="{{route('qa')}}">Вопрос-ответ</a></li>
-                    <li><a href="{{route('contacts')}}">Контакты</a></li>
+                    <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
+                    <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
+                    <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
+                    <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>
                 </ul>
                 <ul class="socials">
                     <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
@@ -42,13 +42,13 @@
             <div class="col-sm-6">
                 <ul class="control">
                     <li>
-                        <p class="share"><span>Поделиться</span><a href=""><i class="fas fa-share-alt"></i></a></p>
+                        <p class="share"><span>{{trans('home.share')}}</span><a href=""><i class="fas fa-share-alt"></i></a></p>
                     </li>
                     <li>
-                        <p class="call"><span>Call-центр</span><a href="tel:1432">1432</a></p>
+                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:1432">1432</a></p>
                     </li>
                     <li>
-                        <p class="call"><span>Call-центр</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
+                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
                     </li>
                     <li>
                                 <a class="nav-link langSwitcher" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -63,13 +63,13 @@
                     <li>
                         @if(Auth::guard('fond')->check())
                             <a href="{{route('fond_cabinet')}}" class="btn-default mr-1"><span class="fas fa-building"></span></a>
-                            <a href="{{route('logout_fond')}}" class="login btn-default blue"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                            <a href="{{route('logout_fond')}}" class="login btn-default blue"><i class="fas fa-sign-out-alt"></i> {{trans('auth.log-out')}}</a>
                         @elseif(Auth::user())
                             <a href="{{route('cabinet')}}" class="btn-default mr-1"><span class="fa fa-user"></span></a>
-                            <a href="{{route('logout_user')}}" class="login btn-default blue"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                            <a href="{{route('logout_user')}}" class="login btn-default blue"><i class="fas fa-sign-out-alt"></i> {{trans('auth.log-out')}}</a>
                         @else
-                            <a href="{{route('registration_user')}}" class="register btn-default transparent">Регистрация</a>
-                            <a href="{{route('login')}}" class="login btn-default blue"><img src="/img/lofin.svg" alt="">Войти</a>
+                            <a href="{{route('registration_user')}}" class="register btn-default transparent">{{trans('auth.sign-up')}}</a>
+                            <a href="{{route('login')}}" class="login btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>
                         @endif
                     </li>
                 </ul>
@@ -81,16 +81,16 @@
             <div class="row">
                 <div class="col-sm-9">
                     <ul class="menu2">
-                        <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
-                        <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
-                        <li><a href="{{route('dev')}}">Помочь проекту</a></li>
-                        <li><a href="{{route('dev')}}">Карта благотворительности</a></li>
-                        <li><a href="{{route('dev')}}">Нас поддержали</a></li>
+                        <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
+                        <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
+                        <li><a href="{{route('dev')}}">{{trans('home.help-project')}}</a></li>
+                        <li><a href="{{route('dev')}}">{{trans('home.map-charity')}}</a></li>
+                        <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <form class="searchBlock">
-                        <input type="text" name="search" placeholder="Поиск по сайту">
+                        <input type="text" name="search" placeholder="{{trans('home.site-search')}}">
                         <button><img src="/img/search.svg" alt=""></button>
                     </form>
                 </div>
@@ -110,10 +110,10 @@
                     </div>
                     <div class="col-sm-6">
                         <ul>
-                            <li><a href="{{route('about')}}">О проекте</a></li>
-                            <li><a href="{{route('news')}}">Новости</a></li>
-                            <li><a href="{{route('allreviews')}}">Отзывы</a></li>
-                            <li><a href="{{route('qa')}}">Вопрос-ответ</a></li>
+                            <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
+                            <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
+                            <li><a href="{{route('allreviews')}}">{{trans('home.menu-testimonials')}}</a></li>
+                            <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
                             <li><a href="{{route('contacts')}}">Контакты</a></li>
                         </ul>
                     </div>
@@ -121,28 +121,28 @@
             </div>
             <div class="col-sm-3">
                 <ul>
-                    <li><a href="{{route('fonds')}}">Реестр благотворительных фондов</a></li>
-                    <li><a href="{{route('helps')}}">Им нужна помощь</a></li>
-                    <li><a href="{{route('dev')}}">Помочь проекту</a></li>
-                    <li><a href="{{route('dev')}}">Карта благотворительности</a></li>
-                    <li><a href="{{route('dev')}}">Нас поддержали</a></li>
+                    <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
+                    <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
+                    <li><a href="{{route('dev')}}">{{trans('home.help-project')}}</a></li>
+                    <li><a href="{{route('dev')}}">{{trans('home.map-charity')}}</a></li>
+                    <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">
-                <button class="share"><span>Поделиться в соц. сетях</span><img src="/img/share.svg" alt=""></button>
+                <button class="share"><span>{{trans('home.share-social')}}</span><img src="/img/share.svg" alt=""></button>
                 <form action="">
                     <input type="text" placeholder="Поиск по сайту">
                     <button><img src="/img/search.svg" alt=""></button>
                 </form>
                 @if(Auth::check())
-                <a href="{{route('registration_user')}}" class="authButton">Зарегистрироваться</a>
-                <a href="{{route('login')}}" class="authButton login">Войти</a>
+                <a href="{{route('registration_user')}}" class="authButton">{{trans('auth.sign-up')}}</a>
+                <a href="{{route('login')}}" class="authButton login">{{trans('auth.sign-in')}}</a>
                 @endif
             </div>
             <div class="col-sm-2">
                 <ul>
-                    <li><a href="{{route('dev')}}">Call- центр</a></li>
-                    <li><a href="{{route('dev')}}">Социальные сети</a></li>
+                    <li><a href="{{route('dev')}}">{{trans('home.call-center')}}</a></li>
+                    <li><a href="{{route('dev')}}">{{trans('home.social')}}</a></li>
                 </ul>
             </div>
         </div>
@@ -151,10 +151,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="siteCopyr"><span>Все права на сайт принадлежат:</span><img src="/img/logo2.svg" alt=""></div>
+                    <div class="siteCopyr"><span>{{trans('home.copyright')}}:</span><img src="/img/logo2.svg" alt=""></div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="siteCopyr realCopyright"><span>Создание и разработка сайтов: </span><img src="/img/conversion.svg" alt=""></div>
+                    <div class="siteCopyr realCopyright"><span>{{trans('home.copyright-dev')}}: </span><img src="/img/conversion.svg" alt=""></div>
                 </div>
             </div>
         </div>

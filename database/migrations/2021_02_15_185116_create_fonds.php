@@ -23,9 +23,11 @@ class CreateFonds extends Migration
             $table->string('website')->nullable();
             $table->date('foundation_date')->nullable();
             $table->bigInteger('bin')->unique();
-            $table->integer('help_location_country')->references('country_id')->on('countries')->nullable();
-            $table->integer('help_location_region')->references('region_id')->on('regions')->nullable();
-            $table->integer('help_location_city')->references('city_id')->on('cities')->nullable();
+            $table->bigInteger('help_location_region')->nullable();
+            $table->bigInteger('help_location_city')->nullable();
+            $table->foreign('help_location_region')->references('region_id')->on('regions');
+            $table->foreign('help_location_')->references('region_id')->on('regions');
+            $table->foreign('help_location_city')->references('city_id')->on('cities');
             $table->string('phone');
             $table->string('email')->unique();
             $table->string('created_date')->nullable();
@@ -40,7 +42,6 @@ class CreateFonds extends Migration
             $table->text('video')->nullable();
             $table->json('requisites')->nullable();
             $table->json('offices')->nullable();
-            $table->json('affilates')->nullable();
             $table->string('password');
             $table->boolean('status')->default(false);
             $table->rememberToken();

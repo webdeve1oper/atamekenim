@@ -22,7 +22,7 @@ class ScenarioSeeder extends Seeder
             ];
         //
         foreach ($destinations as $destination){
-            if(!DB::table('destinations')->where('name_ru', $destination)->first()) {
+            if(!DB::table('scenarios')->where('name_ru', $destination)->first()) {
                 \App\Scenario::create(
                     [
                         'name_ru' => $destination,
