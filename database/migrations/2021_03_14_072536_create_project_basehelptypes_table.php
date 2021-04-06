@@ -14,12 +14,10 @@ class CreateProjectBasehelptypesTable extends Migration
     public function up()
     {
         Schema::create('project_basehelptypes', function (Blueprint $table) {
-            $table->bigIncrements('id');
             $table->bigInteger('base_help_id')->unsigned();
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('base_help_id')->references('id')->on('base_help_types')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('fonds')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

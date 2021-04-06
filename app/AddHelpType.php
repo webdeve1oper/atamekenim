@@ -20,4 +20,8 @@ class AddHelpType extends Model
     public function fonds(){
         return $this->belongsToMany(Fond::class, 'fond_basehelptypes', 'add_help_id','fond_id');
     }
+
+    public function scenarios(){
+        return $this->belongsToMany(Scenario::class, 'addhelptypes_to_scenarios', 'add_help_id', 'scenario_id');
+    }
 }
