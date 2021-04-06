@@ -90,7 +90,6 @@ class AddHelpTypeSeeder extends Seeder
             $typesParent = \App\AddHelpType::where('name_ru', $parent)->first();
             if(!$typesParent){
                 \App\AddHelpType::create([
-                    'base_help_types_id'=>0,
                     'name_ru'=>$parent,
                     'name_kz'=>$parent,
                     'description_ru'=> implode(',', $description),

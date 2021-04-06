@@ -14,9 +14,9 @@ class CreateFondDistrictsTable extends Migration
     public function up()
     {
         Schema::create('fond_districts', function (Blueprint $table) {
-            $table->bigInteger('district_id');
-            $table->foreign('district_id')->references('district_id')->on('dictricts')->onDelete('cascade');
-            $table->bigInteger('fond_id');
+            $table->bigInteger('district_id')->unsigned();
+            $table->foreign('district_id')->references('district_id')->on('districts')->onDelete('cascade');
+            $table->bigInteger('fond_id')->unsigned();
             $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
             $table->timestamps();
         });
