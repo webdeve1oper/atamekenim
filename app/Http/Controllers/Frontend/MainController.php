@@ -58,7 +58,7 @@ class MainController extends Controller
             $helpsCount = Help::count();
             $helps = Help::whereStatus('finished')->paginate(4);
             $newHelps = Help::whereStatus('wait')->paginate(4);
-            $baseHelpTypes = AddHelpType::whereBaseHelpTypesId(0)->get();
+            $baseHelpTypes = AddHelpType::all();
             $news = News::orderBy('public_date', 'desc')->limit(10)->get();
             return view('frontend.home')->with(compact('fonds', 'news', 'newFonds','destionations','cities','baseHelpTypes', 'helps', 'helpsCount', 'newHelps'));
         }

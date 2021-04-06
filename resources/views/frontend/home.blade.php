@@ -21,13 +21,13 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h2>{{trans('home.main-h2')}}</h2>
-                        <p class="descr">Для удобного поиска конкретного фонда - используйте фильтр</p>
+                        <p class="descr">{{trans('home.filtrdescr')}}</p>
                     </div>
                     <div class="col-sm-12">
                         <form id="formSearch">
-                            <input type="text" name="bin" placeholder="Поиск по названию или БИИН">
+                            <input type="text" name="bin" placeholder="{{trans('home.searchbin')}}">
                             <select name="baseHelpTypes[]" id="select1">
-                                <option value="all">Сектор деятельности</option>
+                                <option value="all">{{trans('home.sector-activities')}}</option>
                                 @foreach($baseHelpTypes as $help)
                                     <option  value="{{$help->id}}">
                                         {{$help['name_'.app()->getLocale()]}}
@@ -36,7 +36,7 @@
                             </select>
 
                             <select name="destination[]" id="select2" style="max-width: 300px;">
-                                <option value="all">Адресат/благополучатель</option>
+                                <option value="all">{{trans('home.adresat')}}</option>
                                 @foreach($destionations as $destination)
                                     <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                 @endforeach
