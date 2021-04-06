@@ -14,8 +14,10 @@ class CreateFondRegionsTable extends Migration
     public function up()
     {
         Schema::create('fond_regions', function (Blueprint $table) {
-            $table->bigInteger('region_id')->references('region_id')->on('regions')->onDelete('cascade');
-            $table->bigInteger('fond_id')->references('id')->on('fonds')->onDelete('cascade');
+            $table->bigInteger('region_id');
+            $table->foreign('region_id')->references('region_id')->on('regions')->onDelete('cascade');
+            $table->bigInteger('fond_id')->unsigned();
+            $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
             $table->timestamps();
         });
     }

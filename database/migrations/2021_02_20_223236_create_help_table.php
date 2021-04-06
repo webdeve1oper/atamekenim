@@ -16,15 +16,18 @@ class CreateHelpTable extends Migration
         Schema::create('helps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-//            $table->string('destination');
-            $table->bigInteger('user_id')->references('id')->on('users');
-            $table->integer('city_id')->references('city_id')->on('cities')->nullable();
-            $table->integer('region_id')->references('region_id')->on('regions')->nullable();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('city_id')->nullable();
+            $table->foreign('city_id')->references('city_id')->on('cities');
+            $table->bigInteger('region_id')->nullable();
+            $table->foreign('region_id')->references('region_id')->on('regions');
             $table->text('body');
-            $table->enum('status', ['wait','process','finished'])->default('wait');
+            $table->enum('status', ['moderate','wait', 'cancel', 'process','finished'])->default('moderate');
             $table->date('date_fond_start')->nullable();
             $table->date('date_fond_finish')->nullable();
-            $table->integer('review_id')->references('id')->on('reviews')->nullable();
+            $table->bigInteger('review_id')->unsigned()->nullable();
+            $table->foreign('review_id')->references('id')->on('reviews');
             $table->timestamps();
         });
     }

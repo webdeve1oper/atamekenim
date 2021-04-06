@@ -86,27 +86,17 @@ class AddHelpTypeSeeder extends Seeder
             'Помещение в питомник'=>[],
         ];
 
-        foreach ($types as $i => $parent){
-            $typesParent = \App\AddHelpType::where('name_ru', $i)->first();
+        foreach ($types as $parent => $description){
+            $typesParent = \App\AddHelpType::where('name_ru', $parent)->first();
             if(!$typesParent){
-                $typesParent = \App\AddHelpType::create([
+                \App\AddHelpType::create([
                     'base_help_types_id'=>0,
-                    'name_ru'=>$i,
-                    'name_kz'=>$i
+                    'name_ru'=>$parent,
+                    'name_kz'=>$parent,
+                    'description_ru'=> implode(',', $description),
+                    'description_kz'=> implode(',', $description),
                 ]);
             }
-            if(count($parent)>0){
-                foreach($parent as $addtype){
-                    if(!DB::table('add_help_types')->where('name_ru', $addtype)->first()){
-                        DB::table('add_help_types')->insert([
-                            'base_help_types_id'=>$typesParent->id,
-                            'name_ru'=>$addtype,
-                            'name_kz'=>$addtype
-                        ]);
-                    }
-                }
-            }
-
         }
     }
 }

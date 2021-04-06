@@ -15,11 +15,12 @@ class CreateAddHelpTypes extends Migration
     {
         Schema::create('add_help_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('base_help_types_id')->references('id')->on('base_help_types')->nullable();;
             $table->string('name_ru');
             $table->string('name_kz')->nullable();
-            $table->bigInteger('scenario_id');
-            $table->foreign('scenario_id')->references('id')->on('scenarios')->nullable();
+            $table->string('description_ru')->nullable();
+            $table->string('description_kz')->nullable();
+            $table->bigInteger('scenario_id')->unsigned()->nullable();
+            $table->foreign('scenario_id')->references('id')->on('scenarios');
             $table->timestamps();
         });
     }

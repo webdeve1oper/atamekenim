@@ -17,17 +17,11 @@ class CreateFonds extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('sub_title')->nullable();
-            $table->string('org_type');
             $table->string('logo')->nullable();
             $table->string('organization_form')->nullable();
             $table->string('website')->nullable();
             $table->date('foundation_date')->nullable();
-            $table->bigInteger('bin')->unique();
-            $table->bigInteger('help_location_region')->nullable();
-            $table->bigInteger('help_location_city')->nullable();
-            $table->foreign('help_location_region')->references('region_id')->on('regions');
-            $table->foreign('help_location_')->references('region_id')->on('regions');
-            $table->foreign('help_location_city')->references('city_id')->on('cities');
+            $table->string('bin')->unique();
             $table->string('phone');
             $table->string('email')->unique();
             $table->string('created_date')->nullable();

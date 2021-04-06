@@ -14,8 +14,10 @@ class CreateFondCitiesTable extends Migration
     public function up()
     {
         Schema::create('fond_cities', function (Blueprint $table) {
-            $table->bigInteger('city_id')->references('city_id')->on('cities')->onDelete('cascade');
-            $table->bigInteger('fond_id')->references('id')->on('fonds')->onDelete('cascade');
+            $table->integer('city_id');
+            $table->foreign('city_id')->references('city_id')->on('cities')->onDelete('cascade');
+            $table->bigInteger('fond_id')->unsigned();
+            $table->foreign('fond_id')->references('id')->on('fonds')->onDelete('cascade');
             $table->timestamps();
         });
     }

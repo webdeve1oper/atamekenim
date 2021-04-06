@@ -512,7 +512,7 @@
                                             <optgroup label="{{config('destinations')[$i]}}">
                                         @endif
                                         @if($i != $destination->paren_id )
-                                            @php $destination=;$i = $destination->paren_id @endphp
+                                            @php $i = $destination->paren_id @endphp
                                             <optgroup label="{{config('destinations')[$i]}}">
                                         @endif
                                         <option value="{{$destination->id}}">{{$destination->name_ru}}</option>

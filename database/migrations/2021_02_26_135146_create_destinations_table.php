@@ -19,7 +19,7 @@ class CreateDestinationsTable extends Migration
             $table->string('name_ru');
             $table->string('name_kz')->nullable();
             $table->string('name_en')->nullable();
-            $table->bigInteger('scenario_id')->nullable();
+            $table->bigInteger('scenario_id')->unsigned()->nullable();
             $table->foreign('scenario_id')->references('id')->on('scenarios');
             $table->timestamps();
         });
