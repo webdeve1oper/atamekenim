@@ -49,18 +49,18 @@
                                 {{--@endforeach--}}
                             {{--</select>--}}
 
-                            <button>Найти</button>
+                            <button>{{trans('home.founds')}}</button>
                         </form>
-                        <a href="{{route('dev')}}" class="btn-default openMap">Карта фондов</a>
+                        <a href="{{route('dev')}}" class="btn-default openMap">{{trans('home.map-fonds')}}</a>
                     </div>
 
                     <div class="col-12" id="fond_lists">
                         @include('frontend.home_fond_list')
                     </div>
                     <div class="col-sm-12">
-                        <a class="btn-default" href="{{route('fonds')}}">Смотреть все организации <span class="miniArrow">›</span></a>
-                        <button class="btn-default blue">Хочу помочь фонду</button>
-                        <a href="{{route('registration_fond')}}" class="btn-default blue">Регистрация в реестре</a>
+                        <a class="btn-default" href="{{route('fonds')}}">{{trans('home.all-org')}}<span class="miniArrow">›</span></a>
+                        <button class="btn-default blue">{{trans('home.hepls-fonds')}}</button>
+                        <a href="{{route('registration_fond')}}" class="btn-default blue">{{trans('home.reg-reestr')}}</a>
                     </div>
                     <script>
                         $('#formSearch').submit(function(){
@@ -84,8 +84,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h2>Новые участники реестра</h2>
-                        <a href="{{route('dev')}}" class="readMore">Подробнее <span class="miniArrow">›</span></a>
+                        <h2>{{trans('home.news-usr-reestr')}}</h2>
+                        <a href="{{route('dev')}}" class="readMore">{{trans('home.hr')}}<span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
                         {{--<div class="dropdown">--}}
@@ -145,26 +145,26 @@
             <div class="container">
                 <div class="row fat">
                     <div class="col-sm-6">
-                        <h3>Мне нужна помощь</h3>
+                        <h3>{{trans('home.have-helps')}}</h3>
                         <form action="" id="helpForm">
                             <div class="inputBlock">
-                                <label for="input1">Ваш ИИН</label>
-                                <input type="text" id="input1" placeholder="12 цифр">
+                                <label for="input1">{{trans('home.your-iin')}}</label>
+                                <input type="text" id="input1" placeholder="{{trans('home.12-num')}}">
                             </div>
                             <div class="inputBlock">
-                                <label for="citySelector">Ваш регион</label>
+                                <label for="citySelector">{{trans('home.your-regions')}}</label>
                                 <select name="" id="citySelector">
-                                    <option value="">Выбрать город из списка</option>
-                                    <option value="">Выбрать город из списка</option>
-                                    <option value="">Выбрать город из списка</option>
+                                    <option value="">{{trans('home.select-region')}}</option>
+                                    <option value="">{{trans('home.select-region')}}</option>
+                                    <option value="">{{trans('home.select-region')}}</option>
                                 </select>
                             </div>
                             <div class="inputBlock">
-                                <label for="input3">Ваш номер телефона</label>
+                                <label for="input3">{{trans('home.your-number')}}</label>
                                 <input type="text" id="input3" placeholder="8 (7**) *** *** **">
                             </div>
                             <div class="inputBlock topper">
-                                <button>Подать заявку</button>
+                                <button>{{trans('home.apply')}}</button>
                             </div>
                             <div class="inputBlock topper">
                                 <p class="regulations">Отправляя заявку, вы соглашаетесь <br>с <a href="">правилами публичной офферты</a></p>
@@ -172,12 +172,12 @@
                         </form>
                     </div>
                     <div class="col-sm-6">
-                        <p class="bigName">Зачем нужна регистрация?</p>
+                        <p class="bigName">{{trans('home.what-regis')}}</p>
                         <p class="descr">
-                            После того, как вы подадите заявку, ее получат все организации, работающие в вашем регионе и занимающиеся решением проблем, аналогичных вашей. Как только какая-либо организация возьмет вашу заявку в работу, вы получите сообщение и с вами свяжутся представители этой организации.
+                            {{trans('home.what-regis')}}
                         </p>
-                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt=""> Войти</a>
-                        <a href="{{route('registration_user')}}" class="btn-default transparent">Зарегистрироваться</a>
+                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>
+                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-in')}}</a>
                     </div>
                 </div>
             </div>
@@ -187,20 +187,19 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-5">
-                        <h3>Зачем регистрировать <br>организацию в Реестре?</h3>
-                        <p class="descr">После того, как вы зарегистрируете свою организацию в Реестре, она будет отображаться в списке благотворительных организаций Казахстана, пользователи смогут видеть статистику ваших проектов. Через рабочий кабинет вы будете получать заявки на получение помощи, соответствующие вашим региону, сфере деятельности и категориям благополучателей, и брать их в работу.</p>
-                        <a href="{{route('dev')}}" class="btn-default blue">Подробнее</a>
+                        <h3>{{trans('home.what-regis-org')}}</h3>
+                        <p class="descr">{{trans('home.what-regis-org-text')}}</p>
+                        <a href="{{route('dev')}}" class="btn-default blue">{{trans('home.hr')}}</a>
                     </div>
                     <div class="col-sm-7">
-                        <h3>Преимущества регистрации в Реестре</h3>
+                        <h3>{{trans('home.advant-regis')}}</h3>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="problemBlock">
                                     <div class="imgBlock"><img src="/img/icon1.svg" alt=""></div>
                                     <div class="content">
-                                        <p class="name">Признание</p>
-                                        <p class="descr">Все пользователи узнают о вашей организации и ее деятельности,
-                                            вы сможете участвовать в рейтингах и конкурсах</p>
+                                        <p class="name">{{trans('home.confession')}}</p>
+                                        <p class="descr">{{trans('home.confession-text')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -208,8 +207,8 @@
                                 <div class="problemBlock">
                                     <div class="imgBlock"><img src="/img/icon2.svg" alt=""></div>
                                     <div class="content">
-                                        <p class="name">Цифровизация</p>
-                                        <p class="descr">Вы получаете все данные о заявителе за счет связи с государственными информационными базами данных </p>
+                                        <p class="name">{{trans('home.digital')}}</p>
+                                        <p class="descr">{{trans('home.digital-text')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -217,9 +216,8 @@
                                 <div class="problemBlock">
                                     <div class="imgBlock"><img src="/img/icon1.svg" alt=""></div>
                                     <div class="content">
-                                        <p class="name">Удобство</p>
-                                        <p class="descr">Вы получаете только заявки, соответствующие вашему региону, сфере деятельности
-                                            и категориям благополучателей</p>
+                                        <p class="name">{{trans('home.convenience')}}</p>
+                                        <p class="descr">{{trans('home.convenience-text')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -227,9 +225,8 @@
                                 <div class="problemBlock">
                                     <div class="imgBlock"><img src="/img/icon2.svg" alt=""></div>
                                     <div class="content">
-                                        <p class="name">Безопасность</p>
-                                        <p class="descr">Вы можете быть уверенны, что
-                                            с каждой взятой вами заявкой работаете только вы (исключение иждивенчества)  </p>
+                                        <p class="name">{{trans('home.security')}}</p>
+                                        <p class="descr">{{trans('home.security-text')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -243,12 +240,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Кому помогли</h4>
-                        <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <h4>{{trans('home.who-help')}}</h4>
+                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">Всего заявок: <span>{{$helpsCount}}</span></p>
-                        <p class="status">Выполнено: <span>{{$helps->total()}}</span></p>
+                        <p class="status">{{trans('home.total-appl')}} <span>{{$helpsCount}}</span></p>
+                        <p class="status">{{trans('home.well-done')}} <span>{{$helps->total()}}</span></p>
                     </div>
                     @foreach($helps as $help)
                         <div class="col-sm-3">
@@ -275,11 +272,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Новые заявки</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <h4>{{trans('home.new-appl')}}</h4>
+                        <a href="" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">На расмотрении: <span>{{$newHelps->total()}}</span></p>
+                        <p class="status">{{trans('home.under-conside')}} <span>{{$newHelps->total()}}</span></p>
                     </div>
                     @foreach($newHelps as $help)
                     <div class="col-sm-3">
@@ -308,9 +305,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Вопрос-ответ</h4>
-                        <button class="btn-default blue">Задать вопрос</button>
-                        <button class="btn-default">Call-центр</button>
+                        <h4>{{trans('home.faq')}}</h4>
+                        <button class="btn-default blue">{{trans('home.ask-question')}}</button>
+                        <button class="btn-default">{{trans('home.call-center')}}</button>
                     </div>
                     <div class="col-sm-12">
                         <div id="accordion">
@@ -318,16 +315,14 @@
                                 <div class="card-header" id="headingOne">
                                     <p class="mb-0">
                                         <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                            Как попасть в реесетр? <i class="fas fa-angle-down"></i>
+                                            {{trans('home.how-to-reestr')}}<i class="fas fa-angle-down"></i>
                                         </button>
                                     </p>
                                 </div>
 
                                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                     <div class="card-body">
-                                        Мы связываем нуждающихся и благотворителей, чтобы социальные нужды не оставались без ответа и ни одно доброе дело – незамеченным. Если Вы оказались в трудной жизненной ситуации – обратитесь к нам.
-
-                                        К нам регулярно обращаются люди, оказавшиеся в сложной жизненной ситуации, которым мы помогаем с Вашей помощью. Помогите тем, кому действительно необходима помощь.
+                                        {{trans('home.how-to-reestr-text')}}
                                     </div>
                                 </div>
                             </div>
@@ -335,15 +330,13 @@
                                 <div class="card-header" id="headingTwo">
                                     <p class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                            Как подать заявку на получение помощи? <i class="fas fa-angle-down"></i>
+                                            {{trans('home.how-to-helps')}}<i class="fas fa-angle-down"></i>
                                         </button>
                                     </p>
                                 </div>
                                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                     <div class="card-body">
-                                        Мы связываем нуждающихся и благотворителей, чтобы социальные нужды не оставались без ответа и ни одно доброе дело – незамеченным. Если Вы оказались в трудной жизненной ситуации – обратитесь к нам.
-
-                                        К нам регулярно обращаются люди, оказавшиеся в сложной жизненной ситуации, которым мы помогаем с Вашей помощью. Помогите тем, кому действительно необходима помощь.
+                                        {{trans('home.how-to-helps-text')}}
                                     </div>
                                 </div>
                             </div>
@@ -351,15 +344,13 @@
                                 <div class="card-header" id="headingThree">
                                     <p class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                            Как я могу помочь нуждающимся? <i class="fas fa-angle-down"></i>
+                                            {{trans('home.how-to-needy')}}<i class="fas fa-angle-down"></i>
                                         </button>
                                     </p>
                                 </div>
                                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                                     <div class="card-body">
-                                        Мы связываем нуждающихся и благотворителей, чтобы социальные нужды не оставались без ответа и ни одно доброе дело – незамеченным. Если Вы оказались в трудной жизненной ситуации – обратитесь к нам.
-
-                                        К нам регулярно обращаются люди, оказавшиеся в сложной жизненной ситуации, которым мы помогаем с Вашей помощью. Помогите тем, кому действительно необходима помощь.
+                                        {{trans('home.how-to-needy-text')}}
                                     </div>
                                 </div>
                             </div>
@@ -369,21 +360,19 @@
                                 <div class="card-header" id="headingFour">
                                     <p class="mb-0">
                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                            Часто задаваемые вопросы <i class="fas fa-angle-down"></i>
+                                            {{trans('home.freq-ask-questions')}}<i class="fas fa-angle-down"></i>
                                         </button>
                                     </p>
                                 </div>
                                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                                     <div class="card-body">
-                                        Мы связываем нуждающихся и благотворителей, чтобы социальные нужды не оставались без ответа и ни одно доброе дело – незамеченным. Если Вы оказались в трудной жизненной ситуации – обратитесь к нам.
-
-                                        К нам регулярно обращаются люди, оказавшиеся в сложной жизненной ситуации, которым мы помогаем с Вашей помощью. Помогите тем, кому действительно необходима помощь.
+                                        {{trans('home.freq-ask-questions-text')}}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <button class="btn-default">Посмотреть еще <i class="fas fa-angle-down"></i></button>
+                        <button class="btn-default">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
                     </div>
                 </div>
             </div>
@@ -393,13 +382,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Новости</h4>
+                        <h4>{{trans('home.news')}}</h4>
                     </div>
                     <div class="col-sm-12">
                         <ul class="newsTabs">
-                            <li><a href="" class="active">Последние новости</a></li>
-                            <li><a href="">Информация для благотворительных фондов</a></li>
-                            <li><a href="">Информация для благополучателей</a></li>
+                            <li><a href="" class="active">{{trans('home.last-news')}}</a></li>
+                            <li><a href="">{{trans('home.info-for-fond')}}</a></li>
+                            <li><a href="">{{trans('home.info-for-benecif')}}</a></li>
                             <div class="paginationBlock">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -426,7 +415,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <a href="{{route('news')}}" class="readMore">Читать все новости <span class="miniArrow">›</span></a>
+                        <a href="{{route('news')}}" class="readMore">{{trans('home.read-all-news')}}<span class="miniArrow">›</span></a>
                     </div>
                 </div>
             </div>
@@ -436,8 +425,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Наши партнеры</h4>
-                        <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <h4>{{trans('home.our-partnres')}}</h4>
+                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">
