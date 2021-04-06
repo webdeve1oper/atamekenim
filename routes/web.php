@@ -35,6 +35,7 @@ Route::get('login-user', 'UserAuthController@index')->name('login');
 Route::post('post-login-user', 'UserAuthController@postLogin')->name('post_login_user');
 Route::get('registration_user', 'UserAuthController@registration')->name('registration_user');
 Route::post('post-registration-user', 'UserAuthController@postRegistration')->name('post_registration_user');
+Route::post('post_sms_user', 'UserAuthController@postSmsRegistration')->name('post_sms_user');
 
 //Fond Auth
 Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond');
