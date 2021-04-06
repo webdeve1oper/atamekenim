@@ -27,32 +27,40 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="cool-sm-8 offset-sm-2">
+                            <div class="col-sm-8 offset-sm-2">
                                 <!-- Tab panes -->
                                         <h1>Регистрация пользователя </h1>
-                                        <form action="{{route('post_registration_user')}}" class="w-100" method="post">
-                                            @csrf
+                                        <form id="phone_sms">
                                             <div class="form-group">
-                                                <input name="first_name" type="text" value="{{old('first_name')}}" class="form-control mb-3" placeholder="Имя" />
+                                                <input type="text" class="phone_number form-control mb-3" name="phone" placeholder="Введите Ваш номер телефона" value="{{old('phone')}}">
+                                                <span class="error phone_error"></span>
+                                            </div>
+                                            <div class="form-group smsBlock"></div>
+                                            <button class="btn btn-primary" type="submit">Продолжить</button>
+                                        </form>
+                                        <form action="{{route('post_registration_user')}}" id="mainForm" class="w-100" method="post">
+                                            @csrf
+                                            <div class="form-group d-none">
+                                                <input name="first_name" type="text" value="{{old('first_name')}}test" class="form-control mb-3" placeholder="Имя" />
                                                 @if($errors->has('first_name'))
                                                     <span class="error">{{ $errors->first('first_name') }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group">
-                                                <input name="last_name" type="text" value="{{old('last_name')}}" class="form-control mb-3" placeholder="Фамилия" />
+                                            <div class="form-group d-none">
+                                                <input name="last_name" type="text" value="{{old('last_name')}}test" class="form-control mb-3" placeholder="Фамилия" />
                                                 @if($errors->has('last_name'))
                                                     <span class="error">{{ $errors->first('last_name') }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group">
-                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}" class="form-control mb-3" placeholder="ИИН" />
+                                            <div class="form-group d-none">
+                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}989898454545" class="form-control mb-3" placeholder="ИИН" />
                                                 @if($errors->has('iin'))
                                                     <span class="error">{{ $errors->first('iin') }}</span>
                                                 @endif
                                             </div>
 
-                                            <div class="form-group">
-                                                <input name="email" type="email" value="{{old('email')}}" class="form-control mb-3" placeholder="Почта" />
+                                            <div class="form-group d-none">
+                                                <input name="email" type="email" value="{{old('email')}}test@test.ru" class="form-control mb-3" placeholder="Почта" />
                                                 @if($errors->has('email'))
                                                     <span class="error">{{ $errors->first('email') }}</span>
                                                 @endif
@@ -80,4 +88,32 @@
             </div>
         </div>
 
+    <script>
+        $(document).ready(function(){
+            $('#phone_sms').submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: "{{ route('post_sms_user') }}",
+                    method: 'post',
+                    data: $(this).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': '{{csrf_token()}}'
+                    },
+                    success: function(response){
+                        if(response.status == 1){
+                            $('.smsBlock').show();
+                            $('.smsBlock').html(`<input type="text" class="sms_code form-control mb-3" name="sms_code" placeholder="Код из SMS">`);
+                            $('.phone_error').html(response.message);
+                        }else if(response.status == 2){
+                            $('.phone_error').html(response.message);
+                            $('#mainForm').show();
+                            $('#phone_sms').remove();
+                        }else{
+                            $('.phone_error').html(response.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

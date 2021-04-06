@@ -100,6 +100,28 @@ class UserAuthController extends Controller
 
     }
 
+    public function postSmsRegistration(Request $request){
+        $phone = $request->get('phone');
+        $sms = $request->get('sms_code');
+        $validator = Validator::make($request->all(),[
+            'phone' => 'required|min:11',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['status'=>0, 'message'=>$validator->errors()->first()]);
+        }else{
+            if($sms){
+                if($sms != '1313'){
+                    return response()->json(['status'=>0, 'message'=>'Неверный SMS!']);
+                }else{
+                    return response()->json(['status'=>2, 'message'=>'SMS принято!']);
+                }
+            }else{
+                return response()->json(['status'=>1, 'message'=>'Вам отправлено SMS c кодом подтверждения, проверьте']);
+            }
+        }
+    }
+
     public function create(array $data)
     {
         $data['password'] = Hash::make($data['password']);
