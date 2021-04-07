@@ -49,7 +49,7 @@
                                 {{--@endforeach--}}
                             {{--</select>--}}
 
-                            <button>{{trans('home.founds')}}</button>
+                            <button>{{trans('home.found')}}</button>
                         </form>
                         <a href="{{route('dev')}}" class="btn-default openMap">{{trans('home.map-fonds')}}</a>
                     </div>
@@ -177,7 +177,7 @@
                             {{trans('home.what-regis')}}
                         </p>
                         <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>
-                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-in')}}</a>
+                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>
                     </div>
                 </div>
             </div>

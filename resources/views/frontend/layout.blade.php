@@ -115,7 +115,7 @@
                             <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
                             <li><a href="{{route('allreviews')}}">{{trans('home.menu-testimonials')}}</a></li>
                             <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
-                            <li><a href="{{route('contacts')}}">Контакты</a></li>
+                            <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
             <div class="col-sm-3">
                 <button class="share"><span>{{trans('home.share-social')}}</span><img src="/img/share.svg" alt=""></button>
                 <form action="">
-                    <input type="text" placeholder="Поиск по сайту">
+                    <input type="text" placeholder="{{trans('home.site-search')}}">
                     <button><img src="/img/search.svg" alt=""></button>
                 </form>
                 @if(Auth::check())
