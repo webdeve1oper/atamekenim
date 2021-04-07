@@ -30,17 +30,17 @@
                                     <div class="form-group">
                                         <label for="who_need_help">Кому нужна помощь:</label>
                                         <select name="who_need_help" id="who_need_help" class="form-control">
-                                            @foreach(config('destinations_attribute') as $value=> $title)
-                                                <option value="{{$value}}">{{$title}}</option>
+                                            @foreach($scenarios as $value => $scenario)
+                                                <option value="{{$value}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="destionations">Адресат помощи (выберите один или несколько):</label>
+                                        <label for="destinations">Адресат помощи (выберите один или несколько):</label>
                                         @php $i = 0 @endphp
-                                        <select name="destionations[]" class="select2 w-100" multiple placeholder="Адресат помощи" id="destionations">
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Адресат помощи" id="destinations">
                                             @foreach($destinations as $destination)
                                                 @if($loop->index == 0)
                                                     <optgroup label="{{config('destinations')[$i]}}">
@@ -70,6 +70,12 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <label for="">Район</label>
+                                        <select name="districts[]" class="select2 w-100" placeholder="Тип помощи" id="districts"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         <label for="">Город/Село</label>
                                         <select name="cities[]" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
                                     </div>
@@ -81,11 +87,7 @@
                                 <label for="baseHelpTypes">Какая помощь необходима:</label>
                                 <select name="baseHelpTypes[]" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelpTypes">
                                     @foreach($baseHelpTypes as $destionation)
-                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}} (
-                                            @foreach($destionation->children as $child)
-                                                {{$child->name_ru}}@if(!$loop->last),@endif
-                                            @endforeach
-                                            )</option>
+                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}}</option>
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted">Сфера необходимой помощи</small>
@@ -111,7 +113,7 @@
                             <script>
                                 var json = {!! $regions->toJson() !!};
                                 var jsonHelps = {!! $baseHelpTypes->toJson() !!};
-                                console.log(jsonHelps);
+                                var scenarios = {!! $scenarios->toJson() !!};
                                 $('#destionations').select2({
                                     width: '100%',
                                     placeholder: 'Адресат помощи'
@@ -144,6 +146,31 @@
                                     width: '100%',
                                     placeholder: 'Выберите подробный сектор помощи'
                                 });
+                                console.log(scenarios);
+                                $('#who_need_help').change(function(){
+                                    var scenario_id = $('#who_need_help').children('option:selected').val();
+                                    var datas = [];
+
+                                    scenarios.forEach(function(value,index){
+                                        if(value.id == scenario_id){
+                                            scenario_id = index;
+                                        }
+                                    });
+                                    $('#destinations').empty();
+                                    datas.push({id:'0', text: '-'});
+                                    for (let [key, value] of Object.entries(scenarios[scenario_id].destinations)){
+                                        datas.push({id:value.id, text: value.name_ru});
+                                    }
+                                    $('#destinations').select2({data: datas, allowClear: true});
+
+                                    var datas2 = [];
+                                    $('#baseHelpTypes').empty();
+                                    datas2.push({id:'0', text: '-'});
+                                    for (let [key, value] of Object.entries(scenarios[scenario_id].add_help_types)){
+                                        datas2.push({id:value.id, text: value.name_ru});
+                                    }
+                                    $('#baseHelpTypes').select2({data: datas2, allowClear: true});
+                                });
                                 $('#regions').change(function(){
                                     var ind = $('#regions').children('option:selected').val();
                                     var datas = [];
@@ -153,15 +180,36 @@
                                         }
                                     });
 
+                                    $('#districts').empty();
+                                    datas.push({id:'0', text: '-'});
+                                    for (let [key, value] of Object.entries(json[ind].districts)){
+                                        datas.push({id:value.district_id, text: value.text});
+                                    }
+                                    $('#districts').select2({data: datas, allowClear: true});
+                                });
+
+                                $('#districts').change(function(){
+                                    var region_id = $('#regions').children('option:selected').val();
+                                    var district_id = $('#districts').children('option:selected').val();
+                                    var datas = [];
+                                    json.forEach(function(value,index){
+                                        if(value.region_id == region_id){
+                                            region_id = index;
+                                            value.districts.forEach(function(v,i){
+                                                if(v.district_id == district_id){
+                                                    district_id = i;
+                                                }
+                                            });
+                                        }
+                                    });
+
                                     $('#cities').empty();
                                     datas.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(json[ind].cities)){
-                                        datas.push({id:value.id, text: value.text});
+                                    for (let [key, value] of Object.entries(json[region_id].districts[district_id].cities)){
+                                        datas.push({id:value.city_id, text: value.title_ru});
                                     }
                                     $('#cities').select2({data: datas, allowClear: true});
                                 });
-
-
                             </script>
                             <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>
                             <input type="submit" class="btn btn-primary m-auto d-table" value="Найти">

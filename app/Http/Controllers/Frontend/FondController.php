@@ -15,6 +15,7 @@ use App\FondDonation;
 use App\Help;
 use App\Http\Controllers\Controller;
 use App\Region;
+use App\Scenario;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,7 @@ class FondController extends Controller
         $cashHelpSizes = CashHelpSize::all();
         $relatedHelpIds = $fond->baseHelpTypes->pluck('id')->toArray();
         $relatedFonds = Fond::select('logo', 'title')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
-            $query->whereIn('base_help_id', $relatedHelpIds);
+            $query->whereIn('id', $relatedHelpIds);
         })->get();
 
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
@@ -44,14 +45,15 @@ class FondController extends Controller
 //            })->get();
             return view('frontend.fond.request_help_fonds')->with();
         }
-        $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get();
-        $regions = Region::select('region_id', 'title_ru as text')->with('districts')->get();
+        $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get();
+        $baseHelpTypes = AddHelpType::all();
+        $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();
 
 
-        return view('frontend.fond.request_help')->with(compact( 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+        return view('frontend.fond.request_help')->with(compact( 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios'));
     }
 
     public function fonds(Request $request){
@@ -102,7 +104,7 @@ class FondController extends Controller
             $baseHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
         }
-        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes', 'destionations'));
+        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'destionations'));
     }
 
     public function donationToFond($id)

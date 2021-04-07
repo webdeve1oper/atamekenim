@@ -11,4 +11,7 @@ class Destination extends Model
 
     protected $table = 'destinations';
 
+    public function scenarios(){
+        return $this->belongsToMany(Scenario::class, 'destinations_to_scenarios', 'destination_id', 'scenario_id');
+    }
 }

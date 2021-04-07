@@ -17,6 +17,6 @@ class Region extends Model
     public function districts()
     {
         return $this->hasMany(District::class, 'region_id', 'region_id')
-            ->select('district_id as id', 'region_id', 'title_ru as text');
+            ->select('district_id', 'region_id', 'title_ru as text');
     }
 }

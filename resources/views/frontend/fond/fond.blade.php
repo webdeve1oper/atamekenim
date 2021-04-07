@@ -534,11 +534,7 @@
                                 <label for="baseHelpTypes">Какая помощь необходима:</label>
                                 <select name="baseHelpTypes[]" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelpTypes">
                                     @foreach($baseHelpTypes as $destionation)
-                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}} (
-                                            @foreach($destionation->children as $child)
-                                                {{$child->name_ru}}@if(!$loop->last),@endif
-                                            @endforeach
-                                            )</option>
+                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}} </option>
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted">Сфера необходимой помощи</small>
