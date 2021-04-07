@@ -53,7 +53,7 @@
                                                 @endif
                                             </div>
                                             <div class="form-group d-none">
-                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}989898454545" class="form-control mb-3" placeholder="ИИН" />
+                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}980111454545" class="form-control mb-3" placeholder="ИИН" />
                                                 @if($errors->has('iin'))
                                                     <span class="error">{{ $errors->first('iin') }}</span>
                                                 @endif

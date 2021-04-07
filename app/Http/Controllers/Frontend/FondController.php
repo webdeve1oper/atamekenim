@@ -11,9 +11,11 @@ use App\Country;
 use App\Destination;
 use App\DestinationAttribute;
 use App\Fond;
+use App\FondDonation;
 use App\Help;
 use App\Http\Controllers\Controller;
 use App\Region;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -100,9 +102,21 @@ class FondController extends Controller
             $baseHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
         }
-
-
         return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'addHelpTypes', 'destionations'));
+    }
 
+    public function donationToFond($id)
+    {
+        $last_donation = FondDonation::latest()->first();
+
+        $client = Client::get('https://jpay.jysanbank.kz/ecom/api');
+
+        $vSign = hash("sha512",config('app.C_SHARED_KEY')
+            .$_POST["order"].";"
+            .$_POST["mpi_order"].";"
+            .$_POST["amount"].";398;"
+            .$_POST["res_code"].";"
+            .$_POST["rc"].";"
+            .$_POST["rrn"].";" );
     }
 }

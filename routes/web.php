@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 //Static pages
 Route::get('/', 'Frontend\MainController@index')->name('home');
 Route::get('/o-proekte', function(){
@@ -20,6 +10,7 @@ Route::get('/develope', function(){
 })->name('dev');
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
+Route::get('/fond/donation/{id}', 'Frontend\FondController@donationToFond')->name('donation_to_fond');
 Route::get('/about', 'Frontend\MainController@about')->name('about');
 Route::get('/contacts', 'Frontend\MainController@contacts')->name('contacts');
 Route::get('/question-answer', 'Frontend\MainController@qa')->name('qa');

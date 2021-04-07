@@ -188,18 +188,16 @@
                             <p>Мы связываем нуждающихся и благотворителей, чтобы
                                 социальные нужды не оставались без ответа и ни одно
                                 доброе дело – незамеченным.</p>
-                            <form action="">
+                            <form action="{{route('donation_to_fond', $fond->id)}}">
+                                @csrf
                                 <div class="inputBlock">
                                     <span>Указать сумму</span>
-                                    <input type="text" name="sum" placeholder="Пожертвовать произвольную сумму">
-                                    <label for="sumInput1">100</label>
-                                    <label for="sumInput2">1000</label>
-                                    <label for="sumInput3">10000</label>
-                                    <input type="radio" id="sumInput1" name="sum" value="100">
-                                    <input type="radio" id="sumInput2" name="sum" value="1000">
-                                    <input type="radio" id="sumInput3" name="sum" value="10000">
+                                    <input type="text" name="AMOUNT " id="sum" placeholder="Пожертвовать произвольную сумму">
+                                    <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
+                                    <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
+                                    <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
                                 </div>
-                                <div class="inputBlock">
+                                <div class="inputBlock d-none">
                                     <span>Указать сумму</span>
                                     <label for="dayInput1">Разовое пожертвование</label>
                                     <label for="dayInput2">каждый день</label>
@@ -208,7 +206,8 @@
                                     <input type="radio" id="dayInput2" name="day" value="Каждый день">
                                     <input type="radio" id="dayInput3" name="day" value="Ежемесячно">
                                 </div>
-                                <button class="btn-default red">
+                                <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond->title}}">
+                                <button class="btn-default red" type="submit">
                                     <img src="/img/help.svg" alt=""> Поддержать благотворительную организацию
                                 </button>
                             </form>
