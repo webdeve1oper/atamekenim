@@ -167,14 +167,14 @@
                                 <button>{{trans('home.apply')}}</button>
                             </div>
                             <div class="inputBlock topper">
-                                <p class="regulations">Отправляя заявку, вы соглашаетесь <br>с <a href="">правилами публичной офферты</a></p>
+                                <p class="regulations">{{trans('home.helps-offerts')}}</p>
                             </div>
                         </form>
                     </div>
                     <div class="col-sm-6">
                         <p class="bigName">{{trans('home.what-regis')}}</p>
                         <p class="descr">
-                            {{trans('home.what-regis')}}
+                            {{trans('home.what-regis-text')}}
                         </p>
                         <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>
                         <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>
@@ -305,12 +305,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>{{trans('home.faq')}}</h4>
+                        <h4>{{trans('home.faq2')}}</h4>
                         <button class="btn-default blue">{{trans('home.ask-question')}}</button>
-                        <button class="btn-default">{{trans('home.call-center')}}</button>
+                        <button class="btn-default">{{trans('home.coll-center')}}</button>
                     </div>
                     <div class="col-sm-12">
-                        <div id="accordion">
+                        <div id="accordion" class="accordion">
                             <div class="card active">
                                 <div class="card-header" id="headingOne">
                                     <p class="mb-0">
@@ -359,7 +359,7 @@
                             <div class="card">
                                 <div class="card-header" id="headingFour">
                                     <p class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
                                             {{trans('home.freq-ask-questions')}}<i class="fas fa-angle-down"></i>
                                         </button>
                                     </p>
@@ -370,9 +370,129 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header" id="headingFive">
+                                    <p class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                            {{trans('home.faq-ask-questions1')}}<i class="fas fa-angle-down"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                                    <div class="card-body">
+                                        {{trans('home.freq-ask-questions-text')}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingSix">
+                                    <p class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                            {{trans('home.faq-ask-questions2')}}<i class="fas fa-angle-down"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+                                    <div class="card-body">
+                                        {{trans('home.freq-ask-questions-text')}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <button class="btn-default">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
+                    </div>
+                    <div class="col-sm-12">
+                        <h4>{{trans('home.faq3')}}</h4>
+                    </div>
+                    <div class="col-sm-12">
+                         <div id="accordion2" class="accordion">
+                             <div class="card">
+                                 <div class="card-header" id="headinOne">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeOne" aria-expanded="false" aria-controls="collapeOne" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq1')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeOne" class="collapse" aria-labelledby="headinOne" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="card">
+                                 <div class="card-header" id="headinTwo">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeTwo" aria-expanded="false" aria-controls="collapeTwo" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq2')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeTwo" class="collapse" aria-labelledby="headinTwo" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="card">
+                                 <div class="card-header" id="headinThree">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeThree" aria-expanded="false" aria-controls="collapeThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq3')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeThree" class="collapse" aria-labelledby="headinThree" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="card">
+                                 <div class="card-header" id="headinFour">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeFour" aria-expanded="false" aria-controls="collapeFour" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq4')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeFour" class="collapse" aria-labelledby="headinFour" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="card">
+                                 <div class="card-header" id="headinFive">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeFive" aria-expanded="false" aria-controls="collapeFive" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq5')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeFive" class="collapse" aria-labelledby="headinFive" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="card">
+                                 <div class="card-header" id="headinSix">
+                                     <p class="mb-0">
+                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeSix" aria-expanded="false" aria-controls="collapeSix" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
+                                             {{trans('home.rfaq6')}}<i class="fas fa-angle-down"></i>
+                                         </button>
+                                     </p>
+                                 </div>
+                                 <div id="collapeSix" class="collapse" aria-labelledby="headinSix" data-parent="#accordion">
+                                     <div class="card-body">
+                                         {{trans('home.how-to-reestr-text')}}
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <button class="btn-default">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -432,38 +552,38 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner1.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/atameken.png" alt="">
+                                    <p>{{trans('home.atameken')}}</p>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner2.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/goverment.png" alt="">
+                                    <p>{{trans('home.m-edu')}}</p>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner3.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/goverment.png" alt="">
+                                    <p>{{trans('home.m-tszn')}}</p>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner1.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/atameken.png" alt="">
+                                    <p>{{trans('home.atameken')}}</p>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner2.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/goverment.png" alt="">
+                                    <p>{{trans('home.m-edu')}}</p>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="block">
-                                    <img src="/img/partner3.svg" alt="">
-                                    <p>Министерство образования и науки Республики Казахстан</p>
+                                    <img src="/img/goverment.png" alt="">
+                                    <p>{{trans('home.m-tszn')}}</p>
                                 </div>
                             </div>
                         </div>

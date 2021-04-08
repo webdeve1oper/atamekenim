@@ -1,0 +1,62 @@
+.faqBlock .accordion {
+    display: table;
+    margin: 40px 0 0;
+    width: 100%;
+}
+
+.faqBlock .accordion .card {
+    display: table;
+    width: 100%;
+    border: 1px dashed #c1c1c1;
+    padding: 20px 25px;
+    margin: 0 0 25px;
+    background: #fff;
+}
+
+.faqBlock .accordion .card .card-body, .faqBlock .accordion .card .card-header {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: 0 0;
+}
+
+.faqBlock .accordion .card .card-body {
+    line-height: 1.6;
+    padding-top: 15px;
+    width: 60%;
+    max-width: 100%;
+}
+
+.faqBlock .accordion .card .card-header p {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: 0 0;
+    display: table;
+    width: 100%;
+    text-align: left;
+}
+
+.faqBlock .accordion .card .card-header p button {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: 0 0;
+    color: #06c;
+    font-size: 18px;
+    font-weight: 600;
+    display: table;
+    width: 100%;
+    position: relative;
+    text-align: left;
+}
+
+.faqBlock .accordion .card .card-header p button i {
+    float: right;
+    font-size: 22px;
+}
+
+.faqBlock .accordion .card.active {
+    border-color: #06c;
+    background: #f9f9ff;
+}
