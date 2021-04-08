@@ -31,33 +31,55 @@
                                         <label for="who_need_help">Кому нужна помощь:</label>
                                         <select name="who_need_help" id="who_need_help" class="form-control">
                                             @foreach($scenarios as $value => $scenario)
-                                                <option value="{{$value}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+
+                                <!--destination 1-->
+                                <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="destinations">Адресат помощи (выберите один или несколько):</label>
-                                        @php $i = 0 @endphp
-                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Адресат помощи" id="destinations">
-                                            @foreach($destinations as $destination)
-                                                @if($loop->index == 0)
-                                                    <optgroup label="{{config('destinations')[$i]}}">
-                                                        @endif
-                                                        @if($i != $destination->paren_id )
-                                                            @php $i = $destination->paren_id @endphp
-                                                            <optgroup label="{{config('destinations')[$i]}}">
-                                                                @endif
-                                                                <option value="{{$destination->id}}">{{$destination->name_ru}}</option>
-                                                                @if($i != $destination->paren_id )
-                                                            </optgroup>
-                                                @endif
-                                            @endforeach
+                                        <label for="destinations1">Выберите подходящий статус получателя помощи* (выберите один или несколько вариантов)</label>
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Выберите подходящий статус получателя помощи* " id="destinations1">
                                         </select>
                                         <small class="form-text text-muted">Укажите адресата помощи</small>
                                     </div>
                                 </div>
+
+                                <!--destination 2-->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="destinations2">Отметьте при необходимости жизненную ситуацию получателя помощи (выберите один или несколько вариантов)</label>
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Отметьте при необходимости жизненную ситуацию получателя помощи (выберите один или несколько вариантов)" id="destinations2">
+
+                                        </select>
+                                        <small class="form-text text-muted">Укажите адресата помощи</small>
+                                    </div>
+                                </div>
+
+                                <!--destination 3-->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="destinations3">Отметьте при необходимости происхождение получателя помощи (только один вариант из предложенных)</label>
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Отметьте при необходимости происхождение получателя помощи (только один вариант из предложенных)" id="destinations3">
+
+                                        </select>
+                                        <small class="form-text text-muted">Укажите адресата помощи</small>
+                                    </div>
+                                </div>
+
+                                <!--destination 4-->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="destinations4">Отметьте при необходимости статус по здоровью получателя помощи (выберите один или несколько вариантов)</label>
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="Отметьте при необходимости статус по здоровью получателя помощи (выберите один или несколько вариантов)" id="destinations4">
+
+                                        </select>
+                                        <small class="form-text text-muted">Укажите адресата помощи</small>
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="regions">В каком регионе необходима помощь:</label>
@@ -102,6 +124,31 @@
                                 <small class="form-text text-muted">Укажите тпи помощи</small>
                             </div>
 
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Укажите срочность необходимой помощи* :</label>
+                                <select name="helpUrgencyDate" class="select2 w-100" placeholder="Укажите срочность необходимой помощи" id="helpUrgencyDate">
+                                    <option value="1">в течение 1 месяца</option>
+                                    <option value="2">в течение 3 месяцев</option>
+                                    <option value="3">в течение 6 месяцев</option>
+                                    <option value="4">в течение 1 года</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Прикрепите фото/видео получателя помощи или его проблемы:</label>
+                                <br><br>
+                                <input type="file" id="file" name="photo[]"><br><br>
+                                <input type="text" name="videoUrl" placeholder="Ссылка на видео">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Прикрепите при необходимости подтверждающие документы по запрашиваемой помощи (например, медицинские справки, выписки, справка с места учебы, работы и т.д.) Укажите название документа и прикрепите файл в формате doc, jpeg или pdf.:</label>
+                                <br>
+                                <input type="file" id="file" name="doc[]">
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Необхадимая сумма:</label>
                                 <select name="cashHelpSizes[]" class="select2 w-100" placeholder="Виды оказываемой помощи" id="cashHelpSizes">
@@ -113,7 +160,7 @@
                             <script>
                                 var json = {!! $regions->toJson() !!};
                                 var jsonHelps = {!! $baseHelpTypes->toJson() !!};
-                                var scenarios = {!! $scenarios->toJson() !!};
+                                var scenarios = {!! json_encode($scenarios) !!};
                                 $('#destionations').select2({
                                     width: '100%',
                                     placeholder: 'Адресат помощи'
@@ -134,6 +181,10 @@
                                     width: '100%',
                                     placeholder: 'Виды оказываемой помощи'
                                 });
+                                $('#helpUrgencyDate').select2({
+                                    width: '100%',
+                                    placeholder: 'Виды оказываемой помощи'
+                                });
                                 $('#baseHelpTypes').select2({
                                     width: '100%',
                                     placeholder: 'Сфера необходимой помощи'
@@ -146,31 +197,60 @@
                                     width: '100%',
                                     placeholder: 'Выберите подробный сектор помощи'
                                 });
-                                console.log(scenarios);
+                                console.log(jsonHelps);
+
                                 $('#who_need_help').change(function(){
                                     var scenario_id = $('#who_need_help').children('option:selected').val();
                                     var datas = [];
-
+                                    var firstDestinations = [];
+                                    var secondDestinations = [];
+                                    var thirdDestinations = [];
+                                    var fourDestinations = [];
+                                    var scenario_index = 0;
                                     scenarios.forEach(function(value,index){
                                         if(value.id == scenario_id){
-                                            scenario_id = index;
+                                            scenario_index = index;
                                         }
                                     });
-                                    $('#destinations').empty();
-                                    datas.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(scenarios[scenario_id].destinations)){
-                                        datas.push({id:value.id, text: value.name_ru});
+                                    $('#destinations1').empty();
+                                    $('#destinations2').empty();
+                                    $('#destinations3').empty();
+                                    $('#destinations4').empty();
+                                    firstDestinations.push({id:'0', text: '-'});
+                                    secondDestinations.push({id:'0', text: '-'});
+                                    thirdDestinations.push({id:'0', text: '-'});
+                                    fourDestinations.push({id:'0', text: '-'});
+                                    for (let [key, value] of Object.entries(scenarios[scenario_index].destinations)){
+                                        if(value.parent_id == 0 ){
+                                            firstDestinations.push({id:value.id, text: value.name_ru});
+                                        }
+                                        if(value.parent_id == 1 ){
+                                            secondDestinations.push({id:value.id, text: value.name_ru});
+                                        }
+                                        if(value.parent_id == 2 ){
+                                            thirdDestinations.push({id:value.id, text: value.name_ru});
+                                        }
+                                        if(value.parent_id == 3 ){
+                                            fourDestinations.push({id:value.id, text: value.name_ru});
+                                        }
                                     }
-                                    $('#destinations').select2({data: datas, allowClear: true});
+                                    $('#destinations1').select2({data: firstDestinations, allowClear: true});
+                                    $('#destinations2').select2({data: secondDestinations, allowClear: true});
+                                    $('#destinations3').select2({data: thirdDestinations, allowClear: true});
+                                    $('#destinations4').select2({data: fourDestinations, allowClear: true});
 
                                     var datas2 = [];
                                     $('#baseHelpTypes').empty();
                                     datas2.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(scenarios[scenario_id].add_help_types)){
+                                    for (let [key, value] of Object.entries(scenarios[scenario_index].add_help_types)){
                                         datas2.push({id:value.id, text: value.name_ru});
                                     }
                                     $('#baseHelpTypes').select2({data: datas2, allowClear: true});
                                 });
+
+
+
+
                                 $('#regions').change(function(){
                                     var ind = $('#regions').children('option:selected').val();
                                     var datas = [];
@@ -209,6 +289,10 @@
                                         datas.push({id:value.city_id, text: value.title_ru});
                                     }
                                     $('#cities').select2({data: datas, allowClear: true});
+                                });
+
+                                $(document).ready(function () {
+                                    $("#who_need_help option:first").change();
                                 });
                             </script>
                             <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>

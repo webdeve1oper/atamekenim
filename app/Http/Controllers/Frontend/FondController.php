@@ -45,7 +45,7 @@ class FondController extends Controller
 //            })->get();
             return view('frontend.fond.request_help_fonds')->with();
         }
-        $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get();
+        $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
         $baseHelpTypes = AddHelpType::all();
         $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
         $destinations = Destination::all();
