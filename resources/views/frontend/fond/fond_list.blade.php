@@ -49,11 +49,11 @@
 
                     <div class="col-sm-2"></div>
                     <div class="col-sm-6">
-                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default">Подробнее о фонде <span class="miniArrow">›</span></a>
-                        <button class="btn-default blue" @if(Auth::user()) onclick="$('#helpfond input#fond_id').val({{$fond->id}}); $('#helpCallback').modal()" @else onclick="window.location = '{{route('login')}}'" @endif> Подать заявку на получение помощи</button>
+                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default">{{trans('fonds.more-org')}} <span class="miniArrow">›</span></a>
+                        <button class="btn-default blue" @if(Auth::user()) onclick="$('#helpfond input#fond_id').val({{$fond->id}}); $('#helpCallback').modal()" @else onclick="window.location = '{{route('login')}}'" @endif> {{trans('fonds.req-help')}}</button>
                     </div>
                     <div class="col-sm-4">
-                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default red"><img src="/img/help.svg" alt=""> Подробнее о фонде <span class="miniArrow">›</span></a>
+                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default red"><img src="/img/help.svg" alt=""> {{trans('fonds.req-help')}} <span class="miniArrow">›</span></a>
                     </div>
                 </div>
             </div>
@@ -81,8 +81,8 @@
         </div>
     </div>
     <div class="col-sm-6 rightBlock">
-        <button class="btn-default blue">Подать заявку на участие в реестре</button>
-        <button class="btn-default">Больше аналитики</button>
+        <button class="btn-default blue">{{trans('fonds.reg-reestr')}}</button>
+        <button class="btn-default">{{trans('fonds.more-analytics')}}</button>
     </div>
     @else
     <div class="col-sm-12">

@@ -5,8 +5,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <ul>
-                            <li><a href="/">Главная</a></li>
-                            <li><a href="{{route('fonds')}}">Реестр благотворительных организаций</a></li>
+                            <li><a href="/">{{trans('fonds.main')}}</a></li>
+                            <li><a href="{{route('fonds')}}">{{trans('fonds.reestr')}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1>Реестр благотворительных организаций</h1>
+                        <h1>{{trans('fonds.reestr')}}</h1>
                     </div>
                 </div>
             </div>
@@ -41,14 +41,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-2">
-                        <p class="bigName">Фильтр поиска</p>
+                        <p class="bigName">{{trans('fonds.filtr-search')}}</p>
 
                         <div class="siteBarFilter">
                             <form action="{{route('fonds')}}" id="fonds_filter">
-                                <input type="text" class="normal" name="bin" placeholder="Поиск по названию/БИН" autocomplete="off">
+                                <input type="text" class="normal" name="bin" placeholder="{{trans('fonds.search-bin')}}" autocomplete="off">
                                 <p class="text">
-                                    Укажите название / БИН организации
-                                    или укажите пункты поиска
+                                    {{trans('fonds.filtr-search-text')}}
                                 </p>
                                 <div class="siteBarList active">
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Регион <i class="fas fa-chevron-down"></i></p>
@@ -101,7 +100,7 @@
                     <div class="col-sm-10">
                         <div class="row">
                             <div class="col-sm-6">
-                                <p class="bigName">найдено <b class="total">{{$fonds->total()}}</b> НПО</p>
+                                <p class="bigName">{{trans('fonds.found')}} <b class="total">{{$fonds->total()}}</b> {{trans('fonds.org')}}</p>
                             </div>
                             <div class="col-sm-6 rightBlock">
                                 <div class="dropdown organizationDrop">
