@@ -59,7 +59,7 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="/ru{{str_replace(''.app()->getLocale(), '', Request::path())}}">RU</a>
                                     <a class="dropdown-item" href="/kz{{str_replace(''.app()->getLocale(), '', Request::path())}}">KZ</a>
-                                    <a class="dropdown-item" href="/en{{str_replace(''.app()->getLocale(), '', Request::path())}}">EN</a>
+{{--                                    <a class="dropdown-item" href="/en{{str_replace(''.app()->getLocale(), '', Request::path())}}">EN</a>--}}
                                 </div>
                     </li>
                     <li>
