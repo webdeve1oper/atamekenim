@@ -56,8 +56,8 @@ class MainController extends Controller
             $cities = City::whereRegionId(720)->pluck('title_ru', 'city_id');
             $newFonds = Fond::where('status', true)->orderBy('created_at')->paginate(6);
             $helpsCount = Help::count();
-            $helps = Help::whereStatus('finished')->paginate(4);
-            $newHelps = Help::whereStatus('wait')->paginate(4);
+            $helps = Help::whereFondStatus('finished')->paginate(4);
+            $newHelps = Help::whereFondStatus('wait')->paginate(4);
             $baseHelpTypes = AddHelpType::all();
             $news = News::orderBy('public_date', 'desc')->limit(10)->get();
             return view('frontend.home')->with(compact('fonds', 'news', 'newFonds','destionations','cities','baseHelpTypes', 'helps', 'helpsCount', 'newHelps'));

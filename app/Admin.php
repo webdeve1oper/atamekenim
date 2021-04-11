@@ -9,12 +9,17 @@ use Illuminate\Notifications\Notifiable;
 class Admin extends Authenticatable
 {
     use Notifiable;
-    //
+
+    protected $table = 'admins';
 
     protected $fillable = ['email', 'password', 'name'];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
 
 }

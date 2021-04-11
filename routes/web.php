@@ -35,10 +35,13 @@ Route::post('post-registration-fond', 'FondAuthController@postRegistration')->na
 
 //Admin Auth
 Route::get('admin-login', 'AdminAuthController@index')->name('admin_login');
+Route::post('admin-post-login', 'AdminAuthController@postLogin')->name('admin_post_login');
 
-
-Route::group(['prefix'=>'/admin','middleware'=>['admin']], function(){
-    Route::get('/', 'Backend\AdminController@index');
+Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
+    Route::get('/', 'Backend\AdminController@index')->name('admin_home');
+    Route::get('/admin-helps', 'Backend\AdminController@showHelps')->name('admin_helps');
+    Route::get('/admin-help/{id}/check', 'Backend\AdminController@checkHelp')->name('admin_help_check');
+    Route::post('/edit-help-status', 'Backend\AdminController@editHelpStatus')->name('edit_help_status');
 });
 
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
