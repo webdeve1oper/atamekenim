@@ -15,10 +15,9 @@ class Fond extends Authenticatable
 
 
     protected $fillable = [
-        'title', 'sub_title', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email','work','fio','organ_id','foundation_date',
+        'title', 'title_kz', 'title_en', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email','work','fio','organ_id','foundation_date',
         'address', 'longitude', 'latitude', 'about',
-        'mission', 'social',
-        'affilates', 'offices',
+        'mission', 'social', 'offices',
         'video', 'requisites',
         'password',
         'status',

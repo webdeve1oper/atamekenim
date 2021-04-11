@@ -16,7 +16,8 @@ class CreateFonds extends Migration
         Schema::create('fonds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->string('sub_title')->nullable();
+            $table->string('title_kz')->nullable();
+            $table->string('title_en')->nullable();
             $table->string('logo')->nullable();
             $table->string('organization_form')->nullable();
             $table->string('website')->nullable();

@@ -4,7 +4,7 @@
     <form action="{{route('fond_setting')}}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3 mb-3">
                 @if(Auth::user()->logo)
                     <img src="{{Auth::user()->logo}}" style="max-height: 150px;" alt="" class="logotype">
                 @else
@@ -14,10 +14,15 @@
                 @if($errors->has('logo'))
                     <span class="error">{{ $errors->first('logo') }}</span>
                 @endif
+                    <small class="text-center">
+                        Логотип Вашей
+                        организации
+                        в формате jpeg, png
+                    </small>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="">Название организации</label>
+                    <label for="">Название организации:</label>
                     <input type="text" name="title" value="{{Auth::user()->title}}"
                            class="form-control">
                     @if($errors->has('title'))
@@ -25,55 +30,34 @@
                     @endif
                 </div>
                 <div class="form-group">
+                    <label for="">Название организации на казахском языке:*
+                    </label>
+                    <input type="text" name="title_kz" value="{{Auth::user()->title_kz}}"
+                           class="form-control">
+                    @if($errors->has('title_kz'))
+                        <span class="error">{{ $errors->first('title_kz') }}</span>
+                    @endif
+                </div>
+                <div class="form-group">
+                    <label for="">Название организации на казахском языке:*
+                    </label>
+                    <input type="text" name="title_en" value="{{Auth::user()->title_en}}"
+                           class="form-control">
+                    @if($errors->has('title_en'))
+                        <span class="error">{{ $errors->first('title_en') }}</span>
+                    @endif
+                </div>
+                <div class="form-group d-none">
                     <label for="">БИН</label>
                     <input type="text" value="{{Auth::user()->bin}}" disabled class="form-control">
                     @if($errors->has('bin'))
                         <span class="error">{{ $errors->first('bin') }}</span>
                     @endif
                 </div>
-                <div class="form-group">
-                    <label for="">Видео</label>
-                    <input type="text" placeholder="Ссылка на видео" value="{{Auth::user()->video}}" class="form-control">
-                    @if($errors->has('video'))
-                        <span class="error">{{ $errors->first('video') }}</span>
-                    @endif
-                </div>
-                <div class="form-group">
-                    <label for="">Регион</label>
-                    <p>
-                        <?php
-                        $fondRegions = [];
-                        if(Auth::user()->regions){
-                            $fondRegions = array_column(Auth::user()->regions->toArray(), 'region_id');
-                        }
-                        ?>
-                        <select name="regions[]" class="select2 w-100" multiple="multiple" placeholder="Тип помощи" id="regions">
-                            @foreach($regions as $region)
-                                <option value="{{$region->region_id}}" @if(in_array($region->region_id, $fondRegions)) selected @endif>{{$region->text}}</option>
-                            @endforeach
-                        </select>
-                    </p>
-                </div>
-                <div class="form-group d-none">
-                    <label for="">Город</label>
-                    <p>
-                        <select name="cities[]" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
-                    </p>
-                </div>
+
             </div>
-            <script>
-                $('#city option').hide();
-                $('#city option[value=""]').show();
-                $('#city option.region_'+$('#region option:selected').val()).show();
-                $('#region').on('change', function(){
-                    $('#city option').hide();
-                    $('#city option[value=""]').show();
-                    $('#city option.region_'+$('#region option:selected').val()).show();
-                    console.log('#city option.region_'+$(this).val());
-                });
-            </script>
             <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label for="">Телефон:</label>
                     <input type="text" name="phone" value="{{Auth::user()->phone}}"
                            class="form-control">
@@ -81,7 +65,7 @@
                         <span class="error">{{ $errors->first('phone') }}</span>
                     @endif
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label for="">Почта:</label>
                     <input type="text" name="email" value="{{Auth::user()->email}}"
                            class="form-control">
@@ -90,7 +74,7 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="">Сайт:</label>
+                    <label for="">Адрес сайта Вашей организации:</label>
                     <input type="text" name="website" value="{{Auth::user()->website}}"
                            class="form-control">
                     @if($errors->has('website'))
@@ -98,11 +82,13 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="">Адрес:</label>
-                    <input type="text" autocomplete="off" name="address" value="{{Auth::user()->address}}"
-                           class="form-control">
-                    @if($errors->has('address'))
-                        <span class="error">{{ $errors->first('address') }}</span>
+                    <label for="">Информационный
+                        видеоролик о Вашей
+                        организации:
+                    </label>
+                    <input type="text" placeholder="Ссылка на видео" value="{{Auth::user()->video}}" class="form-control">
+                    @if($errors->has('video'))
+                        <span class="error">{{ $errors->first('video') }}</span>
                     @endif
                 </div>
             </div>
@@ -110,7 +96,7 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse0">Соц. сети
+                            <a data-toggle="collapse" class="collapsed" href="#collapse0">Информация по страницам Вашей организации в социальных сетях
                                 <i class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse0" class="panel-collapse collapse">
@@ -122,18 +108,39 @@
                                         $socials = json_decode(Auth::user()->social, true);
                                         ?>
                                         @foreach($socials as $i=> $social)
-                                            <input name="socials[]" placeholder="Укажите ссылку"
-                                                   id="socials{{$i}}" value="{{$social['link']}}"
-                                                   class="social form-control">
+                                                <div class="form-group">
+                                                    <label for="">{{$social['name']}}:</label>
+                                                    <input type="text" name="socials[]" value="{{$social['link']}}"
+                                                           class="form-control">
+                                                </div>
                                         @endforeach
                                     @else
-                                        <input name="socials[]" placeholder="Укажите ссылку"
-                                               id="socials0" class="socials form-control">
+                                            <div class="form-group">
+                                                <label for="">Instagram:</label>
+                                                <input type="text" name="socials[Instagram]" value=""
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Facebook:</label>
+                                                <input type="text" name="socials[Facebook]" value=""
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Youtube:</label>
+                                                <input type="text" name="socials[Youtube]" value=""
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">WhatsApp:</label>
+                                                <input type="text" name="socials[WhatsApp]" value=""
+                                                       class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="">Telegram:</label>
+                                                <input type="text" name="socials[Telegram]" value=""
+                                                       class="form-control">
+                                            </div>
                                     @endif
-                                    <button class="btn btn-default float-right mt-2 mb-5 d-table"
-                                            onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<input name=\'socials[]\'  placeholder=\'Укажите ссылку\' id=\'socials'+num+'\' class=\'socials form-control\'>').insertAfter($(this).prev()); return false;">
-                                        + добавить соц. сеть
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +149,8 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Миссия <i
+                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Введите текст, отражающий
+                                миссию Вашей организации <i
                                         class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse4" class="panel-collapse collapse">
@@ -331,7 +339,7 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse16">Размер помощи<i class="fas fa-angle-up"></i></a>
+                            <a data-toggle="collapse" class="collapsed" href="#collapse16">Выберите размер оказываемой помощи (выберите один или несколько вариантов) *<i class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse16" class="panel-collapse collapse">
                             <div class="card-body">

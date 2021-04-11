@@ -69,7 +69,7 @@ class FondController extends Controller
     // edit Fund
     public function edit()
     {
-        $baseHelpTypes = AddHelpType::where('base_help_types_id', 0)->with('children')->get()->toArray();
+        $baseHelpTypes = AddHelpType::all()->toArray();
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
@@ -234,9 +234,10 @@ class FondController extends Controller
                 array_push($offices, ['body' => $requisite]);
             }
             $socials = [];
-            foreach ($request->socials as $social) {
-                array_push($socials, ['link' => $social]);
+            foreach ($request->socials as $key=> $social) {
+                array_push($socials, ['name'=>$key,'link' => $social]);
             }
+
             $affilates = [];
             foreach ($request->affilates as $requisite) {
                 array_push($affilates, ['body' => $requisite]);
