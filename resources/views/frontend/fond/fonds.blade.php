@@ -49,22 +49,20 @@
                                 <p class="text">
                                     {{trans('fonds.filtr-search-text')}}
                                 </p>
-                                <div class="siteBarList active">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Регион <i class="fas fa-chevron-down"></i></p>
+                                <div class="siteBarList">
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.sector-activities')}}<i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
-                                        @foreach($cities as $id => $city)
-                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
-                                        @endforeach
-                                        @foreach($regions as $id => $city)
-                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
+                                        {{--<p class="grey">Выберите один или несколько</p>--}}
+                                        @foreach($baseHelpTypes as $help)
+                                            <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help->id}}" value="{{$help->id}}"><label for="baseHelpTypes{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
+
                                 <div class="siteBarList ">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Адресат/Благополучатель <i class="fas fa-chevron-down"></i></p>
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.adresat')}}<i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
+                                        {{--<p class="grey">Выберите один или несколько</p>--}}
                                         <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
                                         @php $i = 0 @endphp
                                         <p><b>{{config('destinations')[$i]}}</b></p>
@@ -80,19 +78,22 @@
                                         @endforeach
                                     </div>
                                 </div>
-
-
                                 <div class="siteBarList">
-                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">Категория помощи <i class="fas fa-chevron-down"></i></p>
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.regions')}} <i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
-                                        <p class="grey">Выберите один или несколько</p>
-                                        @foreach($baseHelpTypes as $help)
-                                            <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help->id}}" value="{{$help->id}}"><label for="baseHelpTypes{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
+                                        {{--<p class="grey">Выберите один или несколько</p>--}}
+                                        @foreach($cities as $id => $city)
+                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
+                                        @endforeach
+                                        @foreach($regions as $id => $city)
+                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="submit" class="btn-default blue">Найти</button>
-                                <span class="searchText">Найдено:<br><span class="total">{{$fonds->total()}}</span> организаций</span>
+
+
+                                <button type="submit" class="btn-default blue">{{trans('fonds.find')}}</button>
+                                <span class="searchText">{{trans('fonds.found')}}:<br><span class="total">{{$fonds->total()}}</span> {{trans('fonds.org')}}</span>
                             </form>
                         </div>
                     </div>
