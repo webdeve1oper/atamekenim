@@ -23,7 +23,8 @@ class CreateHelpTable extends Migration
             $table->bigInteger('region_id')->nullable();
             $table->foreign('region_id')->references('region_id')->on('regions');
             $table->text('body');
-            $table->enum('status', ['moderate','wait', 'cancel', 'process','finished'])->default('moderate');
+            $table->enum('admin_status', ['moderate', 'edit', 'cancel', 'finished'])->default('moderate');
+            $table->enum('fond_status', ['moderate', 'wait', 'edit', 'cancel','finished'])->default('moderate');
             $table->date('date_fond_start')->nullable();
             $table->date('date_fond_finish')->nullable();
             $table->bigInteger('review_id')->unsigned()->nullable();

@@ -2,8 +2,13 @@
 
 namespace App\Providers;
 
+use App\Admin;
+use App\Role;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+
+//use Illuminate\Support\Facades\Gate;
+//use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+//        $this->registerPolicies();
+//        $user = \Auth::user();
+//
+//        // Auth gates for: Admin panel
+//        Gate::define('admin_panel', function ($user) {
+//            return in_array($user->role_id, [1,2]);
+//        });
     }
 
     /**
