@@ -58,6 +58,7 @@ class UserSeeder extends Seeder
         if(!DB::table('admins')->where('email', 'admin@admin.com')->first()){
             $data = [
               'email'=>'admin@admin.com',
+              'role_id'=>'1',
                 'password'=>Hash::make('123456'),
                 'name'=>'admin'
             ];

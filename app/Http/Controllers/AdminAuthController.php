@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Help;
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
+use App\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -19,37 +22,20 @@ class AdminAuthController extends Controller
 
     public function postLogin(Request $request)
     {
-        if(is_numeric($request->email)){
 
-            $validator = Validator::make($request->all(),[
-                'email' => 'required|min:12|max:12',
-                'password' => 'required'
-            ], [
-                'email.required'=>'Поле должно быть заполнено',
-                'password.required'=>'Поле должно быть заполнено',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|max:150',
+            'password' => 'required'
+        ]);
 
-            if($validator->fails()){
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-            $credentials = ['email'=>$request->email, 'password'=>$request->password];
-        }else{
-
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email|max:150',
-                'password' => 'required'
-            ]);
-
-            if($validator->fails()){
-                return response()->json($validator->errors()->toJson(), 400);
-            }
-            $request->iin = $request->email;
-            $credentials = $request->only('email', 'password');
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
         }
 
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('admin');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            return redirect()->route('admin_home');
         }
         return redirect()->route('admin_login')->with('error', 'Что-то пошло не так!');
     }
