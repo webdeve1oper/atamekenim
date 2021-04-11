@@ -109,4 +109,8 @@ class Fond extends Authenticatable
     public function organLegalForm(){
         return $this->belongsTo(OrganLegalForm::class);
     }
+
+    public function scenarios(){
+        return $this->belongsToMany(Scenario::class,'fond_scenarios', 'fond_id', 'scenario_id');
+    }
 }

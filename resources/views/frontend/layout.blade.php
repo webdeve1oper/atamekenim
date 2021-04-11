@@ -136,7 +136,7 @@
                     <input type="text" placeholder="{{trans('home.site-search')}}">
                     <button><img src="/img/search.svg" alt=""></button>
                 </form>
-                @if(Auth::check())
+                @if(!Auth::check())
                 <a href="{{route('registration_user')}}" class="authButton">{{trans('auth.sign-up')}}</a>
                 <a href="{{route('login')}}" class="authButton login">{{trans('auth.sign-in')}}</a>
                 @endif

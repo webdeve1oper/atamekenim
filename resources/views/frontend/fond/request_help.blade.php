@@ -140,7 +140,13 @@
                             <div class="form-group mb-4">
                                 <label for="exampleInputEmail1">Прикрепите фото/видео получателя помощи или его проблемы:</label>
                                 <br>
-                                <input type="file" id="file" name="photo[]">
+                                <div class="input-group">
+                                    <input type="file" id="file" name="photo[]" class="form-control photo">
+                                    <div class="input-group-append" style="display: none;">
+                                        <button class="btn btn-default p-2" type="button" onclick="$(this).parents('.input-group').remove();"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
 
                             <div class="form-group mb-4">
@@ -152,23 +158,30 @@
                                 <label for="exampleInputEmail1">Прикрепите при необходимости подтверждающие документы по запрашиваемой помощи (например, медицинские справки, выписки, справка с места учебы, работы и т.д.) Укажите название документа и
                                     прикрепите файл в формате doc, jpeg или pdf.:</label>
                                 <br>
-                                <input type="file" id="file" name="doc[]">
+                                <div class="input-group">
+                                    <input type="file"  class="form-control docs" name="doc[]">
+                                    <div class="input-group-append" style="display: none;">
+                                        <button class="btn btn-default p-2" type="button" onclick="$(this).parents('.input-group').remove();"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-default p-2 mt-2" onclick="if($('.docs').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
 
-                            <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>
-                            <input type="submit" class="btn btn-primary m-auto d-table" value="Найти">
+                            <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="20" rows="10">{{old('body')}}</textarea>
+                            <input type="submit" class="btn btn-default m-auto d-table" value="Найти">
                         </form>
                         @include('frontend.fond.script')
                         <script>
                             $('#request_help').submit(function () {
                                 $.ajax({
-                                    method: 'post',
+                                    method: 'get',
                                     url: '{{route('request_help')}}',
-                                    data: $('request_help').serialize(),
+                                    data: $('#request_help').serialize(),
                                     success: function (data) {
                                         console.log(data);
                                     }
                                 });
+                                return false;
                             });
                         </script>
                     </div>

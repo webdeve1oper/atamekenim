@@ -40,10 +40,12 @@ class FondController extends Controller
 
     public function request_help(Request $request){
         if ($request->ajax()) {
-//            $relatedFonds = Fond::select('logo', 'title')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
-//                $query->whereIn('base_help_id', $relatedHelpIds);
-//            })->get();
-            return view('frontend.fond.request_help_fonds')->with();
+            $relatedHelpIds = $request->destinations;
+            $scenario_id = $request->who_need_help;
+            $relatedFonds = Fond::whereHas('scenarios', function($query) use ($scenario_id){
+                $query->where('scenario_id', $scenario_id);
+            })->get();
+            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
         }
         $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
         $baseHelpTypes = AddHelpType::all();

@@ -33,15 +33,18 @@
     });
     $('#baseHelpTypes').select2({
         width: '100%',
-        placeholder: 'Сфера необходимой помощи'
+        placeholder: 'Сфера необходимой помощи',
+        minimumResultsForSearch: -1
     });
     $('#baseHelp').select2({
         width: '100%',
-        placeholder: 'Выберите сектор помощи'
+        placeholder: 'Выберите сектор помощи',
+        minimumResultsForSearch: -1
     });
     $('#addHelp').select2({
         width: '100%',
-        placeholder: 'Выберите подробный сектор помощи'
+        placeholder: 'Выберите подробный сектор помощи',
+        minimumResultsForSearch: -1
     });
 
     $('#who_need_help').change(function () {
@@ -107,9 +110,9 @@
         $('#baseHelpTypes').empty();
         datas2.push({id: '0', text: ''});
         for (let [key, value] of Object.entries(scenarios[scenario_index].add_help_types)) {
-            datas2.push({id: value.id, text: value.name_ru});
+            datas2.push({id: value.id, text: value.name_ru + ' ('+value.description_ru+')'});
         }
-        $('#baseHelpTypes').select2({data: datas2, allowClear: true});
+        $('#baseHelpTypes').select2({data: datas2, allowClear: true, minimumResultsForSearch: -1});
     });
 
 
