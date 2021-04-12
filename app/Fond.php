@@ -70,7 +70,7 @@ class Fond extends Authenticatable
     }
 
     public function helpsByStatus($status = 'wait'){
-        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('status', '=', $status);
+        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('helps.fond_status', '=', $status);
     }
 
     public function reviews(){
