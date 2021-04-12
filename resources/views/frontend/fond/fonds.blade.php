@@ -54,7 +54,33 @@
                                     <div class="listBlock">
                                         {{--<p class="grey">Выберите один или несколько</p>--}}
                                         @foreach($baseHelpTypes as $help)
+                                            @if($loop->index == 0)
+                                                <p class="categoryName">{{trans('fonds.human-family')}}</p>
+                                            @endif
+                                            @if($loop->index == 10)
+                                                <p class="categoryName">{{trans('fonds.help-soc')}}</p>
+                                            @endif
+                                            @if($loop->index == 14)
+                                                <p class="categoryName">{{trans('fonds.help-animal')}}</p>
+                                            @endif
                                             <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help->id}}" value="{{$help->id}}"><label for="baseHelpTypes{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="siteBarList">
+                                    <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.help-type')}}<i class="fas fa-chevron-down"></i></p>
+                                    <div class="listBlock">
+                                        {{--<p class="grey">Выберите один или несколько</p>--}}
+                                        @foreach($cashHelpTypes as $help)
+                                            @if($loop->index == 0)
+                                                <p class="categoryName">{{trans('fonds.type-help')}}</p>
+                                            @endif
+                                            <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help->id}}" value="{{$help->id}}"><label for="baseHelpTypes{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label></div>
+                                        @endforeach
+                                        <p class="categoryName">{{trans('fonds.help-size')}}</p>
+                                        @foreach($cashHelpSizes as $help_size)
+                                            <div class="content"><input type="checkbox" name="baseHelpTypes[]" id="baseHelpTypes{{$help_size->id}}" value="{{$help_size->id}}"><label for="baseHelpTypes{{$help_size->id}}">{{$help_size['name_'.app()->getLocale()]}}</label></div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -203,6 +229,10 @@
                                     -ms-transform: rotate(360deg);
                                     transform: rotate(360deg);
                                 }
+                            }
+                            .listBlock .categoryName{
+                                font-weight: 500!important;
+                                margin-bottom: 10px!important;
                             }
                         </style>
                         <script>

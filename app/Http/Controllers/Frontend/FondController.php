@@ -105,8 +105,10 @@ class FondController extends Controller
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
+            $cashHelpTypes = CashHelpType::all();
+            $cashHelpSizes = CashHelpSize::all();
         }
-        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'destionations'));
+        return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'destionations','cashHelpTypes','cashHelpSizes'));
     }
 
     public function donationToFond($id)

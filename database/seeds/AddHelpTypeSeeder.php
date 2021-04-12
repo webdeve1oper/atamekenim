@@ -20,7 +20,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Диагностика',
                     'Реабилитация',
                     'Услуги сиделки',],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Денсаулық',
+                'description_kz' => 'дәрі-дәрмектер, емдеу, диагностика, оңалту, медициналық жабдықтар, медбике қызметтері',
             ],
             'Образование' => [
                 'description' => [
@@ -28,7 +30,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Доп.образование',
                     'Оборудование и инструменты',
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Білім беру',
+                'description_kz' => 'оқыту, қосымша білім беру, жабдықтар мен құралдар',
             ],
             'Базовые потребности' => [
                 'description' => [
@@ -36,7 +40,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Одежды',
                     'Предметы быта',
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Базалық қажеттіліктер',
+                'description_kz' => 'азық-түлік, киім-кешек, тұрмыстық заттар',
             ],
             'Исскуство и культура' => [
                 'description' => [
@@ -45,16 +51,24 @@ class AddHelpTypeSeeder extends Seeder
                     'Организация мероприятий',
                     'Объекты культуры'
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Өнер және мәдениет',
+                'description_kz' => 'жабдықтар мен құрал-саймандар, материалдар, іс-шараларды ұйымдастыру, мәдениет объектілері',
             ],
-            'Трудоустройство' => ['description'=>[],'scenario_id' => [1, 2, 3]],
+            'Трудоустройство' => [
+                'description' => [],
+                'scenario_id' => [1, 2, 3],
+                'name_kz' => 'Жұмыспен қамту ',
+            'description_kz' => ''],
             'Наука' => [
                 'description' => [
                     'Исследования',
                     'Оборудование и инструменты',
                     'Научные мероприятия'
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Ғылым',
+                'description_kz' => 'зерттеу, жабдықтар мен құралдар, ғылыми іс-шаралар өткізу',
             ],
             'Жилье' => [
                 'description' => [
@@ -62,7 +76,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Покупка',
                     'Временное жилье'
                 ],
-                'scenario_id' => [1, 2, 3]
+                'scenario_id' => [1, 2, 3],
+                'name_kz' => 'Тұрғын үй',
+                'description_kz' => 'жалға алу, сатып алу, уақытша баспана',
             ],
             'Спорт' => [
                 'description' => [
@@ -70,7 +86,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Организация мероприятий',
                     'Спортивные объекты'
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Спорт',
+                'description_kz' => 'инвентарь, іс-шараларды ұйымдастыру, спорт объектілері',
             ],
             'Жилищные условия' => [
                 'description' => [
@@ -80,7 +98,9 @@ class AddHelpTypeSeeder extends Seeder
                     'Водоснабжение',
                     'Газификация'
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Тұрғын үй жағдайлары',
+                'description_kz' => 'Жөндеу, Коммуналдық қызметтер, жылу беру, сумен жабдықтау, газдандыру',
             ],
             'Гражданские права' => [
                 'description' => [
@@ -88,43 +108,55 @@ class AddHelpTypeSeeder extends Seeder
                     'Наследственные',
                     'Коммерческие'
                 ],
-                'scenario_id' => [1, 2, 3, 5]
+                'scenario_id' => [1, 2, 3, 5],
+                'name_kz' => 'Азаматтық құқықтар',
+                'description_kz' => 'мүліктік, мұрагерлік, коммерциялық',
             ],
             'Урбанизация' => [
                 'description' => [
                     'Инфраструктурные объекты',
                     'Организация пространства'
                 ],
-                'scenario_id' => [4]
+                'scenario_id' => [4],
+                'name_kz' => 'Урбанизациялау',
+                'description_kz' => 'инфрақұрылымдық объектілер, кеңістікті ұйымдастыру',
             ],
             'Экология' => [
                 'description' => [
                     'Флора и фауна',
                 ],
-                'scenario_id' => [4]
+                'scenario_id' => [4],
+                'name_kz' => 'Экология',
+                'description_kz' => 'флора мен фауна',
             ],
             'Развитие сельских территорий' => [
                 'description' => [
                     'Инфраструктурные объекты',
                     'Организация пространства'
                 ],
-                'scenario_id' => [4]
+                'scenario_id' => [4],
+                'name_kz' => 'Ауылдық өңірлерді дамыту',
+                'description_kz' => 'инфрақұрылымдық объектілер, кеңістікті ұйымдастыру',
             ],
             'Помощь бизнесу' => [
                 'description' => [
                     'Проекты социального предпринимательства',
                     'Поддержка инициатив'
                 ],
-                'scenario_id' => [1, 2, 3, 4, 5]
+                'scenario_id' => [1, 2, 3, 4, 5],
+                'name_kz' => 'Бизнеске көмек',
+                'description_kz' => 'әлеуметтік кәсіпкерлік жобалары, бастамаларды қолдау',
             ],
             'Забота о животных' => [
                 'description' => [
                     'Содержание',
                     'Ветиринарные услуги'
                 ],
-                'scenario_id' => [5,6]
+                'scenario_id' => [5,6],
+                'name_kz' => 'Жануарларға қамқорлық',
+                'description_kz' => 'ұстау, ветеринарлық қызмет көрсету',
             ],
-            'Помещение в питомник' => ['description'=>[],'scenario_id' => [6]],
+            'Помещение в питомник' => ['description'=>[],'scenario_id' => [6],'name_kz' => 'Питомникке орналастыру','description_kz' => ''],
         ];
 
         foreach ($types as $parent => $description) {
@@ -132,9 +164,9 @@ class AddHelpTypeSeeder extends Seeder
             if (!$typesParent) {
                 $addHelpType = \App\AddHelpType::create([
                     'name_ru' => $parent,
-                    'name_kz' => $parent,
+                    'name_kz' => $description['name_kz'],
                     'description_ru' => implode(',', $description['description']),
-                    'description_kz' => implode(',', $description['description']),
+                    'description_kz' => $description['description_kz'],
                 ]);
                 $addHelpType->scenarios()->attach($description['scenario_id']);
             }
