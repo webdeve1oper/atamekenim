@@ -102,7 +102,7 @@ class FondController extends Controller
         }else{
             $fonds = Fond::paginate(4);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
-            $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
+            $regions = Region::all();
             $baseHelpTypes = AddHelpType::all();
             $destionations = Destination::all();
             $cashHelpTypes = CashHelpType::all();

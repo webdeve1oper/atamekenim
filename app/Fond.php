@@ -86,7 +86,7 @@ class Fond extends Authenticatable
     }
 
     public function helpsByDate($year, $status='finished'){
-        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('status', '=', $status)->whereYear('helps.created_at', '=', $year);
+        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('helps.fond_status', '=', $status)->whereYear('helps.created_at', '=', $year);
     }
 
     public function regions(){

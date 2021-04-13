@@ -8,7 +8,7 @@ class Region extends Model
 {
     protected $table = 'regions';
 
-    protected $fillable = ['region_id', 'title_ru'];
+    protected $fillable = ['region_id', 'title_ru', 'title_kz'];
 
     public function countries(){
         return $this->belongsTo(Country::class, 'country_id', 'country_id');
