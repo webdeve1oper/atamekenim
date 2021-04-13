@@ -7,12 +7,12 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <ul>
-                            {{--<li><a href="">Избранные заявки</a></li>--}}
-                            {{--<li><a href="">История заявок</a></li>--}}
-                            {{--<li><a href="">Мои поступления</a></li>--}}
-                            {{--<li><a href="">Сообщения</a></li>--}}
-                            {{--<li><a href="">Мои отзывы</a></li>--}}
-                            <li><a href="{{route('fond_cabinet')}}">Мой кабинет</a></li>
+                            {{--<li><a href="">{{trans('fond-cab.star-appl')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('fond-cab.history-appl')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('fond-cab.my-rec')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('fond-cab.mess')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('fond-cab.my-rev')}}</a></li>--}}
+                            <li><a href="{{route('fond_cabinet')}}">{{trans('fond-cab.my-cab')}}</a></li>
                         </ul>
                     </div>
                 </div>

@@ -89,13 +89,22 @@
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.adresat')}}<i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         {{--<p class="grey">Выберите один или несколько</p>--}}
-                                        <div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>
+                                        {{--<div class="content"><input type="checkbox" name="destination[]" value="all" id="destination0"><label for="check7">Все</label></div>--}}
                                         @php $i = 0 @endphp
-                                        <p><b>{{config('destinations')[$i]}}</b></p>
+                                        <p class="categoryName">{{trans('fonds.status')}}</p>
                                         @foreach($destionations as $destination)
                                             @if($i != $destination->paren_id )
                                                 @php $i = $destination->paren_id @endphp
-                                                <p><b>{{config('destinations')[$i]}}</b></p>
+                                                <p class="categoryName">{{trans('fonds.status')}}</p>
+                                            @endif
+                                            @if($loop->index == 16)
+                                                <p class="categoryName">{{trans('fonds.life-sit')}}</p>
+                                            @endif
+                                            @if($loop->index == 24)
+                                                <p class="categoryName">{{trans('fonds.origin')}}</p>
+                                            @endif
+                                            @if($loop->index == 27)
+                                                <p class="categoryName">{{trans('fonds.healths')}}</p>
                                             @endif
                                             <div class="content" >
                                                 <input type="checkbox" name="destination[]" value="{{$destination['id']}}" id="destination{{$destination['id']}}">
@@ -109,10 +118,16 @@
                                     <div class="listBlock">
                                         {{--<p class="grey">Выберите один или несколько</p>--}}
                                         @foreach($cities as $id => $city)
-                                            <div class="content"><input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}"><label for="city{{$id}}">{{$city}}</label></div>
+                                            <div class="content">
+                                                <input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}">
+                                                <label for="city{{$id}}">{{$city}}</label>
+                                            </div>
                                         @endforeach
                                         @foreach($regions as $id => $city)
-                                            <div class="content"><input type="checkbox" name="regions[]" id="regions{{$id}}" value="{{$id}}"><label for="regions{{$id}}">{{$city}}</label></div>
+                                            <div class="content">
+                                                <input type="checkbox" name="regions[]" id="regions{{$city['region_id']}}" value="{{$id}}">
+                                                <label for="regions{{$city['region_id']}}">{{$city['title_'.app()->getLocale()]}}</label>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
