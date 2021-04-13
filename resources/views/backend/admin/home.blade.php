@@ -9,7 +9,7 @@
         @if(Auth::user()->role_id == 1)
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
-                    <a>Пользователи</a>
+                    <a href="{{ route('admins') }}">Пользователи</a>
                 </div>
             </div>
             <div class="col-sm">
