@@ -29,6 +29,7 @@ Route::post('post-registration-user', 'UserAuthController@postRegistration')->na
 Route::post('post_sms_user', 'UserAuthController@postSmsRegistration')->name('post_sms_user');
 
 //Fond Auth
+Route::get('login-fond', 'FondAuthController@index')->name('login-fond');
 Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond');
 Route::get('registration_fond', 'FondAuthController@registration')->name('registration_fond');
 Route::post('post-registration-fond', 'FondAuthController@postRegistration')->name('post_registration_fond');
@@ -42,6 +43,11 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
     Route::get('/admin-helps', 'Backend\AdminController@showHelps')->name('admin_helps');
     Route::get('/admin-help/{id}/check', 'Backend\AdminController@checkHelp')->name('admin_help_check');
     Route::post('/edit-help-status', 'Backend\AdminController@editHelpStatus')->name('edit_help_status');
+    Route::get('logout-admin', 'AdminAuthController@logout')->name('logout_admin');
+    Route::get('admins', 'Backend\AdminUserController@index')->name('admins');
+    Route::get('admins/{id}/edit', 'Backend\AdminUserController@edit')->name('admins_edit');
+    Route::post('admins/{id}/update', 'Backend\AdminUserController@update')->name('admins_update');
+    Route::post('admins/{id}/destroy', 'Backend\AdminUserController@destroy')->name('admins_delete');
 });
 
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){

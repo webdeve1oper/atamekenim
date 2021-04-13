@@ -18,7 +18,7 @@
 
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Выход</a>
+            <a href="{{route('logout_admin')}}" class="nav-link">Выход</a>
         </li>
     </ul>
 </nav>
@@ -30,7 +30,7 @@
                 <ul class="nav flex-column">
                     @if(Auth::user()->role_id == 1)
                         <li class="nav-item active">
-                            <a class="nav-link">
+                            <a class="nav-link" href="{{ route('admins') }}">
                                 Пользователи
                             </a>
                         </li>

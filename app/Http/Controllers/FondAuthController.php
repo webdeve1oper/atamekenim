@@ -18,7 +18,7 @@ class FondAuthController extends Controller
 
     public function index()
     {
-        return view('frontend.auth.login');
+        return view('frontend.auth.fond_login');
     }
 
     public function registration()

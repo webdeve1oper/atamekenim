@@ -32,7 +32,7 @@
                                         <h1>Регистрация пользователя </h1>
                                         <form id="phone_sms">
                                             <div class="form-group">
-                                                <input type="text" class="phone_number form-control mb-3" name="phone" placeholder="Введите Ваш номер телефона" value="{{old('phone')}}">
+                                                <input type="text" class="phone_number form-control mb-3" name="phone" id="phone" placeholder="Введите Ваш номер телефона" value="{{old('phone')}}">
                                                 <span class="error phone_error"></span>
                                             </div>
                                             <div class="form-group smsBlock"></div>
