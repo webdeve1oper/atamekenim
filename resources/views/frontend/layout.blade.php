@@ -6,13 +6,13 @@
     <title>Реестр Фондов</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="img/favicon.png" type="image/png">
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow"/>
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('/css/newstyle.css')}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -53,14 +53,13 @@
                         <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
                     </li>
                     <li>
-                                <a class="nav-link langSwitcher" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    {{ strtoupper(app()->getLocale()) }}<i class="fas fa-chevron-down"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="/ru{{str_replace(''.app()->getLocale(), '', Request::path())}}">RU</a>
-                                    <a class="dropdown-item" href="/kz{{str_replace(''.app()->getLocale(), '', Request::path())}}">KZ</a>
-{{--                                    <a class="dropdown-item" href="/en{{str_replace(''.app()->getLocale(), '', Request::path())}}">EN</a>--}}
-                                </div>
+                        <a class="nav-link langSwitcher" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{ strtoupper(app()->getLocale()) }}<i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/ru{{str_replace(''.app()->getLocale(), '', Request::path())}}">RU</a>
+                            <a class="dropdown-item" href="/kz{{str_replace(''.app()->getLocale(), '', Request::path())}}">KZ</a>
+                        </div>
                     </li>
                     <li>
                         @if(Auth::guard('fond')->check())
@@ -137,8 +136,8 @@
                     <button><img src="/img/search.svg" alt=""></button>
                 </form>
                 @if(!Auth::check())
-                <a href="{{route('registration_user')}}" class="authButton">{{trans('auth.sign-up')}}</a>
-                <a href="{{route('login')}}" class="authButton login">{{trans('auth.sign-in')}}</a>
+                    <a href="{{route('registration_user')}}" class="authButton">{{trans('auth.sign-up')}}</a>
+                    <a href="{{route('login')}}" class="authButton login">{{trans('auth.sign-in')}}</a>
                 @endif
             </div>
             <div class="col-sm-2">
@@ -164,12 +163,12 @@
 </footer>
 
 
-<script >
+<script>
     var liner = $('body').offset().top;
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         if ($(this).scrollTop() > liner) {
             $('header').addClass("fixed");
-        }else{
+        } else {
             $('header').removeClass("fixed");
 
         }
@@ -198,11 +197,11 @@
 </script>
 <script>
     $(document).ready(function () {
-        if(window.innerWidth < 678) {
-            $('header ul.menu li a').click(function(){
+        if (window.innerWidth < 678) {
+            $('header ul.menu li a').click(function () {
                 $('header ul.menu').hide();
             });
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 $('header ul.menu').hide();
             });
         }

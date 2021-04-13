@@ -8,7 +8,7 @@
                         <ul>
                             <li><a href="/">Главная</a></li>
                             <li><a href="{{route('fonds')}}">Реестр благотворительных организаций</a></li>
-                            <li><a href="/fond/{{$fond->id}}">{{$fond->title}}</a></li>
+                            <li><a href="/fond/{{$fond->id}}">{{$fond['title_'.app()->getLocale()] ?? $fond['']}}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                                     {{--<p class="greyText">Рейтинг: <span class="green">95</span></p>--}}
                                     <a href="" class="socialButtonGlobal"><i class="fas fa-share-alt"></i></a>
                                 </div>
-                                <h1>{{$fond->title}}</h1>
+                                <h1>{{$fond['title_'.app()->getLocale()] ?? $fond['']}}</h1>
                                 <p class="category">{{$fond->sub_title}}</p>
                                 <p>Страна: <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
                                 <p>Сайт: <a href="">{{$fond->website??'не указан'}}</a></p>
@@ -206,7 +206,7 @@
                                     <input type="radio" id="dayInput2" name="day" value="Каждый день">
                                     <input type="radio" id="dayInput3" name="day" value="Ежемесячно">
                                 </div>
-                                <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond->title}}">
+                                <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
                                 <button class="btn-default red" type="submit">
                                     <img src="/img/help.svg" alt=""> Поддержать благотворительную организацию
                                 </button>
@@ -468,8 +468,10 @@
                     @foreach($relatedFonds as $relatedFond)
                     <div class="col-sm-3">
                         <div class="block">
-                            <img src="{{$relatedFond->logo}}" alt="">
-                            <p>{{$relatedFond->title}}</p>
+                            <a href="{{route('innerFond', [$relatedFond->id])}}">
+                                <img src="{{$relatedFond->logo ?? '/img/no-photo.png'}}" alt="">
+                                <p>{{$relatedFond['title_'.app()->getLocale()] ?? $relatedFond['title_ru']}}</p>
+                            </a>
                         </div>
                     </div>
                     @endforeach
@@ -477,170 +479,6 @@
             </div>
         </div>
     </div>
-    @if(Auth::user())
-
-        <div id="helpCallback" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h5 class="modal-title text-center">Подача заявления на получение помощи</h5>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('helpfond')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="fond[]" value="{{$fond->id}}">
-                            @if($errors->has('title'))
-                                <span class="error">{{ $errors->first('title') }}</span>
-                            @endif
-                            <div class="form-group">
-                                <label for="who_need_help">Кому нужна помощь:</label>
-                                <select name="who_need_help" id="who_need_help" class="form-control">
-                                    @foreach(config('destinations_attribute') as $value=> $title)
-                                        <option value="{{$value}}">{{$title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="destionations">Адресат помощи (выберите один или несколько):</label>
-                                @php $i = 0 @endphp
-                                <select name="destionations[]" class="select2 w-100" multiple placeholder="Адресат помощи" id="destionations">
-                                    @foreach($destinations as $destination)
-                                        @if($loop->index == 0)
-                                            <optgroup label="{{config('destinations')[$i]}}">
-                                        @endif
-                                        @if($i != $destination->paren_id )
-                                            @php $i = $destination->paren_id @endphp
-                                            <optgroup label="{{config('destinations')[$i]}}">
-                                        @endif
-                                        <option value="{{$destination->id}}">{{$destination->name_ru}}</option>
-                                                @if($i != $destination->paren_id )
-                                            </optgroup>
-                                        @endif
-                                    @endforeach
-                                </select>
-                                <small class="form-text text-muted">Укажите адресата помощи</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="regions">В каком регионе необходима помощь:</label>
-                                <select name="region_id" class="select2 w-100" placeholder="Тип помощи" id="regions">
-                                    @foreach($regions as $region)
-                                        <option value="{{$region->region_id}}">{{$region->text}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="baseHelpTypes">Какая помощь необходима:</label>
-                                <select name="baseHelpTypes[]" class="select2 w-100" multiple placeholder="Сфера необходимой помощи" id="baseHelpTypes">
-                                    @foreach($baseHelpTypes as $destionation)
-                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}} </option>
-                                    @endforeach
-                                </select>
-                                <small class="form-text text-muted">Сфера необходимой помощи</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Виды оказываемой помощи (выберите один или несколько):</label>
-                                <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="Виды оказываемой помощи" id="cashHelpTypes">
-                                    @foreach($cashHelpTypes as $destination)
-                                            <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
-                                    @endforeach
-                                </select>
-                                <small class="form-text text-muted">Укажите тпи помощи</small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Необхадимая сумма:</label>
-                                <select name="cashHelpSizes[]" class="select2 w-100" placeholder="Виды оказываемой помощи" id="cashHelpSizes">
-                                    @foreach($cashHelpSizes as $destination)
-                                        <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <script>
-                                var json = {!! $regions->toJson() !!};
-                                var jsonHelps = {!! $baseHelpTypes->toJson() !!};
-                                $('#destionations').select2({
-                                    width: '100%',
-                                    placeholder: 'Адресат помощи'
-                                });
-                                $('#regions').select2({
-                                    width: '100%',
-                                    placeholder: 'Область'
-                                });
-                                $('#cashHelpTypes').select2({
-                                    width: '100%',
-                                    placeholder: 'Виды оказываемой помощи'
-                                });
-                                $('#cashHelpSizes').select2({
-                                    width: '100%',
-                                    placeholder: 'Виды оказываемой помощи'
-                                });
-                                $('#baseHelp').select2({
-                                    width: '100%',
-                                    placeholder: 'Выберите сектор помощи'
-                                });
-                                $('#addHelp').select2({
-                                    width: '100%',
-                                    placeholder: 'Выберите подробный сектор помощи'
-                                });
-
-                                $('#helpCallback').submit(function(){
-                                    $.ajax({
-                                       url: '{{route('innerFond', $fond->id)}}',
-                                        method: 'get',
-                                        data: $('#helpCallback').serialize(),
-                                        success: function(data){
-                                           console.log(data);
-                                        }
-                                    });
-                                    return false;
-                                });
-                                // $('#baseHelp').change(function(){
-                                //     var ind = $('#baseHelp').children('option:selected').val();
-                                //     var datas = [];
-                                //     jsonHelps.forEach(function(value,index){
-                                //         if(value.id == ind){
-                                //             ind = index;
-                                //         }
-                                //     });
-                                //     $('#addHelp').empty();
-                                //     datas.push({id:'0', text: '-'});
-                                //     for (let [key, value] of Object.entries(jsonHelps[ind].add_help_types)){
-                                //         datas.push({id:value.id, text: value.name_ru});
-                                //     }
-                                //     $('#addHelp').select2({data: datas, allowClear: true});
-                                // });
-                                $('#regions').change(function(){
-                                    var ind = $('#regions').children('option:selected').val();
-                                    var datas = [];
-                                    json.forEach(function(value,index){
-                                        if(value.region_id == ind){
-                                            ind = index;
-                                        }
-                                    });
-
-                                    $('#cities').empty();
-                                    datas.push({id:'0', text: '-'});
-                                    for (let [key, value] of Object.entries(json[ind].districts)){
-                                        datas.push({id:value.id, text: value.text});
-                                    }
-                                    $('#cities').select2({data: datas, allowClear: true});
-                                });
-                            </script>
-                            <textarea name="body" placeholder="Описание помощи" class="form-control mb-3" id="helpBody" cols="30" rows="10">{{old('body')}}</textarea>
-                            <input type="submit" class="btn btn-primary m-auto d-table" value="Найти">
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    @endif
     <style>
         .modal-header .close{
             position: absolute;
