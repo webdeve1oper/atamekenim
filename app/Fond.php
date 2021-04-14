@@ -70,7 +70,7 @@ class Fond extends Authenticatable
     }
 
     public function cashHelpSizes(){
-        return $this->belongsToMany(CashHelpSize::class, 'fond_cashhelpsizes', 'fond_id', 'cash_help_size_id');
+        return $this->belongsToMany(CashHelpSize::class, 'fond_cashhelpsize', 'fond_id', 'cash_help_size_id');
     }
 
     public function helpsByStatus($status = 'wait'){
