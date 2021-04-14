@@ -14,8 +14,8 @@ class DestinationSeeder extends Seeder
     {
         $destinations = [
             [
-                'Ребонок'=>['name_kz'=>'Бала','scenario_id'=>[2,3]],
-                'Школник'=>['name_kz'=>'Мектеп оқушысы','scenario_id'=>[2,3]],
+                'Ребенок'=>['name_kz'=>'Бала','scenario_id'=>[2,3]],
+                'Школьник'=>['name_kz'=>'Мектеп оқушысы','scenario_id'=>[2,3]],
                 'Студент'=>['name_kz'=>'Студент','scenario_id'=>[2,3]],
                 'Безработный'=>['name_kz'=>'Жұмыссыз','scenario_id'=>[2,3]],
                 'Трудоустроенный'=>['name_kz'=>'Жұмысқа орналасқан','scenario_id'=>[2,3]],

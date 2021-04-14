@@ -18,7 +18,7 @@ return [
     'menu-news' => 'Новости',
     'menu-faq' => 'Вопрос-ответ',
     'menu-contacts' => 'Контакты',
-    'menu-testimonials' => 'Отызвы',
+    'menu-testimonials' => 'Отзывы',
     'share' => 'Поделиться ',
     'sign-in' => 'Войти ',
     'sign-up' => 'Регистрация',

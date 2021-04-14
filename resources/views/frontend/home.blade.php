@@ -155,8 +155,11 @@
                                 <label for="citySelector">{{trans('home.your-regions')}}</label>
                                 <select name="" id="citySelector">
                                     <option value="">{{trans('home.select-region')}}</option>
-                                    <option value="">{{trans('home.select-region')}}</option>
-                                    <option value="">{{trans('home.select-region')}}</option>
+                                    @foreach($cities as $city)
+                                        <option  value="{{$city->id}}">
+                                            {{$city['title_'.app()->getLocale()]}}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="inputBlock">

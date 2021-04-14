@@ -18,6 +18,7 @@ return [
     'menu-news' => 'Жаңалықтар',
     'menu-faq' => 'Сұрақ-жауап',
     'menu-contacts' => 'Байланыс деректері',
+    'menu-testimonials' => 'Пікірлер',
     'share' => 'Бөлісу',
     'sign-in' => 'Кіру',
     'sign-up' => 'Тіркелу ',
