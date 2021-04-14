@@ -15,7 +15,7 @@ class CreateHelpImagesTable extends Migration
     {
         Schema::create('help_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('images');
+            $table->string('image');
             $table->timestamps();
         });
     }
