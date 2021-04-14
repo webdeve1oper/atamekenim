@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h1>Подать заявку на получение помощи</h1>
-                        <form action="{{route('helpfond')}}" method="post" id="request_help">
+                        <form action="{{route('request_help')}}" method="POST" id="request_help">
                             @csrf
                             @if($errors->has('title'))
                                 <span class="error">{{ $errors->first('title') }}</span>
@@ -86,14 +86,14 @@
                                 <div class="col-sm-4 districts" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">Район</label>
-                                        <select name="districts[]" class="select2 w-100" placeholder="Тип помощи" id="districts"></select>
+                                        <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts"></select>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4 cities" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">Город/Село</label>
-                                        <select name="cities[]" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
+                                        <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
 
                             <div class="form-group mb-4 cashHelpSizes">
                                 <label for="exampleInputEmail1">Укажите сумму необходимой помощи* (один вариант из предложенных):</label>
-                                <select name="cashHelpSizes[]" class="select2 w-100" placeholder="Виды оказываемой помощи" id="cashHelpSizes">
+                                <select name="cash_help_size_id" class="select2 w-100" placeholder="Виды оказываемой помощи" id="cashHelpSizes">
                                     @foreach($cashHelpSizes as $destination)
                                         <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                     @endforeach
@@ -129,7 +129,7 @@
 
                             <div class="form-group mb-4">
                                 <label for="exampleInputEmail1">Укажите срочность необходимой помощи* :</label>
-                                <select name="helpUrgencyDate" class="select2 w-100" placeholder="Укажите срочность необходимой помощи" id="helpUrgencyDate">
+                                <select name="urgency_date" class="select2 w-100" placeholder="Укажите срочность необходимой помощи" id="helpUrgencyDate">
                                     <option value="1">в течение 1 месяца</option>
                                     <option value="2">в течение 3 месяцев</option>
                                     <option value="3">в течение 6 месяцев</option>
@@ -172,17 +172,17 @@
                         </form>
                         @include('frontend.fond.script')
                         <script>
-                            $('#request_help').submit(function () {
-                                $.ajax({
-                                    method: 'get',
-                                    url: '{{route('request_help')}}',
-                                    data: $('#request_help').serialize(),
-                                    success: function (data) {
-                                        console.log(data);
-                                    }
-                                });
-                                return false;
-                            });
+                            {{--$('#request_help').submit(function () {--}}
+                            {{--    $.ajax({--}}
+                            {{--        method: 'get',--}}
+                            {{--        url: '{{route('request_help')}}',--}}
+                            {{--        data: $('#request_help').serialize(),--}}
+                            {{--        success: function (data) {--}}
+                            {{--            console.log(data);--}}
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--    return false;--}}
+                            {{--});--}}
                         </script>
                     </div>
                 </div>

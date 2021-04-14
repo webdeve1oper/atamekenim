@@ -8,7 +8,7 @@ class Help extends Model
 {
     //
     protected $table = 'helps';
-    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status', 'urgency_date'];
+    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id'];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -45,4 +45,7 @@ class Help extends Model
         return $this->belongsToMany(Destination::class, 'help_destinations', 'help_id', 'destination_id');
     }
 
+    public function cashHelpTypes(){
+        return $this->belongsToMany(CashHelpType::class, 'help_cashhelptypes', 'help_id', 'cash_help_id');
+    }
 }

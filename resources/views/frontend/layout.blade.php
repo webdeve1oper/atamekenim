@@ -9,7 +9,7 @@
     <meta name="robots" content="noindex, nofollow"/>
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/newstyle.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/newstyle.css')}}?v=00001">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
@@ -29,7 +29,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{route('home')}}" class="logo"><img src="/img/logo.svg" alt=""></a>
+                <a href="{{route('home')}}" class="logo"><img src="/img/logo11.png" alt=""></a>
                 <ul class="menu">
                     <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
                     <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
@@ -107,7 +107,7 @@
             <div class="col-sm-4">
                 <div class="row">
                     <div class="col-sm-6">
-                        <img src="/img/logo2.svg" alt="" class="logo2">
+                        <img src="/img/logo23.png" alt="" class="logo2">
                     </div>
                     <div class="col-sm-6">
                         <ul>
@@ -152,7 +152,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="siteCopyr"><span>{{trans('home.copyright')}}:</span><img src="/img/logo2.svg" alt=""></div>
+                    <div class="siteCopyr"><span>{{trans('home.copyright')}}:</span><img src="/img/logo23.png" alt=""></div>
                 </div>
                 <div class="col-sm-6">
                     <div class="siteCopyr realCopyright"><span>{{trans('home.copyright-dev')}}: </span><img src="/img/conversion.svg" alt=""></div>

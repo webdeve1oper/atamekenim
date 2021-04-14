@@ -68,7 +68,7 @@ Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
 
 //Auth::routes();
 Route::group(['middleware'=>'auth'], function(){
-    Route::get('request-for-help', 'Frontend\FondController@request_help')->name('request_help');
+    Route::match(['get','post'], 'request-for-help', 'Frontend\FondController@request_help')->name('request_help');
     Route::get('cabinet', 'Backend\CabinetController@index')->name('cabinet');
     Route::get('cabinet/{id}/edit', 'Backend\CabinetController@editUser')->name('editUser');
     Route::post('fond/help', 'Backend\CabinetController@help')->name('helpfond');

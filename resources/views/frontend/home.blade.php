@@ -535,7 +535,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <a href="{{route('news')}}" class="readMore">{{trans('home.read-all-news')}}<span class="miniArrow">›</span></a>
+                        <a href="{{route('news')}}" class="readMore">{{trans('home.read-all-news')}} <span class="miniArrow">›</span></a>
                     </div>
                 </div>
             </div>
@@ -550,42 +550,42 @@
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <div class="block">
                                     <img src="/img/atameken.png" alt="">
                                     <p>{{trans('home.atameken')}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <div class="block">
                                     <img src="/img/goverment.png" alt="">
                                     <p>{{trans('home.m-edu')}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <div class="block">
                                     <img src="/img/goverment.png" alt="">
                                     <p>{{trans('home.m-tszn')}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <div class="block">
-                                    <img src="/img/atameken.png" alt="">
-                                    <p>{{trans('home.atameken')}}</p>
+                                    <img src="/img/kaspi.png" alt="">
+                                    <p>{{trans('home.kaspi')}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col">
                                 <div class="block">
-                                    <img src="/img/goverment.png" alt="">
-                                    <p>{{trans('home.m-edu')}}</p>
+                                    <img src="/img/kior.png" alt="">
+                                    <p>{{trans('home.kior')}}</p>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="block">
-                                    <img src="/img/goverment.png" alt="">
-                                    <p>{{trans('home.m-tszn')}}</p>
-                                </div>
-                            </div>
+                            {{--<div class="col-sm-2">--}}
+                                {{--<div class="block">--}}
+                                    {{--<img src="/img/goverment.png" alt="">--}}
+                                    {{--<p>{{trans('home.m-tszn')}}</p>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                         </div>
                     </div>
                 </div>
