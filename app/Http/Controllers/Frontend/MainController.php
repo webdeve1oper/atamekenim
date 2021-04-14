@@ -95,7 +95,8 @@ class MainController extends Controller
     }
 
     public function help(){
-        return redirect()->route('dev');
+        $helps = Help::whereFondStatus('finished')->paginate(4);
+        return view('frontend.help.help_page')->with(compact('helps'));
     }
 
     public function reviews(){
