@@ -60,3 +60,8 @@
     border-color: #06c;
     background: #f9f9ff;
 }
+
+header a.logo img {
+    width: 90%;
+    object-fit: contain;
+}
