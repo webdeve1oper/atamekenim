@@ -12,7 +12,7 @@
                 @if($item->admin_status == 'moderate')
                     <div class="card my-3">
                         <div class="card-header">
-                            {{ $item->who_need_help }}
+                            {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->title }}</h5>
@@ -30,7 +30,7 @@
                 @if($item->admin_status == 'finished')
                     <div class="card my-3">
                         <div class="card-header">
-                            {{ $item->who_need_help }}
+                            {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->title }}</h5>
@@ -48,7 +48,7 @@
                 @if($item->admin_status == 'edit')
                     <div class="card my-3">
                         <div class="card-header">
-                            {{ $item->who_need_help }}
+                            {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->title }}</h5>
@@ -66,7 +66,7 @@
                 @if($item->admin_status == 'cancel')
                     <div class="card my-3">
                         <div class="card-header">
-                            {{ $item->who_need_help }}
+                            {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $item->title }}</h5>
