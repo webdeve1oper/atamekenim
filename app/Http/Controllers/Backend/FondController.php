@@ -86,6 +86,7 @@ class FondController extends Controller
             $fond->destinations()->sync($request->destinations);
             $fond->cashHelpTypes()->sync($request->cashHelpTypes);
             $fond->scenarios()->sync($request->scenario_id);
+            return redirect()->back()->with(['success' => 'Информация успешно обновлена']);
         }else{
             $baseHelpTypes = AddHelpType::all()->toArray();
             $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
