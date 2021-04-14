@@ -46,7 +46,7 @@ class User extends Authenticatable
     }
 
     public function helpsByStatus($status = 'wait'){
-        return $this->hasMany(Help::class,'user_id')->where('status', '=', $status);
+        return $this->hasMany(Help::class,'user_id')->where('fond_status', '=', $status);
     }
 
     public function born_location_country(){

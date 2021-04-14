@@ -18,6 +18,7 @@ use App\Region;
 use App\Scenario;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FondController extends Controller
@@ -39,22 +40,31 @@ class FondController extends Controller
     }
 
     public function request_help(Request $request){
-        if ($request->ajax()) {
-            $relatedHelpIds = $request->destinations;
-            $scenario_id = $request->who_need_help;
-            $relatedFonds = Fond::whereHas('scenarios', function($query) use ($scenario_id){
-                $query->where('scenario_id', $scenario_id);
-            })->get();
-            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
+//        if ($request->ajax()) {
+//            $relatedHelpIds = $request->destinations;
+//            $scenario_id = $request->who_need_help;
+//            $relatedFonds = Fond::whereHas('scenarios', function($query) use ($scenario_id){
+//                $query->where('scenario_id', $scenario_id);
+//            })->get();
+//            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
+//        }
+        if($request->method() == 'POST'){
+            $request['user_id'] = Auth::user()->id;
+            $help = Help::create($request->all());
+            $help->destinations()->attach($request->destinations);
+            $help->addHelpTypes()->attach($request->baseHelpTypes);
+            $help->cashHelpTypes()->attach($request->cashHelpTypes);
+
+            return redirect()->route('cabinet');
         }
-        $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
-        $baseHelpTypes = AddHelpType::all();
-        $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
-        $destinations = Destination::all();
-        $cashHelpTypes = CashHelpType::all();
-        $cashHelpSizes = CashHelpSize::all();
-
-
+        if($request->method() == 'GET'){
+            $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
+            $baseHelpTypes = AddHelpType::all();
+            $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
+            $destinations = Destination::all();
+            $cashHelpTypes = CashHelpType::all();
+            $cashHelpSizes = CashHelpSize::all();
+        }
         return view('frontend.fond.request_help')->with(compact( 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios'));
     }
 

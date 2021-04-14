@@ -24,7 +24,6 @@
                                 <p>Основная деятельность: <a href="">@foreach($fond->baseHelpTypes as $i => $help)@if($i==2) @break @endif{{$help['name_'.app()->getLocale()]}},@endforeach ...</a></p>
                             </li>
                             <li>
-
 {{--                                <p>Регион работы: @if(array_key_exists('region_id', $fond->region))<a href="#" onclick="$('#regions{{$fond->region['region_id']}}').attr('checked', true);$('#fonds_filter').submit();">{{$fond->region['title_ru']}}</a>@endif</p>--}}
                             </li>
                         </ul>

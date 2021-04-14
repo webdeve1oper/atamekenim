@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h1>{{trans('fonds.req-help')}}</h1>
-                        <form action="{{route('helpfond')}}" method="post" id="request_help">
+                        <form action="{{route('request_help')}}" method="POST" id="request_help">
                             @csrf
                             @if($errors->has('title'))
                                 <span class="error">{{ $errors->first('title') }}</span>
@@ -86,14 +86,14 @@
                                 <div class="col-sm-4 districts" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">{{trans('fonds.disctrit')}}</label>
-                                        <select name="districts[]" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="districts"></select>
+                                        <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts"></select>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4 cities" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">{{trans('fonds.city')}}</label>
-                                        <select name="cities[]" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="cities"></select>
+                                        <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
 
                             <div class="form-group mb-4 cashHelpSizes">
                                 <label for="exampleInputEmail1">{{trans('fonds.indicate-summ-help')}}</label>
-                                <select name="cashHelpSizes[]" class="select2 w-100" placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes">
+                                <select name="cash_help_size_id" class="select2 w-100" placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes">
                                     @foreach($cashHelpSizes as $destination)
                                         <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                     @endforeach
@@ -129,7 +129,7 @@
 
                             <div class="form-group mb-4">
                                 <label for="exampleInputEmail1">{{trans('fonds.indicate-urgency-help')}}</label>
-                                <select name="helpUrgencyDate" class="select2 w-100" placeholder="{{trans('fonds.indicate-urgency-help2')}}" id="helpUrgencyDate">
+                                <select name="urgency_date" class="select2 w-100" placeholder="{{trans('fonds.indicate-urgency-help2')}}" id="helpUrgencyDate">
                                     <option value="1">{{trans('fonds.flow-month-1')}}</option>
                                     <option value="2">{{trans('fonds.flow-month-3')}}</option>
                                     <option value="3">{{trans('fonds.flow-month-6')}}</option>
@@ -171,17 +171,17 @@
                         </form>
                         @include('frontend.fond.script')
                         <script>
-                            $('#request_help').submit(function () {
-                                $.ajax({
-                                    method: 'get',
-                                    url: '{{route('request_help')}}',
-                                    data: $('#request_help').serialize(),
-                                    success: function (data) {
-                                        console.log(data);
-                                    }
-                                });
-                                return false;
-                            });
+                            {{--$('#request_help').submit(function () {--}}
+                            {{--    $.ajax({--}}
+                            {{--        method: 'get',--}}
+                            {{--        url: '{{route('request_help')}}',--}}
+                            {{--        data: $('#request_help').serialize(),--}}
+                            {{--        success: function (data) {--}}
+                            {{--            console.log(data);--}}
+                            {{--        }--}}
+                            {{--    });--}}
+                            {{--    return false;--}}
+                            {{--});--}}
                         </script>
                     </div>
                 </div>
