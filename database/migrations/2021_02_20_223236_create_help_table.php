@@ -15,16 +15,20 @@ class CreateHelpTable extends Migration
     {
         Schema::create('helps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
+//            $table->string('title');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('city_id')->nullable();
             $table->foreign('city_id')->references('city_id')->on('cities');
+            $table->bigInteger('district_id')->unsigned()->nullable();
+            $table->foreign('district_id')->references('district_id')->on('districts');
             $table->bigInteger('region_id')->nullable();
             $table->foreign('region_id')->references('region_id')->on('regions');
             $table->text('body');
             $table->enum('admin_status', ['moderate', 'edit', 'cancel', 'finished'])->default('moderate');
             $table->enum('fond_status', ['moderate', 'wait', 'edit', 'cancel','finished'])->default('moderate');
+            $table->bigInteger('cash_help_size_id')->unsigned()->nullable();
+            $table->foreign('cash_help_size_id')->references('id')->on('cash_help_size');
             $table->date('date_fond_start')->nullable();
             $table->date('date_fond_finish')->nullable();
             $table->bigInteger('review_id')->unsigned()->nullable();
