@@ -31,7 +31,7 @@ class FondController extends Controller
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();
         $relatedHelpIds = $fond->baseHelpTypes->pluck('id')->toArray();
-        $relatedFonds = Fond::select('logo', 'title')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
+        $relatedFonds = Fond::select('logo', 'title_ru', 'title_kz')->where('id', '!=',$fond->id)->whereHas('baseHelpTypes', function($query) use ($relatedHelpIds){
             $query->whereIn('id', $relatedHelpIds);
         })->get();
 

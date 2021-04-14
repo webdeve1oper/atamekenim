@@ -69,6 +69,10 @@ class Fond extends Authenticatable
         return $this->belongsToMany(CashHelpType::class, 'fond_cashhelptypes', 'fond_id', 'cash_help_id');
     }
 
+    public function cashHelpSizes(){
+        return $this->belongsToMany(CashHelpSize::class, 'fond_cashhelpsizes', 'fond_id', 'cash_help_size_id');
+    }
+
     public function helpsByStatus($status = 'wait'){
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('helps.fond_status', '=', $status);
     }

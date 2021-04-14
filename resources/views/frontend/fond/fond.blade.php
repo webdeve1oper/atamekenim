@@ -130,13 +130,13 @@
                         <div class="content">
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
-                                {!! $fond->about !!}
+                                {!! $fond['about_'.app()->getLocale()] !!}
                             </div>
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.blueContent').slideToggle();">Читать о миссии фонда <i class="fas fa-chevron-down"></i></button>
                             <div class="blueContent">
                                 <p class="name">Миссия организации</p>
                                 <p class="textContent">
-                                    {!! $fond->mission !!}
+                                    {!! $fond['mission_'.app()->getLocale()] !!}
                                 </p>
                             </div>
 
