@@ -25,7 +25,7 @@
                             </li>
                             <li>
 
-                                <p>Регион работы: <a href="#" onclick="$('#regions{{$fond->region['region_id']}}').attr('checked', true);$('#fonds_filter').submit();">{{$fond->region['title_ru']}}</a></p>
+                                <p>Регион работы: @if($fond->region['region_id'])<a href="#" onclick="$('#regions{{$fond->region['region_id']}}').attr('checked', true);$('#fonds_filter').submit();">{{$fond->region['title_ru']}}</a>@endif</p>
                             </li>
                         </ul>
                         <ul class="second">
