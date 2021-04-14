@@ -129,7 +129,7 @@
                                                 <img src="/img/no-photo.png" alt="" class="logotype">
                                             @endif
                                         </li>
-                                        <li><a href="" class="name">{{$fond->title}}</a></li>
+                                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.app()->getLocale()]}}</a></li>
                                         <li><p>{{$fond->sub_title}}</p></li>
                                         <li><p>{{$fond->foundation_date}}</p></li>
                                     </ul>
