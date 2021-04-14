@@ -299,10 +299,10 @@
                                                             </div>
 
                                                             @if($i == 0)
-                                                            <div class="payment">
-                                                                Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
-                                                                <input type="checkbox" @if($requisite['payment'] == 'on') checked @endif name="requisites[{{$i}}][payment]">
-                                                            </div>
+{{--                                                            <div class="payment">--}}
+{{--                                                                Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
+{{--                                                                <input type="checkbox" @if($requisite['payment'] == 'on') checked @endif name="requisites[{{$i}}][payment]">--}}
+{{--                                                            </div>--}}
                                                             @endif
                                                             <hr class="mt-3 mb-2">
                                                         </div>
@@ -333,10 +333,10 @@
                                                         <label for="">Юридический адрес:*</label>
                                                         <input type="text" name="requisites[0][address]" data-key="address" value="" class="form-control">
                                                     </div>
-                                                    <div class="payment">
-                                                        Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
-                                                        <input type="checkbox" name="requisites[0][payment]">
-                                                    </div>
+{{--                                                    <div class="payment">--}}
+{{--                                                        Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
+{{--                                                        <input type="checkbox" name="requisites[0][payment]">--}}
+{{--                                                    </div>--}}
                                                     <hr class="mt-3 mb-2">
                                                 </div>
                                             @endif
@@ -401,10 +401,10 @@
                                                                 <input type="text" name="offices[{{$i}}][work_time]" data-key="work_time" value="{{$requisite['work_time']}}" class="form-control">
                                                             </div>
                                                             @if($i == 0)
-                                                            <div class="central">
-                                                                Данный филиал является центральным офисом
-                                                                <input type="checkbox" @if($requisite['central'] == 'on') checked @endif data-key="central" name="offices[{{$i}}][central]">
-                                                            </div>
+{{--                                                            <div class="central">--}}
+{{--                                                                Данный филиал является центральным офисом--}}
+{{--                                                                <input type="checkbox" @if($requisite['central'] == 'on') checked @endif data-key="central" name="offices[{{$i}}][central]">--}}
+{{--                                                            </div>--}}
                                                             @endif
                                                             <hr class="mt-3 mb-2">
                                                         </div>
@@ -431,10 +431,10 @@
                                                         <label for="">Часы работы :</label>
                                                         <input type="text" name="offices[0][work_time]" data-key="work_time" value="" class="form-control">
                                                     </div>
-                                                    <div class="central">
-                                                        Данный филиал является центральным офисом
-                                                        <input type="checkbox" name="offices[0][central]" data-key="central">
-                                                    </div>
+{{--                                                    <div class="central">--}}
+{{--                                                        Данный филиал является центральным офисом--}}
+{{--                                                        <input type="checkbox" name="offices[0][central]" data-key="central">--}}
+{{--                                                    </div>--}}
                                                     <hr class="mt-3 mb-2">
                                                 </div>
                                             @endif

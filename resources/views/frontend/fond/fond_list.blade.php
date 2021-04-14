@@ -103,3 +103,10 @@
             });
         });
     </script>
+<style>
+    .organizationsInBlock .organizationBigBlock img.logotype{
+        width: 80px;
+        height: initial;
+        margin: auto;
+    }
+</style>

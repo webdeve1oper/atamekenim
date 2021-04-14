@@ -47,11 +47,11 @@ class MainController extends Controller
                 });
             }
 
-            $fonds = $fonds->paginate(5);
+            $fonds = $fonds->paginate(10);
 
             return view('frontend.home_fond_list')->with(compact('fonds'));
         }else{
-            $fonds = Fond::where('status', true)->paginate(5);
+            $fonds = Fond::where('status', true)->paginate(8);
             $destionations = Destination::all();
             $cities = Region::all();
             $newFonds = Fond::where('status', true)->orderBy('created_at')->paginate(6);

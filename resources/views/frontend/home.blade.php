@@ -8,8 +8,8 @@
                     <div class="col-sm-6">
                         <h1>{{trans('home.main-h1')}}</h1>
                         <p class="descr">{{trans('home.main-descr')}}</p>
-                        <button class="btn-default blue">{{trans('home.apply-for-assistance')}}</button>
-                        <button class="btn-default">{{trans('home.partic')}}</button>
+                        <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply-for-assistance')}}</a>
+                        <a href="{{route('registration_fond')}}" class="btn-default">{{trans('home.partic')}}</a>
                     </div>
                 </div>
                 <img src="/img/slide.svg" alt="" class="slideImg">
@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h2>{{trans('home.news-usr-reestr')}}</h2>
-                        <a href="{{route('dev')}}" class="readMore">{{trans('home.hr')}} <span class="miniArrow">›</span></a>
+                        <a href="{{route('fonds')}}" class="readMore">{{trans('home.hr')}} <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
                         {{--<div class="dropdown">--}}
@@ -103,10 +103,10 @@
                         <div class="paginationBlock">
                             <ul class="pagination">
                                 <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                <li class="page-item"><a class="page-link" href="">2</a></li>
-                                <li class="page-item"><a class="page-link" href="">3</a></li>
-                                <li class="page-item"><a class="page-link" href="">4</a></li>
-                                <li class="page-item"><a class="page-link" href="">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
                                 <li class="page-item">
                                     <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>
                                 </li>
@@ -130,7 +130,6 @@
                                             @endif
                                         </li>
                                         <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.app()->getLocale()]}}</a></li>
-                                        <li><p>{{$fond->sub_title}}</p></li>
                                         <li><p>{{$fond->foundation_date}}</p></li>
                                     </ul>
                                 </div>
@@ -494,7 +493,7 @@
                                  </div>
                              </div>
 
-                             <button class="btn-default">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
+                             <button class="btn-default d-none">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
                          </div>
                     </div>
                 </div>

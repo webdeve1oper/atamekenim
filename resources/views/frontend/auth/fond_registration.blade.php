@@ -25,10 +25,9 @@ $script = "<script src='/js/masked.input.js'></script>
         <div class="container-fluid slide pt-5 ">
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" >
                         <div class="row">
                             <div class="cool-sm-8 offset-sm-2">
-                                <h1>Регистрация Фонда</h1>
                                 <form action="{{route('post_registration_fond')}}" class="w-100" method="post">
                                     @csrf
                                     <div class="form-group">
@@ -50,10 +49,10 @@ $script = "<script src='/js/masked.input.js'></script>
                                         @endif
                                     </div>
                                     <div class="form-group">
-                                        <input name="title" type="text" value="{{old('title')}}"
+                                        <input name="title_ru" type="text" value="{{old('title_ru')}}"
                                                class="form-control mb-3" placeholder="Название организации">
-                                        @if($errors->has('title'))
-                                            <span class="error">{{ $errors->first('title') }}</span>
+                                        @if($errors->has('title_ru'))
+                                            <span class="error">{{ $errors->first('title_ru') }}</span>
                                         @endif
                                     </div>
                                     <div class="form-group">
@@ -118,9 +117,22 @@ $script = "<script src='/js/masked.input.js'></script>
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-6" style="z-index: 9999">
+                        <h1>Регистрация благотворительной организации</h1>
+                        <p>Регистрация благотворительной организации означает создание страницы организации с одновременным созданием личного рабочего кабинета, где имеется возможность ввести детальную информацию о благотворительной деятельности организации, доступную в сети интернет. Как только Вы зарегистрируете свою организацию в Реестре, она будет отображаться в списке благотворительных организаций Казахстана. Через свой личный рабочий кабинет Вы сможете получать заявки на получение помощи, соответствующие Вашему региону, сфере оказываемой помощи и категориям благополучателей, и брать их в работу.</p>
+                        <p>Благодаря регистрации в Реестре благотворительных организаций, Вы получите:</p>
+                        <p><strong>Признание</strong></p>
+                        <p>Все пользователи узнают о Вашей организации и ее деятельности, Вы сможете участвовать в рейтингах и конкурсах</p>
+                        <p><strong>Удобство</strong></p>
+                        <p>Вы получаете только заявки, соответствующие Вашему региону, сфере оказываемой помощи и категориям благополучателей</p>
+                        <p><strong>Цифровизация</strong></p>
+                        <p>Вы получаете все данные о заявителе за счет связи с государственными информационными базами данных</p>
+                        <p><strong>Безопасность</strong></p>
+                        <p>Вы можете быть уверены, что с каждой взятой Вами заявкой работаете только Вы (исключение иждивенчества)</p>
+                    </div>
                 </div>
             </div>
-            <img src="/img/slide.svg" alt="" class="slideImg">
+            <img src="/img/slide.svg" style="    left: 74%;" alt="" class="slideImg">
         </div>
     </div>
 @endsection

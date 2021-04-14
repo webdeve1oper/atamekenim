@@ -75,7 +75,7 @@ class FondAuthController extends Controller
         });
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
+            'title_ru' => 'required',
             'bin' => 'required|unique:fonds|min:12',
             'email' => 'required|email|unique:fonds',
             'phone' => 'required|unique:fonds|phone_number',
@@ -83,7 +83,7 @@ class FondAuthController extends Controller
             'work' => 'required',
             'password' => 'required|min:6|confirmed',
         ], [
-            'title.required'=>'Заполните название организации',
+            'title_ru.required'=>'Заполните название организации',
             'email.required'=>'Укажите почту',
             'fio.required'=>'Заполните (ФИО сотрудника организации)',
             'work.required'=>'Заполните (Должность сотрудника организации)',
@@ -110,7 +110,7 @@ class FondAuthController extends Controller
         $data['phone'] = str_replace(['+','(',')', ' '], ['','','',''], $data['phone']);
         $check = $this->create($data);
         if($check){
-            return redirect()->route('login')->withSuccess('Вы успешно зарегистрированы!');
+            return redirect()->route('login-fond')->withSuccess('Вы успешно зарегистрированы!');
         }else{
             return redirect()->back()->withErrors('Что то пошло не так! Попробуйте снова');
         }

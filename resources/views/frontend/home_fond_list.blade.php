@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-sm-6">
         <p class="name">Ими гордится страна</p>
-        <div class="dropdown">
+        <div class="dropdown d-none">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 За все время
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">За все время</a>
                 <a class="dropdown-item" href="#">За все время</a>
                 <a class="dropdown-item" href="#">За все время</a>
