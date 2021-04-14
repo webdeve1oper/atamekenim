@@ -18,7 +18,13 @@
                 </div>
             </div>
         </div>
-        @include('frontend.alerts')
+        <div class="container">
+            <div class="row">
+                <div class="col-12 pt-3">
+                    @include('frontend.alerts')
+                </div>
+            </div>
+        </div>
         @yield('fond_content')
     </div>
 @endsection

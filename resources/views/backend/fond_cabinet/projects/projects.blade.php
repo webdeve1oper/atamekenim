@@ -4,6 +4,7 @@
 
     <div class="row">
         <div class="col-12 mb-3">
+            <h1>ПРОЕКТЫ ВАШЕЙ ОРГАНИЗАЦИИ</h1>
             <a href="{{route('create_project')}}" class="btn btn-default float-right">+ Добавить проект</a>
         </div>
     @foreach(Auth::user()->projects as $project)

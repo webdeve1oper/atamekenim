@@ -152,10 +152,10 @@
                                 {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
                                 {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
                                 {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
-                                <a href="">{{trans('fond-cab.all-see-org')}}</a>
-                                <a href="">{{trans('fond-cab.more-analytics')}}</a>
-                                <a href="">{{trans('fond-cab.how-to-up')}}</a>
-                                <a href="">{{trans('fond-cab.form-rat')}}</a>
+                                <a href="{{route('dev')}}">{{trans('fond-cab.all-see-org')}}</a>
+                                <a href="{{route('dev')}}">{{trans('fond-cab.more-analytics')}}</a>
+                                <a href="{{route('dev')}}">{{trans('fond-cab.how-to-up')}}</a>
+                                <a href="{{route('dev')}}">{{trans('fond-cab.form-rat')}}</a>
                             </div>
                         </div>
                     </div>

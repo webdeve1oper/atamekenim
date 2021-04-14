@@ -53,6 +53,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::get('/cabinet/fond', 'Backend\FondController@index')->name('fond_cabinet');
     Route::get('/cabinet/fond/edit', 'Backend\FondController@edit')->name('fond_setting');
+    Route::match(['get','post'], '/cabinet/fond/edit-activity', 'Backend\FondController@editActivity')->name('fond_editActivity');
     Route::get('/cabinet/fond/projects', 'Backend\FondController@projects')->name('fond_projects');
     Route::post('/cabinet/fond/edit', 'Backend\FondController@update')->name('fond_setting');
     Route::match(['get','post'], '/cabinet/fond/projects', 'Backend\FondController@projects')->name('projects');

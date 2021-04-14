@@ -179,6 +179,34 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="bottomContent">
+                            <h3>Организация на карте</h3>
+                            <div id="map" class="map"></div>
+                            <a href="{{route('request_help')}}" class="btn-default blue">Подать заявку на получение помощи</a>
+                            <script>
+                                ymaps.ready(init);
+
+                                function init() {
+                                    var myPlacemark,
+                                        myMap = new ymaps.Map('map', {
+                                            @if($fond->longitude && $fond->latitude)
+                                            center: [{{$fond->longitude}}, {{$fond->latitude}}],
+                                            zoom: 15,
+                                            @else
+                                            center: [48.045133, 67.492732],
+                                            zoom: 5,
+                                            @endif
+                                            controls: ['searchControl']
+                                        }, {
+                                            searchControlProvider: 'yandex#search'
+                                        });
+                                    @if($fond->longitude && $fond->latitude)
+                                        myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
+                                    myMap.geoObjects.add(myPlacemark);
+                                    @endif
+                                }
+                            </script>
+                        </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="redContent">
@@ -222,41 +250,17 @@
                             @foreach($requisites as $requisite)
                         <div class="grayContent mobileGrayContent">
                             <h3>Реквизиты</h3>
-                            {!! $requisite['body'] !!}
+                            <p><b>Руководитель:</b> {{$requisite['leader']}} </p>
+                            <p><b>Адрес:</b> {{$requisite['address']}} </p>
+                            <p><b>Телефон:</b> {{$requisite['phone']}} </p>
+                            <p><b>Электронная почта:</b> {{$requisite['email']}}</p>
                         </div>
                             @endforeach
                             @endif
                     </div>
 
 
-                    <div class="col-sm-8 bottomContent">
-                        <h3>Организация на карте</h3>
-                        <div id="map" class="map"></div>
-                        <a href="{{route('request_help')}}" class="btn-default blue">Подать заявку на получение помощи</a>
-                        <script>
-                            ymaps.ready(init);
 
-                            function init() {
-                                var myPlacemark,
-                                    myMap = new ymaps.Map('map', {
-                                        @if($fond->longitude && $fond->latitude)
-                                        center: [{{$fond->longitude}}, {{$fond->latitude}}],
-                                        zoom: 15,
-                                        @else
-                                        center: [48.045133, 67.492732],
-                                        zoom: 5,
-                                        @endif
-                                        controls: ['searchControl']
-                                    }, {
-                                        searchControlProvider: 'yandex#search'
-                                    });
-                                @if($fond->longitude && $fond->latitude)
-                                    myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
-                                    myMap.geoObjects.add(myPlacemark);
-                                @endif
-                            }
-                        </script>
-                    </div>
                     @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
                         <div class="galleryBlock">

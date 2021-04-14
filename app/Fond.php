@@ -17,11 +17,13 @@ class Fond extends Authenticatable
     protected $fillable = [
         'title', 'title_kz', 'title_en', 'website', 'bin', 'logo', 'help_location_country', 'help_location_region', 'help_location_city', 'phone', 'email','work','fio','organ_id','foundation_date',
         'address', 'longitude', 'latitude', 'about',
-        'mission', 'social', 'offices',
+        'mission_ru', 'mission_kz', 'social', 'offices',
         'video', 'requisites',
         'password',
         'status',
         'org_type',
+        'about_ru',
+        'about_kz',
         'organ_id',
         'help_cash'
     ];
@@ -70,7 +72,7 @@ class Fond extends Authenticatable
     }
 
     public function cashHelpSizes(){
-        return $this->belongsToMany(CashHelpSize::class, 'fond_cashhelpsizes', 'fond_id', 'cash_help_size_id');
+        return $this->belongsToMany(CashHelpSize::class, 'fond_cashhelpsize', 'fond_id', 'cash_help_size_id');
     }
 
     public function helpsByStatus($status = 'wait'){
