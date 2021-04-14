@@ -63,6 +63,7 @@ Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::delete('/cabinet/fond/gallery', 'Backend\FondController@delete_gallery')->name('delete_gallery');
     Route::post('/cabinet/fond/help-start/{id}', 'Backend\FondController@start_help')->name('start_help');
     Route::post('/cabinet/fond/help-finish/{id}', 'Backend\FondController@finish_help')->name('finish_help');
+    Route::get('/cabinet/fond/help-page/{id}', 'Backend\FondController@helpPage')->name('fond_help_page');
     Route::get('logout-fond', 'FondAuthController@logout')->name('logout_fond');
 });
 
@@ -75,5 +76,6 @@ Route::group(['middleware'=>'auth'], function(){
     Route::post('review', 'Backend\CabinetController@review_to_fond')->name('review_to_fond');
     Route::get('cabinet/reviews', 'Backend\CabinetController@reviews')->name('reviews');
     Route::get('cabinet/helps', 'Backend\CabinetController@helpsHistory')->name('history');
+    Route::get('cabinet/help-page/{id}', 'Backend\CabinetController@helpPage')->name('cabinet_help_page');
     Route::get('logout-user', 'UserAuthController@logout')->name('logout_user');
 });

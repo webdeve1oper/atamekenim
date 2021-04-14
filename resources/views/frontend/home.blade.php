@@ -251,7 +251,7 @@
                         <div class="col-sm-3">
                             <div class="helpBlock">
                                 <div class="content">
-                                    <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                    <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
                                     <p>Кому: <span>
                                 @if(Auth::guard('fond')->check())
                                                 {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
@@ -282,7 +282,7 @@
                     <div class="col-sm-3">
                         <div class="helpBlock newHelp">
                             <div class="content">
-                                <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
                                 <p>Кому: <span>
                                 @if(Auth::guard('fond')->check())
                                             {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
