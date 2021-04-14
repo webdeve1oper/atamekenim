@@ -167,7 +167,8 @@
                             </div>
 
                             <textarea name="body" placeholder="{{trans('fonds.desc-help')}}" class="form-control mb-3" id="helpBody" cols="20" rows="10">{{old('body')}}</textarea>
-                            <input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">
+                            {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
+                            <input type="submit" class="btn btn-default m-auto d-table" value="Отправить">
                         </form>
                         @include('frontend.fond.script')
                         <script>

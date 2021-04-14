@@ -53,6 +53,7 @@ $script = "<script src='/js/masked.input.js'></script>
                                         </form>
                                         <hr>
                                         <a href="{{route('registration_user')}}">Регистрация</a>
+                                        <a class="ml-3" href="{{route('login-fond')}}">Войти как фонд</a>
                                     </div>
                                 </div>
                             </div>

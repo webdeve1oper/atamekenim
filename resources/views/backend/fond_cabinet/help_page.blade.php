@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="greyContent">
-                        <p class="name">{{ Auth::user()->first_name }}, {{ $help->region->title_ru }} @if($help->city_id != null), {{ $help->city->title_ru }}@endif @if($help->district_id != null), {{ $help->city->title_ru }}@endif</p>
+                        <p class="name">{{ $help->user->last_name }} {{ $help->user->first_name }}, @if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null), {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif </p>
                         <div class="text">
                             {{ $help->body }}
                         </div>
@@ -69,7 +69,7 @@
                     <div class="infoBlock">
                         <p><span>Кому необходима помощь:</span>{{$help->whoNeedHelp->name_ru}}</p>
                         <p><span>ФИО заявителя:</span>{{ $help->user->last_name }} {{ $help->user->first_name }}</p>
-                        <p><span>Место оказания помощи:</span>{{ $help->region->title_ru }} @if($help->city_id != null), {{ $help->city->title_ru }}@endif @if($help->district_id != null), {{ $help->city->title_ru }}@endif</p>
+                        <p><span>Место оказания помощи:</span>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null), {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
                         <p><span>ТЖС:</span>--</p>
                         <p><span>Год рождения:</span>{{ $help->user->born }}</p>
                         <p><span>Контактный телефон:</span>{{ $help->user->phone }}</p>

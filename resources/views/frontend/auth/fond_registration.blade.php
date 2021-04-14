@@ -113,7 +113,7 @@ $script = "<script src='/js/masked.input.js'></script>
                                     <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
                                 </form>
                                 <hr>
-                                <a href="{{route('login')}}">У меня уже есть аккаунт</a>
+                                <a href="{{route('login-fond')}}">У меня уже есть аккаунт</a>
                             </div>
                         </div>
                     </div>

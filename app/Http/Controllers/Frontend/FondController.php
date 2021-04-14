@@ -51,11 +51,12 @@ class FondController extends Controller
         if($request->method() == 'POST'){
             $request['user_id'] = Auth::user()->id;
             $help = Help::create($request->all());
+            $fonds = Fond::pluck('id');
             $help->destinations()->attach($request->destinations);
             $help->addHelpTypes()->attach($request->baseHelpTypes);
             $help->cashHelpTypes()->attach($request->cashHelpTypes);
-
-            return redirect()->route('cabinet');
+            $help->fonds()->attach($fonds);
+            return redirect()->route('cabinet')->with(['success'=>'Ваша заявка усешно отправлена!', 'info'=>'Заявка отправена на модерацию']);
         }
         if($request->method() == 'GET'){
             $scenarios = Scenario::select('id','name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();

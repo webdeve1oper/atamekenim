@@ -53,9 +53,6 @@ class AdminController extends Controller
 
             // if finished
             if($status_name == 'finished'){
-                $new_history->admin_id = Auth::user()->id;
-                $new_history->help_id = $help->id;
-                $new_history->status = $status_name;
                 $help->admin_status = $status_name;
                 $help->fond_status = 'wait';
             }
@@ -71,9 +68,6 @@ class AdminController extends Controller
                 if($validator->fails()){
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-                $new_history->admin_id = Auth::user()->id;
-                $new_history->help_id = $help->id;
-                $new_history->status = $status_name;
                 $new_history->desc = $request->get('whyfordesc');
                 $help->admin_status = $status_name;
             }
@@ -88,12 +82,13 @@ class AdminController extends Controller
                 if($validator->fails()){
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-                $new_history->admin_id = Auth::user()->id;
-                $new_history->help_id = $help->id;
-                $new_history->status = $status_name;
+
                 $new_history->desc = $request->get('whycancel');
                 $help->admin_status = $status_name;
             }
+            $new_history->admin_id = Auth::user()->id;
+            $new_history->help_id = $help->id;
+            $new_history->status = $status_name;
 
             $help->save();
             $new_history->save();

@@ -35,7 +35,7 @@
                                 <p>Дата регистрации на портале: <span>{{$registered_at->diffForHumans()}}</span></p>
                             </li>
                         </ul>
-                        <p class="missionText">{{mb_substr(strip_tags($fond->about), 0, 150)}}...</p>
+                        <p class="missionText">{{mb_substr(strip_tags($fond->about_ru), 0, 150)}}...</p>
                     </div>
                     <div class="col-sm-2 miniStatusBlock">
                         {{--<p class="greyText">Рейтинг: <span class="green">95</span></p>--}}

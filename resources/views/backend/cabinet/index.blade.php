@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="col-sm-10 col-8">
                                     <p class="name">Добро пожаловать, {{Auth::user()->first_name}} {{Auth::user()->patron}}!</p>
-                                    <p class="descr">В {{date('Y')}} г. Вам оказали помощь на сумму в 1 254 000 тенге</p>
+                                    {{--<p class="descr">В {{date('Y')}} г. Вам оказали помощь на сумму в 1 254 000 тенге</p>--}}
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Содержание просьбы / заявление</p>
-                                            <p>{{$help->body}}</p>
+                                            <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Сумма</p>
@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Содержание просьбы / заявление</p>
-                                            <p>{!! mb_substr($help->body, 0,100) !!}...</p>
+                                            <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Сумма</p>
@@ -96,9 +96,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Кому:</p>
-                                            @foreach($help->fonds as $fond)
-                                                <p>{{$fond->website}}</p>
-                                            @endforeach
+                                            <p>{{$help->whoNeedHelp->name_ru}}</p>
                                             @if(!$help->reviews)
                                             <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue">Оставить отзыв</button>
                                                 @endif
@@ -129,7 +127,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Содержание просьбы / заявление</p>
-                                            <p>{{$help->body}}</p>
+                                            <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Сумма</p>

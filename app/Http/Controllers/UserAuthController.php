@@ -55,6 +55,12 @@ class UserAuthController extends Controller
         }
 
         if (Auth::attempt($credentials)) {
+            if(Auth::guard('fond')){
+                Auth::guard('fond')->logout();
+            }
+            if(Auth::guard('admin')){
+                Auth::guard('admin')->logout();
+            }
             return redirect()->intended('cabinet');
         }
         return redirect()->route('login')->with('error', 'Что-то пошло не так!');

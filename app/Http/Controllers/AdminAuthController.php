@@ -35,6 +35,9 @@ class AdminAuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
+            if(Auth::guard('fond')){
+                Auth::guard('fond')->logout();
+            }
             return redirect()->route('admin_home');
         }
         return redirect()->route('admin_login')->with('error', 'Что-то пошло не так!');

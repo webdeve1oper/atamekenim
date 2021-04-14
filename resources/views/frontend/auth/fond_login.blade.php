@@ -31,6 +31,7 @@
                                         </form>
                                         <hr>
                                         <a href="{{route('registration_fond')}}">Регистрация</a>
+                                        <a class="ml-3" href="{{route('login')}}">Войти как пользователь</a>
                                     </div>
                                 </div>
                             </div>

@@ -39,12 +39,12 @@ class FondController extends Controller
     {
         if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
-            $help->status = 'process';
+            $help->fond_status = 'process';
             $help->date_fond_start = Carbon::today();
             if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) {
                 return redirect()->back()->with('error', 'Заявка уже принята другим фондом');
             }
-            DB::table('help_fond')->update(['fond_status' => 'enable']);
+            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']);
 
             $help->save();
             return redirect()->back()->with('success', 'Успех');
@@ -57,7 +57,7 @@ class FondController extends Controller
     {
         if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
-            $help->status = 'finished';
+            $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
             return redirect()->back()->with('success', 'Успех');
@@ -72,7 +72,7 @@ class FondController extends Controller
     {
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
 
-        return view('backend.fond_cabinet.edit')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+        return view('backend.fond_cabinet.edit')->with(compact('regions'));
     }
 
 

@@ -61,6 +61,9 @@ class FondAuthController extends Controller
         }
 
         if(Auth::guard('fond')->attempt($credentials)){
+            if(Auth::guard('admin')){
+                Auth::guard('admin')->logout();
+            }
             return redirect()->route('fond_cabinet');
         }
         return redirect()->route('login')->with('error', 'Что-то пошло не так!');
