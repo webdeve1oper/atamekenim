@@ -84,7 +84,7 @@ class MainController extends Controller
 
             return view('project_list', compact('helps'));
         }else{
-            $helps = Help::with('baseHelpTypes')->with('addHelpTypes')->paginate(5);
+            $helps = Help::with('addHelpTypes')->paginate(5);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = BaseHelpType::all();
@@ -97,6 +97,11 @@ class MainController extends Controller
     public function help(){
         $helps = Help::whereFondStatus('finished')->paginate(4);
         return view('frontend.help.help_page')->with(compact('helps'));
+    }
+
+    public function helpPage($id){
+        $help = Help::find($id);
+        return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 
     public function reviews(){

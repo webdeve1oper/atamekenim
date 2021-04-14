@@ -20,9 +20,9 @@
                             @endif
                             <p>
 
-                                @foreach($help->baseHelpTypes()->get() as $baseHelp)
-                                    <a href="">{{$baseHelp->name_ru}},</a>
-                                @endforeach
+                                {{--@foreach($help->baseHelpTypes()->get() as $baseHelp)--}}
+                                    {{--<a href="">{{$baseHelp->name_ru}},</a>--}}
+                                {{--@endforeach--}}
                                 @foreach($help->addHelpTypes()->get() as $baseHelp)
                                     <a href="">{{$baseHelp->name_ru}},</a>
                                 @endforeach
