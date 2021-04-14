@@ -53,7 +53,7 @@ class MainController extends Controller
         }else{
             $fonds = Fond::where('status', true)->paginate(5);
             $destionations = Destination::all();
-            $cities = City::whereRegionId(720)->pluck('title_ru', 'city_id');
+            $cities = Region::all();
             $newFonds = Fond::where('status', true)->orderBy('created_at')->paginate(6);
             $helpsCount = Help::count();
             $helps = Help::whereFondStatus('finished')->paginate(4);
@@ -95,7 +95,8 @@ class MainController extends Controller
     }
 
     public function help(){
-        return redirect()->route('dev');
+        $helps = Help::whereFondStatus('finished')->paginate(4);
+        return view('frontend.help.help_page')->with(compact('helps'));
     }
 
     public function reviews(){

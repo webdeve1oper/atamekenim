@@ -162,6 +162,21 @@
     </div>
 </footer>
 
+    @if(app()->getLocale() == 'kz')
+        <style>
+            header ul.menu li {
+                margin: 0 13px 0 0;
+            }
+
+            header ul.menu li a {
+                font-size: 13px;
+            }
+
+            header ul.menu {
+                margin: 0 5px 0 0;
+            }
+        </style>
+    @endif
 
 <script>
     var liner = $('body').offset().top;

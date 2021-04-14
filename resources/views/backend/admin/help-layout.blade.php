@@ -7,7 +7,7 @@
             <h1>Страница запроса: {{ $help->title }}</h1>
         </div>
         <div class="col-12">
-            <span class="badge bg-success mb-5">{{ $help->who_need_help }}</span>
+            <span class="badge bg-success mb-5">{{ $help->whoNeedHelp->name_ru }}</span>
             <h5 class="border-bottom  d-table">Описание:</h5>
             <p class="mt-2 display-7">{{ $help->body }}</p>
             @if($help->admin_status == 'moderate')

@@ -17,5 +17,5 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'sign-in' => 'Кіру ',
     'sign-up' => 'Тіркелу',
-
+    'log-out' => 'Шығу',
 ];

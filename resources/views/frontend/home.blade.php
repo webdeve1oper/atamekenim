@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h2>{{trans('home.news-usr-reestr')}}</h2>
-                        <a href="{{route('dev')}}" class="readMore">{{trans('home.hr')}}<span class="miniArrow">›</span></a>
+                        <a href="{{route('dev')}}" class="readMore">{{trans('home.hr')}} <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
                         {{--<div class="dropdown">--}}
@@ -155,8 +155,11 @@
                                 <label for="citySelector">{{trans('home.your-regions')}}</label>
                                 <select name="" id="citySelector">
                                     <option value="">{{trans('home.select-region')}}</option>
-                                    <option value="">{{trans('home.select-region')}}</option>
-                                    <option value="">{{trans('home.select-region')}}</option>
+                                    @foreach($cities as $city)
+                                        <option  value="{{$city->id}}">
+                                            {{$city['title_'.app()->getLocale()]}}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="inputBlock">
@@ -251,7 +254,7 @@
                         <div class="col-sm-3">
                             <div class="helpBlock">
                                 <div class="content">
-                                    <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                    <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
                                     <p>Кому: <span>
                                 @if(Auth::guard('fond')->check())
                                                 {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
@@ -282,7 +285,7 @@
                     <div class="col-sm-3">
                         <div class="helpBlock newHelp">
                             <div class="content">
-                                <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes()->first()->name_ru}}</span></p>
+                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
                                 <p>Кому: <span>
                                 @if(Auth::guard('fond')->check())
                                             {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
@@ -380,7 +383,7 @@
                                 </div>
                                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                                     <div class="card-body">
-                                        {{trans('home.freq-ask-questions-text')}}
+                                        {{trans('home.faq-ask-questions1-text')}}
                                     </div>
                                 </div>
                             </div>
@@ -394,7 +397,7 @@
                                 </div>
                                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
                                     <div class="card-body">
-                                        {{trans('home.freq-ask-questions-text')}}
+                                        {{trans('home.faq-ask-questions2-text')}}
                                     </div>
                                 </div>
                             </div>
@@ -416,7 +419,7 @@
                                  </div>
                                  <div id="collapeOne" class="collapse" aria-labelledby="headinOne" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq1-text')}}
                                      </div>
                                  </div>
                              </div>
@@ -430,7 +433,7 @@
                                  </div>
                                  <div id="collapeTwo" class="collapse" aria-labelledby="headinTwo" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq2-text')}}
                                      </div>
                                  </div>
                              </div>
@@ -444,7 +447,7 @@
                                  </div>
                                  <div id="collapeThree" class="collapse" aria-labelledby="headinThree" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq3-text')}}
                                      </div>
                                  </div>
                              </div>
@@ -458,7 +461,7 @@
                                  </div>
                                  <div id="collapeFour" class="collapse" aria-labelledby="headinFour" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq4-text')}}
                                      </div>
                                  </div>
                              </div>
@@ -472,7 +475,7 @@
                                  </div>
                                  <div id="collapeFive" class="collapse" aria-labelledby="headinFive" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq5-text')}}
                                      </div>
                                  </div>
                              </div>
@@ -486,7 +489,7 @@
                                  </div>
                                  <div id="collapeSix" class="collapse" aria-labelledby="headinSix" data-parent="#accordion">
                                      <div class="card-body">
-                                         {{trans('home.how-to-reestr-text')}}
+                                         {{trans('home.rfaq6-text')}}
                                      </div>
                                  </div>
                              </div>

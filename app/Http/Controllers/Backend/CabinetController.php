@@ -22,11 +22,12 @@ class CabinetController extends Controller
 
     public function index()
     {
+        $moderateHelps = Auth::user()->helpsByStatus('moderate')->with('fonds')->with('reviews')->get();
         $waitHelps = Auth::user()->helpsByStatus('wait')->with('fonds')->with('reviews')->get();
         $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->with('reviews')->get();
         $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->with('reviews')->get();
 
-        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps'));
+        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps','moderateHelps'));
     }
 
     public function create(){
@@ -103,5 +104,10 @@ class CabinetController extends Controller
         $data['user_id'] = Auth::user()->id;
         Review::create($data);
         return redirect()->back()->with('success', 'Отзыв отправлен!');
+    }
+
+    public function helpPage($id){
+        $help = Help::find($id);
+        return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 }

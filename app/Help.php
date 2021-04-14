@@ -40,6 +40,9 @@ class Help extends Model
     public function reviews(){
         return $this->hasOne(Review::class, 'help_id', 'id');
     }
+    public function district(){
+        return $this->hasOne(District::class, 'district_id', 'district_id');
+    }
 
     public function destinations(){
         return $this->belongsToMany(Destination::class, 'help_destinations', 'help_id', 'destination_id');
@@ -47,5 +50,13 @@ class Help extends Model
 
     public function cashHelpTypes(){
         return $this->belongsToMany(CashHelpType::class, 'help_cashhelptypes', 'help_id', 'cash_help_id');
+    }
+
+    public function cashHelpSize(){
+        return $this->hasOne(CashHelpSize::class, 'id', 'cash_help_size_id');
+    }
+
+    public function whoNeedHelp(){
+        return $this->belongsTo(Scenario::class, 'who_need_help', 'id');
     }
 }

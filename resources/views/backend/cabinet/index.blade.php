@@ -40,6 +40,36 @@
                             </div>
                         </div>
                         <div class="greyInfoBlock mini">
+                            <p class="countTag blue">На модерации <span>{{$moderateHelps->count()}}</span></p>
+                            @foreach($moderateHelps as $help)
+                                <div class="applicationBlock">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <p class="name">Помощь:</p>
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="name">Дата подачи:</p>
+                                            <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p class="name">Содержание просьбы / заявление</p>
+                                            <p>{{$help->body}}</p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="name">Сумма</p>
+                                            <p>50 000 - 100 000 тг</p>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <p class="name">Кому:</p>
+                                                <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">Подробнее о заявке</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="greyInfoBlock mini">
                             <p class="countTag green">Исполненные <span>{{$finishedHelps->count()}}</span></p>
                             <p class="countTag red reviews d-none">Вы еще не оставили отзывы к выполненным заявкам <span></span></p>
                             <script>
@@ -50,7 +80,7 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <p class="name">Помощь:</p>
-                                            <p class="tags default mini blue">{{$help->baseHelpTypes[0]->name_ru}}</p>
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Дата подачи:</p>
@@ -91,7 +121,7 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <p class="name">Помощь:</p>
-                                            @foreach($help->baseHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">Дата подачи:</p>
@@ -107,9 +137,8 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Кому:</p>
-                                            @foreach($help->fonds as $fond)
-                                                <p>{{$fond->website}}</p>
-                                            @endforeach
+                                            <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">Подробнее о заявке</a>
                                         </div>
                                     </div>
                                     </div>
@@ -138,9 +167,8 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Кому:</p>
-                                            @foreach($help->fonds as $fond)
-                                                <p>{{$fond->website}}</p>
-                                            @endforeach
+                                            <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">Подробнее о заявке</a>
                                         </div>
                                     </div>
                                 </div>

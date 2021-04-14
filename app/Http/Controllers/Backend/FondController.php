@@ -277,4 +277,10 @@ class FondController extends Controller
             return redirect()->back();
         }
     }
+
+    public function helpPage($id){
+        $help = Help::find($id);
+        $finished_helps = Help::whereFondStatus('finished')->paginate(4);
+        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps'));
+    }
 }

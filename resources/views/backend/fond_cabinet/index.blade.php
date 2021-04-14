@@ -15,7 +15,7 @@
                                     @endif
                                 </div>
                                 <div class="col-sm-9">
-                                    <h1>Общественное объединение {{$fond->title}}</h1>
+                                    <h1>Общественное объединение {{$fond->title_ru}}</h1>
                                     {{--<p class="descr">Поздравляем, в {{date('Y')}} году Вы реализовали {{$fond->helpsByDate(date('Y'))->count()}} заявок--}}
                                         {{--<span>на общую сумму 1 045 768 тенге</span>--}}
                                     {{--</p>--}}
@@ -37,9 +37,9 @@
                                     <div class="applicationBlock">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="tags default blue">{{$help->baseHelpTypes[0]->name_ru}}</p>
+                                                @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
 {{--                                                <p><span>{{}}</span>, 30 лет</p>--}}
-                                                <p>{{$help->region->title_ru}}, {{$help->city->title_ru}}</p>
+                                                <p>{{$help->region->title_ru}} @if($help->city_id != null), {{ $help->city->title_ru }}@endif @if($help->district_id != null), {{ $help->city->title_ru }}@endif</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="name">{{trans('fond-cab.desc')}}</p>
@@ -50,7 +50,7 @@
                                                 <p class="tags default mini red">120 баллов</p>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="" class="btn-default">{{trans('fond-cab.hr')}}</a>
+                                                <a href="{{ route('fond_help_page',$help->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
                                                 <form action="{{route('start_help', $help->id)}}" method="post">
                                                     @csrf
                                                     <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
@@ -69,9 +69,9 @@
                                     <div class="applicationBlock">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="tags default blue">{{$process->baseHelpTypes[0]->name_ru}}</p>
+                                                @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                                 {{--<p><span>Мужчина</span>, {{$process->user()->name}} лет</p>--}}
-                                                <p>{{$process->region->title_ru}}, {{$process->city->title_ru}}</p>
+                                                    <p>{{$help->region->title_ru}} @if($help->city_id != null), {{ $help->city->title_ru }}@endif @if($help->district_id != null), {{ $help->city->title_ru }}@endif</p>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="name">{{trans('fond-cab.desc')}}</p>
@@ -104,9 +104,9 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p class="tags default blue">{{$process->baseHelpTypes[0]->name_ru}}</p>
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                             <p><span>{{$process->user->gender=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
-                                            <p>{{$process->region->title_ru}}, {{$process->city->title_ru}}</p>
+                                            <p>{{$help->region->title_ru}} @if($help->city_id != null), {{ $help->city->title_ru }}@endif @if($help->district_id != null), {{ $help->city->title_ru }}@endif</p>
                                         </div>
                                         <div class="col-sm-4">
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
