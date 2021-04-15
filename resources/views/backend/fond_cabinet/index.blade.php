@@ -71,10 +71,10 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
+                                            @foreach($process->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                             {{--<p><span>Мужчина</span>, {{$process->user()->name}} лет</p>--}}
-                                            <p>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
-                                                    , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
+                                            <p>@if($process->region_id != null){{ $process->region->title_ru }}@endif @if($process->district_id != null)
+                                                    , {{ $process->district->title_ru }}@endif @if($process->city_id != null), {{ $process->city->title_ru }}@endif</p>
                                         </div>
                                         <div class="col-sm-4">
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <a href="" class="btn-default more">{{trans('fond-cab.see-all')}}</a>
+                            {{--<a href="" class="btn-default more">{{trans('fond-cab.see-all')}}</a>--}}
                         @endif
                     </div>
 
@@ -107,10 +107,10 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
+                                            @foreach($process->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                             <p><span>{{$process->user->gender=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
-                                            <p>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
-                                                    , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
+                                            <p>@if($process->region_id != null){{ $process->region->title_ru }}@endif @if($process->district_id != null)
+                                                    , {{ $process->district->title_ru }}@endif @if($process->city_id != null), {{ $process->city->title_ru }}@endif</p>
                                         </div>
                                         <div class="col-sm-4">
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <a href="" class="btn-default more">{{trans('fond-cab.see-all')}}</a>
+                            {{--<a href="" class="btn-default more">{{trans('fond-cab.see-all')}}</a>--}}
                         @endif
                     </div>
                 </div>
