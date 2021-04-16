@@ -56,7 +56,7 @@ class Fond extends Authenticatable
     }
 
     public function helps(){
-        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id');
+        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('help_fond.fond_status', '=', 'enable');
     }
 
     public function destinations(){

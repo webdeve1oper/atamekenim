@@ -216,24 +216,39 @@
                             <p>Мы связываем нуждающихся и благотворителей, чтобы
                                 социальные нужды не оставались без ответа и ни одно
                                 доброе дело – незамеченным.</p>
-                            <form action="{{route('donation_to_fond', $fond->id)}}">
-                                @csrf
+                            <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
                                 <div class="inputBlock">
+                                    <input type="hidden" name="ORDER" value="{{$orderId}}">
                                     <span>Указать сумму</span>
-                                    <input type="text" name="AMOUNT " id="sum" placeholder="Пожертвовать произвольную сумму">
+                                    <input type="text" name="AMOUNT" id="sum" placeholder="Пожертвовать произвольную сумму">
+                                    <input type="hidden" name="CURRENCY" value="KZT">
+                                    <input type="hidden" name="MERCHANT" value="atamekenim.kz">
+                                    <input type="hidden" name="TERMINAL" value="12200005">
+                                    <input type="hidden" name="LANGUAGE" value="ru">
+                                    <input type="hidden" name="CLIENT_ID" value="{{$orderId}}">
+                                    <input type="hidden" name="DESC" value="test">
+                                    <input type="hidden" name="DESC_ORDER" value="">
+                                    <input type="hidden" name="EMAIL" value="">
+                                    <input type="hidden" name="BACKREF" value="https://www.google.kz">
+                                    <input type="hidden" name="Ucaf_Flag" value="">
+                                    <input type="hidden" name="Ucaf_Authentication_Data" value="">
+                                    <input type="hidden" name="crd_pan" value="">
+                                    <input type="hidden" name="crd_exp" value="">
+                                    <input type="hidden" name="crd_cvc" value="">
+                                    <input type="hidden" name="P_SIGN" value="{{$vSign}}">
                                     <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
                                     <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
                                     <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
                                 </div>
-                                <div class="inputBlock d-none">
-                                    <span>Указать сумму</span>
-                                    <label for="dayInput1">Разовое пожертвование</label>
-                                    <label for="dayInput2">каждый день</label>
-                                    <label for="dayInput3">Ежемесячно</label>
-                                    <input type="radio" id="dayInput1" name="day" value="Разовое пожертвование">
-                                    <input type="radio" id="dayInput2" name="day" value="Каждый день">
-                                    <input type="radio" id="dayInput3" name="day" value="Ежемесячно">
-                                </div>
+{{--                                <div class="inputBlock d-none">--}}
+{{--                                    <span>Указать сумму</span>--}}
+{{--                                    <label for="dayInput1">Разовое пожертвование</label>--}}
+{{--                                    <label for="dayInput2">каждый день</label>--}}
+{{--                                    <label for="dayInput3">Ежемесячно</label>--}}
+{{--                                    <input type="radio" id="dayInput1" name="day" value="Разовое пожертвование">--}}
+{{--                                    <input type="radio" id="dayInput2" name="day" value="Каждый день">--}}
+{{--                                    <input type="radio" id="dayInput3" name="day" value="Ежемесячно">--}}
+{{--                                </div>--}}
                                 <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
                                 <button class="btn-default red" type="submit">
                                     <img src="/img/help.svg" alt=""> Поддержать благотворительную организацию
@@ -305,15 +320,15 @@
                         </div>
                     </div>
                     @foreach($fond->helps as $help)
-                        @if($help->status == 'process')
+                        @if($help->fond_status == 'process')
                             <div class="col-sm-3">
                                 <div class="helpBlock">
                                     <div class="content">
-                                        <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
+                                        <p>Помощь: <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>Организация: <img src="/img/logo.svg" alt=""></p>
                                         <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
                                         {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
-                                        <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                        <a href="{{route('help', [$help->id])}}" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
@@ -337,15 +352,15 @@
                     </div>
                     <?php $i = 0; ?>
                     @foreach($fond->helps as $help)
-                        @if($help->status == 'finished')
+                        @if($help->fond_status == 'finished')
                             <div class="col-sm-3">
                                 <div class="helpBlock">
                                     <div class="content">
-                                        <p>Помощь: <span class="tag blue">{{$help->baseHelpTypes[0]->name_ru}}</span></p>
+                                        <p>Помощь: <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>Организация: <img src="/img/logo.svg" alt=""></p>
                                         <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
                                         {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
-                                        <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                        <a href="{{route('help', [$help->id])}}" class="more">Подробнее <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
@@ -463,7 +478,7 @@
         </div>
         @endif
 
-        <div class="container-fluid default otherOrganizations d-none d-sm-block">
+        <div class="container-fluid default otherOrganizations d-none">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">

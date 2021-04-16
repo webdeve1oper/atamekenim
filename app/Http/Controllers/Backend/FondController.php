@@ -55,15 +55,15 @@ class FondController extends Controller
 
     public function finish_help($id)
     {
-        if (Auth::user()->helps->contains($id)) {
+//        if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
             $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
             return redirect()->back()->with('success', 'Успех');
-        } else {
-            return redirect()->back()->with('error', 'Заявка уже принята');
-        }
+//        } else {
+//            return redirect()->back()->with('error', 'Заявка уже принята');
+//        }
     }
 
 
