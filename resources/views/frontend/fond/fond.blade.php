@@ -6,8 +6,8 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <ul>
-                            <li><a href="/">Главная</a></li>
-                            <li><a href="{{route('fonds')}}">Реестр благотворительных организаций</a></li>
+                            <li><a href="/">{{trans('fonds-page.main')}}</a></li>
+                            <li><a href="{{route('fonds')}}">{{trans('fonds-page.reestr')}}</a></li>
                             <li><a href="/fond/{{$fond->id}}">{{$fond['title_'.app()->getLocale()] ?? $fond['']}}</a></li>
                         </ul>
                     </div>
@@ -38,21 +38,21 @@
                                 </div>
                                 <h1>{{$fond['title_'.app()->getLocale()] ?? $fond['']}}</h1>
                                 <p class="category">{{$fond->sub_title}}</p>
-                                <p>Страна: <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
-                                <p>Сайт: <a href="">{{$fond->website??'не указан'}}</a></p>
-                                <p>Регион оказания помощи: <a href="">@foreach($fond->regions as $i => $help)<a
+                                <p>{{trans('fonds-page.united')}} <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
+                                <p>{{trans('fonds-page.site')}} <a href="">{{$fond->website??'не указан'}}</a></p>
+                                <p>{{trans('fonds-page.region-helps')}} <a href="">@foreach($fond->regions as $i => $help)<a
                                                 href="">{{$help['title_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</a></p>
-                                <p>Основной сектор деятельности:
+                                <p>{{trans('fonds-page.add-sector-activity')}}
                                     @foreach($fond->baseHelpTypes as $i => $help)
                                         <a  href="#"> {{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif
                                     @endforeach
                                 </p>
-                                <p>Дополнительные секторы деятельности: @foreach($fond->addHelpTypes as $i => $help)<a href="">{{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</p>
-                                <p>Закрытых заявок: <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>
-                                <p>Общая сумма оказанной благотворительной помощи: <span>{{$fond->help_cash}} тенге</span></p>
-                                <p class="inline">Количество отзывов: <span>{{$fond->reviews()->count()}}</span></p>
+                                <p>{{trans('fonds-page.united')}} @foreach($fond->addHelpTypes as $i => $help)<a href="">{{$help['name_'.app()->getLocale()]}}</a>@if(!$loop->last),@endif @endforeach</p>
+                                <p>{{trans('fonds-page.close-appl')}} <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>
+                                <p>{{trans('fonds-page.total-amount')}} <span>{{$fond->help_cash}} тенге</span></p>
+                                <p class="inline">{{trans('fonds-page.number-reviews')}} <span>{{$fond->reviews()->count()}}</span></p>
                                 <p class="inline">Смотреть: <a href="">хорошие/</a><a href="">плохие</a></p>
-                                <p>Социальные сети:
+                                <p>{{trans('fonds-page.social')}}
                                     <?php $socials = []; ?>
                                     @if($fond->social)
                                         <?php
@@ -77,7 +77,7 @@
                     <div class="col-sm-4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="bigName">Последние отзывы</p>
+                                <p class="bigName">{{trans('fonds-page.last-reviews')}}</p>
                                 <div class="paginationBlock">
                                     <ul class="pagination">
                                         <li class="page-item">
@@ -93,7 +93,7 @@
                                 <div class="reviewSlick">
                                     <div class="nothingReviews">
                                         <div class="block">
-                                            <p class="name">Нет отзывов</p>
+                                            <p class="name">{{trans('fonds-page.no-reviews')}}</p>
                                         </div>
                                     </div>
                                     @foreach($fond->helps as $help)
@@ -125,16 +125,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h2>О фонде</h2>
-                        <a href="{{route('request_help')}}" class="btn-default" @if(!Auth::user())onclick="window.location = '{{route('login')}}'" @endif>Подать заявку на получение помощи</a>
+                        <h2>{{trans('fonds-page.about-fond')}}</h2>
+                        <a href="{{route('request_help')}}" class="btn-default" @if(!Auth::user())onclick="window.location = '{{route('login')}}'" @endif>{{trans('fonds-page.appl-ass')}}</a>
                         <div class="content">
-                            <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">Читать о фонде <i class="fas fa-chevron-down"></i></button>
+                            <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">{{trans('fonds-page.read-fond')}} <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
                                 {!! $fond['about_'.app()->getLocale()] !!}
                             </div>
-                            <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.blueContent').slideToggle();">Читать о миссии фонда <i class="fas fa-chevron-down"></i></button>
+                            <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.blueContent').slideToggle();">{{trans('fonds-page.read-mission')}} <i class="fas fa-chevron-down"></i></button>
                             <div class="blueContent">
-                                <p class="name">Миссия организации</p>
+                                <p class="name">{{trans('fonds-page.org-mission')}}</p>
                                 <p class="textContent">
                                     {!! $fond['mission_'.app()->getLocale()] !!}
                                 </p>
@@ -143,8 +143,8 @@
                             <div class="projectsBlock">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <p class="name">Проекты фонда</p>
-                                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                                        <p class="name">{{trans('fonds-page.project-fond')}}</p>
+                                        <a href="" class="readMore">{{trans('fonds-page.all-see')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="paginationBlock">
@@ -164,13 +164,13 @@
                                                 <div>
                                                     <div class="helpBlock">
                                                         <div class="content">
-                                                            <p>Помощь: <span class="tag blue">Спорт</span></p>
-                                                            <p>Название проекта: <span>{{$project->title}}</span></p>
-                                                            <p>Кому: <span>Паралимпийский резерв</span></p>
-                                                            <p><b>Описание: </b>{!! mb_substr($project->about, 0, 150) !!}...</p>
-                                                            <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                                            <p>{{trans('fonds-page.help')}} <span class="tag blue">Спорт</span></p>
+                                                            <p>{{trans('fonds-page.name-project')}} <span>{{$project->title}}</span></p>
+                                                            <p>{{trans('fonds-page.who')}} <span>{{trans('fonds-page.paral')}}</span></p>
+                                                            <p><b>{{trans('fonds-page.desc')}} </b>{!! mb_substr($project->about, 0, 150) !!}...</p>
+                                                            <a href="" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                                         </div>
-                                                        <p class="date">Статус: <span>Архив</span></p>
+                                                        <p class="date">{{trans('fonds-page.status')}} <span>{{trans('fonds-page.archev')}}</span></p>
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -180,9 +180,9 @@
                             </div>
                         </div>
                         <div class="bottomContent">
-                            <h3>Организация на карте</h3>
+                            <h3>{{trans('fonds-page.org-map')}}</h3>
                             <div id="map" class="map"></div>
-                            <a href="{{route('request_help')}}" class="btn-default blue">Подать заявку на получение помощи</a>
+                            <a href="{{route('request_help')}}" class="btn-default blue">{{trans('fonds-page.appl-ass')}}</a>
                             <script>
                                 ymaps.ready(init);
 
@@ -210,16 +210,16 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="redContent">
-                            <h2>Поддержать организацию</h2>
-                            <p>Пожертвовано: <span>100 000 000 тенге</span></p>
-                            <p>Приняли участие: <span>4000 человек</span></p>
+                            <h2>{{trans('fonds-page.help-org')}}</h2>
+                            <p>{{trans('fonds-page.donated')}} <span>100 000 000 тенге</span></p>
+                            <p>{{trans('fonds-page.took-part')}} <span>4000 человек</span></p>
                             <p>Мы связываем нуждающихся и благотворителей, чтобы
                                 социальные нужды не оставались без ответа и ни одно
                                 доброе дело – незамеченным.</p>
                             <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
                                 <div class="inputBlock">
                                     <input type="hidden" name="ORDER" value="{{$orderId}}">
-                                    <span>Указать сумму</span>
+                                    <span>{{trans('fonds-page.spec-amount')}}</span>
                                     <input type="text" name="AMOUNT" id="sum" placeholder="Пожертвовать произвольную сумму">
                                     <input type="hidden" name="CURRENCY" value="KZT">
                                     <input type="hidden" name="MERCHANT" value="atamekenim.kz">
@@ -251,7 +251,7 @@
 {{--                                </div>--}}
                                 <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
                                 <button class="btn-default red" type="submit">
-                                    <img src="/img/help.svg" alt=""> Поддержать благотворительную организацию
+                                    <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
                                 </button>
                             </form>
                         </div>
@@ -264,11 +264,11 @@
                             ?>
                             @foreach($requisites as $requisite)
                         <div class="grayContent mobileGrayContent">
-                            <h3>Реквизиты</h3>
-                            <p><b>Руководитель:</b> {{$requisite['leader']}} </p>
-                            <p><b>Адрес:</b> {{$requisite['address']}} </p>
-                            <p><b>Телефон:</b> {{$requisite['phone']}} </p>
-                            <p><b>Электронная почта:</b> {{$requisite['email']}}</p>
+                            <h3>{{trans('fonds-page.rec')}}</h3>
+                            <p><b>{{trans('fonds-page.ceo')}}</b> {{$requisite['leader']}} </p>
+                            <p><b>{{trans('fonds-page.address')}}</b> {{$requisite['address']}} </p>
+                            <p><b>{{trans('fonds-page.phone')}}</b> {{$requisite['phone']}} </p>
+                            <p><b>{{trans('fonds-page.email')}}</b> {{$requisite['email']}}</p>
                         </div>
                             @endforeach
                             @endif
@@ -279,7 +279,7 @@
                     @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
                         <div class="galleryBlock">
-                            <h3>Фотографии организации</h3>
+                            <h3>{{trans('fonds-page.photo-org')}}</h3>
                             <div class="row">
                                 @foreach($fond->images as $i=> $image)
                                     @if($i == 3)
@@ -303,19 +303,19 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>В работе</h4>
+                        <h4>{{trans('fonds-page.in-work')}}</h4>
                         {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="d-inline-block mr-3">Сортировка по рейтингу</p>
+                        <p class="d-inline-block mr-3">{{trans('fonds-page.sort-ret')}}</p>
                         <div class="dropdown organizationDrop">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Сортировка по рейтингу
+                                {{trans('fonds-page.sort-ret')}}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Сортировка по рейтингу</a>
-                                <a class="dropdown-item" href="#">Сортировка по рейтингу</a>
-                                <a class="dropdown-item" href="#">Сортировка по рейтингу</a>
+                                <a class="dropdown-item" href="#">{{trans('fonds-page.sort-ret')}}</a>
+                                <a class="dropdown-item" href="#">{{trans('fonds-page.sort-ret')}}</a>
+                                <a class="dropdown-item" href="#">{{trans('fonds-page.sort-ret')}}</a>
                             </div>
                         </div>
                     </div>
@@ -324,11 +324,11 @@
                             <div class="col-sm-3">
                                 <div class="helpBlock">
                                     <div class="content">
-                                        <p>Помощь: <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
-                                        <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                        <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
+                                        <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
+                                        <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
                                         {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
-                                        <a href="{{route('help', [$help->id])}}" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                        <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
@@ -344,11 +344,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Кому помог фонд</h4>
+                        <h4>{{trans('fonds-page.who-help-fond')}}</h4>
                     </div>
                     <div class="col-sm-6 rightBlock">
-                        <p class="status">Всего заявок: <span>{{$fond->helps->count()}}</span></p>
-                        <p class="status finishedCount">Выполнено: <span>0</span></p>
+                        <p class="status">{{trans('fonds-page.all-reviews')}} <span>{{$fond->helps->count()}}</span></p>
+                        <p class="status finishedCount">{{trans('fonds-page.well-done')}} <span>0</span></p>
                     </div>
                     <?php $i = 0; ?>
                     @foreach($fond->helps as $help)
@@ -356,11 +356,11 @@
                             <div class="col-sm-3">
                                 <div class="helpBlock">
                                     <div class="content">
-                                        <p>Помощь: <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
-                                        <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                                        <p>Кому: <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
+                                        <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
+                                        <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
                                         {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
-                                        <a href="{{route('help', [$help->id])}}" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                        <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
                                     <img src="/img/support1.svg" alt="" class="bkg">
@@ -381,8 +381,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Им доверяют</h4>
-                        <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                        <h4>{{trans('fonds-page.th-trusted')}}</h4>
+                        <a href="" class="readMore">{{trans('fonds-page.all-see')}} <span class="miniArrow">›</span></a>
                     </div>
                     <div class="col-sm-6">
                         <div class="paginationBlock">
@@ -458,7 +458,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Партнеры организации</h4>
+                        <h4>{{trans('fonds-page.partners-org')}}</h4>
                         {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
                     <div class="col-sm-12 partners">
@@ -482,7 +482,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4>Похожие благотворительные организации</h4>
+                        <h4>{{trans('fonds-page.similar-charities')}}</h4>
                     </div>
                     @foreach($relatedFonds as $relatedFond)
                     <div class="col-sm-3">
