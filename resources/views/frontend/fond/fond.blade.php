@@ -51,7 +51,7 @@
                                 <p>{{trans('fonds-page.close-appl')}} <span>{{$fond->helpsByStatus('finished')->count()}}</span></p>
                                 <p>{{trans('fonds-page.total-amount')}} <span>{{$fond->help_cash}} тенге</span></p>
                                 <p class="inline">{{trans('fonds-page.number-reviews')}} <span>{{$fond->reviews()->count()}}</span></p>
-                                <p class="inline">Смотреть: <a href="">хорошие/</a><a href="">плохие</a></p>
+                                <p class="inline">{{trans('fonds-page.see')}} <a href="">{{trans('fonds-page.good')}}</a><a href="">{{trans('fonds-page.bad')}}</a></p>
                                 <p>{{trans('fonds-page.social')}}
                                     <?php $socials = []; ?>
                                     @if($fond->social)
@@ -213,14 +213,12 @@
                             <h2>{{trans('fonds-page.help-org')}}</h2>
                             <p>{{trans('fonds-page.donated')}} <span>100 000 000 тенге</span></p>
                             <p>{{trans('fonds-page.took-part')}} <span>4000 человек</span></p>
-                            <p>Мы связываем нуждающихся и благотворителей, чтобы
-                                социальные нужды не оставались без ответа и ни одно
-                                доброе дело – незамеченным.</p>
+                            <p>{{trans('fonds-page.help-text')}}</p>
                             <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
                                 <div class="inputBlock">
                                     <input type="hidden" name="ORDER" value="{{$orderId}}">
                                     <span>{{trans('fonds-page.spec-amount')}}</span>
-                                    <input type="text" name="AMOUNT" id="sum" placeholder="Пожертвовать произвольную сумму">
+                                    <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">
                                     <input type="hidden" name="CURRENCY" value="KZT">
                                     <input type="hidden" name="MERCHANT" value="atamekenim.kz">
                                     <input type="hidden" name="TERMINAL" value="12200005">

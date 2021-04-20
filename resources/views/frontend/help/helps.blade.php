@@ -74,7 +74,7 @@
                                             </style>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Выбрать расстояние:
+                                                    {{('help-search.choice-distance')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Статус ТЖС:
+                                                    {{('help-search.status-tjs')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Категория помощи:
+                                                    {{('help-search.cat-help')}}
                                                 </button>
                                                 <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton9">
                                                     @foreach($baseHelpTypes as $help)
@@ -116,7 +116,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Срочность:
+                                                    {{('help-search.urgency')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton8">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -126,7 +126,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Дата заявки:
+                                                    {{('help-search.date-appl')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton9">
                                                     <a class="dropdown-item" href="#">Option1</a>
