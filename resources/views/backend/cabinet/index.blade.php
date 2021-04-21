@@ -143,68 +143,68 @@
                                 @endforeach
                         </div>
                         <div class="greyInfoBlock mini">
-                            <p class="countTag red">Заявки в работе <span>{{$processHelps->count()}}</span></p>
+                            <p class="countTag red">{{trans('cabinet-appl.appl-work')}} <span>{{$processHelps->count()}}</span></p>
                             @foreach($processHelps as $help)
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
-                                            <p class="name">Помощь:</p>
-                                            <p class="tags default mini blue">Образование</p>
+                                            <p class="name">{{trans('cabinet-appl.help')}}</p>
+                                            <p class="tags default mini blue">{{trans('cabinet-appl.edu')}}</p>
                                         </div>
                                         <div class="col-sm-2">
-                                            <p class="name">Дата подачи:</p>
+                                            <p class="name">{{trans('cabinet-appl.data-filing')}}</p>
                                             <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p class="name">Содержание просьбы / заявление</p>
+                                            <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{$help->body}}</p>
                                         </div>
                                         <div class="col-sm-2">
-                                            <p class="name">Сумма</p>
+                                            <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             <p>50 000 - 100 000 тг</p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p class="name">Кому:</p>
+                                            <p class="name">{{trans('cabinet-appl.who')}}</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
-                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">Подробнее о заявке</a>
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
 
-                            <a href="" class="btn-default more">Смотреть все заявки в работе</a>
+                            <a href="" class="btn-default more">{{trans('cabinet-appl.all-see-appl-work')}}</a>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="greyContent accountGreyContent">
-                            <p class="big">Личная информация</p>
-                            <a href="{{route('editUser', [Auth::user()->id])}}" class="settings">Редактировать <img src="/img/settings.svg" alt=""></a>
+                            <p class="big">{{trans('cabinet-appl.pers-info')}}</p>
+                            <a href="{{route('editUser', [Auth::user()->id])}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
                             <p>
-                                <span>Место рождения:</span>
+                                <span>{{trans('cabinet-appl.place-birth')}}</span>
 {{--                                <span>{{Auth::user()}}</span>--}}
                             </p>
                             <p>
-                                <span>Место проживания:</span>
+                                <span>{{trans('cabinet-appl.place-res')}}</span>
                                 <span>Алматинская область, Талгарский район, г. Талгар</span>
                             </p>
                             <p>
-                                <span>Образование:</span>
+                                <span>{{trans('cabinet-appl.edu')}}</span>
                                 <span>{{Auth::user()->education ?? '-'}}</span>
                             </p>
                             <p>
-                                <span>Место работы:</span>
+                                <span>{{trans('cabinet-appl.place-work')}}</span>
                                 <span>{{Auth::user()->job ?? '-'}}</span>
                             </p>
                             <p>
-                                <span>Количество детей:</span>
+                                <span>{{trans('cabinet-appl.amount-chil')}}</span>
                                 <span>{{Auth::user()->children_count == 0? '-':Auth::user()->children_count}}</span>
                             </p>
                             <p>
-                                <span>Контакты:</span>
+                                <span>{{trans('cabinet-appl.contact')}}</span>
                                 <span>{{preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', Auth::user()->phone)}}</span>
                             </p>
                             <p>
-                                <span>О себе:</span>
+                                <span>{{trans('cabinet-appl.about')}}</span>
                                 <span class="fullText">
                                    {{Auth::user()->about}}
                                 </span>
@@ -220,15 +220,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
-                        <h5 class="modal-title text-center d-table m-auto">Отзыв</h5>
+                        <h5 class="modal-title text-center d-table m-auto">{{trans('cabinet-appl.review')}}</h5>
                     </div>
                     <div class="modal-body">
                         <form action="{{route('review_to_fond')}}" method="post">
                             @csrf
                             <input type="hidden" name="help_id" id="help_id" value="">
-                            <input type="text" name="title" class="form-control mb-3" placeholder="Заголовок">
-                            <textarea name="body" class="form-control mb-3" id="" cols="30" placeholder="Текст" rows="10"></textarea>
-                            <input type="submit" class="btn btn-default" value="Оставить отзыв">
+                            <input type="text" name="title" class="form-control mb-3" placeholder="{{trans('cabinet-appl.heading')}}">
+                            <textarea name="body" class="form-control mb-3" id="" cols="30" placeholder="{{trans('cabinet-appl.text')}}" rows="10"></textarea>
+                            <input type="submit" class="btn btn-default" value="{{trans('cabinet-appl.leave-rev')}}">
                         </form>
                     </div>
                 </div>
