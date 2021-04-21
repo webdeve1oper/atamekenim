@@ -17,7 +17,7 @@ class CreateHelpDestinationsTable extends Migration
             $table->bigInteger('destination_id')->unsigned();
             $table->bigInteger('help_id')->unsigned();
             $table->foreign('destination_id')->references('id')->on('destinations')->onDelete('cascade');
-            $table->foreign('help_id')->references('id')->on('fonds')->onDelete('cascade');
+            $table->foreign('help_id')->references('id')->on('helps')->onDelete('cascade');
             $table->timestamps();
         });
     }
