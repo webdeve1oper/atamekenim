@@ -7,17 +7,17 @@
                         <div class="applicationSearchBlock">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <h1>Реестр заявок</h1>
+                                    <h1>{{trans('help-search.reestr-appl')}}</h1>
                                     <form action="{{route('helps')}}" id="helpsSearch">
                                         @csrf
                                         <div class="searchBlock">
-                                            <input type="text" placeholder="Поиск по слову, фонду или другому">
-                                            <button class="btn-default blue">Найти</button>
+                                            <input type="text" placeholder="{{trans('help-search.search-fond')}}">
+                                            <button class="btn-default blue">{{trans('help-search.find')}}</button>
                                         </div>
                                         <ul>
                                             <li>
                                                 <input type="checkbox" id="check1">
-                                                <label for="check1" onclick="$(this).toggleClass('active');">Новые заявки</label>
+                                                <label for="check1" onclick="$(this).toggleClass('active');">{{trans('help-search.new-appl')}}</label>
                                             </li>
                                             @foreach($baseHelpTypes as $help)
                                                 <li>
@@ -25,11 +25,11 @@
                                                 </li>
                                             @endforeach
                                         </ul>
-                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">Расширенный поиск <i class="fas fa-chevron-down"></i></a>
+                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">{{trans('help-search.ras-search')}} <i class="fas fa-chevron-down"></i></a>
                                         <div class="selectBlock">
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Адресат/благополучатель:
+                                                    {{trans('fonds.adresat')}}:
                                                 </button>
                                                 <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton1">
                                                     @foreach($destionations as $destination)
@@ -55,7 +55,7 @@
                                             {{--</div>--}}
                                             <div class="dropdown regions">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Регион проживания:
+                                                    {{trans('fonds.regions')}}:
                                                 </button>
                                                 <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton3">
                                                     @foreach($regions as $id => $city)
@@ -74,7 +74,7 @@
                                             </style>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Выбрать расстояние:
+                                                    {{('help-search.choice-distance')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -84,7 +84,7 @@
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Место оказания помощи:
+                                                    {{trans('help-search.place-help')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Статус ТЖС:
+                                                    {{('help-search.status-tjs')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Категория помощи:
+                                                    {{('help-search.cat-help')}}
                                                 </button>
                                                 <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton9">
                                                     @foreach($baseHelpTypes as $help)
@@ -116,7 +116,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Срочность:
+                                                    {{('help-search.urgency')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton8">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -126,7 +126,7 @@
                                             </div>
                                             <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Дата заявки:
+                                                    {{('help-search.date-appl')}}
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton9">
                                                     <a class="dropdown-item" href="#">Option1</a>
@@ -136,13 +136,13 @@
                                             </div>
                                         </div>
                                         <div class="rangeBarBlock">
-                                            <p class="rangeName">Необходимая сумма благотворительной помощи</p>
+                                            <p class="rangeName">{{trans('help-search.summ-help')}}</p>
                                             <div class="rangeBlock"></div>
                                             <div class="inputBlock">
                                                 <input type="checkbox" id="checker">
-                                                <label for="checker">На постоянной основе</label>
+                                                <label for="checker">{{trans('help-search.repeat')}}</label>
                                             </div>
-                                            <button class="btn-default blue">Найти</button>
+                                            <button class="btn-default blue">{{trans('help-search.find')}}</button>
                                         </div>
                                     </form>
                                 </div>
