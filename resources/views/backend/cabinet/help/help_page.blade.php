@@ -41,6 +41,11 @@
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
                 </div>
                 <div class="col-sm-5">
+                    @if($help->user_id == Auth::user()->id)
+                        <div class="helpEditBlock">
+                            <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
+                        </div>
+                    @endif
                     <div class="infoBlock">
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
                         @foreach($help->destinations as $destination)<p><span>{{config('destinations')[$destination->parent_id]}}</span> {{$destination->name_ru}}</p>@endforeach

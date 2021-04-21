@@ -12,6 +12,11 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Scenario;
+use App\Region;
+use App\Destination;
+use App\CashHelpType;
+use App\CashHelpSize;
 
 class CabinetController extends Controller
 {
@@ -61,16 +66,13 @@ class CabinetController extends Controller
         unset($data['_token']);
         $help = Help::create($data);
 
-        $fonds = Fond::whereIn('id', $data['fond'])->count();
+        $fonds = Fond::pluck('id');
+//        $fonds = Fond::whereIn('id', $data['fond'])->count();
 
-        if($fonds == count($data['fond'])){
-            $help->fond()->attach($data['fond']);
+        if($fonds == count($fonds)){
+            $help->fond()->attach($fonds);
         }else{
             return redirect()->back()->with(['error'=>'Укажите хотябы один фонд']);
-        }
-
-        if(isset($data['baseHelpTypes'])) {
-            $help->baseHelpTypes()->attach($data['baseHelpTypes']);
         }
 
         if(isset($data['addHelpTypes']) && count($data['addHelpTypes'])>0){
@@ -109,5 +111,59 @@ class CabinetController extends Controller
     public function helpPage($id){
         $help = Help::find($id);
         return view('backend.cabinet.help.help_page')->with(compact('help'));
+    }
+
+    public function editPage($id){
+        $help = Help::find($id);
+        if($help->user_id == Auth::user()->id){
+            $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
+            $baseHelpTypes = AddHelpType::all();
+            $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
+            $destinations = Destination::all();
+            $cashHelpTypes = CashHelpType::all();
+            $cashHelpSizes = CashHelpSize::all();
+            return view('backend.cabinet.help.help_edit')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+        }else{
+            return redirect()->route('cabinet')->with(['error' => 'Это заявка не пренадлежит Вам!']);
+        }
+    }
+
+    public function updateHelp(Request $request, $help_id){
+//        $validator = Validator::make($request->all(),
+//            [
+//                'body'=>'required|min:5',
+//                'baseHelpTypes'=>'required',
+//                'addHelpTypes'=>'required',
+//                'city_id'=>'required',
+//                'region_id'=>'required',
+//            ],
+//            [
+//                'title.required'=>'Поле обязательно для заполнения'
+//            ]
+//        );
+//        if($validator->fails()){
+//            return redirect()->back()->withErrors($validator->errors());
+//        }
+
+        $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $data['admin_status'] = "moderate";
+        $data['fond_status'] = "moderate";
+        unset($data['_token']);
+        $help = Help::whereId($help_id)->first();
+        $fonds = Fond::pluck('id');
+        if (isset($request->destinations) && !empty($request->destinations)) {
+            $help->destinations()->sync($request->destinations);
+        }
+        if (isset($request->baseHelpTypes) && !empty($request->baseHelpTypes)) {
+            $help->addHelpTypes()->sync($request->baseHelpTypes);
+        }
+        if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
+            $help->cashHelpTypes()->sync($request->cashHelpTypes);
+        }
+        $help->fonds()->sync($fonds);
+        $help->update($data);
+        return redirect()->back()->with(['success' => 'Ваша заявка усешно обновлена!']);
+
     }
 }
