@@ -13,6 +13,8 @@ use App\DestinationAttribute;
 use App\Fond;
 use App\FondDonation;
 use App\Help;
+use App\HelpDoc;
+use App\HelpImage;
 use App\Http\Controllers\Controller;
 use App\Region;
 use App\Scenario;
@@ -20,6 +22,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class FondController extends Controller
 {
@@ -34,31 +37,11 @@ class FondController extends Controller
         $cashHelpTypes = CashHelpType::all();
         $cashHelpSizes = CashHelpSize::all();
         $relatedHelpIds = $fond->baseHelpTypes->pluck('id')->toArray();
-        $relatedFonds = Fond::select('logo', 'title_ru', 'title_kz')->where('id', '!=', $fond->id)->whereHas('baseHelpTypes', function ($query) use ($relatedHelpIds) {
+        $relatedFonds = Fond::select('id','logo', 'title_ru', 'title_kz')->where('id', '!=', $fond->id)->whereHas('baseHelpTypes', function ($query) use ($relatedHelpIds) {
             $query->whereIn('id', $relatedHelpIds);
         })->get();
 
-        $last_donation = FondDonation::find(2);
-        $amount = 100;
-        $orderId = sprintf("%06d", $last_donation->id);
 
-        $vSign = hash("sha512", config('app.C_SHARED_KEY') .
-            $orderId.";".
-            $amount.
-            ";KZT;".
-            "atamekenim.kz;" .
-            "12200005;" .
-            ";" .
-            $orderId.";" . // client id
-            "test;" . // preview desc
-            ";" . // full desc
-            ";" . // email
-            "https://www.google.kz;" .
-            ";" . //
-            ";" .
-            ";" .
-            ";" .
-            ";");
 
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds', 'vSign', 'orderId'));
     }
@@ -74,26 +57,42 @@ class FondController extends Controller
 //            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
 //        }
         if ($request->method() == 'POST') {
-            if($request->hasFile('photo')){
-                foreach($request->file('photo') as $image)
-                {
-                    $image->resize(300, 200);
-                    $name = $image->getClientOriginalName();
-                    $image->move(public_path().'/images/', $name);
-                    $data[] = $name;
-                }
-            }
             $request['user_id'] = Auth::user()->id;
             $help = Help::create($request->all());
+            if($request->hasFile('photo')){
+//                $this->validate($request, [
+//                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+//                ]);
+                foreach($request->file('photo') as $image)
+                {
+                    $filename = time() . $help->id . '.' . $image->getClientOriginalExtension();
+                    $thumbnailImage = Image::make($image);
+                    $path = '/img/help/'.$filename;
+                    $thumbnailImage->resize(700, null)->save(public_path().$path);
+                    HelpImage::create(['help_id'=>$help->id, 'image'=>$path]);
+                }
+            }
+            if($request->hasFile('doc')){
+//                $this->validate($request, [
+//                    'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
+//                ]);
+                foreach($request->file('doc') as $doc)
+                {
+                    $filename = time() . $help->id . '.' . $doc->getClientOriginalExtension();
+                    $path = '/img/help/docs/';
+                    $doc->move(public_path().$path, $filename);
+                    HelpDoc::create(['help_id'=>$help->id, 'path'=>$path.$filename, 'original_name'=>$doc->getClientOriginalName()]);
+                }
+            }
             $fonds = Fond::pluck('id');
             if (isset($request->destinations) && !empty($request->destinations)) {
-                $help->destinations()->attach($request->destinations);
+                $help->destinations()->sync($request->destinations);
             }
             if (isset($request->baseHelpTypes) && !empty($request->baseHelpTypes)) {
-                $help->addHelpTypes()->attach($request->baseHelpTypes);
+                $help->addHelpTypes()->sync($request->baseHelpTypes);
             }
             if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
-                $help->cashHelpTypes()->attach($request->cashHelpTypes);
+                $help->cashHelpTypes()->sync($request->cashHelpTypes);
             }
             $help->fonds()->attach($fonds);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка усешно отправлена!', 'info' => 'Заявка отправена на модерацию']);
@@ -163,29 +162,31 @@ class FondController extends Controller
         return view('frontend.fond.fonds')->with(compact('fonds', 'cities', 'regions', 'baseHelpTypes', 'destionations', 'cashHelpTypes', 'cashHelpSizes'));
     }
 
-    public function donationToFond($id)
+    public function donationToFond(Request $request)
     {
-        $last_donation = FondDonation::find(1);
-        $amount = 10;
+        $fond = Fond::findOrFail($request->fond_id);
+        $last_donation = FondDonation::latest()->first();
+        $amount = $request->amount;
         $orderId = sprintf("%06d", $last_donation->id);
 
         $vSign = hash("sha512", config('app.C_SHARED_KEY') .
-            $orderId.";".$amount.";KZT;" .
-            "ECOMMTESTJYSAN;" .
+            $orderId.";".
+            $amount.
+            ";KZT;".
+            "atamekenim.kz;" .
             "12200005;" .
+            ";" .
             $orderId.";" . // client id
-            "Test;" . // preview desc
+            "test;" . // preview desc
             ";" . // full desc
-            ";" . //client name
             ";" . // email
-            "https://atamekenim.kz;" .
+            "https://www.google.kz;" .
+            ";" . //
+            ";" .
+            ";" .
             ";" .
             ";");
 
-
-
-//        $client = $client->get('https://jpay.jysanbank.kz/ecom/api', ['query'=>$params]);
-        dd($vSign);
-
+        return view('frontend.payment')->with(compact('orderId', 'vSign', 'fond', 'amount'));
     }
 }

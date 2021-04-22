@@ -37,7 +37,7 @@ class FondController extends Controller
 
     public function start_help($id)
     {
-        if (Auth::user()->helps->contains($id)) {
+//        if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
             $help->fond_status = 'process';
             $help->date_fond_start = Carbon::today();
@@ -48,9 +48,9 @@ class FondController extends Controller
 
             $help->save();
             return redirect()->back()->with('success', 'Успех');
-        } else {
-            return redirect()->back()->with('error', 'Заявка уже принята');
-        }
+//        } else {
+//            return redirect()->back()->with('error', 'Заявка уже принята');
+//        }
     }
 
     public function finish_help($id)

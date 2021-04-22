@@ -46,9 +46,9 @@
                                 <img src="/img/no-photo.png" alt="" class="logotype">
                             @endif
                         </li>
-                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.app()->getLocale()]}}</a></li>
+                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.lang()]??$fond['title_ru']}}</a></li>
                         <li><p>{{$fond->helpSizes}}</p></li>
-                        <li><p>@foreach($fond->baseHelpTypes()->get() as $help){{$help['name_'.app()->getLocale()]}}, @endforeach</p></li>
+                        <li><p>@foreach($fond->baseHelpTypes()->get() as $help){{$help['name_'.lang()]}}, @endforeach</p></li>
                         <?php $city = $fond->city; ?>
                         <li><p>@if($city)г. {{$city->title_ru}}@endif</p></li>
                         <li><p>Отзывы (0)</p></li>

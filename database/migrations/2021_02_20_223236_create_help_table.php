@@ -25,6 +25,7 @@ class CreateHelpTable extends Migration
             $table->bigInteger('region_id')->nullable();
             $table->foreign('region_id')->references('region_id')->on('regions');
             $table->text('body');
+            $table->string('video')->nullable();
             $table->enum('admin_status', ['moderate', 'edit', 'cancel', 'finished'])->default('moderate');
             $table->enum('fond_status', ['moderate', 'wait', 'process', 'edit', 'cancel','finished'])->default('moderate');
             $table->bigInteger('cash_help_size_id')->unsigned()->nullable();

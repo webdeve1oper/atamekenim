@@ -35,7 +35,7 @@
                                     {{--<p class="greyText">Рейтинг: <span class="green">95</span></p>--}}
                                     <a href="" class="socialButtonGlobal"><i class="fas fa-share-alt"></i></a>
                                 </div>
-                                <h1>{{$fond['title_'.app()->getLocale()] ?? $fond['']}}</h1>
+                                <h1>{{$fond['title_'.lang()]??$fond['title_ru']}}</h1>
                                 <p class="category">{{$fond->sub_title}}</p>
                                 <p>{{trans('fonds-page.united')}} <span href="">{{$fond->country->title_ru??'Казахстан'}}</span></p>
                                 <p>{{trans('fonds-page.site')}} <a href="">{{$fond->website??'не указан'}}</a></p>
@@ -126,13 +126,13 @@
                         <div class="content">
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.openContentMobile').slideToggle();">{{trans('fonds-page.read-fond')}} <i class="fas fa-chevron-down"></i></button>
                             <div class="textContent openContentMobile">
-                                {!! $fond['about_'.app()->getLocale()] !!}
+                                {!! $fond['about_'.lang()]??$fond['about_ru'] !!}
                             </div>
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.blueContent').slideToggle();">{{trans('fonds-page.read-mission')}} <i class="fas fa-chevron-down"></i></button>
                             <div class="blueContent">
                                 <p class="name">{{trans('fonds-page.org-mission')}}</p>
                                 <p class="textContent">
-                                    {!! $fond['mission_'.app()->getLocale()] !!}
+                                    {!! $fond['mission_'.lang()]??$fond['mission_ru'] !!}
                                 </p>
                             </div>
                             <?php $projects = $fond->projects; ?>
@@ -218,7 +218,7 @@
                                     <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
                                     <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
                                 </div>
-                                <div class="inputBlock">
+                                <div class="inputBlock d-none">
                                     <span>Указать сумму</span>
                                     <label for="dayInput1">Разовое пожертвование</label>
                                     <label for="dayInput2">каждый день</label>
@@ -228,7 +228,7 @@
                                     <input type="radio" id="dayInput3" name="monthly" value="Ежемесячно">
                                 </div>
                             </form>
-                            <button class="btn-default red" data-toggle="modal" data-target="#myModal">
+                            <button class="btn-default red" data-toggle="modal" data-target="#payment" onclick="$('#payment input[name=\'amount\']').val($('#sum').val())">
                                 <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
                             </button>
                         </div>
@@ -449,7 +449,7 @@
         </div>
         @endif
 
-        <div class="container-fluid default otherOrganizations d-none">
+            <div class="container-fluid default otherOrganizations d-none d-sm-block">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
@@ -469,7 +469,7 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="payment">
+    <div class="modal fade" id="payment">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -479,50 +479,22 @@
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
+                    <form action="{{route('donation_to_fond')}}" method="POST">
+                        @csrf
                         <div class="inputBlock">
-                            <input type="hidden" name="ORDER" value="{{$orderId}}">
-                            <span>{{trans('fonds-page.spec-amount')}}</span>
-                            <input type="hidden" name="CURRENCY" value="KZT">
-                            <input type="hidden" name="MERCHANT" value="atamekenim.kz">
-                            <input type="hidden" name="TERMINAL" value="12200005">
-                            <input type="hidden" name="LANGUAGE" value="ru">
-                            <input type="hidden" name="CLIENT_ID" value="{{$orderId}}">
-                            <input type="hidden" name="DESC" value="test">
-                            <input type="hidden" name="DESC_ORDER" value="">
-                            <input type="hidden" name="EMAIL" value="">
-                            <input type="hidden" name="BACKREF" value="https://www.google.kz">
-                            <input type="hidden" name="Ucaf_Flag" value="">
-                            <input type="hidden" name="Ucaf_Authentication_Data" value="">
-                            <input type="hidden" name="crd_pan" value="">
-                            <input type="hidden" name="crd_exp" value="">
-                            <input type="hidden" name="crd_cvc" value="">
-                            <input type="hidden" name="P_SIGN" value="{{$vSign}}">
-                            <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
-                            <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
-                            <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
+                            <input type="hidden" name="fond_id" value="{{$fond->id}}">
+                            <div class="form-group mb-4">
+                                <label for="">Введите Ваше ФИО:</label>
+                                <input type="name" value="ФИО" class="form-control">
+                            </div>
+                            <input type="hidden" name="amount" value="">
                         </div>
-                        {{--                                <div class="inputBlock d-none">--}}
-                        {{--                                    <span>Указать сумму</span>--}}
-                        {{--                                    <label for="dayInput1">Разовое пожертвование</label>--}}
-                        {{--                                    <label for="dayInput2">каждый день</label>--}}
-                        {{--                                    <label for="dayInput3">Ежемесячно</label>--}}
-                        {{--                                    <input type="radio" id="dayInput1" name="day" value="Разовое пожертвование">--}}
-                        {{--                                    <input type="radio" id="dayInput2" name="day" value="Каждый день">--}}
-                        {{--                                    <input type="radio" id="dayInput3" name="day" value="Ежемесячно">--}}
-                        {{--                                </div>--}}
                         <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
                         <button class="btn-default red" type="submit">
                             <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
                         </button>
                     </form>
                 </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-
             </div>
         </div>
     </div>
@@ -537,6 +509,17 @@
         }
         .inputBlock label:hover{
             cursor: pointer;
+        }
+        .otherOrganizations .block img{
+            width: 19%;
+        }
+        .otherOrganizations .block{
+            margin-bottom: 30px;
+            background-color: #fcfcff;
+            padding: 15px;
+        }
+        .otherOrganizations .block p{
+            font-size: 12px;
         }
     </style>
 @endsection

@@ -26,16 +26,20 @@
                 <div class="col-sm-7">
                     <div class="applicationGallery">
                         <div class="bigImage">
-                            @if($help->images)
-
+                            <?php $images = $help->images->toArray(); ?>
+                            @if($images)
+                                    <a href=""><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
+                                <?php array_shift($images); ?>
                             @else
                                 <a href=""><img src="/img/nophoto.jpg" alt=""></a>
                             @endif
 
                         </div>
                         <div class="galleryBlock">
-                            @if($help->images)
-                                <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
+                            @if($images)
+                                @foreach($images as $image)
+                                    <a href=""><img src="{{$image['image']}}" alt=""></a>
+                                @endforeach
                             @endif
 {{--                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>--}}
 {{--                            <a href="" class="fondImg openGallery"><img src="/img/nophoto.jpg" alt=""><span>+20</span></a>--}}
@@ -60,9 +64,21 @@
                     <div class="infoBlock">
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
                         @foreach($help->destinations as $destination)<p><span>{{config('destinations')[$destination->parent_id]}}</span> {{$destination->name_ru}}</p>@endforeach
-                        <p><span>Статус заявки:</span>{{ $help->fond_status }}</p>
+                        <p><span>Статус заявки:</span>
+                            @switch($help->fond_status)
+                                @case('moderate')
+                                    на модерации
+                                @break
+                                @case('wait')
+                                    в ожидании благотворителя
+                                @break
+                                @case('process')
+                                    в работе
+                                @break
+                            @endswitch
+                        </p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
-                        <p><span>Тип помощи:</span>{{ $help->cashHelpTypes[0]->name_ru }}</p>
+                        <p><span>Тип помощи:</span>@foreach($help->cashHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
                         <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
                         <p><span>Срочность:</span><?php
                             switch ($help->urgency_date) {
@@ -80,6 +96,7 @@
                                     break;
                             }
                             ?></p>
+                        <p><span>Документы по запрашиваемой помощи: </span>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
                     </div>
                 </div>
             </div>

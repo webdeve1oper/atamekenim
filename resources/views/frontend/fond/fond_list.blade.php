@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-sm-6">
                         <?php $registered_at = \Carbon\Carbon::parse($fond->created_at); ?>
-                        <p class="name">{{$fond->title }} <span>Общественное объединение</span> @if($registered_at > \Carbon\Carbon::today()->subDays(30))<span class="tagNew">Новая</span>@endif</p>
+                        <p class="name">{{$fond['title_'.lang()]??$fond['title_ru']}} <span>Общественное объединение</span> @if($registered_at > \Carbon\Carbon::today()->subDays(30))<span class="tagNew">Новая</span>@endif</p>
                         <div class="mobileBlockInfo d-table d-sm-none">
                             <p class="greyText">Рейтинг: <span class="green">95</span></p>
                             <p class="greyText">Сумма сбора: <span class="blue">3.5 млрд. тг.</span></p>

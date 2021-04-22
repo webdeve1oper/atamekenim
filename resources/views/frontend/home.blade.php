@@ -129,7 +129,10 @@
                                                 <img src="/img/no-photo.png" alt="" class="logotype">
                                             @endif
                                         </li>
-                                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.app()->getLocale()]}}</a></li>
+                                        <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.lang()]??$fond['title_ru']}}</a></li>
+                                        <li>
+                                            @foreach($fond->baseHelpTypes()->get() as $help){{$help['name_'.app()->getLocale()]}}, @endforeach
+                                        </li>
                                         <li><p>{{$fond->foundation_date}}</p></li>
                                     </ul>
                                 </div>

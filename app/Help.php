@@ -61,6 +61,10 @@ class Help extends Model
     }
 
     public function images(){
-        return $this->belongsTo(HelpImage::class, 'help_id', 'id');
+        return $this->hasMany(HelpImage::class, 'help_id', 'id');
+    }
+
+    public function docs(){
+        return $this->hasMany(HelpDoc::class, 'help_id', 'id');
     }
 }

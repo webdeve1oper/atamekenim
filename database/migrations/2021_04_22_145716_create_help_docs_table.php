@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHelpCashhelptypesTable extends Migration
+class CreateHelpDocsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateHelpCashhelptypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('help_cashhelptypes', function (Blueprint $table) {
-            $table->bigInteger('cash_help_id')->unsigned();
+        Schema::create('help_docs', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('original_name');
+            $table->string('path');
             $table->bigInteger('help_id')->unsigned();
-            $table->foreign('cash_help_id')->references('id')->on('cash_help_types')->onDelete('cascade');
-            $table->foreign('help_id')->references('id')->on('helps')->onDelete('cascade');
+            $table->foreign('help_id')->references('id')->on('helps');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateHelpCashhelptypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('help_cashhelptypes');
+        Schema::dropIfExists('help_docs');
     }
 }

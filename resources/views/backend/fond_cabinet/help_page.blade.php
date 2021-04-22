@@ -17,19 +17,27 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-5">
-                    <p class="blueName">Заявка ID: <span>{{ $help->id }}</p>
+                    <p class="blueName">Заявка ID: <span>{{ getHelpId($help->id) }}</p>
                 </div>
                 <div class="col-sm-12 mb-4">
                 </div>
                 <div class="col-sm-7">
                     <div class="applicationGallery">
                         <div class="bigImage">
-                            <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                            <?php $images = $help->images->toArray(); ?>
+                            @if($images)
+                                <a href=""><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
+                                <?php array_shift($images); ?>
+                            @else
+                                <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                            @endif
                         </div>
                         <div class="galleryBlock">
-                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
-                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
-                            <a href="" class="fondImg openGallery"><img src="/img/nophoto.jpg" alt=""><span>+20</span></a>
+                            @if($images)
+                                @foreach($images as $image)
+                                    <a href=""><img src="{{$image['image']}}" alt=""></a>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="greyContent">
@@ -41,8 +49,25 @@
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
                 </div>
                 <div class="col-sm-5">
+                    @if($help->fond_status == 'wait')
+                    <form action="{{route('start_help', $help->id)}}" method="post" class="mb-4">
+                        @csrf
+                        <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
+                    </form>
+                    @endif
                     <div class="infoBlock">
-                        <p><span>Статус обращения:</span>{{ $help->fond_status }}</p>
+                        <p><span>Статус обращения:</span>
+                            @switch($help->fond_status)
+                                @case('moderate')
+                                на модерации
+                                @break
+                                @case('wait')
+                                в ожидании благотворителя
+                                @break
+                                @case('process')
+                                в работе
+                                @break
+                            @endswitch</p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
                         <p><span>Тип помощи:</span>{{ $help->cashHelpTypes[0]->name_ru }}</p>
                         <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
@@ -81,9 +106,7 @@
                     </div>
 
                     <div class="infoBlock">
-                        <p><span>Фотографии получателя помощи:</span>Отсутствуют</p>
-                        <p><span>Видео получателя помощи:</span>Отсутствует</p>
-                        <p><span>Документы:</span>Отсутствует</p>
+                        <p><span>Документы:</span>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
                     </div>
                 </div>
             </div>
