@@ -59,4 +59,8 @@ class Help extends Model
     public function whoNeedHelp(){
         return $this->belongsTo(Scenario::class, 'who_need_help', 'id');
     }
+
+    public function images(){
+        return $this->belongsTo(HelpImage::class, 'help_id', 'id');
+    }
 }

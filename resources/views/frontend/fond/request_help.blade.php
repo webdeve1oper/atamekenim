@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h1>{{trans('fonds.req-help')}}</h1>
-                        <form action="{{route('request_help')}}" method="POST" id="request_help">
+                        <form action="{{route('request_help')}}" method="POST" id="request_help" enctype="multipart/form-data">
                             @csrf
                             @if($errors->has('title'))
                                 <span class="error">{{ $errors->first('title') }}</span>

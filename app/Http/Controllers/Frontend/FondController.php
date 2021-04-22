@@ -74,6 +74,15 @@ class FondController extends Controller
 //            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
 //        }
         if ($request->method() == 'POST') {
+            if($request->hasFile('photo')){
+                foreach($request->file('photo') as $image)
+                {
+                    $image->resize(300, 200);
+                    $name = $image->getClientOriginalName();
+                    $image->move(public_path().'/images/', $name);
+                    $data[] = $name;
+                }
+            }
             $request['user_id'] = Auth::user()->id;
             $help = Help::create($request->all());
             $fonds = Fond::pluck('id');

@@ -20,6 +20,7 @@ class CreateFondDonationTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('amount');
+            $table->boolean('anonymous')->default(true);
             $table->bigInteger('fond_id')->unsigned()->nullable();
             $table->foreign('fond_id')->references('id')->on('fonds');
             $table->date('payment_date')->nullable();

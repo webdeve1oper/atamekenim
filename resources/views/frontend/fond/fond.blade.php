@@ -14,7 +14,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container-fluid default organInfoBlock">
             <div class="container">
                 <div class="row">
@@ -111,8 +110,6 @@
                                             </div>
                                         @endforeach
                                     @endforeach
-
-
                                 </div>
                             </div>
                         </div>
@@ -120,7 +117,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container-fluid default aboutFond">
             <div class="container">
                 <div class="row">
@@ -139,7 +135,8 @@
                                     {!! $fond['mission_'.app()->getLocale()] !!}
                                 </p>
                             </div>
-
+                            <?php $projects = $fond->projects; ?>
+                            @if(count($projects)>0)
                             <div class="projectsBlock">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -160,7 +157,7 @@
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="projectSlick">
-                                            @foreach($fond->projects as $project)
+                                            @foreach($projects as $project)
                                                 <div>
                                                     <div class="helpBlock">
                                                         <div class="content">
@@ -178,6 +175,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                         <div class="bottomContent">
                             <h3>{{trans('fonds-page.org-map')}}</h3>
@@ -185,7 +183,6 @@
                             <a href="{{route('request_help')}}" class="btn-default blue">{{trans('fonds-page.appl-ass')}}</a>
                             <script>
                                 ymaps.ready(init);
-
                                 function init() {
                                     var myPlacemark,
                                         myMap = new ymaps.Map('map', {
@@ -202,7 +199,7 @@
                                         });
                                     @if($fond->longitude && $fond->latitude)
                                         myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
-                                    myMap.geoObjects.add(myPlacemark);
+                                        myMap.geoObjects.add(myPlacemark);
                                     @endif
                                 }
                             </script>
@@ -214,46 +211,27 @@
                             <p>{{trans('fonds-page.donated')}} <span>100 000 000 тенге</span></p>
                             <p>{{trans('fonds-page.took-part')}} <span>4000 человек</span></p>
                             <p>{{trans('fonds-page.help-text')}}</p>
-                            <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
+                            <form>
                                 <div class="inputBlock">
-                                    <input type="hidden" name="ORDER" value="{{$orderId}}">
-                                    <span>{{trans('fonds-page.spec-amount')}}</span>
                                     <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">
-                                    <input type="hidden" name="CURRENCY" value="KZT">
-                                    <input type="hidden" name="MERCHANT" value="atamekenim.kz">
-                                    <input type="hidden" name="TERMINAL" value="12200005">
-                                    <input type="hidden" name="LANGUAGE" value="ru">
-                                    <input type="hidden" name="CLIENT_ID" value="{{$orderId}}">
-                                    <input type="hidden" name="DESC" value="test">
-                                    <input type="hidden" name="DESC_ORDER" value="">
-                                    <input type="hidden" name="EMAIL" value="">
-                                    <input type="hidden" name="BACKREF" value="https://www.google.kz">
-                                    <input type="hidden" name="Ucaf_Flag" value="">
-                                    <input type="hidden" name="Ucaf_Authentication_Data" value="">
-                                    <input type="hidden" name="crd_pan" value="">
-                                    <input type="hidden" name="crd_exp" value="">
-                                    <input type="hidden" name="crd_cvc" value="">
-                                    <input type="hidden" name="P_SIGN" value="{{$vSign}}">
                                     <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
                                     <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
                                     <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
                                 </div>
-{{--                                <div class="inputBlock d-none">--}}
-{{--                                    <span>Указать сумму</span>--}}
-{{--                                    <label for="dayInput1">Разовое пожертвование</label>--}}
-{{--                                    <label for="dayInput2">каждый день</label>--}}
-{{--                                    <label for="dayInput3">Ежемесячно</label>--}}
-{{--                                    <input type="radio" id="dayInput1" name="day" value="Разовое пожертвование">--}}
-{{--                                    <input type="radio" id="dayInput2" name="day" value="Каждый день">--}}
-{{--                                    <input type="radio" id="dayInput3" name="day" value="Ежемесячно">--}}
-{{--                                </div>--}}
-                                <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
-                                <button class="btn-default red" type="submit">
-                                    <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
-                                </button>
+                                <div class="inputBlock">
+                                    <span>Указать сумму</span>
+                                    <label for="dayInput1">Разовое пожертвование</label>
+                                    <label for="dayInput2">каждый день</label>
+                                    <label for="dayInput3">Ежемесячно</label>
+                                    <input type="radio" id="dayInput1" name="ontime" value="Разовое пожертвование">
+                                    <input type="radio" id="dayInput2" name="daily" value="Каждый день">
+                                    <input type="radio" id="dayInput3" name="monthly" value="Ежемесячно">
+                                </div>
                             </form>
+                            <button class="btn-default red" data-toggle="modal" data-target="#myModal">
+                                <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
+                            </button>
                         </div>
-
                         <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.mobileGrayContent').slideToggle();">Смотреть реквизиты <i class="fas fa-chevron-down"></i></button>
                         <?php $requisites = []; ?>
                         @if($fond->requisites)
@@ -271,9 +249,6 @@
                             @endforeach
                             @endif
                     </div>
-
-
-
                     @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
                         <div class="galleryBlock">
@@ -325,7 +300,6 @@
                                         <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
                                         <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
-                                        {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
                                         <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
@@ -357,7 +331,6 @@
                                         <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
                                         <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
-                                        {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
                                         <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
@@ -496,6 +469,64 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="payment">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Поддержать организацию</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="https://ecom.jysanbank.kz:8462/ecom/api" method="POST">
+                        <div class="inputBlock">
+                            <input type="hidden" name="ORDER" value="{{$orderId}}">
+                            <span>{{trans('fonds-page.spec-amount')}}</span>
+                            <input type="hidden" name="CURRENCY" value="KZT">
+                            <input type="hidden" name="MERCHANT" value="atamekenim.kz">
+                            <input type="hidden" name="TERMINAL" value="12200005">
+                            <input type="hidden" name="LANGUAGE" value="ru">
+                            <input type="hidden" name="CLIENT_ID" value="{{$orderId}}">
+                            <input type="hidden" name="DESC" value="test">
+                            <input type="hidden" name="DESC_ORDER" value="">
+                            <input type="hidden" name="EMAIL" value="">
+                            <input type="hidden" name="BACKREF" value="https://www.google.kz">
+                            <input type="hidden" name="Ucaf_Flag" value="">
+                            <input type="hidden" name="Ucaf_Authentication_Data" value="">
+                            <input type="hidden" name="crd_pan" value="">
+                            <input type="hidden" name="crd_exp" value="">
+                            <input type="hidden" name="crd_cvc" value="">
+                            <input type="hidden" name="P_SIGN" value="{{$vSign}}">
+                            <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
+                            <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
+                            <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
+                        </div>
+                        {{--                                <div class="inputBlock d-none">--}}
+                        {{--                                    <span>Указать сумму</span>--}}
+                        {{--                                    <label for="dayInput1">Разовое пожертвование</label>--}}
+                        {{--                                    <label for="dayInput2">каждый день</label>--}}
+                        {{--                                    <label for="dayInput3">Ежемесячно</label>--}}
+                        {{--                                    <input type="radio" id="dayInput1" name="day" value="Разовое пожертвование">--}}
+                        {{--                                    <input type="radio" id="dayInput2" name="day" value="Каждый день">--}}
+                        {{--                                    <input type="radio" id="dayInput3" name="day" value="Ежемесячно">--}}
+                        {{--                                </div>--}}
+                        <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
+                        <button class="btn-default red" type="submit">
+                            <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <style>
         .modal-header .close{
             position: absolute;
@@ -503,6 +534,9 @@
         }
         .modal-title{
             margin: auto;
+        }
+        .inputBlock label:hover{
+            cursor: pointer;
         }
     </style>
 @endsection

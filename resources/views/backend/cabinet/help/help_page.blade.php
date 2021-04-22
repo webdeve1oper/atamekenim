@@ -6,8 +6,10 @@
                 <div class="col-sm-12">
                     <ul>
                         <li><a href="{{ route('home') }}">Главная</a></li>
+                        @if(Auth::check())
                         <li><a href="{{ route('cabinet') }}">Кабинет</a></li>
-                        <li><a>Заявка id:{{ $help->id }}</a></li>
+                        @endif
+                        <li><a>Заявка id:{{ getHelpId($help->id) }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -17,19 +19,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-5">
-                    <p class="blueName">Заявка ID: <span>{{ $help->id }}</p>
+                    <p class="blueName">Заявка ID: <span>{{ getHelpId($help->id) }}</p>
                 </div>
                 <div class="col-sm-12 mb-4">
                 </div>
                 <div class="col-sm-7">
                     <div class="applicationGallery">
                         <div class="bigImage">
-                            <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                            @if($help->images)
+
+                            @else
+                                <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                            @endif
+
                         </div>
                         <div class="galleryBlock">
-                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
-                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
-                            <a href="" class="fondImg openGallery"><img src="/img/nophoto.jpg" alt=""><span>+20</span></a>
+                            @if($help->images)
+                                <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>
+                            @endif
+{{--                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>--}}
+{{--                            <a href="" class="fondImg openGallery"><img src="/img/nophoto.jpg" alt=""><span>+20</span></a>--}}
                         </div>
                     </div>
                     <div class="greyContent">
@@ -41,10 +50,12 @@
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
                 </div>
                 <div class="col-sm-5">
+                    @if(Auth::check())
                     @if($help->user_id == Auth::user()->id)
                         <div class="helpEditBlock">
                             <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
                         </div>
+                    @endif
                     @endif
                     <div class="infoBlock">
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
