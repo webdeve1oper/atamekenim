@@ -43,7 +43,7 @@ class FondController extends Controller
 
 
 
-        return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds', 'vSign', 'orderId'));
+        return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
 
     public function request_help(Request $request)
