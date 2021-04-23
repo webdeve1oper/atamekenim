@@ -53,7 +53,7 @@
                                             <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p class="name">{{trans('cabinet-appl.decs-appl')}}</p>
+                                            <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
                                         <div class="col-sm-2">
