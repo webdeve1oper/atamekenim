@@ -55,5 +55,6 @@ class FondsSeeder extends Seeder
                 $data->destinations()->attach($arr2);
             }
         }
+        \App\FondDonation::create(['amount'=>10]);
     }
 }

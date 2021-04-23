@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0061a5a7a2524cc89782d9c1a2e95f7a",
+    "content-hash": "3fe365bc957dd09afa5c4b4b5a8d1493",
     "packages": [
+        {
+            "name": "avto-dev/cloud-payments-laravel",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avto-dev/cloud-payments-laravel.git",
+                "reference": "295077fd42d0154d61a001e508a992518b67125b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avto-dev/cloud-payments-laravel/zipball/295077fd42d0154d61a001e508a992518b67125b",
+                "reference": "295077fd42d0154d61a001e508a992518b67125b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "~6.1 || ~7.0",
+                "guzzlehttp/psr7": "^1.4",
+                "php": "^7.2 || ^8.0",
+                "psr/http-client": "~1.0",
+                "tarampampam/wrappers-php": "^1.5 || ~2.0"
+            },
+            "require-dev": {
+                "fakerphp/faker": "^1.12",
+                "laravel/laravel": "~6.0 || ~7.0 || ~8.0",
+                "phpstan/phpstan": "~0.12.34",
+                "phpunit/phpunit": "^8.0 || ^9.3",
+                "tarampampam/guzzle-url-mock": "^1.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AvtoDev\\CloudPayments\\Frameworks\\Laravel\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AvtoDev\\CloudPayments\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cloud Payments PHP-client",
+            "keywords": [
+                "cloud-payments",
+                "laravel"
+            ],
+            "time": "2020-12-25T14:40:10+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
@@ -1753,6 +1806,55 @@
                 "psr"
             ],
             "time": "2021-03-05T17:36:06+00:00"
+        },
+        {
+            "name": "psr/http-client",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-client.git",
+                "reference": "2dfb5f6c5eff0e91e20e913f8c5452ed95b86621"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/2dfb5f6c5eff0e91e20e913f8c5452ed95b86621",
+                "reference": "2dfb5f6c5eff0e91e20e913f8c5452ed95b86621",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP clients",
+            "homepage": "https://github.com/php-fig/http-client",
+            "keywords": [
+                "http",
+                "http-client",
+                "psr",
+                "psr-18"
+            ],
+            "time": "2020-06-29T06:28:15+00:00"
         },
         {
             "name": "psr/http-message",
@@ -4017,6 +4119,63 @@
             "time": "2021-03-27T19:49:03+00:00"
         },
         {
+            "name": "tarampampam/wrappers-php",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tarampampam/wrappers-php.git",
+                "reference": "c86bce01791be7f5bcceacd2707efebaeb04e1c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tarampampam/wrappers-php/zipball/c86bce01791be7f5bcceacd2707efebaeb04e1c2",
+                "reference": "c86bce01791be7f5bcceacd2707efebaeb04e1c2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.0 || ^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tarampampam\\Wrappers\\": "src/"
+                },
+                "files": [
+                    "src/constants.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "tarampampam",
+                    "homepage": "https://github.com/tarampampam"
+                }
+            ],
+            "description": "The Most Useful Wrappers For PHP Functions",
+            "keywords": [
+                "exceptions",
+                "json",
+                "wrapper"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.patreon.com/tarampampam",
+                    "type": "patreon"
+                }
+            ],
+            "abandoned": "ext-json",
+            "time": "2020-09-09T07:25:50+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "2.2.3",
             "source": {
@@ -4064,6 +4223,36 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2020-07-13T06:12:54+00:00"
+        },
+        {
+            "name": "troytft/cloud-payments-client",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Troytft/cloud-payments-client.git",
+                "reference": "5e45ee22ab5936adc3ef079fc1a77a8a0a150017"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Troytft/cloud-payments-client/zipball/5e45ee22ab5936adc3ef079fc1a77a8a0a150017",
+                "reference": "5e45ee22ab5936adc3ef079fc1a77a8a0a150017",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CloudPayments\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Client for CloudPayments.ru",
+            "time": "2018-12-28T12:03:24+00:00"
         },
         {
             "name": "unisharp/laravel-filemanager",

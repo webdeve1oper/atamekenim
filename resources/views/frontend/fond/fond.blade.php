@@ -213,22 +213,23 @@
                             <p>{{trans('fonds-page.help-text')}}</p>
                             <form>
                                 <div class="inputBlock">
-                                    <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">
-                                    <label for="sumInput1" onclick="$('#sum').val(100)">100</label>
-                                    <label for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
-                                    <label for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
-                                </div>
-                                <div class="inputBlock d-none">
                                     <span>Указать сумму</span>
-                                    <label for="dayInput1">Разовое пожертвование</label>
-                                    <label for="dayInput2">каждый день</label>
-                                    <label for="dayInput3">Ежемесячно</label>
-                                    <input type="radio" id="dayInput1" name="ontime" value="Разовое пожертвование">
-                                    <input type="radio" id="dayInput2" name="daily" value="Каждый день">
-                                    <input type="radio" id="dayInput3" name="monthly" value="Ежемесячно">
+                                    <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">
+                                    <label  for="sumInput1" onclick="$('#sum').val(100)">100</label>
+                                    <label  for="sumInput2" onclick="$('#sum').val(1000)">1000</label>
+                                    <label  for="sumInput3" onclick="$('#sum').val(10000)">10000</label>
+                                </div>
+                                <div class="inputBlock">
+                                    <span>Указать периодичность</span>
+                                    <label class="label active" for="dayInput1">Разовое пожертвование</label>
+                                    <label class="label" for="dayInput2">каждый день</label>
+                                    <label class="label" for="dayInput3">Ежемесячно</label>
+                                    <input type="radio" checked onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput1\']').addClass('active')}" id="dayInput1" name="time" value="onetime">
+                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput2\']').addClass('active')}" id="dayInput2" name="time" value="daily">
+                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput3\']').addClass('active')}" id="dayInput3" name="time" value="monthly">
                                 </div>
                             </form>
-                            <button class="btn-default red" data-toggle="modal" data-target="#payment" onclick="$('#payment input[name=\'amount\']').val($('#sum').val())">
+                            <button class="btn-default red" data-toggle="modal" data-target="#payment2" onclick="$('#payment input[name=\'amount\']').val($('#sum').val())">
                                 <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
                             </button>
                         </div>
@@ -308,7 +309,6 @@
                             </div>
                         @endif
                     @endforeach
-
                 </div>
             </div>
             @endif
@@ -469,6 +469,35 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="payment2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Поддержать организацию</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="{{route('donation_cloudpayments_fond')}}" method="POST">
+                        @csrf
+                        <div class="inputBlock">
+                            <input type="hidden" name="fond_id" value="{{$fond->id}}">
+                            <div class="form-group mb-4">
+                                <label for="">Введите Ваше ФИО:</label>
+                                <input type="name" value="ФИО" class="form-control">
+                            </div>
+                            <input type="hidden" name="amount" value="">
+                        </div>
+                        <input type="hidden" name="DESC_ORDER" value="Помощь фонду {{$fond['title_'.app()->getLocale()] ?? $fond['title_ru']}}">
+                        <button class="btn-default red" type="submit">
+                            <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="payment">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -498,7 +527,6 @@
             </div>
         </div>
     </div>
-
     <style>
         .modal-header .close{
             position: absolute;
@@ -520,6 +548,9 @@
         }
         .otherOrganizations .block p{
             font-size: 12px;
+        }
+        .inputBlock .label.active{
+            background-color: #dcd1ca!important;
         }
     </style>
 @endsection

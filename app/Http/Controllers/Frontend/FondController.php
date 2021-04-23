@@ -18,9 +18,12 @@ use App\HelpImage;
 use App\Http\Controllers\Controller;
 use App\Region;
 use App\Scenario;
+use AvtoDev\CloudPayments\Config;
+use AvtoDev\CloudPayments\Requests\Subscriptions\SubscriptionsCreateRequestBuilder;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
@@ -30,6 +33,8 @@ class FondController extends Controller
     //
     public function fond($id)
     {
+//        $client = new Config(config('app.PUBLIC_KEY'), config('app.PRIVATE_KEY'));
+//        $request = SubscriptionsCreateRequestBuilder::buildRequest();
         $fond = Fond::where('id', $id)->with('projects')->with('helps')->first();
         $baseHelpTypes = AddHelpType::all();
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
@@ -40,8 +45,6 @@ class FondController extends Controller
         $relatedFonds = Fond::select('id','logo', 'title_ru', 'title_kz')->where('id', '!=', $fond->id)->whereHas('baseHelpTypes', function ($query) use ($relatedHelpIds) {
             $query->whereIn('id', $relatedHelpIds);
         })->get();
-
-
 
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
@@ -189,4 +192,34 @@ class FondController extends Controller
 
         return view('frontend.payment')->with(compact('orderId', 'vSign', 'fond', 'amount'));
     }
+
+
+    public function cloudPaymentsDonation(Request $request)
+    {
+        $fond = Fond::findOrFail($request->fond_id);
+        $last_donation = FondDonation::latest()->first();
+        $amount = $request->amount;
+        $orderId = sprintf("%06d", $last_donation->id);
+
+        $vSign = hash("sha512", config('app.C_SHARED_KEY') .
+            $orderId.";".
+            $amount.
+            ";KZT;".
+            "atamekenim.kz;" .
+            "12200005;" .
+            ";" .
+            $orderId.";" . // client id
+            "test;" . // preview desc
+            ";" . // full desc
+            ";" . // email
+            "https://www.google.kz;" .
+            ";" . //
+            ";" .
+            ";" .
+            ";" .
+            ";");
+
+        return view('frontend.payment')->with(compact('orderId', 'vSign', 'fond', 'amount'));
+    }
+
 }

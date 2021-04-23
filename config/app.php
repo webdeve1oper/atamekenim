@@ -230,5 +230,7 @@ return [
     ],
 
     'locales'=> ['ru'=> 'Русский', 'en'=>'English', 'kz'=>'Казахский'],
-    'C_SHARED_KEY'=>'01234567890123456789012'
+    'C_SHARED_KEY'=>'01234567890123456789012',
+    'PUBLIC_KEY' => 'pk_9026f5b5e5cc4f2a6651dd579939b',
+    'PRIVATE_KEY' => 'c96f1f360ae56ac9d06cd0caef8d8caa'
 ];
