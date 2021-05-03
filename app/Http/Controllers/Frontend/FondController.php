@@ -19,8 +19,9 @@ use App\Http\Controllers\Controller;
 use App\Region;
 use App\Scenario;
 use AvtoDev\CloudPayments\Config;
+use AvtoDev\CloudPayments\Client;
 use AvtoDev\CloudPayments\Requests\Subscriptions\SubscriptionsCreateRequestBuilder;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -200,26 +201,9 @@ class FondController extends Controller
         $last_donation = FondDonation::latest()->first();
         $amount = $request->amount;
         $orderId = sprintf("%06d", $last_donation->id);
-
-        $vSign = hash("sha512", config('app.C_SHARED_KEY') .
-            $orderId.";".
-            $amount.
-            ";KZT;".
-            "atamekenim.kz;" .
-            "12200005;" .
-            ";" .
-            $orderId.";" . // client id
-            "test;" . // preview desc
-            ";" . // full desc
-            ";" . // email
-            "https://www.google.kz;" .
-            ";" . //
-            ";" .
-            ";" .
-            ";" .
-            ";");
-
-        return view('frontend.payment')->with(compact('orderId', 'vSign', 'fond', 'amount'));
+        $config = new Config('pk_9026f5b5e5cc4f2a6651dd579939b', 'c96f1f360ae56ac9d06cd0caef8d8caa');
+        $client = new Client(new GuzzleClient, $config);
+        $request = new \GuzzleHttp\Psr7\Request('POST','https://api.cloudpayments.ru/test',[]);
     }
 
 }
