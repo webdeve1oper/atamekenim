@@ -118,9 +118,53 @@ class FondController extends Controller
 
             $fonds = Fond::where('status', true);
 
+            if ($request->exists('destination')) {
+                $destination = $request->destination;
+                $fonds->whereHas('destinations', function ($query) use ($destination) {
+                    $query->whereIn('destinations.id', $destination);
+                });
+            }
+
+            if ($request->exists('city')) {
+                $destination = $request->city;
+                $fonds->whereIn('help_location_city', $destination);
+            }
+            if ($request->exists('regions')) {
+                $destination = $request->regions;
+                $fonds->whereIn('help_location_region', $destination);
+            }
+
+            if ($request->exists('cashHelpType')) {
+                $cashHelpType = $request->cashHelpType;
+                $fonds->whereHas('cashHelpTypes', function ($query) use ($cashHelpType) {
+                    $query->whereIn('cash_help_id', $cashHelpType);
+                });
+            }
+
+            if ($request->exists('cashHelpSize')) {
+                $cashHelpSize = $request->cashHelpSize;
+                $fonds->whereHas('cashHelpSizes', function ($query) use ($cashHelpSize) {
+                    $query->whereIn('cash_help_size_id', $cashHelpSize);
+                });
+            }
+
+
+            if ($request->exists('baseHelpTypes')) {
+                $baseHelpTypes = $request->baseHelpTypes;
+                $fonds->whereHas('baseHelpTypes', function ($query) use ($baseHelpTypes) {
+                    $query->whereIn('base_help_id', $baseHelpTypes);
+                });
+            }
             if ($request->exists('bin')) {
+                $fonds = Fond::where('status', true);
                 $fonds->where('bin', 'like', $request->bin . '%');
             }
+
+            $fonds = $fonds->paginate(4);
+
+            return view('frontend.fond.fond_list')->with(compact('fonds'));
+        } else {
+            $fonds = Fond::where('status', true);
 
             if ($request->exists('destination')) {
                 $destination = $request->destination;
@@ -138,24 +182,33 @@ class FondController extends Controller
                 $fonds->whereIn('help_location_region', $destination);
             }
 
-            if ($request->exists('destinations_attribute')) {
-                $destinations_attribute = $request->destinations_attribute;
-                $fonds->whereHas('destinations_attribute', function ($query) use ($destinations_attribute) {
-                    $query->whereIn('destinations_attribute.id', $destinations_attribute);
+            if ($request->exists('cashHelpType')) {
+                $cashHelpType = $request->cashHelpType;
+                $fonds->whereHas('cashHelpTypes', function ($query) use ($cashHelpType) {
+                    $query->whereIn('cash_help_id', $cashHelpType);
                 });
             }
+
+            if ($request->exists('cashHelpSize')) {
+                $cashHelpSize = $request->cashHelpSize;
+                $fonds->whereHas('cashHelpSizes', function ($query) use ($cashHelpSize) {
+                    $query->whereIn('cash_help_size_id', $cashHelpSize);
+                });
+            }
+
 
             if ($request->exists('baseHelpTypes')) {
                 $baseHelpTypes = $request->baseHelpTypes;
                 $fonds->whereHas('baseHelpTypes', function ($query) use ($baseHelpTypes) {
-                    $query->whereIn('base_help_types.id', $baseHelpTypes);
+                    $query->whereIn('base_help_id', $baseHelpTypes);
                 });
             }
-            $fonds = $fonds->paginate(4);
+            if ($request->input('bin')!='') {
+                $fonds = Fond::where('status', true);
+                $fonds->where('bin', 'like', $request->bin . '%');
+            }
 
-            return view('frontend.fond.fond_list')->with(compact('fonds'));
-        } else {
-            $fonds = Fond::paginate(4);
+            $fonds = $fonds->paginate(4);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru', 'city_id');
             $regions = Region::all();
             $baseHelpTypes = AddHelpType::all();

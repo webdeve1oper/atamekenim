@@ -24,7 +24,7 @@
                         <p class="descr">{{trans('home.filtrdescr')}}</p>
                     </div>
                     <div class="col-sm-12">
-                        <form id="formSearch">
+                        <form id="formSearch" action="{{route('fonds')}}">
                             <input type="text" name="bin" placeholder="{{trans('home.searchbin')}}">
                             <select name="baseHelpTypes[]" id="select1">
                                 <option value="all">{{trans('home.sector-activities')}}</option>
@@ -62,20 +62,6 @@
                         <button class="btn-default blue">{{trans('home.hepls-fonds')}}</button>
                         <a href="{{route('registration_fond')}}" class="btn-default blue">{{trans('home.reg-reestr')}}</a>
                     </div>
-                    <script>
-                        $('#formSearch').submit(function(){
-                            var data = $(this).serialize();
-                            $.ajax({
-                                url: '{{route('home')}}',
-                                method: 'get',
-                                data: data,
-                                success: function(data){
-                                    $('#fond_lists').html(data);
-                                }
-                            });
-                            return false;
-                        });
-                    </script>
                 </div>
             </div>
         </div>

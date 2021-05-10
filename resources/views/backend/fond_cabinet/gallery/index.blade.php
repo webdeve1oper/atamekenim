@@ -1,8 +1,6 @@
 @extends('backend.fond_cabinet.setting')
 
 @section('setting_content')
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <div class="container-fluid default myOrganizationContent">
         <div class="container">
             <div class="row">
@@ -48,32 +46,4 @@
             position: relative;
         }
     </style>
-    <script>
-        $(document).ready(function () {
-
-            // Initialize sortable
-            $("#sortable").sortable();
-
-            // Save order
-            $('#submit').click(function () {
-                var imageids_arr = [];
-                // get image ids order
-                $('#sortable li').each(function () {
-                    var id = $(this).data('id');
-                    imageids_arr.push(id);
-                });
-
-                // AJAX request
-                $.ajax({
-                    url: 'ajaxfile.php',
-                    type: 'post',
-                    data: {imageids: imageids_arr},
-                    success: function (response) {
-                        if (response == 1)
-                            alert('Save successfully.');
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

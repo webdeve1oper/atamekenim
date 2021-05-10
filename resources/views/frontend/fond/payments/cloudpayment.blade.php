@@ -1,4 +1,4 @@
-<div class="modal fade" id="payment2">
+<div class="modal fade" id="cloudpayments">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->

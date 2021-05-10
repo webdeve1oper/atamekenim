@@ -168,7 +168,22 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Введите текст, отражающий
+                            <a data-toggle="collapse" class="collapsed" href="#collapse99">Регион оказания помощи (выберите один или несколько вариантов) *
+                                <i class="fas fa-angle-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse99" class="panel-collapse collapse">
+                        <div class="card-body">
+                            <select id="locations"  multiple></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse99">Введите текст, отражающий
                                 миссию Вашей организации <i
                                     class="fas fa-angle-up"></i></a>
                         </div>
@@ -476,41 +491,36 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-sm-12">
                 <input type="submit" class="btn btn-default" value="Сохранить">
             </div>
         </div>
+
     </form>
 
-
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+    <script src="/js/selecttree.js"></script>
+    <link rel="stylesheet" href="/css/selecttree.css">
     <script>
         var json = {!! $regions->toJson() !!};
-        $('#regions').select2({
-            width: '100%',
-            placeholder: 'Область'
-        });
-        $('#cities').select2({
-            width: '100%',
-            placeholder: 'Выберите город'
-        });
-        $('#regions').change(function () {
-            var ind = $('#regions').children('option:selected').val();
-            var datas = [];
-            json.forEach(function (value, index) {
-                if (value.region_id == ind) {
-                    ind = index;
-                }
-            });
-
-            $('#cities').empty();
-            datas.push({id: '0', text: '-'});
-            for (let [key, value] of Object.entries(json[ind].cities)) {
-                datas.push({id: value.id, text: value.text});
-            }
-            $('#cities').select2({data: datas, allowClear: true});
-        });
+        var locations = [
+                @foreach($regions as $region){
+                    id:"{{$region->region_id}}", text: "{{$region->text}}",  inc: [
+                    @if(count($region['districts'])>0)
+                        @foreach($region['districts'] as $district)
+                            {id:"{{$district->district_id}}", text: "{{$district->text}}", inc: [
+                                @if(count($district['cities'])>0)
+                                    @foreach($district['cities'] as $city)
+                                        {id:"{{$city->city_id}}", text: "{{ str_replace("\n", "", $city->title_ru)}}"},
+                                    @endforeach
+                                @endif
+                            ]},
+                        @endforeach
+                    @endif
+                ]},
+            @endforeach
+        ];
+        $("#locations").select2ToTree({treeData: {dataArr:locations}, width: '100%',closeOnSelect: false});
         var options = {
             toolbar: [
                 {name: 'clipboard', items: ['Cut', 'Copy', 'Undo', 'Redo']},

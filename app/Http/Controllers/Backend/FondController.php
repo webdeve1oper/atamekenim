@@ -227,10 +227,11 @@ class FondController extends Controller
             $project->fond()->associate($fond);
             $project->baseHelpTypes()->sync($request->base_help_types);
         } elseif ($request->method() == 'GET') {
-            $baseHelpTypes = BaseHelpType::with('addHelpTypes')->get()->toArray();
+            $baseHelpTypes = AddHelpType::all()->toArray();
             $regions = Region::all();
             $cities = City::all();
-            return view('backend.fond_cabinet.projects.create_project')->with(compact('baseHelpTypes', 'regions', 'cities'));
+            $scenarios = Scenario::all();
+            return view('backend.fond_cabinet.projects.create_project')->with(compact('baseHelpTypes', 'regions', 'cities','scenarios'));
         }
     }
 

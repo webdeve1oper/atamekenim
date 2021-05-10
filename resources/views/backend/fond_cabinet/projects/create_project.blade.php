@@ -12,6 +12,9 @@
                 @if($errors->has('logo'))
                     <span class="error">{{ $errors->first('logo') }}</span>
                 @endif
+                <small>Загрузите логотип проекта
+                    в формате jpeg, png
+                </small>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
@@ -40,17 +43,6 @@
                     </select>
                 </div>
             </div>
-            <script>
-                $('#city option').hide();
-                $('#city option[value=""]').show();
-                $('#city option.region_'+$('#region option:selected').val()).show();
-                $('#region').on('change', function(){
-                    $('#city option').hide();
-                    $('#city option[value=""]').show();
-                    $('#city option.region_'+$('#region option:selected').val()).show();
-                    console.log('#city option.region_'+$(this).val());
-                });
-            </script>
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Дата создания проекта:</label>
@@ -58,12 +50,39 @@
                            class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Сайт:</label>
+                    <label for="">Введите адрес сайта проекта:</label>
                     <input type="text" name="website" value=""
                            class="form-control">
                 </div>
             </div>
-            <div class="col-sm-6 ">
+            <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse2">Выберите основную сферу благотворительной деятельности Вашей организации (выберите один или несколько вариантов)* <i class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="row">
+                                    <?php $baseHelpTypess = array_column(Auth::user()->baseHelpTypes->toArray(), 'name_ru');?>
+                                    @foreach($baseHelpTypes as $destination)
+                                        <div class="col-sm-6">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input @if(in_array($destination['name_ru'], $baseHelpTypess)) checked
+                                                           @endif type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]"
+                                                           value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b> @if($destination['description_ru'])<p>(<?php echo mb_strtolower($destination['description_ru']) ?> )@endif</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 ">
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
@@ -87,7 +106,7 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse3">О нас <i
+                            <a data-toggle="collapse" class="collapsed" href="#collapse3">Введите описание проекта <i
                                         class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
@@ -100,71 +119,49 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 pl-0">
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse2">Сфера
-                                оказываемой помощи <i class="fas fa-angle-up"></i></a>
+                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Отметьте бенефициаров (получателей помощи), исходя из благотворительной деятельности Вашей организации (выберите один или несколько вариантов)*<i
+                                        class="fas fa-angle-up"></i></a>
                         </div>
-                        <div id="collapse2" class="panel-collapse collapse">
+                        <div id="collapse4" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
-                                    @foreach($baseHelpTypes as $destination)
-                                        <?php
-                                        $split = ceil(count($destination['add_help_types']) / 2);
-                                        if($split > 0){
-                                        $base_help_types = array_chunk($destination['add_help_types'], $split);?>
-                                        <div class="col-sm-12">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
+                                    @foreach($scenarios as $destination)
+                                        <div class="col-sm-6 @if($destination['id'] == 3)d-none @endif">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
+                                                    <b>@switch($destination['id'])
+                                                            @case(2)
+                                                            отдельные лица (адресная помощь)
+                                                            @break
+                                                            @case(1)
+                                                            семьи
+                                                            @break
+                                                            @case(4)
+                                                            сообщества (например, жителям жилого комплекса, жителям населенного пункта, людям, объединенным по определенным интересам и т.д.)
+                                                            @break
+                                                            @case(5)
+                                                            организации (государственной или частной компании, например, детскому дому, больнице)
+                                                            @case(6)
+                                                            животные
+                                                            @break
+                                                        @endswitch
+                                                    </b>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-6">
-
-                                            @foreach($base_help_types[0] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input  type="checkbox" name="base_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @foreach($base_help_types[1] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="base_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="col-12">
-                                            <hr>
-                                        </div>
-                                        <?}else{
-                                        ?>
-                                        <div class="col-sm-6">
-                                            <p value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</p>
-                                            @foreach($destination['add_help_types'] as $key => $help)
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input @if(in_array($help['name_ru'], $baseHelpTypess)) checked
-                                                               @endif type="checkbox" name="base_help_types[]"
-                                                               value="{{$help['id']}}"> {{$help['name_ru']}}
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <?php } ?>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-sm-6 pl-0">
                 <div class="panel-group mb-4">
                     <div class="panel panel-default">
                         <div class="card-header">
