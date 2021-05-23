@@ -53,10 +53,10 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <a href="{{ route('fond_help_page',$help->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
-                                            <form action="{{route('start_help', $help->id)}}" method="post">
-                                                @csrf
-                                                <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
-                                            </form>
+                                            {{--<form action="{{route('start_help', $help->id)}}" method="post">--}}
+                                                {{--@csrf--}}
+                                                {{--<button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>--}}
+                                            {{--</form>--}}
                                         </div>
                                     </div>
                                 </div>
