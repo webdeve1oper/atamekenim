@@ -66,6 +66,19 @@ class FondController extends Controller
 //        }
     }
 
+    public function cancelHelp($id)
+    {
+//        if (Auth::user()->helps->contains($id)) {
+        $help = Help::find($id);
+        $help->fond_status = 'cancel';
+        $help->date_fond_finish = Carbon::today();
+        $help->save();
+        return redirect()->back()->with('success', 'Успех');
+//        } else {
+//            return redirect()->back()->with('error', 'Заявка уже принята');
+//        }
+    }
+
 
     // edit Fund
     public function edit()

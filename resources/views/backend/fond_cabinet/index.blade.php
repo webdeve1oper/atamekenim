@@ -86,11 +86,12 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name center">{{trans('fond-cab.status')}}:</p>
+                                            <a href="{{ route('fond_help_page',$process->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
                                             <p class="tags default mini grey mb-3 w-100">В работе с {{\Carbon\Carbon::parse($process->date_fond_start)->format('d.m.Y')}}</p>
-                                            <form action="{{route('finish_help', $process->id)}}" method="post">
-                                                @csrf
-                                                <button class="btn-default blue">{{trans('fond-cab.well-done')}}</button>
-                                            </form>
+                                            {{--<form action="{{route('finish_help', $process->id)}}" method="post">--}}
+                                                {{--@csrf--}}
+                                                {{--<button class="btn-default blue">{{trans('fond-cab.well-done')}}</button>--}}
+                                            {{--</form>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -122,6 +123,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name center">{{trans('fond-cab.status')}}</p>
+                                            <a href="{{ route('fond_help_page',$process->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
                                             <p class="tags default mini green">{{trans('fond-cab.done')}} {{\Carbon\Carbon::parse($process->date_fond_finish)->format('d.m.Y')}}</p>
                                         </div>
                                     </div>
@@ -156,10 +158,10 @@
                             {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
                             {{--<p><span>1 место</span>по категории Социальная помощь по г. Нур-Султан</p>--}}
                             {{--<p><span>5 место</span>среди благотворительных организаций г. Нур-Султан</p>--}}
-                            <a href="{{route('dev')}}">{{trans('fond-cab.all-see-org')}}</a>
-                            <a href="{{route('dev')}}">{{trans('fond-cab.more-analytics')}}</a>
-                            <a href="{{route('dev')}}">{{trans('fond-cab.how-to-up')}}</a>
-                            <a href="{{route('dev')}}">{{trans('fond-cab.form-rat')}}</a>
+                            {{--<a href="{{route('dev')}}">{{trans('fond-cab.all-see-org')}}</a>--}}
+                            {{--<a href="{{route('dev')}}">{{trans('fond-cab.more-analytics')}}</a>--}}
+                            {{--<a href="{{route('dev')}}">{{trans('fond-cab.how-to-up')}}</a>--}}
+                            {{--<a href="{{route('dev')}}">{{trans('fond-cab.form-rat')}}</a>--}}
                         </div>
                     </div>
                 </div>

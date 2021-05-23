@@ -49,6 +49,13 @@
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
                 </div>
                 <div class="col-sm-5">
+                    @if($help->fond_status == 'process')
+                        <form action="{{route('finish_help', $help->id)}}" class="mb-4" method="post">
+                        @csrf
+                        <button class="btn-default blue">{{trans('fond-cab.well-done')}}</button>
+                        </form>
+                    @endif
+
                     @if($help->fond_status == 'wait')
                     <form action="{{route('start_help', $help->id)}}" method="post" class="mb-4">
                         @csrf
