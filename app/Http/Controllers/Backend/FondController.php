@@ -32,7 +32,6 @@ class FondController extends Controller
     public function index()
     {
         $fond = Fond::find(Auth::user()->id);
-
         return view('backend.fond_cabinet.index')->with(compact('fond'));
     }
 
@@ -306,7 +305,8 @@ class FondController extends Controller
 
     public function helpPage($id){
         $help = Help::find($id);
+        $cashHelpTypes = CashHelpType::all();
         $finished_helps = Help::whereFondStatus('finished')->paginate(4);
-        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps'));
+        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps', 'cashHelpTypes'));
     }
 }

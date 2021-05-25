@@ -196,29 +196,44 @@
                         <form action="{{route('finish_help', $help->id)}}" method="post">
                             @csrf
                             <input type="hidden" name="help_id" value="{{$help->id}}">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Укажите дату получения помощи заявителем <span style="color: red">*</span></label>
                                 <input type="date" name="help_date" class="form-control">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Заявка была реализована в рамках Проекта <span style="color: red">*</span></label>
-                                <input type="date" name="help_date" class="form-control">
+                                <?php $projects = Auth::user()->projects; ?>
+                                <select name="project" id="" class="form-control">
+                                    @foreach($projects as $project)
+                                        <option value="{{$project->id}}">{{$project->title}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">
                                     Укажите тип помощи, оказанный заявителю Вашей благотворительной организацией без участия благотворителей.
                                     Информация по благотворителям указывается ниже (выбрать из списка) <span style="color: red">*</span>
                                 </label>
-                                <input type="date" name="help_date" class="form-control">
+                                <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes">
+                                    @foreach($cashHelpTypes as $destination)
+                                        <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                    @endforeach
+                                </select>
+                                <script>
+                                    $('#cashHelpTypes').select2({
+                                        width: '100%',
+                                        placeholder: 'Виды оказываемой помощи'
+                                    });
+                                </script>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Укажите сумму оказанной благотворительной помощи <span style="color: red">*</span></label>
                                 <input type="text" name="amount" class="form-control" placeholder="тенге (KZT)">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Внесите информацию о благотворителях при необходимости <span style="color: red">*</span></label><br>
-                                <div class="helper" style="display: none;">
-                                    <div class="form-group">
+                                <div class="helper">
+                                    <div class="form-group mb-3">
                                         <label for="">Благотворитель</label>
                                         <select name="type" id="type" class="form-control">
                                             <option value="">Физическое лицо (отдельный человек)</option>
@@ -231,17 +246,34 @@
                                         <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">
                                     </div>
                                 </div>
-                                <p class="btn btn-default" onclick="$(this).prev().show(); $(this).next().show(); $(this).hide();">
-                                    Добавить
-                                </p>
-                                <p class="btn btn-default" style="display: none;" onclick="
+                                <script>
+                                    var helper = '<div class="helper">\n' +
+                                        '                                    <div class="form-group mb-3">\n' +
+                                        '                                        <label for="">Благотворитель</label>\n' +
+                                        '                                        <select name="type" id="type" class="form-control">\n' +
+                                        '                                            <option value="">Физическое лицо (отдельный человек)</option>\n' +
+                                        '                                            <option value="">Юридическое лицо (компания или организация)</option>\n' +
+                                        '                                        </select>\n' +
+                                        '                                        <input type="text" name="fio" class="form-control mt-2" placeholder="Напишите ФИО благотворителя">\n' +
+                                        '                                        <div class="form-group mt-2">\n' +
+                                        '                                            <input type="checkbox" name="anonim"> <label onclick="$(this).prev().prop(\'checked\', !$(this).prev().prop(\'checked\'))">Хочет остаться анонимом</label>\n' +
+                                        '                                        </div>\n' +
+                                        '                                        <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">\n' +
+                                        '                                    </div>\n' +
+                                        '                                </div>';
+                                </script>
+{{--                                <p class="btn btn-default" onclick="$(this).prev().show(); $(this).next().show(); $(this).hide();">--}}
+{{--                                    Добавить--}}
+{{--                                </p>--}}
+{{--                                <p class="btn btn-default" style="display: none;" onclick="--}}
+                                <p class="btn btn-default"  onclick="
                                 if($('.helper').length <5){
-                                    $($('.helper').last()).insertAfter(this).find('.input-group-append').show();
-                                } return false;">
+                                    $(helper).insertBefore(this);
+                                }">
                                     Добавить
                                 </p>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Загрузите фото процесса оказания помощи <span style="color: red">*</span></label>
                                 <div class="input-group">
                                     <input type="file" id="file" name="photo[]" class="form-control photo">
@@ -251,7 +283,7 @@
                                 </div>
                                 <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="">Вставьте ссылку на видео процесса оказания помощи <span style="color: red">*</span></label>
                                 <input type="text" name="link" class="form-control" placeholder="Ссылка">
                             </div>
