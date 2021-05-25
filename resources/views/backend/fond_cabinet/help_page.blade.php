@@ -1,4 +1,4 @@
-@extends('frontend.layout')
+@extends('backend.fond_cabinet.layout')
 @section('content')
     <div class="container-fluid default breadCrumbs">
         <div class="container">
@@ -10,6 +10,13 @@
                         <li><a>Заявка id:{{ $help->id }}</a></li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 pt-3">
+                @include('frontend.alerts')
             </div>
         </div>
     </div>
@@ -41,7 +48,8 @@
                         </div>
                     </div>
                     <div class="greyContent">
-                        <p class="name">{{ $help->user->last_name }} {{ $help->user->first_name }}, @if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null), {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif </p>
+                        <p class="name">{{ $help->user->last_name }} {{ $help->user->first_name }}, @if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
+                                , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif </p>
                         <div class="text">
                             {{ $help->body }}
                         </div>
@@ -50,17 +58,21 @@
                 </div>
                 <div class="col-sm-5">
                     @if($help->fond_status == 'process')
-                        <form action="{{route('finish_help', $help->id)}}" class="mb-4" method="post">
-                        @csrf
-                        <button class="btn-default blue">{{trans('fond-cab.well-done')}}</button>
-                        </form>
+                        <div class="row pb-4">
+                            <div class="col-auto pr-0">
+                                <button class="btn-default blue"  data-target="#finish" data-toggle="modal">{{trans('fond-cab.well-done')}}</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn-default" data-target="#cause" data-toggle="modal">Отклонить</button>
+                            </div>
+                        </div>
                     @endif
 
                     @if($help->fond_status == 'wait')
-                    <form action="{{route('start_help', $help->id)}}" method="post" class="mb-4">
-                        @csrf
-                        <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
-                    </form>
+                        <form action="{{route('start_help', $help->id)}}" method="post" class="mb-4">
+                            @csrf
+                            <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
+                        </form>
                     @endif
                     <div class="infoBlock">
                         <p><span>Статус обращения:</span>
@@ -74,12 +86,15 @@
                                 @case('process')
                                 в работе
                                 @break
+                                @case('cancel')
+                                отклонен
+                                @break
                             @endswitch</p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
                         <p><span>Тип помощи:</span>{{ $help->cashHelpTypes[0]->name_ru }}</p>
                         <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
                         <p><span>Срочность:</span>
-                        <?php
+                            <?php
                             switch ($help->urgency_date) {
                                 case 1:
                                     echo "в течение 1 месяца";
@@ -101,7 +116,8 @@
                     <div class="infoBlock">
                         <p><span>Кому необходима помощь:</span>{{$help->whoNeedHelp->name_ru}}</p>
                         <p><span>ФИО заявителя:</span>{{ $help->user->last_name }} {{ $help->user->first_name }}</p>
-                        <p><span>Место оказания помощи:</span>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null), {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
+                        <p><span>Место оказания помощи:</span>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
+                                , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
                         <p><span>ТЖС:</span>--</p>
                         <p><span>Год рождения:</span>{{ $help->user->born }}</p>
                         <p><span>Контактный телефон:</span>{{ $help->user->phone }}</p>
@@ -119,14 +135,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
     <div class="container-fluid default helperBlock helpInProjectPage">
         <div class="container">
             <div class="row">
@@ -156,4 +164,134 @@
             </div>
         </div>
     </div>
+    @if($help->fond_status == 'process')
+        <div id="cause" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                        <h6 class=" text-center d-table m-auto">Просим Вас указать причину отклонения заявки в комментарии.</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('cancel_help', $help->id)}}" method="post">
+                            @csrf
+                            <input type="hidden" name="help_id" value="{{$help->id}}">
+                            <textarea name="desc" class="form-control mb-3" id="" cols="30" placeholder="" rows="10"></textarea>
+                            <input type="submit" class="btn btn-default" value="отклонить">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="finish" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="max-width: 800px; width: initial">
+                <!-- Modal content-->
+                <div class="modal-content w-100">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                        <h6 class=" text-center d-table m-auto">Просим Вас заполнить данные об оказанной помощи для того, чтобы ни одно доброе дело не осталось незамеченным.</h6>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('finish_help', $help->id)}}" method="post">
+                            @csrf
+                            <input type="hidden" name="help_id" value="{{$help->id}}">
+                            <div class="form-group mb-3">
+                                <label for="">Укажите дату получения помощи заявителем <span style="color: red">*</span></label>
+                                <input type="date" name="help_date" class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Заявка была реализована в рамках Проекта <span style="color: red">*</span></label>
+                                <?php $projects = Auth::user()->projects; ?>
+                                <select name="project" id="" class="form-control">
+                                    @foreach($projects as $project)
+                                        <option value="{{$project->id}}">{{$project->title}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">
+                                    Укажите тип помощи, оказанный заявителю Вашей благотворительной организацией без участия благотворителей.
+                                    Информация по благотворителям указывается ниже (выбрать из списка) <span style="color: red">*</span>
+                                </label>
+                                <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes">
+                                    @foreach($cashHelpTypes as $destination)
+                                        <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                    @endforeach
+                                </select>
+                                <script>
+                                    $('#cashHelpTypes').select2({
+                                        width: '100%',
+                                        placeholder: 'Виды оказываемой помощи'
+                                    });
+                                </script>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Укажите сумму оказанной благотворительной помощи <span style="color: red">*</span></label>
+                                <input type="text" name="amount" class="form-control" placeholder="тенге (KZT)">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Внесите информацию о благотворителях при необходимости <span style="color: red">*</span></label><br>
+                                <div class="helper">
+                                    <div class="form-group mb-3">
+                                        <label for="">Благотворитель</label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="">Физическое лицо (отдельный человек)</option>
+                                            <option value="">Юридическое лицо (компания или организация)</option>
+                                        </select>
+                                        <input type="text" name="fio" class="form-control mt-2" placeholder="Напишите ФИО благотворителя">
+                                        <div class="form-group mt-2">
+                                            <input type="checkbox" name="anonim"> <label onclick="$(this).prev().prop('checked', !$(this).prev().prop('checked'))">Хочет остаться анонимом</label>
+                                        </div>
+                                        <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">
+                                    </div>
+                                </div>
+                                <script>
+                                    var helper = '<div class="helper">\n' +
+                                        '                                    <div class="form-group mb-3">\n' +
+                                        '                                        <label for="">Благотворитель</label>\n' +
+                                        '                                        <select name="type" id="type" class="form-control">\n' +
+                                        '                                            <option value="">Физическое лицо (отдельный человек)</option>\n' +
+                                        '                                            <option value="">Юридическое лицо (компания или организация)</option>\n' +
+                                        '                                        </select>\n' +
+                                        '                                        <input type="text" name="fio" class="form-control mt-2" placeholder="Напишите ФИО благотворителя">\n' +
+                                        '                                        <div class="form-group mt-2">\n' +
+                                        '                                            <input type="checkbox" name="anonim"> <label onclick="$(this).prev().prop(\'checked\', !$(this).prev().prop(\'checked\'))">Хочет остаться анонимом</label>\n' +
+                                        '                                        </div>\n' +
+                                        '                                        <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">\n' +
+                                        '                                    </div>\n' +
+                                        '                                </div>';
+                                </script>
+{{--                                <p class="btn btn-default" onclick="$(this).prev().show(); $(this).next().show(); $(this).hide();">--}}
+{{--                                    Добавить--}}
+{{--                                </p>--}}
+{{--                                <p class="btn btn-default" style="display: none;" onclick="--}}
+                                <p class="btn btn-default"  onclick="
+                                if($('.helper').length <5){
+                                    $(helper).insertBefore(this);
+                                }">
+                                    Добавить
+                                </p>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Загрузите фото процесса оказания помощи <span style="color: red">*</span></label>
+                                <div class="input-group">
+                                    <input type="file" id="file" name="photo[]" class="form-control photo">
+                                    <div class="input-group-append" style="display: none;">
+                                        <button class="btn btn-default p-2" type="button" onclick="$(this).parents('.input-group').remove();"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="">Вставьте ссылку на видео процесса оказания помощи <span style="color: red">*</span></label>
+                                <input type="text" name="link" class="form-control" placeholder="Ссылка">
+                            </div>
+                            <input type="submit" class="btn btn-default" value="{{trans('fond-cab.well-done')}}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection

@@ -38,6 +38,7 @@ class FondsSeeder extends Seeder
 
         foreach ($data as $fond) {
             if (!DB::table('fonds')->where('title_ru', $fond['title_ru'])->first()) {
+                $fond['password'] = \Illuminate\Support\Facades\Hash::make('123456');
                 $data = \App\Fond::create($fond);
                 $arr = [];
                 $arr2 = [];
@@ -56,5 +57,9 @@ class FondsSeeder extends Seeder
             }
         }
         \App\FondDonation::create(['amount'=>10]);
+        DB::raw("INSERT INTO `helps` (`id`, `user_id`, `city_id`, `district_id`, `region_id`, `body`, `admin_status`, `fond_status`, `cash_help_size_id`, `date_fond_start`, `date_fond_finish`, `review_id`, `created_at`, `updated_at`, `who_need_help`, `urgency_date`) VALUES(1, 16, NULL, NULL, 728, 'У меня трое все инвалиды с бронхиальной астмой тяжёлыми степенями неконтролируемый стадии 2 группы\r\nНам нужна лечение пройти реабилитацию в Алмате\r\nЗа троих дорого просят лечения\r\nУ нас постоянные кровоточит с носа, отдышка, случаются мочевой от простуды и тд\r\nМне нужна помощь оплата проезда и их лечение\r\nИ оплатить долги за продукты и продукты нужны, лекарства\r\nСрочно\r\nБерем в долг все до пенсии\r\nПожалуйста срочно нужна обследование опять пройти на платной основе', 'finished', 'finished', 4, '2021-04-15', '2021-04-15', NULL, '2021-04-14 23:11:53', '2021-04-14 23:27:58', '1', '1')");
+        DB::raw("INSERT INTO `help_addhelptypes` (`add_help_id`, `help_id`, `created_at`, `updated_at`) VALUES (1, 1, NULL, NULL); COMMIT;");
+        DB::raw("INSERT INTO `help_cashhelptypes` (`cash_help_id`, `help_id`, `created_at`, `updated_at`) VALUES (2, 1, NULL, NULL); COMMIT;");
+        DB::raw("INSERT INTO `help_fond` (`fond_id`, `help_id`, `fond_status`, `created_at`, `updated_at`) VALUES (1, 15, 'enable', NULL, NULL); COMMIT;");
     }
 }

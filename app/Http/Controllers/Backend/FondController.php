@@ -12,6 +12,7 @@ use App\DestinationAttribute;
 use App\Fond;
 use App\FondImage;
 use App\Help;
+use App\History;
 use App\Partner;
 use App\Project;
 use App\Region;
@@ -31,21 +32,19 @@ class FondController extends Controller
     public function index()
     {
         $fond = Fond::find(Auth::user()->id);
-
         return view('backend.fond_cabinet.index')->with(compact('fond'));
     }
 
-    public function start_help($id)
+    public function startHelp($id)
     {
 //        if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
             $help->fond_status = 'process';
             $help->date_fond_start = Carbon::today();
-            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) {
-                return redirect()->back()->with('error', 'Заявка уже принята другим фондом');
-            }
-            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']);
-
+//            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) { // надо сделать
+//                return redirect()->back()->with('error', 'Заявка уже принята другим фондом'); // надо сделать
+//            }
+//            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']); // надо сделать
             $help->save();
             return redirect()->back()->with('success', 'Успех');
 //        } else {
@@ -53,27 +52,38 @@ class FondController extends Controller
 //        }
     }
 
-    public function finish_help($id)
+    public function finishHelp($id)
     {
 //        if (Auth::user()->helps->contains($id)) {
             $help = Help::find($id);
             $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
-            return redirect()->back()->with('success', 'Успех');
+            return redirect()->back()->with('success', 'Благодарим Вашу организацию за оказанную помощь заявителю по обращению ID'.getHelpId($help->id).'!');
 //        } else {
 //            return redirect()->back()->with('error', 'Заявка уже принята');
 //        }
     }
 
-    public function cancelHelp($id)
+    public function cancelHelp(Request $request)
     {
 //        if (Auth::user()->helps->contains($id)) {
-        $help = Help::find($id);
-        $help->fond_status = 'cancel';
-        $help->date_fond_finish = Carbon::today();
-        $help->save();
-        return redirect()->back()->with('success', 'Успех');
+        if(strlen($request->desc)>0){
+            $help = Help::find($request->help_id);
+            $help->fond_status = 'cancel';
+            $help->date_fond_finish = Carbon::today();
+            $history = new History();
+            $history->desc = $request->desc;
+            $history->fond_id = Auth::user()->id;
+            $history->help_id = $help->id;
+            $history->status = 'cancel';
+            $history->save();
+            $help->save();
+            return redirect()->back()->with('error', 'Очень жаль, что обращение ID'.getHelpId($help->id).' отклонено.');
+        }else{
+            return redirect()->back()->with('error', 'Заполните пожалуйста причину отклонения!');
+        }
+
 //        } else {
 //            return redirect()->back()->with('error', 'Заявка уже принята');
 //        }
@@ -157,7 +167,7 @@ class FondController extends Controller
         }
     }
 
-    public function delete_gallery(Request $request)
+    public function deleteGallery(Request $request)
     {
         $partner = FondImage::find($request->id);
         if (File::exists($partner->image)) {
@@ -205,7 +215,7 @@ class FondController extends Controller
         }
     }
 
-    public function delete_partner(Request $request)
+    public function deletePartner(Request $request)
     {
         $partner = Partner::find($request->id);
         if (File::exists($partner->image)) {
@@ -216,7 +226,7 @@ class FondController extends Controller
     }
 
 
-    public function create_project(Request $request)
+    public function createProject(Request $request)
     {
         if ($request->method() == 'POST') {
             $validator = Validator::make($request->all(),
@@ -295,7 +305,8 @@ class FondController extends Controller
 
     public function helpPage($id){
         $help = Help::find($id);
+        $cashHelpTypes = CashHelpType::all();
         $finished_helps = Help::whereFondStatus('finished')->paginate(4);
-        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps'));
+        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps', 'cashHelpTypes'));
     }
 }
