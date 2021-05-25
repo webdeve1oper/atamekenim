@@ -11,7 +11,7 @@ class Project extends Model
 
     protected $fillable = [
         'title', 'logo', 'website', 'help_location_country', 'help_location_region', 'fond_id','help_location_city',
-        'address', 'about', 'social','video', 'date_created'
+        'address', 'about', 'social','video', 'date_created','status','instagram','facebook','whatsapp','telegram','finished_date'
     ];
 
     public function fond(){

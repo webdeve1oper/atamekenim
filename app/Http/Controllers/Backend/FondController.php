@@ -15,6 +15,10 @@ use App\Help;
 use App\History;
 use App\Partner;
 use App\Project;
+use App\ProjectCompanies;
+use App\ProjectHumans;
+use App\ProjectPartners;
+use App\ProjectSponsors;
 use App\Region;
 use App\Scenario;
 use Carbon\Carbon;
@@ -238,17 +242,50 @@ class FondController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-            $socials = [];
-            foreach ($request->socials as $social) {
-                array_push($socials, ['link' => $social]);
-            }
-            $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
+//            $socials = [];
+//            foreach ($request->socials as $social) {
+//                array_push($socials, ['link' => $social]);
+//            }
+//            $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
             $fond = Fond::find(Auth::user()->id);
             $data = $request->all();
             $data['fond_id'] = $fond->id;
             $project = Project::create($data);
             $project->fond()->associate($fond);
             $project->baseHelpTypes()->sync($request->base_help_types);
+            $partners = $request->get('partnerName');
+            $sponsors = $request->get('sponsorName');
+            $companies = $request->get('companyName');
+            $humans = $request->get('humanName');
+            foreach($partners as $k => $item){
+                $partner = new ProjectPartners();
+                $partner->project_id = $fond->id;
+                $partner->name = $item;
+                $partner->url = $request->get('partnerSite')[$k];
+                $partner->save();
+            }
+            foreach($sponsors as $k => $item){
+                $sponsor = new ProjectSponsors();
+                $sponsor->project_id = $fond->id;
+                $sponsor->name = $item;
+                $sponsor->url = $request->get('sponsorSite')[$k];
+                $sponsor->save();
+            }
+            foreach($companies as $k => $item){
+                $company = new ProjectCompanies();
+                $company->project_id = $fond->id;
+                $company->name = $item;
+                $company->url = $request->get('companySite')[$k];
+                $company->summ = $request->get('companySumm')[$k];
+                $company->save();
+            }
+            foreach($humans as $k => $item){
+                $human = new ProjectHumans();
+                $human->project_id = $fond->id;
+                $human->name = $item;
+                $human->summ = $request->get('humanSumm')[$k];
+                $human->save();
+            }
         } elseif ($request->method() == 'GET') {
             $baseHelpTypes = AddHelpType::all()->toArray();
             $regions = Region::all();

@@ -35,8 +35,24 @@
                     <input type="date" name="date_created" value=""
                            class="form-control">
                 </div>
+                <div class="form-group">
+                    <label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>
+                    <input type="file" name="document" value="" class="form-control">
+                </div>
             </div>
             <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="">Введите статус проекта:</label>
+                    <select name="status" id="status" class="form-control">
+                            <option value="indefinite">Бессрочный</option>
+                            <option value="active">Действующий</option>
+                            <option value="finished">Завершен</option>
+                    </select>
+                    <div class="finishedDateBlock mt-4 d-none">
+                        <label for="">Выбор даты завершения проекта:</label>
+                        <input type="date" name="finished_date" class="form-control">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="">Отметьте регион оказания помощи в рамках проекта</label>
                     <select name="help_location_region" id="region" class="form-control">
@@ -53,6 +69,10 @@
                             <option value="{{$city->city_id}}" class="region_{{$city->region_id}}">{{$city->title_ru}}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="">Ссылка на видео:</label>
+                    <input type="text" name="video" value="" class="form-control">
                 </div>
             </div>
             <div class="col-sm-12">
@@ -92,12 +112,16 @@
                         <div id="collapse0" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="form-group">
-                                        <input name="socials[]" placeholder="Укажите ссылку"
-                                               id="socials0" class="socials form-control">
-                                    <button class="btn btn-default float-right mt-2 mb-5 d-table"
-                                            onclick="var $div = $(this).prev(); var num = parseInt( $div.prop('id').match(/\d+/g), 10 ) +1; $('<input name=\'socials[]\'  placeholder=\'Укажите ссылку\' id=\'socials'+num+'\' class=\'socials form-control\'>').insertAfter($(this).prev()); return false;">
-                                        + добавить соц. сеть
-                                    </button>
+                                    <label for="">Instagram</label>
+                                    <input name="instagram" placeholder="Instagram url" class="form-control mb-2">
+                                    <label for="">Facebook</label>
+                                    <input name="facebook" placeholder="Facebook url" class="form-control mb-2">
+                                    <label for="">Youtube</label>
+                                    <input name="youtube" placeholder="Youtube url" class="form-control mb-2">
+                                    <label for="">Whatsapp</label>
+                                    <input name="whatsapp" placeholder="Whatsapp url" class="form-control mb-2">
+                                    <label for="">Telegram</label>
+                                    <input name="telegram" placeholder="Telegram url" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -159,9 +183,141 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse6">Партнеры Вашей организации по проекту <i
+                                        class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse6" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="partnerBlock firstChild">
+                                        <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
+                                        <label for="">Введите название организации:</label>
+                                        <input type="text" name="partnerName[]" class="form-control" placeholder="Введите название организации">
+                                        <label for="" class="mt-3">Загрузите логотип:</label>
+                                        <input type="file" name="partnerImg[]" class="form-control">
+                                        <label for="" class="mt-3">Введите ссылку на сайт партнера при наличии:</label>
+                                        <input type="text" name="partnerSite[]" class="form-control" placeholder="Введите ссылку на сайт партнера при наличии">
+                                    </div>
+                                    <div class="inBlock">
+                                    </div>
+                                    <a class="btn btn-success mt-1 addCopy" style="color:#fff!important;">+ добавить партнера</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse7">Спонсоры проекта <i
+                                        class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse7" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="partnerBlock firstChild">
+                                        <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
+                                        <label for="">Введите название организации:</label>
+                                        <input type="text" name="sponsorName[]" class="form-control" placeholder="Введите название организации">
+                                        <label for="" class="mt-3">Загрузите логотип:</label>
+                                        <input type="file" name="sponsorImg[]" class="form-control">
+                                        <label for="" class="mt-3">Введите ссылку на сайт спонсора при наличии:</label>
+                                        <input type="text" name="sponsorSite[]" class="form-control" placeholder="Введите ссылку на сайт спонсора при наличии">
+                                    </div>
+                                    <div class="inBlock">
+                                    </div>
+                                    <a class="btn btn-success mt-1 addCopy" style="color:#fff!important;">+ добавить спонсора</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse8">Компании - благотворители проекта <i
+                                        class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse8" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="partnerBlock firstChild">
+                                        <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
+                                        <label for="">Введите название организации:</label>
+                                        <input type="text" name="companyName[]" class="form-control" placeholder="Введите название организации">
+                                        <label for="" class="mt-3">Загрузите логотип в формате jpeg, png:</label>
+                                        <input type="file" name="companyImg[]" class="form-control">
+                                        <label for="" class="mt-3">Введите ссылку на сайт компании-благотворителя при наличии:</label>
+                                        <input type="text" name="companySite[]" class="form-control" placeholder="Введите ссылку на сайт спонсора при наличии">
+                                        <label for="" class="mt-3">Сумма оказанной помощи, в тенге:</label>
+                                        <input type="number" name="companySumm[]" class="form-control" placeholder="Сумма оказанной помощи, в тенге">
+                                    </div>
+                                    <div class="inBlock">
+                                    </div>
+                                    <a class="btn btn-success mt-1 addCopy" style="color:#fff!important;">+ добавить компанию - благотворителя</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse9">Благотворители - частные лица проекта <i
+                                        class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse9" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="partnerBlock firstChild">
+                                        <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
+                                        <label for="">Введите имя благотворителя:</label>
+                                        <input type="text" name="humanName[]" class="form-control" placeholder="Введите имя благотворителя">
+                                        <label for="" class="mt-3">Благотворитель пожелал остаться неизвестным (чекбокс):</label>
+                                        <input type="checkbox" name="humanIncognito[]" class="form-control" style="width: auto;">
+                                        <label for="" class="mt-3">Сумма оказанной помощи, в тенге:</label>
+                                        <input type="number" name="humanSumm[]" class="form-control" placeholder="Сумма оказанной помощи, в тенге">
+                                    </div>
+                                    <div class="inBlock">
+                                    </div>
+                                    <a class="btn btn-success mt-1 addCopy" style="color:#fff!important;">+ добавить благотворителя - частное лицо</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse10">Загрузите фотографии по проекту <i
+                                        class="fas fa-angle-up"></i></a>
+                        </div>
+                        <div id="collapse10" class="panel-collapse collapse">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="partnerBlock firstChild">
+                                        <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
+                                        <input type="file" name="gallery[]" class="form-control">
+                                    </div>
+                                    <div class="inBlock">
+                                    </div>
+                                    <a class="btn btn-success mt-1 addCopy" style="color:#fff!important;">+ добавить фото</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-sm-6 pl-0">
+            <div class="col-sm-6">
                 <div class="panel-group mb-4">
                     <div class="panel panel-default">
                         <div class="card-header">
@@ -298,6 +454,20 @@
             }
         }
     </script>
+    <script>
+        $('.addCopy').click(function () {
+            var clone = $(this).siblings('.partnerBlock.firstChild').clone();
+            clone.removeClass('firstChild');
+            clone.appendTo($(this).siblings('.inBlock'));
+        });
+        $('select#status').change(function(){
+            if($(this).val() == 'finished'){
+                $('.finishedDateBlock').removeClass('d-none');
+            }else{
+                $('.finishedDateBlock').addClass('d-none');
+            }
+        });
+    </script>
     <style>
         .fa-angle-up {
             float: right;
@@ -306,5 +476,26 @@
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
+        .partnerBlock {
+            display: table;
+            border: 1px solid #eee;
+            width: 100%;
+            padding: 25px;
+            margin: 0 0 15px;
+            box-shadow: 0 5px 13px #eee;
+            background: #eee;
+            border-radius: 5px;
+            position: relative;
+        }
+        .partnerBlock .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 26px;
+        }
+        .partnerBlock.firstChild .close {
+            display: none;
+        }
     </style>
 @endsection
+
