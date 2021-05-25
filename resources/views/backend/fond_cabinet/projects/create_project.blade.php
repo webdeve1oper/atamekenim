@@ -13,12 +13,12 @@
                     <span class="error">{{ $errors->first('logo') }}</span>
                 @endif
                 <small>Загрузите логотип проекта
-                    в формате jpeg, png
+                    в формате jpeg, png (при наличии)
                 </small>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="">Название проекта</label>
+                    <label for="">Введите название проекта</label>
                     <input type="text" name="title" value=""
                            class="form-control">
                     @if($errors->has('title'))
@@ -26,7 +26,19 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="">Регион</label>
+                    <label for="">Введите адрес сайта проекта (при наличии):</label>
+                    <input type="text" name="website" value=""
+                           class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Введите дату создания проекта:</label>
+                    <input type="date" name="date_created" value=""
+                           class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="">Отметьте регион оказания помощи в рамках проекта</label>
                     <select name="help_location_region" id="region" class="form-control">
                         @foreach($regions as $region)
                             <option value="{{$region->region_id}}" >{{$region->title_ru}}</option>
@@ -43,23 +55,11 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label for="">Дата создания проекта:</label>
-                    <input type="date" name="date_created" value=""
-                           class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="">Введите адрес сайта проекта:</label>
-                    <input type="text" name="website" value=""
-                           class="form-control">
-                </div>
-            </div>
             <div class="col-sm-12">
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse2">Выберите основную сферу благотворительной деятельности Вашей организации (выберите один или несколько вариантов)* <i class="fas fa-angle-up"></i></a>
+                            <a data-toggle="collapse" class="collapsed" href="#collapse2">Выберите сферу оказываемой помощи в рамках проекта (выберите один или несколько вариантов)* <i class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="card-body">
@@ -122,7 +122,7 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Отметьте бенефициаров (получателей помощи), исходя из благотворительной деятельности Вашей организации (выберите один или несколько вариантов)*<i
+                            <a data-toggle="collapse" class="collapsed" href="#collapse4">Выберите бенефициаров проекта (выберите один или несколько вариантов)*<i
                                         class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse4" class="panel-collapse collapse">

@@ -36,13 +36,23 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin_helps') }}">
-                                Запросы на помощь
+                                Заявки от получателей помощи
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin_fonds') }}">
+                                Заявки от благотворительных организаций
                             </a>
                         </li>
                     @elseif(Auth::user()->role_id == 2)
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin_helps') }}">
-                                Запросы на помощь
+                                Заявки от получателей помощи
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin_fonds') }}">
+                                Заявки от благотворительных организаций
                             </a>
                         </li>
                     @endif
