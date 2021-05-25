@@ -214,7 +214,7 @@
                                     Укажите тип помощи, оказанный заявителю Вашей благотворительной организацией без участия благотворителей.
                                     Информация по благотворителям указывается ниже (выбрать из списка) <span style="color: red">*</span>
                                 </label>
-                                <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes">
+                                <select name="cashHelpType[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes">
                                     @foreach($cashHelpTypes as $destination)
                                         <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                     @endforeach
@@ -235,46 +235,57 @@
                                 <div class="helper">
                                     <div class="form-group mb-3">
                                         <label for="">Благотворитель</label>
-                                        <select name="type" id="type" class="form-control">
-                                            <option value="">Физическое лицо (отдельный человек)</option>
-                                            <option value="">Юридическое лицо (компания или организация)</option>
+                                        <select name="type[]" onchange="faceType($(this).val(), $(this))" class="form-control">
+                                            <option value="fiz">Физическое лицо (отдельный человек)</option>
+                                            <option value="yur">Юридическое лицо (компания или организация)</option>
                                         </select>
-                                        <input type="text" name="fio" class="form-control mt-2" placeholder="Напишите ФИО благотворителя">
-                                        <div class="form-group mt-2">
-                                            <input type="checkbox" name="anonim"> <label onclick="$(this).prev().prop('checked', !$(this).prev().prop('checked'))">Хочет остаться анонимом</label>
-                                        </div>
-                                        <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">
+                                        <input type="text" name="fio[]" class="form-control mt-2 fio" placeholder="Напишите ФИО благотворителя">
+                                        <input type="text" name="iin[]" class="form-control mt-2 iin" placeholder="Укажите ИИН благотворителя">
+                                        <input type="text" name="bin[]" class="form-control bin mt-2" style="display: none;" placeholder="Внесите БИН юридического лица">
+                                        <input type="text" name="title[]" class="form-control title mt-2" style="display: none;" placeholder="Напишите название юридического лица">
+                                        <input type="text" name="total[]" class="form-control total mt-2" placeholder="Укажите сумму оказанной благотворительной помощи ">
+                                        <input type="hidden" name="anonim[]" value="">
+                                        <input type="checkbox" class="mt-2" onclick="$(this).prev().val($(this).prop('checked'))"> <label onclick="$(this).prev().prop('checked', !$(this).prev().prop('checked'));$(this).prev().prev().val($(this).prev().prop('checked'))"> Хочет остаться анонимом</label>
+                                        <br><label for="">
+                                            Какую помощь оказал благотворитель
+                                        </label>
+                                        <select name="cashHelpTypes[]" class="select2 cashHelpTypes2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpType">
+                                            @foreach($cashHelpTypes as $destination)
+                                                <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <script>
-                                    var helper = '<div class="helper">\n' +
-                                        '                                    <div class="form-group mb-3">\n' +
-                                        '                                        <label for="">Благотворитель</label>\n' +
-                                        '                                        <select name="type" id="type" class="form-control">\n' +
-                                        '                                            <option value="">Физическое лицо (отдельный человек)</option>\n' +
-                                        '                                            <option value="">Юридическое лицо (компания или организация)</option>\n' +
-                                        '                                        </select>\n' +
-                                        '                                        <input type="text" name="fio" class="form-control mt-2" placeholder="Напишите ФИО благотворителя">\n' +
-                                        '                                        <div class="form-group mt-2">\n' +
-                                        '                                            <input type="checkbox" name="anonim"> <label onclick="$(this).prev().prop(\'checked\', !$(this).prev().prop(\'checked\'))">Хочет остаться анонимом</label>\n' +
-                                        '                                        </div>\n' +
-                                        '                                        <input type="text" name="fio" class="form-control mt-1" placeholder="Укажите ИИН благотворителя">\n' +
-                                        '                                    </div>\n' +
-                                        '                                </div>';
+                                    $('#cashHelpType').select2({
+                                        width: '100%',
+                                        placeholder: 'Виды оказываемой помощи'
+                                    });
                                 </script>
-{{--                                <p class="btn btn-default" onclick="$(this).prev().show(); $(this).next().show(); $(this).hide();">--}}
-{{--                                    Добавить--}}
-{{--                                </p>--}}
-{{--                                <p class="btn btn-default" style="display: none;" onclick="--}}
                                 <p class="btn btn-default"  onclick="
                                 if($('.helper').length <5){
-                                    $(helper).insertBefore(this);
+                                   var count = $('.helper').length;
+                                    $(helper).insertBefore(this).find('.cashHelpTypes2').attr('id', 'cashHelpTypes'+count).attr('name', 'cashHelpTypes['+count+'][]');
+                                    $('#cashHelpTypes'+count).select2({ width: '100%', placeholder: 'Виды оказываемой помощи'});
                                 }">
                                     Добавить
                                 </p>
                             </div>
+                            <script>
+                                var select = '<label for="">Какую помощь оказал благотворитель</label><select name="cashHelpTypes[]" class="select2 cashHelpTypes2 w-100" multiple id="cashHelpTypes">@foreach($cashHelpTypes as $destination)<option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>@endforeach</select>';
+                                var helper = '<div class="helper"><div class="form-group mb-3"><label for="">Благотворитель</label><select name="type[]" onclick="faceType($(this).val(), $(this))" class="form-control"><option value="fiz">Физическое лицо (отдельный человек)</option><option value="yur">Юридическое лицо (компания или организация)</option></select>\n' +
+                                    '<input type="text" name="fio[]" class="form-control fio mt-2" placeholder="Напишите ФИО благотворителя">' +
+                                    '<input type="text" name="iin[]" class="form-control iin mt-2" placeholder="Укажите ИИН благотворителя">' +
+                                    '<input type="text" name="title[]" class="form-control title mt-2" style="display: none;" placeholder="Напишите название юридического лица">' +
+                                    '<input type="text" name="bin[]" class="form-control bin mt-2" style="display: none;" placeholder="Внесите БИН юридического лица">' +
+                                    '<input type="text" name="total[]" class="form-control total mt-2" placeholder="Укажите сумму оказанной благотворительной помощи ">' +
+                                    '<input type="hidden" name="anonim[]" value="">' +
+                                    '<input type="checkbox" name="anonim" class="mt-2" onclick="$(this).prev().val($(this).prop(\'checked\'))"><label onclick="$(this).prev().prop(\'checked\', !$(this).prev().prop(\'checked\'));$(this).prev().prev().val($(this).prev().prop(\'checked\'))"> Хочет остаться анонимом</label><br>' + select +'</div>' +
+                                    '<span style="color:#0053a5" class="delete-helper" onclick="$(this).parent().remove()"><i class="far fa-window-close"></i></span>\n' +
+                                    '</div>';
+                            </script>
                             <div class="form-group mb-3">
-                                <label for="">Загрузите фото процесса оказания помощи <span style="color: red">*</span></label>
+                                <label for="">Загрузите фото процесса оказания помощи </label>
                                 <div class="input-group">
                                     <input type="file" id="file" name="photo[]" class="form-control photo">
                                     <div class="input-group-append" style="display: none;">
@@ -284,7 +295,7 @@
                                 <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Вставьте ссылку на видео процесса оказания помощи <span style="color: red">*</span></label>
+                                <label for="">Вставьте ссылку на видео процесса оказания помощи (youtube) </label>
                                 <input type="text" name="link" class="form-control" placeholder="Ссылка">
                             </div>
                             <input type="submit" class="btn btn-default" value="{{trans('fond-cab.well-done')}}">
@@ -293,5 +304,46 @@
                 </div>
             </div>
         </div>
+        <style>
+            .helper{
+                border: 1px solid #ededed;
+                margin-bottom: 10px;
+                padding: 15px;
+                position: relative;
+            }
+
+            #finish .form-group{
+                margin-bottom: 20px;
+            }
+
+            .delete-helper i{
+                font-size: 20px;
+            }
+
+            .delete-helper{
+                position: absolute;
+                right: 15px;
+                top: 10px;
+            }
+
+            .delete-helper:hover{
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            function faceType(val, that){
+                if(val == 'yur'){
+                    that.parents('.helper').find('.bin').show();
+                    that.parents('.helper').find('.title').show();
+                    that.parents('.helper').find('.iin').hide();
+                    that.parents('.helper').find('.fio').hide();
+                }else{
+                    that.parents('.helper').find('.iin').show();
+                    that.parents('.helper').find('.fio').show();
+                    that.parents('.helper').find('.bin').hide();
+                    that.parents('.helper').find('.title').hide();
+                }
+            }
+        </script>
     @endif
 @endsection

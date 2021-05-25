@@ -9,6 +9,8 @@ use App\CashHelpType;
 use App\City;
 use App\Destination;
 use App\DestinationAttribute;
+use App\FinishedHelp;
+use App\FinishedHelpHelper;
 use App\Fond;
 use App\FondImage;
 use App\Help;
@@ -52,14 +54,56 @@ class FondController extends Controller
 //        }
     }
 
-    public function finishHelp($id)
+    public function finishHelp(Request $request)
     {
-//        if (Auth::user()->helps->contains($id)) {
-            $help = Help::find($id);
+        if($request->method() == 'POST'){
+            $finishHelp = new FinishedHelp();
+            $finishHelp->help_date = date('Y-m-d', strtotime($request->help_date));
+            $finishHelp->help_id = $request->help_id;
+            $finishHelp->amount = $request->amount;
+            $finishHelp->link = $request->link;
+            $finishHelp->save();
+            if($request->cashHelpType){
+                $finishHelp->cashHelpTypes()->sync($request->cashHelpType);
+            }
+            foreach($request->iin as $i => $item){
+                $helper = new FinishedHelpHelper();
+                $helper->finish_help_id = $finishHelp->id;
+                $helper->iin = $request->iin[$i];
+                $helper->bin = $request->bin[$i];
+                $helper->type = $request->type[$i];
+                $helper->title = $request->title[$i];
+                $helper->total = $request->total[$i];
+                if($request->anonim[$i] == null){
+                    $helper->anonim = 0;
+                }else{
+                    $helper->anonim = $request->anonim[$i] == 'true'? 1:0;
+                }
+                $helper->save();
+                if($request->cashHelpTypes) {
+                    if (array_key_exists($i, $request->cashHelpTypes)) {
+                        $helper->cashHelpTypes()->sync($request->cashHelpTypes[$i]);
+                    }
+                }
+            }
+//            if($request->hasFile('photo')){
+//                foreach($request->file('photo') as $image)
+//                {
+//                    $filename = time() . $finishHelp->id . '.' . $image->getClientOriginalExtension();
+//                    $thumbnailImage = Image::make($image);
+//                    $path = '/img/help/'.$filename;
+//                    $thumbnailImage->resize(700, null)->save(public_path().$path);
+//                    HelpImage::create(['help_id'=>$finishHelp->id, 'image'=>$path]);
+//                }
+//            }
+            $help = Help::find($request->help_id);
             $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
             return redirect()->back()->with('success', 'Благодарим Вашу организацию за оказанную помощь заявителю по обращению ID'.getHelpId($help->id).'!');
+        }
+//        if (Auth::user()->helps->contains($id)) {
+
 //        } else {
 //            return redirect()->back()->with('error', 'Заявка уже принята');
 //        }
