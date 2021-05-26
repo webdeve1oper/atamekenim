@@ -12,7 +12,7 @@
                     <p class="name">Название проекта: <b>{{$project->title}}</b></p>
                     <p>Сферы деятельности:  @foreach($project->baseHelpTypes as $i => $help){{$help['name_'.app()->getLocale()]}},@endforeach</p>
                     <p>Описание: {{strip_tags(substr($project->about, 0,100))}}</p>
-                    <a href="" class="btn btn-default p-2"><img src="/img/settings.svg" alt=""> Редактировать</a>
+                    <a href="{{ route('fond_project_page',$project->id) }}" class="btn btn-default p-2"><img src="/img/settings.svg" alt=""> Редактировать</a>
                     <a href="" class="btn btn-danger p-2"> Удалить</a>
                 </div>
             </div>

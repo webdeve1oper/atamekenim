@@ -8,6 +8,7 @@ Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::post('/cabinet/fond/edit', 'Backend\FondController@update')->name('fond_setting');
     Route::match(['get','post'], '/cabinet/fond/projects', 'Backend\FondController@projects')->name('projects');
     Route::match(['get','post'], '/cabinet/fond/create_project', 'Backend\FondController@createProject')->name('create_project');
+    Route::get('/cabinet/fond/project-page/{id}', 'Backend\FondController@projectPage')->name('fond_project_page');
     Route::delete('/cabinet/fond/delete_partner', 'Backend\FondController@deletePartner')->name('delete_partner');
     Route::match(['get','post'], '/cabinet/fond/partners', 'Backend\FondController@partners')->name('partners');
     Route::match(['get','post'], '/cabinet/fond/gallery', 'Backend\FondController@gallery')->name('gallery');

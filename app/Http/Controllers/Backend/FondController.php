@@ -44,15 +44,15 @@ class FondController extends Controller
     public function startHelp($id)
     {
 //        if (Auth::user()->helps->contains($id)) {
-            $help = Help::find($id);
-            $help->fond_status = 'process';
-            $help->date_fond_start = Carbon::today();
+        $help = Help::find($id);
+        $help->fond_status = 'process';
+        $help->date_fond_start = Carbon::today();
 //            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) { // надо сделать
 //                return redirect()->back()->with('error', 'Заявка уже принята другим фондом'); // надо сделать
 //            }
 //            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']); // надо сделать
-            $help->save();
-            return redirect()->back()->with('success', 'Успех');
+        $help->save();
+        return redirect()->back()->with('success', 'Успех');
 //        } else {
 //            return redirect()->back()->with('error', 'Заявка уже принята');
 //        }
@@ -60,17 +60,17 @@ class FondController extends Controller
 
     public function finishHelp(Request $request)
     {
-        if($request->method() == 'POST'){
+        if ($request->method() == 'POST') {
             $finishHelp = new FinishedHelp();
             $finishHelp->help_date = date('Y-m-d', strtotime($request->help_date));
             $finishHelp->help_id = $request->help_id;
             $finishHelp->amount = $request->amount;
             $finishHelp->link = $request->link;
             $finishHelp->save();
-            if($request->cashHelpType){
+            if ($request->cashHelpType) {
                 $finishHelp->cashHelpTypes()->sync($request->cashHelpType);
             }
-            foreach($request->iin as $i => $item){
+            foreach ($request->iin as $i => $item) {
                 $helper = new FinishedHelpHelper();
                 $helper->finish_help_id = $finishHelp->id;
                 $helper->iin = $request->iin[$i];
@@ -78,13 +78,13 @@ class FondController extends Controller
                 $helper->type = $request->type[$i];
                 $helper->title = $request->title[$i];
                 $helper->total = $request->total[$i];
-                if($request->anonim[$i] == null){
+                if ($request->anonim[$i] == null) {
                     $helper->anonim = 0;
-                }else{
-                    $helper->anonim = $request->anonim[$i] == 'true'? 1:0;
+                } else {
+                    $helper->anonim = $request->anonim[$i] == 'true' ? 1 : 0;
                 }
                 $helper->save();
-                if($request->cashHelpTypes) {
+                if ($request->cashHelpTypes) {
                     if (array_key_exists($i, $request->cashHelpTypes)) {
                         $helper->cashHelpTypes()->sync($request->cashHelpTypes[$i]);
                     }
@@ -104,7 +104,7 @@ class FondController extends Controller
             $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
-            return redirect()->back()->with('success', 'Благодарим Вашу организацию за оказанную помощь заявителю по обращению ID'.getHelpId($help->id).'!');
+            return redirect()->back()->with('success', 'Благодарим Вашу организацию за оказанную помощь заявителю по обращению ID' . getHelpId($help->id) . '!');
         }
 //        if (Auth::user()->helps->contains($id)) {
 
@@ -116,7 +116,7 @@ class FondController extends Controller
     public function cancelHelp(Request $request)
     {
 //        if (Auth::user()->helps->contains($id)) {
-        if(strlen($request->desc)>0){
+        if (strlen($request->desc) > 0) {
             $help = Help::find($request->help_id);
             $help->fond_status = 'cancel';
             $help->date_fond_finish = Carbon::today();
@@ -127,8 +127,8 @@ class FondController extends Controller
             $history->status = 'cancel';
             $history->save();
             $help->save();
-            return redirect()->back()->with('error', 'Очень жаль, что обращение ID'.getHelpId($help->id).' отклонено.');
-        }else{
+            return redirect()->back()->with('error', 'Очень жаль, что обращение ID' . getHelpId($help->id) . ' отклонено.');
+        } else {
             return redirect()->back()->with('error', 'Заполните пожалуйста причину отклонения!');
         }
 
@@ -149,7 +149,7 @@ class FondController extends Controller
 
     public function editActivity(Request $request)
     {
-        if($request->method() == 'POST'){
+        if ($request->method() == 'POST') {
             $fond = Fond::find(Auth::user()->id);
             $fond->baseHelpTypes()->sync($request->base_help_types);
             $fond->regions()->sync($request->regions);
@@ -158,7 +158,7 @@ class FondController extends Controller
             $fond->cashHelpTypes()->sync($request->cashHelpTypes);
             $fond->scenarios()->sync($request->scenario_id);
             return redirect()->back()->with(['success' => 'Информация успешно обновлена']);
-        }else{
+        } else {
             $baseHelpTypes = AddHelpType::all()->toArray();
             $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
             $destinations = Destination::all();
@@ -273,7 +273,11 @@ class FondController extends Controller
         return redirect()->back();
     }
 
-
+    public function projectPage($id){
+        $project = Project::find($id);
+        $baseHelpTypes = AddHelpType::all()->toArray();
+        return view('backend.fond_cabinet.projects.project_page')->with(compact('project','baseHelpTypes'));
+    }
     public function createProject(Request $request)
     {
         if ($request->method() == 'POST') {
@@ -293,49 +297,86 @@ class FondController extends Controller
 //            $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
             $fond = Fond::find(Auth::user()->id);
             $data = $request->all();
+//            dd($request->all());
+            $originalImage = $request->file('logo');
+            $thumbnailImage = Image::make($originalImage);
+            $thumbnailPath = '/img/projects';
+            File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+            $path = time() . '.' . $originalImage->getClientOriginalExtension();
+            $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+            $data['logo'] = $thumbnailPath . '/' . $path;
+
             $data['fond_id'] = $fond->id;
             $project = Project::create($data);
             $project->fond()->associate($fond);
             $project->baseHelpTypes()->sync($request->base_help_types);
+
             $partners = $request->get('partnerName');
             $sponsors = $request->get('sponsorName');
             $companies = $request->get('companyName');
             $humans = $request->get('humanName');
-            foreach($partners as $k => $item){
-                $partner = new ProjectPartners();
-                $partner->project_id = $fond->id;
-                $partner->name = $item;
-                $partner->url = $request->get('partnerSite')[$k];
-                $partner->save();
+            if ($partners) {
+                foreach ($partners as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $partner = new ProjectPartners();
+                        $partner->project_id = $project->id;
+                        $partner->name = $item;
+                        $partner->url = $request->get('partnerSite')[$k];
+                        $partner->save();
+                    }
+
+                }
             }
-            foreach($sponsors as $k => $item){
-                $sponsor = new ProjectSponsors();
-                $sponsor->project_id = $fond->id;
-                $sponsor->name = $item;
-                $sponsor->url = $request->get('sponsorSite')[$k];
-                $sponsor->save();
+            if ($sponsors) {
+                foreach ($sponsors as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $sponsor = new ProjectSponsors();
+                        $sponsor->project_id = $project->id;
+                        $sponsor->name = $item;
+                        $sponsor->url = $request->get('sponsorSite')[$k];
+                        $sponsor->save();
+                    }
+                }
             }
-            foreach($companies as $k => $item){
-                $company = new ProjectCompanies();
-                $company->project_id = $fond->id;
-                $company->name = $item;
-                $company->url = $request->get('companySite')[$k];
-                $company->summ = $request->get('companySumm')[$k];
-                $company->save();
+            if ($companies) {
+                foreach ($companies as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $company = new ProjectCompanies();
+                        $company->project_id = $project->id;
+                        $company->name = $item;
+                        $company->url = $request->get('companySite')[$k];
+                        $company->summ = $request->get('companySumm')[$k];
+                        $company->save();
+                    }
+                }
             }
-            foreach($humans as $k => $item){
-                $human = new ProjectHumans();
-                $human->project_id = $fond->id;
-                $human->name = $item;
-                $human->summ = $request->get('humanSumm')[$k];
-                $human->save();
+            if ($humans) {
+                foreach ($humans as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $human = new ProjectHumans();
+                        $human->project_id = $project->id;
+                        $human->name = $item;
+                        $human->summ = $request->get('humanSumm')[$k];
+                        $human->save();
+                    }
+                }
             }
+
+            return redirect()->route('projects')->with(['success' => 'Проект успешно добавлен']);
         } elseif ($request->method() == 'GET') {
             $baseHelpTypes = AddHelpType::all()->toArray();
             $regions = Region::all();
             $cities = City::all();
             $scenarios = Scenario::all();
-            return view('backend.fond_cabinet.projects.create_project')->with(compact('baseHelpTypes', 'regions', 'cities','scenarios'));
+            return view('backend.fond_cabinet.projects.create_project')->with(compact('baseHelpTypes', 'regions', 'cities', 'scenarios'));
         }
     }
 
@@ -384,10 +425,11 @@ class FondController extends Controller
         }
     }
 
-    public function helpPage($id){
+    public function helpPage($id)
+    {
         $help = Help::find($id);
         $cashHelpTypes = CashHelpType::all();
         $finished_helps = Help::whereFondStatus('finished')->paginate(4);
-        return view('backend.fond_cabinet.help_page')->with(compact('help','finished_helps', 'cashHelpTypes'));
+        return view('backend.fond_cabinet.help_page')->with(compact('help', 'finished_helps', 'cashHelpTypes'));
     }
 }
