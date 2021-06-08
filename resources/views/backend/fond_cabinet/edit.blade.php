@@ -175,10 +175,227 @@
                     </div>
                     <div id="collapse99" class="panel-collapse collapse">
                         <div class="card-body">
-                            <select id="locations"  multiple></select>
+                            {{--<select id="locations"  multiple></select>--}}
+                            <div class="bigRegionsFather">
+                                <div class="regionsBlock" onclick="$('.regionsOpenBlock').toggle();"></div>
+                                <div class="regionsOpenBlock">
+                                    @foreach($regions as $region)
+                                        <!--Регионы-->
+                                        @if(count($region['districts'])>0)
+                                            <div class="optionBlock">
+                                                <a class="toggleButton" onclick="$(this).siblings('.inOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
+                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                                                <div class="inOptionBlock">
+                                                    <!--Район-->
+                                                    @foreach($region['districts'] as $district)
+                                                        @if(count($district['cities'])>0)
+                                                            <div class="optionBlock">
+                                                                <a class="toggleButton" onclick="$(this).siblings('.thirdInOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inOptionBlock thirdInOptionBlock">
+                                                                    <!--Город/Село-->
+                                                                    @foreach($district['cities'] as $city)
+                                                                        <div class="optionBlock">
+                                                                            <div class="inputBlock" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        @else
+                                                            <div class="optionBlock">
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="optionBlock">
+                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <style>
+                    .regionsOpenBlock {
+                        width: 100%;
+                        display: block;
+                        border: 1px solid #eee;
+                        border-radius: 3px;
+                        display: none;
+                    }
+
+                    .regionsOpenBlock .optionBlock {
+                        display: table;
+                        position: relative;
+                        width: 100%;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inputBlock {
+                        display: table;
+                        position: relative;
+                        width: 100%;
+                        border-bottom: 1px solid #eee;
+                        padding-left: 40px;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inputBlock span {
+                        display: table;
+                        position: relative;
+                        padding: 10px;
+                        width: 100%;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inOptionBlock {
+                        display: block;
+                        padding-left: 25px;
+                        display: none;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inputBlock input {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 100%;
+                        z-index: 3;
+                        opacity: 0;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inputBlock input:hover {
+                        cursor: pointer;
+                    }
+
+                    .regionsOpenBlock .optionBlock .toggleButton {
+                        position: absolute;
+                        top: 6px;
+                        left: 10px;
+                        width: 25px;
+                        height: 25px;
+                        text-align: center;
+                        font-size: 20px;
+                        border-radius: 3px;
+                        background: #eee;
+                        z-index: 5;
+                    }
+
+                    .regionsOpenBlock .optionBlock .toggleButton:hover {
+                        cursor: pointer;
+                        background: #ccc;
+                    }
+
+                    .regionsOpenBlock .optionBlock:last-child .inputBlock {
+                        border: none;
+                    }
+                    .regionsOpenBlock .optionBlock .inOptionBlock .optionBlock {
+                        background: #f9f9f9;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inOptionBlock.thirdInOptionBlock .optionBlock {
+                        background: #f1f1f1;
+                        width: 98%;
+                        margin-left: 2%;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inOptionBlock.thirdInOptionBlock .optionBlock .inputBlock {
+                        padding-left: 0;
+                        border-bottom: 1px solid #e6e6e6;
+                    }
+
+                    .regionsOpenBlock .optionBlock .inOptionBlock.thirdInOptionBlock {}
+
+                    .regionsOpenBlock .optionBlock .inputBlock:hover {
+                        background: #ccc;
+                    }
+                    .regionsOpenBlock .optionBlock .toggleButton.opened i {
+                        transform: rotate(180deg);
+                    }
+                    .regionsOpenBlock .optionBlock .toggleButton i {
+                        transition: .2s linear;
+                        display: table-cell;
+                        vertical-align: middle;
+                    }
+
+                    .regionsOpenBlock .optionBlock .toggleButton {
+                        display: table;
+                    }
+                    .regionsOpenBlock {
+                        max-height: 400px;
+                        overflow-y: scroll;
+                    }
+                    .bigRegionsFather {
+                        display: block;
+                        position: relative;
+                        width: 100%;
+                    }
+
+                    .bigRegionsFather .regionsBlock {
+                        display: table;
+                        width: 100%;
+                        min-height: 40px;
+                        border: 1px solid #eee;
+                        border-radius: 3px;
+                        padding: 10px;
+                        position: relative;
+                    }
+
+                    .bigRegionsFather .regionsBlock:hover {
+                        cursor: pointer;
+                        box-shadow: 0 0 13px #eee;
+                    }
+
+                    .regionsOpenBlock {
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        width: 100%;
+                        background: #fff;
+                        z-index: 10;
+                        margin: 6px 0 0;
+                    }
+                    .bigRegionsFather .regionsBlock .inputBlock {
+                        display: inline-table;
+                        margin: 5px 10px 5px 0;
+                    }
+
+                    .bigRegionsFather .regionsBlock .inputBlock input {
+                        display: none;
+                    }
+
+                    .bigRegionsFather .regionsBlock .inputBlock span {
+                        display: table;
+                        margin: 0;
+                        padding: 8px 12px;
+                        background: #ccc;
+                        border-radius: 3px;
+                        color: #fff;
+                    }
+                    .bigRegionsFather .regionsBlock .inputBlock span.regionText {
+                        background: #925e11;
+                    }
+
+                    .bigRegionsFather .regionsBlock .inputBlock span.districtText {
+                        background: #19ad3a;
+                    }
+
+                    .bigRegionsFather .regionsBlock .inputBlock span.cityText {
+                        background: #03a9f4;
+                    }
+                    .regionsOpenBlock .optionBlock .inputBlock.active {
+                        background: #999;
+                        color: #fff;
+                    }
+                    .bigRegionsFather .regionsBlock .inputBlock span {
+                        position: relative;
+                    }
+
+                    .bigRegionsFather .regionsBlock .inputBlock span:after {content: 'x';padding: 1px 0 0;width: 20px;height: 20px;display: table;float: right;background: #fff;border-radius: 50%;color: #dc3545;text-align: center;margin-left: 15px;font-weight: 600;}
+                </style>
 
                 <div class="card mb-3">
                     <div class="panel panel-default">
@@ -501,42 +718,82 @@
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script src="/js/selecttree.js"></script>
     <link rel="stylesheet" href="/css/selecttree.css">
-    <script>
-        var json = {!! $regions->toJson() !!};
-        var locations = [
-                @foreach($regions as $region){
-                    id:"{{$region->region_id}}", text: "{{$region->text}}",  inc: [
-                    @if(count($region['districts'])>0)
-                        @foreach($region['districts'] as $district)
-                            {id:"{{$district->district_id}}", text: "{{$district->text}}", inc: [
-                                @if(count($district['cities'])>0)
-                                    @foreach($district['cities'] as $city)
-                                        {id:"{{$city->city_id}}", text: "{{ str_replace("\n", "", $city->title_ru)}}"},
-                                    @endforeach
-                                @endif
-                            ]},
-                        @endforeach
-                    @endif
-                ]},
-            @endforeach
-        ];
-        $("#locations").select2ToTree({treeData: {dataArr:locations}, width: '100%',closeOnSelect: false});
-        var options = {
-            toolbar: [
-                {name: 'clipboard', items: ['Cut', 'Copy', 'Undo', 'Redo']},
-                {name: 'tools', items: ['Maximize', 'ShowBlocks']},
-                {name: 'others', items: ['-']},
-            ]
-        };
-        CKEDITOR.replace('mission_ru', options);
-        CKEDITOR.replace('mission_kz', options);
-        CKEDITOR.replace('about_ru', options);
-        CKEDITOR.replace('about_kz', options);
+    {{--<script>--}}
+        {{--var json = {!! $regions->toJson() !!};--}}
 
-        function ckeditor(id) {
-            CKEDITOR.replace(id, options);
-            CKEDITOR.instances[id].setData('');
-        }
+        {{--var locations = [--}}
+                {{--@foreach($regions as $region){--}}
+                    {{--id:"{{$region->region_id}}", text: "{{$region->text}}",  inc: [--}}
+                    {{--@if(count($region['districts'])>0)--}}
+                        {{--@foreach($region['districts'] as $district)--}}
+                            {{--@if(count($district['cities'])>0)--}}
+                                {{--{id:"{{$district->district_id}}", text: "{{$district->text}}", class: "non-leaf", inc: []},--}}
+                            {{--@endif--}}
+                        {{--@endforeach--}}
+                    {{--@endif--}}
+                {{--]--}}
+            {{--},--}}
+
+                {{--@endforeach--}}
+        {{--];--}}
+
+        {{--var cities = [--}}
+                {{--@foreach($regions as $region)--}}
+                        {{--@if(count($region['districts'])>0)--}}
+                        {{--@foreach($region['districts'] as $district)--}}
+                {{--{"{{$district->district_id}}": [--}}
+                                {{--@if(count($district['cities'])>0)--}}
+                                {{--@foreach($district['cities'] as $city)--}}
+                            {{--{id:"{{$city->city_id}}", text: "{{ str_replace("\n", "", $city->title_ru)}}"},--}}
+                            {{--@endforeach--}}
+                            {{--@endif--}}
+                {{--]},--}}
+                    {{--@endforeach--}}
+                    {{--@endif--}}
+            {{--@endforeach--}}
+        {{--];--}}
+        {{--console.log(locations);--}}
+        {{--$("#locations").select2ToTree({treeData: {dataArr:locations}, width: '100%',closeOnSelect: false});--}}
+        {{--var options = {--}}
+            {{--toolbar: [--}}
+                {{--{name: 'clipboard', items: ['Cut', 'Copy', 'Undo', 'Redo']},--}}
+                {{--{name: 'tools', items: ['Maximize', 'ShowBlocks']},--}}
+                {{--{name: 'others', items: ['-']},--}}
+            {{--]--}}
+        {{--};--}}
+        {{--CKEDITOR.replace('mission_ru', options);--}}
+        {{--CKEDITOR.replace('mission_kz', options);--}}
+        {{--CKEDITOR.replace('about_ru', options);--}}
+        {{--CKEDITOR.replace('about_kz', options);--}}
+
+        {{--function ckeditor(id) {--}}
+            {{--CKEDITOR.replace(id, options);--}}
+            {{--CKEDITOR.instances[id].setData('');--}}
+        {{--}--}}
+    {{--</script>--}}
+    <script>
+        $(document).ready(function () {
+            $('.regionsOpenBlock input[type="checkbox"]').click(function(){
+                var inputs = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+                $('.regionsBlock').html(inputs);
+                $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                $('.regionsBlock .inputBlock').click(function(){
+                    var id = $(this).attr("id");
+                    $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                    $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                    $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                    $(this).remove();
+                });
+            });
+            $('.regionsBlock .inputBlock').click(function(){
+                var id = $(this).attr("id");
+                $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                $(this).remove();
+            });
+        });
     </script>
     <script>
         ymaps.ready(init);
