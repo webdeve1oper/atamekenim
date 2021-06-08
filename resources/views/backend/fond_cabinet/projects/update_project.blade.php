@@ -43,6 +43,7 @@
                     <input type="file" name="document" value="" class="form-control">
                 </div>
             </div>
+
             <div class="col-sm-4">
                 <div class="form-group">
                     <label for="">Введите статус проекта:</label>
@@ -87,7 +88,7 @@
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
-                                    <?php $baseHelpTypess = array_column(Auth::user()->baseHelpTypes->toArray(), 'name_ru');?>
+                                    <?php $baseHelpTypess = array_column($project->baseHelpTypes->toArray(), 'name_ru');?>
                                     @foreach($baseHelpTypes as $destination)
                                         <div class="col-sm-6">
                                             <div class="checkbox">
@@ -139,7 +140,8 @@
                         <div id="collapse3" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="form-group">
-                                            <textarea name="about" id="about" class="form-control" cols="30" rows="10" value="@if($project->about){{ $project->about }}@endif">
+                                            <textarea name="about" id="about" class="form-control" cols="30" rows="10" value="">
+                                                @if($project->about) {{ $project->about }} @endif
                                             </textarea>
                                 </div>
                             </div>
@@ -155,11 +157,12 @@
                         <div id="collapse4" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
+                                    <?php $scenarios2 = array_column($project->scenarios->toArray(), 'name_ru');?>
                                     @foreach($scenarios as $destination)
                                         <div class="col-sm-6 @if($destination['id'] == 3)d-none @endif">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
+                                                    <input @if(in_array($destination['name_ru'], $scenarios2)) checked @endif @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
                                                     <b>@switch($destination['id'])
                                                             @case(2)
                                                             отдельные лица (адресная помощь)
@@ -212,15 +215,15 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                        <div class="partnerBlock firstChild">
-                                            <a class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</a>
-                                            <label for="">Введите название организации:</label>
-                                            <input type="text" name="partnerName[]" class="form-control" placeholder="Введите название организации">
-                                            <label for="" class="mt-3">Загрузите логотип:</label>
-                                            <input type="file" name="partnerImg[]" class="form-control">
-                                            <label for="" class="mt-3">Введите ссылку на сайт партнера при наличии:</label>
-                                            <input type="text" name="partnerSite[]" class="form-control" placeholder="Введите ссылку на сайт партнера при наличии">
-                                        </div>
+                                    <div class="partnerBlock firstChild">
+                                        <a class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</a>
+                                        <label for="">Введите название организации:</label>
+                                        <input type="text" name="partnerName[]" class="form-control" placeholder="Введите название организации">
+                                        <label for="" class="mt-3">Загрузите логотип:</label>
+                                        <input type="file" name="partnerImg[]" class="form-control">
+                                        <label for="" class="mt-3">Введите ссылку на сайт партнера при наличии:</label>
+                                        <input type="text" name="partnerSite[]" class="form-control" placeholder="Введите ссылку на сайт партнера при наличии">
+                                    </div>
 
                                     <div class="inBlock">
                                     </div>

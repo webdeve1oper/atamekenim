@@ -24,6 +24,7 @@ use App\ProjectSponsors;
 use App\Region;
 use App\Scenario;
 use Carbon\Carbon;
+use Faker\Provider\Company;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Image;
@@ -276,7 +277,185 @@ class FondController extends Controller
     public function projectPage($id){
         $project = Project::find($id);
         $baseHelpTypes = AddHelpType::all()->toArray();
-        return view('backend.fond_cabinet.projects.project_page')->with(compact('project','baseHelpTypes'));
+        $regions = Region::all();
+        $cities = City::all();
+        $scenarios = Scenario::all();
+
+        $companies = ProjectCompanies::where('project_id', $project->id)->get();
+        $sponsors = ProjectSponsors::where('project_id', $project->id)->get();
+        $partners = ProjectPartners::where('project_id', $project->id)->get();
+        $humans = ProjectHumans::where('project_id', $project->id)->get();
+        return view('backend.fond_cabinet.projects.project_page')->with(compact('project','baseHelpTypes','regions','cities','scenarios','companies','sponsors','partners','humans'));
+    }
+    public function updatePage(Request $request, $id){
+        if ($request->method() == 'POST') {
+            $fond = Fond::find(Auth::user()->id);
+            $data = $request->all();
+//            dd($request->all());
+            if($request->file('logo')){
+                $originalImage = $request->file('logo');
+                $thumbnailImage = Image::make($originalImage);
+                $thumbnailPath = '/img/projects';
+                File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                $path = time() . '.' . $originalImage->getClientOriginalExtension();
+                $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                $data['logo'] = $thumbnailPath . '/' . $path;
+            }
+
+            $data['fond_id'] = $fond->id;
+            $project = Project::find($id);
+            $project->update($data);
+            $project->fond()->associate($fond);
+            $project->baseHelpTypes()->sync($request->base_help_types);
+            $project->scenarios()->sync($request->scenario_id);
+
+            $partners = $request->get('partnerName');
+            $sponsors = $request->get('sponsorName');
+            $companies = $request->get('companyName');
+            $humans = $request->get('humanName');
+            if ($partners) {
+                foreach ($partners as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $partner = new ProjectPartners();
+                        $partner->project_id = $project->id;
+                        $partner->name = $item;
+                        $partner->url = $request->get('partnerSite')[$k];
+                        $partner->save();
+                    }
+
+                }
+            }
+            if ($sponsors) {
+                foreach ($sponsors as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $sponsor = new ProjectSponsors();
+                        $sponsor->project_id = $project->id;
+                        $sponsor->name = $item;
+                        $sponsor->url = $request->get('sponsorSite')[$k];
+                        $sponsor->save();
+                    }
+                }
+            }
+            if ($companies) {
+                foreach ($companies as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $company = new ProjectCompanies();
+                        $company->project_id = $project->id;
+                        $company->name = $item;
+                        $company->url = $request->get('companySite')[$k];
+                        $company->summ = $request->get('companySumm')[$k];
+                        $company->save();
+                    }
+                }
+            }
+            if ($humans) {
+                foreach ($humans as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $human = new ProjectHumans();
+                        $human->project_id = $project->id;
+                        $human->name = $item;
+                        $human->summ = $request->get('humanSumm')[$k];
+                        $human->save();
+                    }
+                }
+            }
+
+            $partnersExist = $request->get('partnerId');
+            $sponsorsExist = $request->get('sponsorId');
+            $companiesExist = $request->get('companyId');
+            $humansExist = $request->get('humanId');
+            if ($partnersExist) {
+                foreach ($partnersExist as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $partnerExist = ProjectPartners::find($item);
+                        if($request->get('partnerDelete')[$k] == '2'){
+                            $partnerExist::delete();
+                        }else{
+                            $partnerExist->name = $request->get('partnerExistName')[$k];
+                            $partnerExist->url = $request->get('partnerExistSite')[$k];
+                            $partnerExist->save();
+                        }
+                    }
+
+                }
+            }
+            if ($sponsorsExist) {
+                foreach ($sponsorsExist as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $sponsorExist = ProjectSponsors::find($item);
+                        if($request->get('sponsorDelete')[$k] == '2'){
+                            $sponsorExist::delete();
+                        }else{
+                            $sponsorExist->name = $request->get('sponsorExistName')[$k];
+                            $sponsorExist->url = $request->get('sponsorExistSite')[$k];
+                            $sponsorExist->save();
+                        }
+                    }
+
+                }
+            }
+            if ($companiesExist) {
+                foreach ($companiesExist as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $companyExist = ProjectCompanies::find($item);
+                        if($request->get('companyDelete')[$k] == '2'){
+                            $companyExist::delete();
+                        }else{
+                            $companyExist->name = $request->get('companyExistName')[$k];
+                            $companyExist->summ = $request->get('companyExistSumm')[$k];
+                            $companyExist->url = $request->get('companyExistSite')[$k];
+                            $companyExist->save();
+                        }
+                    }
+
+                }
+            }
+            if ($humansExist) {
+                foreach ($humansExist as $k => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $humanExist = ProjectHumans::find($item);
+                        if($request->get('companyDelete')[$k] == '2'){
+                            $humanExist::delete();
+                        }else{
+                            $humanExist->name = $request->get('humanExistName')[$k];
+                            $humanExist->summ = $request->get('humanExistSumm')[$k];
+                            $humanExist->save();
+                        }
+                    }
+
+                }
+            }
+
+            return redirect()->route('projects')->with(['success' => 'Проект успешно обновлен!']);
+        } elseif ($request->method() == 'GET') {
+            $project = Project::find($id);
+            $baseHelpTypes = AddHelpType::all()->toArray();
+            $regions = Region::all();
+            $cities = City::all();
+            $scenarios = Scenario::all();
+
+            $companies = ProjectCompanies::where('project_id', $project->id)->get();
+            $sponsors = ProjectSponsors::where('project_id', $project->id)->get();
+            $partners = ProjectPartners::where('project_id', $project->id)->get();
+            $humans = ProjectHumans::where('project_id', $project->id)->get();
+            return view('backend.fond_cabinet.projects.update_project')->with(compact('project','baseHelpTypes','regions','cities','scenarios','companies','sponsors','partners','humans'));
+        }
     }
     public function createProject(Request $request)
     {
