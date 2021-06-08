@@ -12,6 +12,9 @@ Route::get('/develope', function(){
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
 Route::post('/fond/donation', 'Frontend\FondController@donationToFond')->name('donation_to_fond');
 Route::post('/fond/donation-recurrent', 'Frontend\FondController@cloudPaymentsDonation')->name('donation_cloudpayments_fond');
+Route::get('/payment-success', function(){
+    return view('payment.success');
+})->name('success_payment');
 Route::get('/about', 'Frontend\MainController@about')->name('about');
 Route::get('/contacts', 'Frontend\MainController@contacts')->name('contacts');
 Route::get('/question-answer', 'Frontend\MainController@qa')->name('qa');

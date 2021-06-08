@@ -16,6 +16,7 @@ use App\Help;
 use App\HelpDoc;
 use App\HelpImage;
 use App\Http\Controllers\Controller;
+use App\Payment;
 use App\Region;
 use App\Scenario;
 use AvtoDev\CloudPayments\Config;
@@ -250,13 +251,12 @@ class FondController extends Controller
 
     public function cloudPaymentsDonation(Request $request)
     {
-        $fond = Fond::findOrFail($request->fond_id);
-        $last_donation = FondDonation::latest()->first();
-        $amount = $request->amount;
-        $orderId = sprintf("%06d", $last_donation->id);
-        $config = new Config('pk_9026f5b5e5cc4f2a6651dd579939b', 'c96f1f360ae56ac9d06cd0caef8d8caa');
-        $client = new Client(new GuzzleClient, $config);
-        $request = new \GuzzleHttp\Psr7\Request('POST','https://api.cloudpayments.ru/test',[]);
+        $payment = new Payment();
+        $payment->fond_id = $request->fond_id;
+        $payment->anonim = $request->anonim;
+        $payment->fio = $request->fio;
+        $payment->save();
+        return redirect()->back();
     }
 
 }

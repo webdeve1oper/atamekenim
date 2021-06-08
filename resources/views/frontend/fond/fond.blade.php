@@ -229,7 +229,7 @@
                                     <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput3\']').addClass('active')}" id="dayInput3" name="time" value="monthly">
                                 </div>
                             </form>
-                            <button class="btn-default red" data-toggle="modal" data-target="#payment2" onclick="$('#donation_cloudpayments_fond input[name=\'amount\']').val($('#sum').val())">
+                            <button class="btn-default red" onclick="if($('#sum').val()==''){ $('#sum').css({'border-color':'red'});return false;}$('.modal input[name=\'amount\']').val($('#sum').val()); if($('#dayInput1').is(':checked')){$('#jusan').modal();}else{$('#cloudpayments').modal();}">
                                 <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
                             </button>
                         </div>
