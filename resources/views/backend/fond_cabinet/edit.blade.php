@@ -400,11 +400,11 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse99">Введите текст, отражающий
+                            <a data-toggle="collapse" class="collapsed" href="#collapse999">Введите текст, отражающий
                                 миссию Вашей организации <i
                                     class="fas fa-angle-up"></i></a>
                         </div>
-                        <div id="collapse4" class="panel-collapse collapse">
+                        <div id="collapse999" class="panel-collapse collapse">
                             <div class="card-body">
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">

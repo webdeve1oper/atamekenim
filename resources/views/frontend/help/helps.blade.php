@@ -11,22 +11,23 @@
                                     <form action="{{route('helps')}}" id="helpsSearch">
                                         @csrf
                                         <div class="searchBlock">
-                                            <input type="text" placeholder="{{trans('help-search.search-fond')}}">
-                                            <button class="btn-default blue">{{trans('help-search.find')}}</button>
+                                            <input type="text" name="search" placeholder="{{trans('help-search.search-fond')}}">
+                                            <button class="btn-default blue" id="search2">{{trans('help-search.find')}}</button>
                                         </div>
                                         <ul>
                                             <li>
-                                                <input type="checkbox" id="check1">
-                                                <label for="check1" onclick="$(this).toggleClass('active');">{{trans('help-search.new-appl')}}</label>
+                                                <input type="checkbox" name="news" id="news">
+                                                <label for="news" onclick="$(this).toggleClass('active');">{{trans('help-search.new-appl')}}</label>
                                             </li>
                                             @foreach($baseHelpTypes as $help)
                                                 <li>
-                                                    <label type="checkbox" id="check{{$help->id}}">{{$help['name_'.app()->getLocale()]}}</label>
+                                                    <input type="checkbox" name="baseHelpTypes" id="check{{$help->id}}" value="{{$help->id}}">
+                                                    <label type="checkbox" id="check{{$help->id}}" onclick="$(this).toggleClass('active');">{{$help['name_'.app()->getLocale()]}}</label>
                                                 </li>
                                             @endforeach
                                         </ul>
-                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">{{trans('help-search.ras-search')}} <i class="fas fa-chevron-down"></i></a>
-                                        <div class="selectBlock">
+{{--                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">{{trans('help-search.ras-search')}} <i class="fas fa-chevron-down"></i></a>--}}
+                                        <div class="selectBlock" style="display: block">
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     {{trans('fonds.adresat')}}:
@@ -82,7 +83,7 @@
                                                     <a class="dropdown-item" href="#">Option3</a>
                                                 </div>
                                             </div>
-                                            <div class="dropdown">
+                                            <div class="dropdown d-none">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     {{trans('help-search.place-help')}}
                                                 </button>
@@ -135,14 +136,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="rangeBarBlock">
-                                            <p class="rangeName">{{trans('help-search.summ-help')}}</p>
-                                            <div class="rangeBlock"></div>
-                                            <div class="inputBlock">
-                                                <input type="checkbox" id="checker">
-                                                <label for="checker">{{trans('help-search.repeat')}}</label>
-                                            </div>
-                                            <button class="btn-default blue">{{trans('help-search.find')}}</button>
+                                        <div class="rangeBarBlock" style="display: block">
+{{--                                            <p class="rangeName">{{trans('help-search.summ-help')}}</p>--}}
+{{--                                            <div class="rangeBlock"></div>--}}
+{{--                                            <div class="inputBlock">--}}
+{{--                                                <input type="checkbox" id="checker">--}}
+{{--                                                <label for="checker">{{trans('help-search.repeat')}}</label>--}}
+{{--                                            </div>--}}
+                                            <button class="btn-default blue" id="search">{{trans('help-search.find')}}</button>
                                         </div>
                                     </form>
                                 </div>
@@ -150,16 +151,39 @@
                         </div>
                     </div>
                     <div class="col-sm-10">
-                        <div class="row">
-
+                        <div class="row" id="help_lists">
                                 @include('frontend.help.help_list')
-
+                        </div>
+                        <div class="preloader">
+                            <div id="preloader">
+                                <div id="loader"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        $("#search, #search2").click(function(){
+            var data = $('#helpsSearch').serialize();
+            $.ajax({
+                url:"{{route('helps')}}",
+                method: 'get',
+                data: data,
+                beforeSend(){
+                    $('.preloader').show();
+                },
+                success: function(data){
+                    setTimeout(function(){
+                        $('.preloader').hide();
+                        $('#help_lists').html(data);
+                    }, 1000);
+                }
+            });
+            return false;
+            });
+    </script>
     <style>
         .checkbox-menu li label {
             display: block;
@@ -174,7 +198,29 @@
         .checkbox-menu li input {
             position: relative;
         }
+        #helpsSearch input{
+            float: left;
+        }
 
+        #helpsSearch .dropdown-menu{
+            max-height: 300px;
+            overflow: auto;
+        }
+        #helpsSearch .content{
+            margin-bottom: 5px;
+        }
+        #helpsSearch label{
+            display: inline;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+        .applicationSearchBlock form ul li label{
+            padding: 10px!important;
+        }
+         .applicationSearchBlock form ul li label.active {
+             background-color: #0053a5!important;
+             color: white!important;
+         }
     </style>
 @endsection
 <?php

@@ -121,6 +121,7 @@ class FondController extends Controller
 
             if ($request->exists('destination')) {
                 $destination = $request->destination;
+
                 $fonds->whereHas('destinations', function ($query) use ($destination) {
                     $query->whereIn('destinations.id', $destination);
                 });
@@ -156,13 +157,12 @@ class FondController extends Controller
                     $query->whereIn('base_help_id', $baseHelpTypes);
                 });
             }
-            if ($request->exists('bin')) {
+            if ($request->exists('bin') && $request->input('bin')!='') {
                 $fonds = Fond::where('status', true);
                 $fonds->where('bin', 'like', $request->bin . '%');
             }
 
             $fonds = $fonds->paginate(4);
-
             return view('frontend.fond.fond_list')->with(compact('fonds'));
         } else {
             $fonds = Fond::where('status', true);
