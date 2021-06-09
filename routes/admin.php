@@ -13,4 +13,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
     Route::get('/admin-fonds', 'Backend\AdminController@showFonds')->name('admin_fonds');
     Route::get('/admin-helps/{category}', 'Backend\AdminController@showHelpsFromCategory')->name('admin_helps_category');
     Route::get('/admin-fonds/{category}', 'Backend\AdminController@showFondsFromCategory')->name('admin_fonds_category');
+    Route::get('/admin-fond/{id}/check', 'Backend\AdminController@checkFond')->name('admin_fond_check');
+    Route::post('/edit-fond-status', 'Backend\AdminController@editFondStatus')->name('edit_fond_status');
 });

@@ -379,7 +379,7 @@ class FondController extends Controller
                     } else {
                         $partnerExist = ProjectPartners::find($item);
                         if($request->get('partnerDelete')[$k] == '2'){
-                            $partnerExist::delete();
+                            ProjectPartners::destroy($partnerExist->id);
                         }else{
                             $partnerExist->name = $request->get('partnerExistName')[$k];
                             $partnerExist->url = $request->get('partnerExistSite')[$k];
@@ -396,7 +396,7 @@ class FondController extends Controller
                     } else {
                         $sponsorExist = ProjectSponsors::find($item);
                         if($request->get('sponsorDelete')[$k] == '2'){
-                            $sponsorExist::delete();
+                            ProjectPartners::destroy($sponsorExist->id);
                         }else{
                             $sponsorExist->name = $request->get('sponsorExistName')[$k];
                             $sponsorExist->url = $request->get('sponsorExistSite')[$k];
@@ -413,7 +413,7 @@ class FondController extends Controller
                     } else {
                         $companyExist = ProjectCompanies::find($item);
                         if($request->get('companyDelete')[$k] == '2'){
-                            $companyExist::delete();
+                            ProjectPartners::destroy($companyExist->id);
                         }else{
                             $companyExist->name = $request->get('companyExistName')[$k];
                             $companyExist->summ = $request->get('companyExistSumm')[$k];
@@ -431,7 +431,7 @@ class FondController extends Controller
                     } else {
                         $humanExist = ProjectHumans::find($item);
                         if($request->get('companyDelete')[$k] == '2'){
-                            $humanExist::delete();
+                            ProjectPartners::destroy($humanExist->id);
                         }else{
                             $humanExist->name = $request->get('humanExistName')[$k];
                             $humanExist->summ = $request->get('humanExistSumm')[$k];

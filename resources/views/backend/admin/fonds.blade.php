@@ -22,15 +22,15 @@
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
-                <a href="{{ route('admin_fonds_category', 0) }}">
-                    <span>На модерации <b>Кол-во: {{ count($fonds3) }}</b></span>
+                <a href="{{ route('admin_fonds_category', 2) }}">
+                    <span>На модерации <b>Кол-во: {{ count($fonds4) }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
-                <a href="{{ route('admin_fonds_category', 2) }}">
-                    <span>Отклонена <b>Кол-во: {{ count($fonds4) }}</b></span>
+                <a href="{{ route('admin_fonds_category', 0) }}">
+                    <span>Отклонена <b>Кол-во: {{ count($fonds3) }}</b></span>
                 </a>
             </div>
         </div>

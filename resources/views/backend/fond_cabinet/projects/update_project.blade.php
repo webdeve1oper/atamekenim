@@ -48,14 +48,14 @@
                 <div class="form-group">
                     <label for="">Введите статус проекта:</label>
                     <select name="status" id="status" class="form-control">
-                        <option value="indefinite">Бессрочный</option>
-                        <option value="active">Действующий</option>
-                        <option value="finished">Завершен</option>
+                        <option value="indefinite" @if($project->status == "indefinite") selected="selected" @endif>Бессрочный</option>
+                        <option value="active" @if($project->status == "active") selected="selected" @endif>Действующий</option>
+                        <option value="finished" @if($project->status == "finished") selected="selected" @endif>Завершен</option>
                     </select>
-                    <div class="finishedDateBlock mt-4 d-none">
-                        <label for="">Выбор даты завершения проекта:</label>
-                        <input type="date" name="finished_date" class="form-control" value="@if($project->finished_date){{ $project->finished_date }}@endif">
-                    </div>
+                        <div class="finishedDateBlock mt-4 @if($project->status != "finished") d-none @endif">
+                            <label for="">Выбор даты завершения проекта:</label>
+                            <input type="date" name="finished_date" class="form-control" value="@if($project->finished_date){{ $project->finished_date }}@endif">
+                        </div>
                 </div>
                 <div class="form-group">
                     <label for="">Отметьте регион оказания помощи в рамках проекта</label>

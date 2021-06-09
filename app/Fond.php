@@ -112,7 +112,7 @@ class Fond extends Authenticatable
     }
 
     public function organLegalForm(){
-        return $this->belongsTo(OrganLegalForm::class);
+        return $this->belongsTo(OrganLegalForm::class,'organ_id', 'id');
     }
 
     public function scenarios(){

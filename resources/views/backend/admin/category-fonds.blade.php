@@ -18,7 +18,7 @@
                         @if($item->logo)
                             <img src="{{ $item->logo }}" alt="" class="mb-4 d-table" style="height: 100px;">
                         @endif
-                        <a href="#" class="btn btn-primary">Подробнее</a>
+                        <a href="{{ route('admin_fond_check', $item->id) }}" class="btn btn-primary">Подробнее</a>
                     </div>
                 </div>
             @endforeach

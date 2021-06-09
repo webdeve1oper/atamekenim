@@ -6,8 +6,8 @@
             <h1>Заявки от получателей помощи : {{ $title }}</h1>
             @include('frontend.alerts')
         </div>
-        <div class="col-12">
             @foreach($helps as $item)
+                <div class="col-6">
                     <div class="card my-3">
                         <div class="card-header">
                             {{ $item->whoNeedHelp->name_ru }}
@@ -18,7 +18,7 @@
                             <a href="{{ route('admin_help_check', $item->id) }}" class="btn btn-primary">Подробнее</a>
                         </div>
                     </div>
+                </div>
             @endforeach
         </div>
-    </div>
 @endsection
