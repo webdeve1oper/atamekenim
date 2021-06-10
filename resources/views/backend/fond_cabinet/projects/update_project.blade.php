@@ -38,10 +38,6 @@
                     <input type="date" name="date_created" value="@if($project->date_created){{ $project->date_created }}@endif"
                            class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>
-                    <input type="file" name="document" value="" class="form-control">
-                </div>
             </div>
 
             <div class="col-sm-4">
@@ -58,25 +54,12 @@
                         </div>
                 </div>
                 <div class="form-group">
-                    <label for="">Отметьте регион оказания помощи в рамках проекта</label>
-                    <select name="help_location_region" id="region" class="form-control">
-                        @foreach($regions as $region)
-                            <option value="{{$region->region_id}}" >{{$region->title_ru}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="">Город</label>
-                    <select name="help_location_city" id="city" class="form-control">
-                        <option value="">Все города</option>
-                        @foreach($cities as $city)
-                            <option value="{{$city->city_id}}" class="region_{{$city->region_id}}">{{$city->title_ru}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="">Ссылка на видео:</label>
                     <input type="text" name="video" value="@if($project->video){{ $project->video }}@endif" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>
+                    <input type="file" name="document" value="" class="form-control">
                 </div>
             </div>
             <div class="col-sm-12">
@@ -183,6 +166,63 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card mb-3">
+                    <div class="panel panel-default">
+                        <div class="card-header">
+                            <a data-toggle="collapse" class="collapsed" href="#collapse99">Регион оказания помощи (выберите один или несколько вариантов) *
+                                <i class="fas fa-angle-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="collapse99" class="panel-collapse collapse">
+                        <div class="card-body">
+                            {{--<select id="locations"  multiple></select>--}}
+                            <div class="bigRegionsFather">
+                                <div class="regionsBlock" onclick="$('.regionsOpenBlock').toggle();"></div>
+                                <div class="regionsOpenBlock">
+                                @foreach($regions as $region)
+                                    <!--Регионы-->
+                                        @if(count($region['districts'])>0)
+                                            <div class="optionBlock">
+                                                <a class="toggleButton" onclick="$(this).siblings('.inOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
+                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
+                                                <div class="inOptionBlock">
+                                                    <!--Район-->
+                                                    @foreach($region['districts'] as $district)
+                                                        @if(count($district['cities'])>0)
+                                                            <div class="optionBlock">
+                                                                <a class="toggleButton" onclick="$(this).siblings('.thirdInOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inOptionBlock thirdInOptionBlock">
+                                                                    <!--Город/Село-->
+                                                                    @foreach($district['cities'] as $city)
+                                                                        <div class="optionBlock">
+                                                                            <div class="inputBlock" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        @else
+                                                            <div class="optionBlock">
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="optionBlock">
+                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -416,39 +456,63 @@
 
 
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
-    <script>
-        var options = {
-            toolbar: [
-                {name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},
-                {
-                    name: 'basicstyles',
-                    groups: ['basicstyles', 'cleanup'],
-                    items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
-                },
-                {
-                    name: 'paragraph',
-                    groups: ['list', 'indent', 'blocks', 'align', 'bidi'],
-                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
-                },
-                {name: 'links', items: ['Link', 'Unlink']},
-                {
-                    name: 'insert',
-                    items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
-                },
-                '/',
-                {name: 'styles', items: ['Format', 'Font', 'FontSize']},
-                {name: 'colors', items: ['TextColor', 'BGColor']},
-                {name: 'tools', items: ['Maximize', 'ShowBlocks']},
-                {name: 'others', items: ['-']},
-            ]
-        };
-        CKEDITOR.replace('mission', options);
-        CKEDITOR.replace('about', options);
+    {{--<script>--}}
+        {{--var options = {--}}
+            {{--toolbar: [--}}
+                {{--{name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},--}}
+                {{--{--}}
+                    {{--name: 'basicstyles',--}}
+                    {{--groups: ['basicstyles', 'cleanup'],--}}
+                    {{--items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']--}}
+                {{--},--}}
+                {{--{--}}
+                    {{--name: 'paragraph',--}}
+                    {{--groups: ['list', 'indent', 'blocks', 'align', 'bidi'],--}}
+                    {{--items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']--}}
+                {{--},--}}
+                {{--{name: 'links', items: ['Link', 'Unlink']},--}}
+                {{--{--}}
+                    {{--name: 'insert',--}}
+                    {{--items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']--}}
+                {{--},--}}
+                {{--'/',--}}
+                {{--{name: 'styles', items: ['Format', 'Font', 'FontSize']},--}}
+                {{--{name: 'colors', items: ['TextColor', 'BGColor']},--}}
+                {{--{name: 'tools', items: ['Maximize', 'ShowBlocks']},--}}
+                {{--{name: 'others', items: ['-']},--}}
+            {{--]--}}
+        {{--};--}}
+        {{--CKEDITOR.replace('mission', options);--}}
+        {{--CKEDITOR.replace('about', options);--}}
 
-        function ckeditor(id) {
-            CKEDITOR.replace(id, options);
-            CKEDITOR.instances[id].setData('');
-        }
+        {{--function ckeditor(id) {--}}
+            {{--CKEDITOR.replace(id, options);--}}
+            {{--CKEDITOR.instances[id].setData('');--}}
+        {{--}--}}
+    {{--</script>--}}
+    <script>
+        $(document).ready(function () {
+            $('.regionsOpenBlock input[type="checkbox"]').click(function(){
+                var inputs = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+                $('.regionsBlock').html(inputs);
+                $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                $('.regionsBlock .inputBlock').click(function(){
+                    var id = $(this).attr("id");
+                    $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                    $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                    $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                    $(this).remove();
+                });
+            });
+            $('.regionsBlock .inputBlock').click(function(){
+                var id = $(this).attr("id");
+                $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
+                $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
+                $(this).remove();
+            });
+        });
     </script>
     <script>
         ymaps.ready(init);
