@@ -224,11 +224,11 @@
                 <div class="card mb-3">
                     <div class="panel panel-default">
                         <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse99">Введите текст, отражающий
+                            <a data-toggle="collapse" class="collapsed" href="#collapse999">Введите текст, отражающий
                                 миссию Вашей организации <i
                                     class="fas fa-angle-up"></i></a>
                         </div>
-                        <div id="collapse4" class="panel-collapse collapse">
+                        <div id="collapse999" class="panel-collapse collapse">
                             <div class="card-body">
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
@@ -287,7 +287,7 @@
                                         <div class="form-group">
                                             <textarea name="about_ru" id="about_ru" class="form-control"
                                                       cols="30" rows="10">
-                                                {{Auth::user()->about_ru}}
+                                                {!! Auth::user()->about_ru !!}
                                              </textarea>
                                             @if($errors->has('about_ru'))
                                                 <span class="error">{{ $errors->first('about_ru') }}</span>
@@ -298,7 +298,7 @@
                                         <div class="form-group">
                                             <textarea name="about_kz" id="about_kz" class="form-control"
                                                       cols="30" rows="10">
-                                                {{Auth::user()->about_kz}}
+                                                {!! Auth::user()->about_kz !!}
                                              </textarea>
                                             @if($errors->has('about_kz'))
                                                 <span class="error">{{ $errors->first('about_kz') }}</span>
@@ -542,7 +542,7 @@
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script src="/js/selecttree.js"></script>
     <link rel="stylesheet" href="/css/selecttree.css">
-    {{--<script>--}}
+    <script>
         {{--var json = {!! $regions->toJson() !!};--}}
 
         {{--var locations = [--}}
@@ -578,23 +578,23 @@
         {{--];--}}
         {{--console.log(locations);--}}
         {{--$("#locations").select2ToTree({treeData: {dataArr:locations}, width: '100%',closeOnSelect: false});--}}
-        {{--var options = {--}}
-            {{--toolbar: [--}}
-                {{--{name: 'clipboard', items: ['Cut', 'Copy', 'Undo', 'Redo']},--}}
-                {{--{name: 'tools', items: ['Maximize', 'ShowBlocks']},--}}
-                {{--{name: 'others', items: ['-']},--}}
-            {{--]--}}
-        {{--};--}}
-        {{--CKEDITOR.replace('mission_ru', options);--}}
-        {{--CKEDITOR.replace('mission_kz', options);--}}
-        {{--CKEDITOR.replace('about_ru', options);--}}
-        {{--CKEDITOR.replace('about_kz', options);--}}
+        var options = {
+            toolbar: [
+                {name: 'clipboard', items: ['Cut', 'Copy', 'Undo', 'Redo']},
+                {name: 'tools', items: ['Maximize', 'ShowBlocks']},
+                {name: 'others', items: ['-']},
+            ]
+        };
+        CKEDITOR.replace('mission_ru', options);
+        CKEDITOR.replace('mission_kz', options);
+        CKEDITOR.replace('about_ru', options);
+        CKEDITOR.replace('about_kz', options);
 
         {{--function ckeditor(id) {--}}
             {{--CKEDITOR.replace(id, options);--}}
             {{--CKEDITOR.instances[id].setData('');--}}
         {{--}--}}
-    {{--</script>--}}
+    </script>
     <script>
         $(document).ready(function () {
             $('.regionsOpenBlock input[type="checkbox"]').click(function(){

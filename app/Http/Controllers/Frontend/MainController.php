@@ -76,24 +76,6 @@ class MainController extends Controller
         return view('frontend.news')->with(compact('news'));
     }
 
-    public function helps(Request $request){
-        if ($request->ajax()) {
-            $helps = Fond::query();
-
-            $helps->paginate(5);
-
-            return view('project_list', compact('helps'));
-        }else{
-            $helps = Help::with('addHelpTypes')->paginate(5);
-            $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
-            $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
-            $baseHelpTypes = BaseHelpType::all();
-            $destionations = Destination::all();
-
-            return view('frontend.help.helps')->with(compact('helps', 'regions', 'cities','baseHelpTypes','destionations'));
-        }
-    }
-
     public function help(){
         $helps = Help::whereFondStatus('finished')->paginate(4);
         return view('frontend.help.help_page')->with(compact('helps'));

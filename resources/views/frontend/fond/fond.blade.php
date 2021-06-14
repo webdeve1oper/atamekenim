@@ -280,7 +280,7 @@
                         <h4>{{trans('fonds-page.in-work')}}</h4>
                         {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
-                    <div class="col-sm-6 rightBlock">
+                    <div class="col-sm-6 rightBlock d-none">
                         <p class="d-inline-block mr-3">{{trans('fonds-page.sort-ret')}}</p>
                         <div class="dropdown organizationDrop">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -40,9 +40,9 @@
                 <div class="form-group">
                     <label for="">Введите статус проекта:</label>
                     <select name="status" id="status" class="form-control">
-                            <option value="indefinite">Бессрочный</option>
-                            <option value="active">Действующий</option>
-                            <option value="finished">Завершен</option>
+                        <option value="indefinite">Бессрочный</option>
+                        <option value="active">Действующий</option>
+                        <option value="finished">Завершен</option>
                     </select>
                     <div class="finishedDateBlock mt-4 d-none">
                         <label for="">Выбор даты завершения проекта:</label>
@@ -114,7 +114,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse3">Введите описание проекта <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
                             <div class="card-body">
@@ -130,7 +130,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse4">Выберите бенефициаров проекта (выберите один или несколько вариантов)*<i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse4" class="panel-collapse collapse">
                             <div class="card-body">
@@ -228,7 +228,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse6">Партнеры Вашей организации по проекту <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse6" class="panel-collapse collapse">
                             <div class="card-body">
@@ -255,7 +255,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse7">Спонсоры проекта <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse7" class="panel-collapse collapse">
                             <div class="card-body">
@@ -282,7 +282,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse8">Компании - благотворители проекта <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse8" class="panel-collapse collapse">
                             <div class="card-body">
@@ -311,7 +311,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse9">Благотворители - частные лица проекта <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse9" class="panel-collapse collapse">
                             <div class="card-body">
@@ -338,7 +338,7 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse10">Загрузите фотографии по проекту <i
-                                        class="fas fa-angle-up"></i></a>
+                                    class="fas fa-angle-up"></i></a>
                         </div>
                         <div id="collapse10" class="panel-collapse collapse">
                             <div class="card-body">
@@ -445,7 +445,6 @@
     </script>
     <script>
         ymaps.ready(init);
-
         function init() {
             var myPlacemark,
                 myMap = new ymaps.Map('map', {
@@ -460,7 +459,6 @@
                 }, {
                     searchControlProvider: 'yandex#search'
                 });
-
             @if(Auth::user()->longitude && Auth::user()->latitude)
                 myPlacemark = createPlacemark([{{Auth::user()->longitude}}, {{Auth::user()->latitude}}]);
             myMap.geoObjects.add(myPlacemark);
@@ -468,7 +466,6 @@
             // Слушаем клик на карте.
             myMap.events.add('click', function (e) {
                 var coords = e.get('coords');
-
                 // Если метка уже создана – просто передвигаем ее.
                 if (myPlacemark) {
                     myPlacemark.geometry.setCoordinates(coords);
@@ -484,7 +481,6 @@
                 }
                 getAddress(coords);
             });
-
             // Создание метки.
             function createPlacemark(coords) {
                 return new ymaps.Placemark(coords, {
@@ -494,7 +490,6 @@
                     draggable: true
                 });
             }
-
             // Определяем адрес по координатам (обратное геокодирование).
             function getAddress(coords) {
                 $('#longitude').val(coords[0]);
@@ -502,7 +497,6 @@
                 myPlacemark.properties.set('iconCaption', 'поиск...');
                 ymaps.geocode(coords).then(function (res) {
                     var firstGeoObject = res.geoObjects.get(0);
-
                     myPlacemark.properties
                         .set({
                             // Формируем строку с данными об объекте.
@@ -537,7 +531,6 @@
         .fa-angle-up {
             float: right;
         }
-
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
@@ -563,4 +556,3 @@
         }
     </style>
 @endsection
-

@@ -7,7 +7,7 @@
                     <ul>
                         <li><a href="{{ route('home') }}">Главная</a></li>
                         <li><a href="{{ route('fond_cabinet') }}">Кабинет</a></li>
-                        <li><a>Заявка id:{{ $help->id }}</a></li>
+                        <li><a>Заявка id:{{ getHelpId($help->id) }}</a></li>
                     </ul>
                 </div>
             </div>

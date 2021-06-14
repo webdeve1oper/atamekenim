@@ -15,7 +15,6 @@
                 <img src="/img/slide.svg" alt="" class="slideImg">
             </div>
         </div>
-
         <div class="container-fluid default organizationsBlock">
             <div class="container">
                 <div class="row">
@@ -25,6 +24,7 @@
                     </div>
                     <div class="col-sm-12">
                         <form id="formSearch" action="{{route('fonds')}}">
+                            @csrf
                             <input type="text" name="bin" placeholder="{{trans('home.searchbin')}}">
                             <select name="baseHelpTypes[]" id="select1">
                                 <option value="all">{{trans('home.sector-activities')}}</option>
@@ -34,21 +34,18 @@
                                     </option>
                                 @endforeach
                             </select>
-
                             <select name="destination[]" id="select2" style="max-width: 300px;">
                                 <option value="all">{{trans('home.adresat')}}</option>
                                 @foreach($destionations as $destination)
                                     <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                 @endforeach
                             </select>
-
                             {{--<select name="city[]" id="select3">--}}
                                 {{--<option value="all">Все города</option>--}}
                                 {{--@foreach($cities as $id => $city)--}}
                                     {{--<option value="{{$id}}">{{$city}}</option>--}}
                                 {{--@endforeach--}}
                             {{--</select>--}}
-
                             <button>{{trans('home.found')}}</button>
                         </form>
                         <a href="{{route('dev')}}" class="btn-default openMap">{{trans('home.map-fonds')}}</a>
@@ -128,7 +125,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container-fluid default supportBlock">
             <div class="container">
                 <div class="row fat">
@@ -226,7 +222,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container-fluid default helperBlock">
             <div class="container">
                 <div class="row">
@@ -259,7 +254,6 @@
                     @endforeach
                 </div>
             </div>
-
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
@@ -345,8 +339,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="card">
                                 <div class="card-header" id="headingFour">
                                     <p class="mb-0">
@@ -390,7 +382,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-sm-12">
                         <h4>{{trans('home.faq3')}}</h4>
@@ -481,7 +472,6 @@
                                      </div>
                                  </div>
                              </div>
-
                              <button class="btn-default d-none">{{trans('home.see-more')}}<i class="fas fa-angle-down"></i></button>
                          </div>
                     </div>
@@ -498,8 +488,8 @@
                     <div class="col-sm-12">
                         <ul class="newsTabs">
                             <li><a href="" class="active">{{trans('home.last-news')}}</a></li>
-                            <li><a href="">{{trans('home.info-for-fond')}}</a></li>
-                            <li><a href="">{{trans('home.info-for-benecif')}}</a></li>
+{{--                            <li><a href="">{{trans('home.info-for-fond')}}</a></li>--}}
+{{--                            <li><a href="">{{trans('home.info-for-benecif')}}</a></li>--}}
                             <div class="paginationBlock">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -526,7 +516,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <a href="{{route('news')}}" class="readMore">{{trans('home.read-all-news')}} <span class="miniArrow">›</span></a>
+{{--                        <a href="{{route('news')}}" class="readMore">{{trans('home.read-all-news')}} <span class="miniArrow">›</span></a>--}}
                     </div>
                 </div>
             </div>
@@ -537,7 +527,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>{{trans('home.our-partnres')}}</h4>
-                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
+{{--                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>--}}
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">
@@ -583,6 +573,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection
