@@ -9,24 +9,59 @@
                 <div class="col-sm-8">
                     <div class="projectInfo">
                         <p>Название проекта: <span>{{ $project->title }}</span></p>
-                        <p>Сектор: <span>Образование</span></p>
+                        <p>Сектор: <span>@if($project->addHelpType) @foreach($project->addHelpType as $item) {{ $item->name_ru }}, @endforeach @endif</span></p>
                         <p>Веб-сайт: <a href="{{ $project->website }}">{{ $project->website }}</a></p>
                         <p>Дата создания проекта: <span>{{ $project->date_created }}</span></p>
-                        <p>Длительность: <span>на долгий срок</span></p>
-                        <p>Целевая аудитория: <span>социально-уязвимые слои населения</span></p>
-                        <p>География ведения проекта: <span>Весь Казахстан</span></p>
+                        <p>Статус: <span>
+                            <?php
+                                switch ($project->status) {
+                                    case 'indefinite':
+                                        echo "Бессрочный";
+                                        break;
+                                    case 'active':
+                                        echo "Действующий";
+                                        break;
+                                    case 'finished':
+                                        echo "Завершен: ".$project->finished_date;
+                                        break;
+                                }
+                            ?>
+                            </span></p>
+                        <p>Бенефициары проекта: <span>
+                                @if($project->scenarios)
+                                    @foreach($project->scenarios as $item)
+                                        @switch($item->id)
+                                            @case(2)
+                                            отдельные лица (адресная помощь),
+                                            @break
+                                            @case(1)
+                                            семьи,
+                                            @break
+                                            @case(4)
+                                            сообщества,
+                                            @break
+                                            @case(5)
+                                            организации,
+                                            @case(6)
+                                            животные,
+                                            @break
+                                        @endswitch
+                                    @endforeach
+                                @endif
+                            </span></p>
+                        <p>География ведения проекта: <span>--</span></p>
                         {{--<p>Главный партнер проекта: <a>ТОО "English.kz"</a></p>--}}
                         <p>Партнеры:
                             @if($project->hasPartners)
-                                @foreach($project->hasPartners as $item)<a href="">{{ $item->name }}</a>, @endforeach
+                                @foreach($project->hasPartners as $item)<a href="@if($item->url){{ $item->url }}@endif">{{ $item->name }}</a>, @endforeach
                             @endif
                         </p>
                         <p>Спонсоры:
                             @if($project->hasSponsors)
-                                @foreach($project->hasSponsors as $item)<a href="">{{ $item->name }}</a>, @endforeach
+                                @foreach($project->hasSponsors as $item)<a href="@if($item->url){{ $item->url }}@endif">{{ $item->name }}</a>, @endforeach
                             @endif
                         </p>
-                        <p>Количество людей, получивших помощь: <span>35 человек</span></p>
+                        {{--<p>Количество людей, получивших помощь: <span>35 человек</span></p>--}}
                         <p>Проект в социальных сетях:
                             @if($project->instagram)<a href="{{ $project->instagram }}" class="socialButtonGlobal"><i class="fab fa-instagram"></i></a>@endif
                             @if($project->facebook)<a href="{{ $project->facebook }}" class="socialButtonGlobal"><i class="fab fa-facebook-f"></i></a>@endif
@@ -38,7 +73,7 @@
                             <a href="" class="socialButtonGlobal"><i class="fas fa-share-alt"></i></a>
                         </p>
 
-                        <a href="" class="btn-default blue absol">Отчеты по проекту</a>
+                        {{--<a href="" class="btn-default blue absol">Отчеты по проекту</a>--}}
                     </div>
                     <div class="ptojectContent">
                         <p class="name">Описание проекта:</p>
@@ -49,17 +84,17 @@
                             <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).siblings('span').css('height','auto');$(this).remove();">Читать описание проекта <i class="fas fa-chevron-down"></i></button>
                         </p>
                     </div>
-                    <div class="galleryBlock">
-                        <h3>Фотоархив проекта</h3>
-                        <div class="row">
-                            @if($project->hasGallery)
-                                @foreach($project->hasGallery as $item)
-                                    <div class="col-sm-2 col-6"><a href="" class="fondImg"><img src="{{ $item->img }}" alt=""></a></div>
-                                @endforeach
-                            @endif
-                            {{--<div class="col-sm-2 col-6"><a href="" class="fondImg openGallery"><img src="/img/about.png" alt=""><span>+20</span></a></div>--}}
+                    @if(count($project->hasGallery) > 0)
+                        <div class="galleryBlock">
+                            <h3>Фотоархив проекта</h3>
+                            <div class="row">
+                                    @foreach($project->hasGallery as $item)
+                                        <div class="col-sm-2 col-6"><a href="" class="fondImg"><img src="{{ $item->img }}" alt=""></a></div>
+                                    @endforeach
+                                {{--<div class="col-sm-2 col-6"><a href="" class="fondImg openGallery"><img src="/img/about.png" alt=""><span>+20</span></a></div>--}}
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
@@ -121,68 +156,68 @@
 
 
 
-    <div class="container-fluid default helperBlock helpInProjectPage d-none d-sm-block">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4>Реализованные заявки в рамках проекта</h4>
-                    <a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
-                </div>
-                <div class="col-sm-3">
-                    <div class="helpBlock">
-                        <div class="content">
-                            <p>Помощь: <span class="tag blue">Образование</span></p>
-                            <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                            <p>Кому: <span>Кайрат Жомарт</span></p>
-                            <p>Сумма: <span>1,150,000 тг.</span></p>
-                            <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                        </div>
-                        <p class="date">19.10.2019</p>
-                        <img src="/img/support1.svg" alt="" class="bkg">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="helpBlock">
-                        <div class="content">
-                            <p>Помощь: <span class="tag green">Образование</span></p>
-                            <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                            <p>Кому: <span>Кайрат Жомарт</span></p>
-                            <p>Сумма: <span>1,150,000 тг.</span></p>
-                            <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                        </div>
-                        <p class="date">19.10.2019</p>
-                        <img src="/img/support2.svg" alt="" class="bkg">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="helpBlock">
-                        <div class="content">
-                            <p>Помощь: <span class="tag red">Образование</span></p>
-                            <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                            <p>Кому: <span>Кайрат Жомарт</span></p>
-                            <p>Сумма: <span>1,150,000 тг.</span></p>
-                            <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                        </div>
-                        <p class="date">19.10.2019</p>
-                        <img src="/img/support3.svg" alt="" class="bkg">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="helpBlock">
-                        <div class="content">
-                            <p>Помощь: <span class="tag red">Образование</span></p>
-                            <p>Организация: <img src="/img/logo.svg" alt=""></p>
-                            <p>Кому: <span>Кайрат Жомарт</span></p>
-                            <p>Сумма: <span>1,150,000 тг.</span></p>
-                            <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                        </div>
-                        <p class="date">19.10.2019</p>
-                        <img src="/img/support4.svg" alt="" class="bkg">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{--<div class="container-fluid default helperBlock helpInProjectPage d-none d-sm-block">--}}
+        {{--<div class="container">--}}
+            {{--<div class="row">--}}
+                {{--<div class="col-sm-12">--}}
+                    {{--<h4>Реализованные заявки в рамках проекта</h4>--}}
+                    {{--<a href="" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-3">--}}
+                    {{--<div class="helpBlock">--}}
+                        {{--<div class="content">--}}
+                            {{--<p>Помощь: <span class="tag blue">Образование</span></p>--}}
+                            {{--<p>Организация: <img src="/img/logo.svg" alt=""></p>--}}
+                            {{--<p>Кому: <span>Кайрат Жомарт</span></p>--}}
+                            {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
+                            {{--<a href="" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+                        {{--</div>--}}
+                        {{--<p class="date">19.10.2019</p>--}}
+                        {{--<img src="/img/support1.svg" alt="" class="bkg">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-3">--}}
+                    {{--<div class="helpBlock">--}}
+                        {{--<div class="content">--}}
+                            {{--<p>Помощь: <span class="tag green">Образование</span></p>--}}
+                            {{--<p>Организация: <img src="/img/logo.svg" alt=""></p>--}}
+                            {{--<p>Кому: <span>Кайрат Жомарт</span></p>--}}
+                            {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
+                            {{--<a href="" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+                        {{--</div>--}}
+                        {{--<p class="date">19.10.2019</p>--}}
+                        {{--<img src="/img/support2.svg" alt="" class="bkg">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-3">--}}
+                    {{--<div class="helpBlock">--}}
+                        {{--<div class="content">--}}
+                            {{--<p>Помощь: <span class="tag red">Образование</span></p>--}}
+                            {{--<p>Организация: <img src="/img/logo.svg" alt=""></p>--}}
+                            {{--<p>Кому: <span>Кайрат Жомарт</span></p>--}}
+                            {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
+                            {{--<a href="" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+                        {{--</div>--}}
+                        {{--<p class="date">19.10.2019</p>--}}
+                        {{--<img src="/img/support3.svg" alt="" class="bkg">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="col-sm-3">--}}
+                    {{--<div class="helpBlock">--}}
+                        {{--<div class="content">--}}
+                            {{--<p>Помощь: <span class="tag red">Образование</span></p>--}}
+                            {{--<p>Организация: <img src="/img/logo.svg" alt=""></p>--}}
+                            {{--<p>Кому: <span>Кайрат Жомарт</span></p>--}}
+                            {{--<p>Сумма: <span>1,150,000 тг.</span></p>--}}
+                            {{--<a href="" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+                        {{--</div>--}}
+                        {{--<p class="date">19.10.2019</p>--}}
+                        {{--<img src="/img/support4.svg" alt="" class="bkg">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
     <script>
         $(document).ready(function () {
