@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <img src="{{ $project->logo }}" alt="" class="logotype d-block d-sm-none">
-                    <h1>Подари удочку - Проект общественного объединения "Менің Атамекенім"</h1>
+                    <h1>{{ $project->title }} - Проект общественного объединения "Менің Атамекенім"</h1>
                 </div>
                 <div class="col-sm-8">
                     <div class="projectInfo">
