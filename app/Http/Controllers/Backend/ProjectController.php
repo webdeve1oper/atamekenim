@@ -18,6 +18,7 @@ use App\History;
 use App\Partner;
 use App\Project;
 use App\ProjectCompanies;
+use App\ProjectGallery;
 use App\ProjectHumans;
 use App\ProjectPartners;
 use App\ProjectSponsors;
@@ -78,34 +79,35 @@ class ProjectController extends Controller
             $thumbnailImage = Image::make($originalImage);
             $thumbnailPath = '/img/projects';
             File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-            $path = time() . '.' . $originalImage->getClientOriginalExtension();
+            $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
             $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
             $data['logo'] = $thumbnailPath . '/' . $path;
 
             $data['fond_id'] = $fond->id;
             $project = Project::create($data);
             $project->fond()->associate($fond);
-            $project->baseHelpTypes()->sync($request->base_help_types);
+            $project->AddHelpType()->sync($request->base_help_types);
+            $project->scenarios()->sync($request->scenario_id);
 
             $partners = $request->get('partnerName');
             $sponsors = $request->get('sponsorName');
             $companies = $request->get('companyName');
             $humans = $request->get('humanName');
             if ($partners) {
-                foreach ($partners as $k => $item) {
+                foreach ($partners as $k1 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $partner = new ProjectPartners();
                         $partner->project_id = $project->id;
                         $partner->name = $item;
-                        $partner->url = $request->get('partnerSite')[$k];
-                        if($request->file('partnerImg')[$k]){
-                            $originalImage = $request->file('partnerImg')[$k];
+                        $partner->url = $request->get('partnerSite')[$k1];
+                        if(array_key_exists($k1, $request->file('partnerImg'))){
+                            $originalImage = $request->file('partnerImg')[$k1];
                             $thumbnailImage = Image::make($originalImage);
                             $thumbnailPath = '/img/projects';
                             File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-                            $path = time() . '.' . $originalImage->getClientOriginalExtension();
+                            $path = microtime(). $k1 . '.' . $originalImage->getClientOriginalExtension();
                             $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
                             $partner->logo = $thumbnailPath . '/' . $path;
                         }
@@ -115,20 +117,20 @@ class ProjectController extends Controller
                 }
             }
             if ($sponsors) {
-                foreach ($sponsors as $k => $item) {
+                foreach ($sponsors as $k2 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $sponsor = new ProjectSponsors();
                         $sponsor->project_id = $project->id;
                         $sponsor->name = $item;
-                        $sponsor->url = $request->get('sponsorSite')[$k];
-                        if($request->file('sponsorImg')[$k]){
-                            $originalImage = $request->file('sponsorImg')[$k];
+                        $sponsor->url = $request->get('sponsorSite')[$k2];
+                        if(array_key_exists($k2, $request->file('sponsorImg'))){
+                            $originalImage = $request->file('sponsorImg')[$k2];
                             $thumbnailImage = Image::make($originalImage);
                             $thumbnailPath = '/img/projects';
                             File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-                            $path = time() . '.' . $originalImage->getClientOriginalExtension();
+                            $path = microtime(). $k2 . '.' . $originalImage->getClientOriginalExtension();
                             $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
                             $sponsor->logo = $thumbnailPath . '/' . $path;
                         }
@@ -137,21 +139,21 @@ class ProjectController extends Controller
                 }
             }
             if ($companies) {
-                foreach ($companies as $k => $item) {
+                foreach ($companies as $k3 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $company = new ProjectCompanies();
                         $company->project_id = $project->id;
                         $company->name = $item;
-                        $company->url = $request->get('companySite')[$k];
-                        $company->summ = $request->get('companySumm')[$k];
-                        if($request->file('companyImg')[$k]){
-                            $originalImage = $request->file('companyImg')[$k];
+                        $company->url = $request->get('companySite')[$k3];
+                        $company->summ = $request->get('companySumm')[$k3];
+                        if(array_key_exists($k3, $request->file('companyImg'))){
+                            $originalImage = $request->file('companyImg')[$k3];
                             $thumbnailImage = Image::make($originalImage);
                             $thumbnailPath = '/img/projects';
                             File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-                            $path = time() . '.' . $originalImage->getClientOriginalExtension();
+                            $path = microtime(). $k3 . '.' . $originalImage->getClientOriginalExtension();
                             $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
                             $company->logo = $thumbnailPath . '/' . $path;
                         }
@@ -160,19 +162,37 @@ class ProjectController extends Controller
                 }
             }
             if ($humans) {
-                foreach ($humans as $k => $item) {
+                foreach ($humans as $k4 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $human = new ProjectHumans();
                         $human->project_id = $project->id;
                         $human->name = $item;
-                        $human->summ = $request->get('humanSumm')[$k];
-                        if($request->get('humanIncognito')[$k]){
-                            $human->incognito = $request->get('humanIncognito')[$k];
-                        }
+                        $human->summ = $request->get('humanSumm')[$k4];
+                        $human->incognito = $request->get('humanIncognito')[$k4];
                         $human->save();
                     }
+                }
+            }
+            $gallery = $request->file('gallery');
+            if ($gallery) {
+                foreach ($gallery as $key => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $galleryItem = new ProjectGallery();
+                        $galleryItem->project_id = $project->id;
+                        $originalImage = $item;
+                        $thumbnailImage = Image::make($originalImage);
+                        $thumbnailPath = '/img/projects';
+                        File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                        $path = microtime(). $key . '.' . $originalImage->getClientOriginalExtension();
+                        $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                        $galleryItem->img = $thumbnailPath . '/' . $path;
+                        $galleryItem->save();
+                    }
+
                 }
             }
 
@@ -206,7 +226,7 @@ class ProjectController extends Controller
             $project = Project::find($id);
             $project->update($data);
             $project->fond()->associate($fond);
-            $project->baseHelpTypes()->sync($request->base_help_types);
+            $project->AddHelpType()->sync($request->base_help_types);
             $project->scenarios()->sync($request->scenario_id);
 
             $partners = $request->get('partnerName');
@@ -214,55 +234,83 @@ class ProjectController extends Controller
             $companies = $request->get('companyName');
             $humans = $request->get('humanName');
             if ($partners) {
-                foreach ($partners as $k => $item) {
+                foreach ($partners as $k1 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $partner = new ProjectPartners();
                         $partner->project_id = $project->id;
                         $partner->name = $item;
-                        $partner->url = $request->get('partnerSite')[$k];
+                        $partner->url = $request->get('partnerSite')[$k1];
+                        if(array_key_exists($k1, $request->file('partnerImg'))){
+                            $originalImage = $request->file('partnerImg')[$k1];
+                            $thumbnailImage = Image::make($originalImage);
+                            $thumbnailPath = '/img/projects';
+                            File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                            $path = microtime(). $k1 . '.' . $originalImage->getClientOriginalExtension();
+                            $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                            $partner->logo = $thumbnailPath . '/' . $path;
+                        }
                         $partner->save();
                     }
 
                 }
             }
             if ($sponsors) {
-                foreach ($sponsors as $k => $item) {
+                foreach ($sponsors as $k2 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $sponsor = new ProjectSponsors();
                         $sponsor->project_id = $project->id;
                         $sponsor->name = $item;
-                        $sponsor->url = $request->get('sponsorSite')[$k];
+                        $sponsor->url = $request->get('sponsorSite')[$k2];
+                        if(array_key_exists($k2, $request->file('sponsorImg'))){
+                            $originalImage = $request->file('sponsorImg')[$k2];
+                            $thumbnailImage = Image::make($originalImage);
+                            $thumbnailPath = '/img/projects';
+                            File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                            $path = microtime(). $k2 . '.' . $originalImage->getClientOriginalExtension();
+                            $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                            $sponsor->logo = $thumbnailPath . '/' . $path;
+                        }
                         $sponsor->save();
                     }
                 }
             }
             if ($companies) {
-                foreach ($companies as $k => $item) {
+                foreach ($companies as $k3 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $company = new ProjectCompanies();
                         $company->project_id = $project->id;
                         $company->name = $item;
-                        $company->url = $request->get('companySite')[$k];
-                        $company->summ = $request->get('companySumm')[$k];
+                        $company->url = $request->get('companySite')[$k3];
+                        $company->summ = $request->get('companySumm')[$k3];
+                        if(array_key_exists($k3, $request->file('companyImg'))){
+                            $originalImage = $request->file('companyImg')[$k3];
+                            $thumbnailImage = Image::make($originalImage);
+                            $thumbnailPath = '/img/projects';
+                            File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                            $path = microtime(). $k3 . '.' . $originalImage->getClientOriginalExtension();
+                            $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                            $company->logo = $thumbnailPath . '/' . $path;
+                        }
                         $company->save();
                     }
                 }
             }
             if ($humans) {
-                foreach ($humans as $k => $item) {
+                foreach ($humans as $k4 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $human = new ProjectHumans();
                         $human->project_id = $project->id;
                         $human->name = $item;
-                        $human->summ = $request->get('humanSumm')[$k];
+                        $human->summ = $request->get('humanSumm')[$k4];
+                        $human->incognito = $request->get('humanIncognito')[$k4];
                         $human->save();
                     }
                 }
@@ -273,16 +321,27 @@ class ProjectController extends Controller
             $companiesExist = $request->get('companyId');
             $humansExist = $request->get('humanId');
             if ($partnersExist) {
-                foreach ($partnersExist as $k => $item) {
+                foreach ($partnersExist as $k5 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $partnerExist = ProjectPartners::find($item);
-                        if($request->get('partnerDelete')[$k] == '2'){
+                        if($request->get('partnerDelete')[$k5] == '2'){
                             ProjectPartners::destroy($partnerExist->id);
                         }else{
-                            $partnerExist->name = $request->get('partnerExistName')[$k];
-                            $partnerExist->url = $request->get('partnerExistSite')[$k];
+                            $partnerExist->name = $request->get('partnerExistName')[$k5];
+                            $partnerExist->url = $request->get('partnerExistSite')[$k5];
+                            if($request->file('partnerExistImg')){
+                                if(array_key_exists($k5, $request->file('partnerExistImg'))){
+                                    $originalImage = $request->file('partnerExistImg')[$k5];
+                                    $thumbnailImage = Image::make($originalImage);
+                                    $thumbnailPath = '/img/projects';
+                                    File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                                    $path = microtime(). $k5 . '.' . $originalImage->getClientOriginalExtension();
+                                    $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                                    $partnerExist->logo = $thumbnailPath . '/' . $path;
+                                }
+                            }
                             $partnerExist->save();
                         }
                     }
@@ -290,16 +349,27 @@ class ProjectController extends Controller
                 }
             }
             if ($sponsorsExist) {
-                foreach ($sponsorsExist as $k => $item) {
+                foreach ($sponsorsExist as $k6 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $sponsorExist = ProjectSponsors::find($item);
-                        if($request->get('sponsorDelete')[$k] == '2'){
-                            ProjectPartners::destroy($sponsorExist->id);
+                        if($request->get('sponsorDelete')[$k6] == '2'){
+                            ProjectSponsors::destroy($sponsorExist->id);
                         }else{
-                            $sponsorExist->name = $request->get('sponsorExistName')[$k];
-                            $sponsorExist->url = $request->get('sponsorExistSite')[$k];
+                            $sponsorExist->name = $request->get('sponsorExistName')[$k6];
+                            $sponsorExist->url = $request->get('sponsorExistSite')[$k6];
+                            if($request->file('sponsorExistImg')) {
+                                if (array_key_exists($k6, $request->file('sponsorExistImg'))) {
+                                    $originalImage = $request->file('sponsorExistImg')[$k6];
+                                    $thumbnailImage = Image::make($originalImage);
+                                    $thumbnailPath = '/img/projects';
+                                    File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                                    $path = microtime() . $k6 . '.' . $originalImage->getClientOriginalExtension();
+                                    $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                                    $sponsorExist->logo = $thumbnailPath . '/' . $path;
+                                }
+                            }
                             $sponsorExist->save();
                         }
                     }
@@ -307,17 +377,28 @@ class ProjectController extends Controller
                 }
             }
             if ($companiesExist) {
-                foreach ($companiesExist as $k => $item) {
+                foreach ($companiesExist as $k7 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $companyExist = ProjectCompanies::find($item);
-                        if($request->get('companyDelete')[$k] == '2'){
-                            ProjectPartners::destroy($companyExist->id);
+                        if($request->get('companyDelete')[$k7] == '2'){
+                            ProjectCompanies::destroy($companyExist->id);
                         }else{
-                            $companyExist->name = $request->get('companyExistName')[$k];
-                            $companyExist->summ = $request->get('companyExistSumm')[$k];
-                            $companyExist->url = $request->get('companyExistSite')[$k];
+                            $companyExist->name = $request->get('companyExistName')[$k7];
+                            $companyExist->summ = $request->get('companyExistSumm')[$k7];
+                            $companyExist->url = $request->get('companyExistSite')[$k7];
+                            if($request->file('companyExistImg')) {
+                                if (array_key_exists($k7, $request->file('companyExistImg'))) {
+                                    $originalImage = $request->file('companyExistImg')[$k7];
+                                    $thumbnailImage = Image::make($originalImage);
+                                    $thumbnailPath = '/img/projects';
+                                    File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                                    $path = microtime() . $k7 . '.' . $originalImage->getClientOriginalExtension();
+                                    $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                                    $companyExist->logo = $thumbnailPath . '/' . $path;
+                                }
+                            }
                             $companyExist->save();
                         }
                     }
@@ -325,22 +406,61 @@ class ProjectController extends Controller
                 }
             }
             if ($humansExist) {
-                foreach ($humansExist as $k => $item) {
+                foreach ($humansExist as $k8 => $item) {
                     if ($item == null) {
                         continue;
                     } else {
                         $humanExist = ProjectHumans::find($item);
-                        if($request->get('companyDelete')[$k] == '2'){
-                            ProjectPartners::destroy($humanExist->id);
+                        if($request->get('companyDelete')[$k8] == '2'){
+                            ProjectHumans::destroy($humanExist->id);
                         }else{
-                            $humanExist->name = $request->get('humanExistName')[$k];
-                            $humanExist->summ = $request->get('humanExistSumm')[$k];
+                            $humanExist->name = $request->get('humanExistName')[$k8];
+                            $humanExist->summ = $request->get('humanExistSumm')[$k8];
+                            $humanExist->incognito = $request->get('humanExistIncognito')[$k8];
                             $humanExist->save();
                         }
                     }
 
                 }
             }
+
+            $gallery = $request->file('gallery');
+            if ($gallery) {
+                foreach ($gallery as $key => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $galleryItem = new ProjectGallery();
+                        $galleryItem->project_id = $project->id;
+                        $originalImage = $item;
+                        $thumbnailImage = Image::make($originalImage);
+                        $thumbnailPath = '/img/projects';
+                        File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                        $path = microtime(). $key . '.' . $originalImage->getClientOriginalExtension();
+                        $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                        $galleryItem->img = $thumbnailPath . '/' . $path;
+                        $galleryItem->save();
+                    }
+
+                }
+            }
+            $galleryExist = $request->get('galleryId');
+            if ($galleryExist) {
+                foreach ($galleryExist as $key2 => $item) {
+                    if ($item == null) {
+                        continue;
+                    } else {
+                        $galleryItemExist = ProjectGallery::find($item);
+                        if($request->get('galleryDelete')[$key2] == '2'){
+                            ProjectGallery::destroy($galleryItemExist->id);
+                        }else{
+                            continue;
+                        }
+                    }
+
+                }
+            }
+
 
             return redirect()->route('projects')->with(['success' => 'Проект успешно обновлен!']);
         } elseif ($request->method() == 'GET') {
@@ -354,7 +474,8 @@ class ProjectController extends Controller
             $sponsors = ProjectSponsors::where('project_id', $project->id)->get();
             $partners = ProjectPartners::where('project_id', $project->id)->get();
             $humans = ProjectHumans::where('project_id', $project->id)->get();
-            return view('backend.fond_cabinet.projects.update_project')->with(compact('project','baseHelpTypes','regions','cities','scenarios','companies','sponsors','partners','humans'));
+            $gallery = ProjectGallery::where('project_id', $project->id)->get();
+            return view('backend.fond_cabinet.projects.update_project')->with(compact('project','baseHelpTypes','regions','cities','scenarios','companies','sponsors','partners','humans','gallery'));
         }
     }
 }

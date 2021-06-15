@@ -239,3 +239,27 @@ header a.logo img {
 }
 
 .bigRegionsFather .regionsBlock .inputBlock span:after {content: 'x';padding: 1px 0 0;width: 20px;height: 20px;display: table;float: right;background: #fff;border-radius: 50%;color: #dc3545;text-align: center;margin-left: 15px;font-weight: 600;}
+.partnerBlock.forGallery {
+    display: inline-table;
+    width: 24%;
+    vertical-align: top;
+}
+
+.partnerBlock.forGallery img {
+    display: table;
+    width: 95%;
+}
+.partnerBlock.existBlock {
+    display: inline-table;
+    width: 33%;
+    box-shadow: 0 0 13px #dbf4ff;
+    background: #fff;
+    border: 1px solid #eee;
+}
+
+.partnerBlock.existBlock img {
+    display: table;
+    max-width: 50%;
+    object-fit: contain;
+    margin: 14px auto 0;
+}

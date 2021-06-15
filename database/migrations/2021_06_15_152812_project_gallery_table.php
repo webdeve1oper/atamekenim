@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ProjectSponsors extends Migration
+class ProjectGalleryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class ProjectSponsors extends Migration
      */
     public function up()
     {
-        Schema::create('project_sponsors', function (Blueprint $table) {
+        Schema::create('project_gallery', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->string('name');
-            $table->string('logo')->nullable();
-            $table->string('url')->nullable();
+            $table->string('img');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class ProjectSponsors extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_sponsors');
+        Schema::dropIfExists('project_gallery');
     }
 }

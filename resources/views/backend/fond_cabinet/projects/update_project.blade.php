@@ -71,7 +71,7 @@
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
-                                    <?php $baseHelpTypess = array_column($project->baseHelpTypes->toArray(), 'name_ru');?>
+                                    <?php $baseHelpTypess = array_column($project->addHelpType->toArray(), 'name_ru');?>
                                     @foreach($baseHelpTypes as $destination)
                                         <div class="col-sm-6">
                                             <div class="checkbox">
@@ -241,14 +241,14 @@
                                 <div class="form-group">
                                     @if($partners)
                                         @foreach($partners as $item)
-                                            <div class="partnerBlock">
+                                            <div class="partnerBlock existBlock">
                                                 <a class="close" onclick="$(this).parents('.partnerBlock').hide();$(this).siblings('.deleteInput').val(2);">&times;</a>
                                                 <input type="text" name="partnerId[]" value="{{ $item->id }}" class="d-none">
                                                 <input type="text" name="partnerDelete[]" value="1" class="d-none deleteInput">
                                                 <label for="">Введите название организации:</label>
                                                 <input type="text" name="partnerExistName[]" class="form-control" placeholder="Введите название организации" value="@if($item->name){{ $item->name }}@endif">
-                                                <label for="" class="mt-3">Загрузите логотип:</label>
-                                                @if($item->logo)<img src="{{ $item->logo }}" alt="">@endif
+                                                @if($item->logo)<img src="{{ $item->logo }}" alt="" style="display: table;height: 80px;">@endif
+                                                <label for="" class="mt-3">Загрузите другой логотип в формате jpeg, png:</label>
                                                 <input type="file" name="partnerExistImg[]" class="form-control">
                                                 <label for="" class="mt-3">Введите ссылку на сайт партнера при наличии:</label>
                                                 <input type="text" name="partnerExistSite[]" class="form-control" placeholder="Введите ссылку на сайт партнера при наличии" value="@if($item->url){{ $item->url }}@endif">
@@ -285,14 +285,14 @@
                                 <div class="form-group">
                                     @if($sponsors)
                                         @foreach($sponsors as $item)
-                                            <div class="partnerBlock">
+                                            <div class="partnerBlock existBlock">
                                                 <a class="close" onclick="$(this).parents('.partnerBlock').hide();$(this).siblings('.deleteInput').val(2);">&times;</a>
                                                 <input type="text" name="sponsorId[]" value="{{ $item->id }}" class="d-none">
                                                 <input type="text" name="sponsorDelete[]" value="1" class="d-none deleteInput">
                                                 <label for="">Введите название организации:</label>
                                                 <input type="text" name="sponsorExistName[]" class="form-control" placeholder="Введите название организации" value="@if($item->name){{ $item->name }}@endif">
-                                                <label for="" class="mt-3">Загрузите логотип:</label>
-                                                @if($item->logo)<img src="{{ $item->logo }}" alt="">@endif
+                                                @if($item->logo)<img src="{{ $item->logo }}" alt="" style="display: table;height: 80px;">@endif
+                                                <label for="" class="mt-3">Загрузите другой логотип в формате jpeg, png:</label>
                                                 <input type="file" name="sponsorExistImg[]" class="form-control">
                                                 <label for="" class="mt-3">Введите ссылку на сайт партнера при наличии:</label>
                                                 <input type="text" name="sponsorExistSite[]" class="form-control" placeholder="Введите ссылку на сайт партнера при наличии" value="@if($item->url){{ $item->url }}@endif">
@@ -328,14 +328,14 @@
                                 <div class="form-group">
                                     @if($companies)
                                         @foreach($companies as $item)
-                                            <div class="partnerBlock">
+                                            <div class="partnerBlock existBlock">
                                                 <a class="close" onclick="$(this).parents('.partnerBlock').hide();$(this).siblings('.deleteInput').val(2);">&times;</a>
                                                 <input type="text" name="companyId[]" value="{{ $item->id }}" class="d-none">
                                                 <input type="text" name="companyDelete[]" value="1" class="d-none deleteInput">
                                                 <label for="">Введите название организации:</label>
                                                 <input type="text" name="companyExistName[]" class="form-control" placeholder="Введите название организации" value="@if($item->name){{ $item->name }}@endif">
-                                                <label for="" class="mt-3">Загрузите логотип в формате jpeg, png:</label>
-                                                @if($item->logo)<img src="{{ $item->logo }}" alt="">@endif
+                                                @if($item->logo)<img src="{{ $item->logo }}" alt="" style="display: table;height: 80px;">@endif
+                                                <label for="" class="mt-3">Загрузите другой логотип в формате jpeg, png:</label>
                                                 <input type="file" name="companyExistImg[]" class="form-control">
                                                 <label for="" class="mt-3">Введите ссылку на сайт компании-благотворителя при наличии:</label>
                                                 <input type="text" name="companyExistSite[]" class="form-control" placeholder="Введите ссылку на сайт спонсора при наличии" value="@if($item->url){{ $item->url }}@endif">
@@ -375,14 +375,19 @@
                                 <div class="form-group">
                                     @if($humans)
                                         @foreach($humans as $item)
-                                            <div class="partnerBlock">
+                                            <div class="partnerBlock existBlock">
                                                 <a class="close" onclick="$(this).parents('.partnerBlock').hide();$(this).siblings('.deleteInput').val(2);">&times;</a>
                                                 <input type="text" name="humanId[]" value="{{ $item->id }}" class="d-none">
                                                 <input type="text" name="humanDelete[]" value="1" class="d-none deleteInput">
                                                 <label for="">Введите имя благотворителя:</label>
                                                 <input type="text" name="humanExistName[]" class="form-control" placeholder="Введите имя благотворителя" value="@if($item->name){{ $item->name }}@endif">
                                                 <label for="" class="mt-3">Благотворитель пожелал остаться неизвестным (чекбокс):</label>
-                                                <input type="checkbox" name="humanExistIncognito[]" class="form-control" style="width: auto;">
+                                                <input type="checkbox" class="form-control humanIncognitoCheckbox" style="width: auto;" @if($item->incognito == 'on') checked="checked" @endif>
+                                                @if($item->incognito == 'on')
+                                                    <input type="text" name="humanExistIncognito[]" class="checker d-none" value="on">
+                                                @else
+                                                    <input type="text" name="humanExistIncognito[]" class="checker d-none" value="off">
+                                                @endif
                                                 <label for="" class="mt-3">Сумма оказанной помощи, в тенге:</label>
                                                 <input type="number" name="humanExistSumm[]" class="form-control" placeholder="Сумма оказанной помощи, в тенге" value="@if($item->summ){{ $item->summ }}@endif">
                                             </div>
@@ -415,6 +420,18 @@
                         <div id="collapse10" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="form-group">
+
+                                    @if($gallery)
+                                        @foreach($gallery as $item)
+                                            <div class="partnerBlock forGallery">
+                                                <a class="close" onclick="$(this).parents('.partnerBlock').hide();$(this).siblings('.deleteInput').val(2);">&times;</a>
+                                                <input type="text" name="galleryId[]" value="{{ $item->id }}" class="d-none">
+                                                <input type="text" name="galleryDelete[]" value="1" class="d-none deleteInput">
+                                                <img src="{{ $item->img }}" alt="">
+                                            </div>
+                                        @endforeach
+                                    @endif
+
                                     <div class="partnerBlock firstChild">
                                         <button class="close" onclick="$(this).parents('.partnerBlock').remove()">&times;</button>
                                         <input type="file" name="gallery[]" class="form-control">
@@ -456,40 +473,40 @@
 
 
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
-    {{--<script>--}}
-        {{--var options = {--}}
-            {{--toolbar: [--}}
-                {{--{name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},--}}
-                {{--{--}}
-                    {{--name: 'basicstyles',--}}
-                    {{--groups: ['basicstyles', 'cleanup'],--}}
-                    {{--items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']--}}
-                {{--},--}}
-                {{--{--}}
-                    {{--name: 'paragraph',--}}
-                    {{--groups: ['list', 'indent', 'blocks', 'align', 'bidi'],--}}
-                    {{--items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']--}}
-                {{--},--}}
-                {{--{name: 'links', items: ['Link', 'Unlink']},--}}
-                {{--{--}}
-                    {{--name: 'insert',--}}
-                    {{--items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']--}}
-                {{--},--}}
-                {{--'/',--}}
-                {{--{name: 'styles', items: ['Format', 'Font', 'FontSize']},--}}
-                {{--{name: 'colors', items: ['TextColor', 'BGColor']},--}}
-                {{--{name: 'tools', items: ['Maximize', 'ShowBlocks']},--}}
-                {{--{name: 'others', items: ['-']},--}}
-            {{--]--}}
-        {{--};--}}
-        {{--CKEDITOR.replace('mission', options);--}}
-        {{--CKEDITOR.replace('about', options);--}}
+    <script>
+        var options = {
+            toolbar: [
+                {name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},
+                {
+                    name: 'basicstyles',
+                    groups: ['basicstyles', 'cleanup'],
+                    items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
+                },
+                {
+                    name: 'paragraph',
+                    groups: ['list', 'indent', 'blocks', 'align', 'bidi'],
+                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
+                },
+                {name: 'links', items: ['Link', 'Unlink']},
+                {
+                    name: 'insert',
+                    items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+                },
+                '/',
+                {name: 'styles', items: ['Format', 'Font', 'FontSize']},
+                {name: 'colors', items: ['TextColor', 'BGColor']},
+                {name: 'tools', items: ['Maximize', 'ShowBlocks']},
+                {name: 'others', items: ['-']},
+            ]
+        };
+        CKEDITOR.replace('mission', options);
+        CKEDITOR.replace('about', options);
 
-        {{--function ckeditor(id) {--}}
-            {{--CKEDITOR.replace(id, options);--}}
-            {{--CKEDITOR.instances[id].setData('');--}}
-        {{--}--}}
-    {{--</script>--}}
+        function ckeditor(id) {
+            CKEDITOR.replace(id, options);
+            CKEDITOR.instances[id].setData('');
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $('.regionsOpenBlock input[type="checkbox"]').click(function(){
@@ -511,6 +528,13 @@
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
                 $(this).remove();
+            });
+            $('.humanIncognitoCheckbox').click(function(){
+                if($(this).is(':checked')){
+                    $(this).siblings('.checker').val('on');
+                }else{
+                    $(this).siblings('.checker').val('off');
+                }
             });
         });
     </script>
@@ -595,6 +619,13 @@
             var clone = $(this).siblings('.partnerBlock.firstChild').clone();
             clone.removeClass('firstChild');
             clone.appendTo($(this).siblings('.inBlock'));
+            $('.humanIncognitoCheckbox').click(function(){
+                if($(this).is(':checked')){
+                    $(this).siblings('.checker').val('on');
+                }else{
+                    $(this).siblings('.checker').val('off');
+                }
+            });
         });
         $('select#status').change(function(){
             if($(this).val() == 'finished'){

@@ -22,6 +22,10 @@ class Project extends Model
         return $this->belongsToMany(BaseHelpType::class, 'project_basehelptypes', 'project_id', 'base_help_id');
     }
 
+    public function addHelpType(){
+        return $this->belongsToMany(AddHelpType::class, 'project_basehelptypes', 'project_id', 'base_help_id');
+    }
+
     public function scenarios(){
         return $this->belongsToMany(Scenario::class,'project_scenarios', 'project_id', 'scenario_id');
     }

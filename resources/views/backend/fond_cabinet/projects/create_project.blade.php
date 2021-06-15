@@ -321,7 +321,8 @@
                                         <label for="">Введите имя благотворителя:</label>
                                         <input type="text" name="humanName[]" class="form-control" placeholder="Введите имя благотворителя">
                                         <label for="" class="mt-3">Благотворитель пожелал остаться неизвестным (чекбокс):</label>
-                                        <input type="checkbox" name="humanIncognito[]" class="form-control" style="width: auto;">
+                                        <input type="checkbox" class="form-control humanIncognitoCheckbox" style="width: auto;">
+                                        <input type="text" name="humanIncognito[]" class="checker d-none" value="off">
                                         <label for="" class="mt-3">Сумма оказанной помощи, в тенге:</label>
                                         <input type="number" name="humanSumm[]" class="form-control" placeholder="Сумма оказанной помощи, в тенге">
                                     </div>
@@ -384,40 +385,40 @@
 
 
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
-    {{--<script>--}}
-        {{--var options = {--}}
-            {{--toolbar: [--}}
-                {{--{name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},--}}
-                {{--{--}}
-                    {{--name: 'basicstyles',--}}
-                    {{--groups: ['basicstyles', 'cleanup'],--}}
-                    {{--items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']--}}
-                {{--},--}}
-                {{--{--}}
-                    {{--name: 'paragraph',--}}
-                    {{--groups: ['list', 'indent', 'blocks', 'align', 'bidi'],--}}
-                    {{--items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']--}}
-                {{--},--}}
-                {{--{name: 'links', items: ['Link', 'Unlink']},--}}
-                {{--{--}}
-                    {{--name: 'insert',--}}
-                    {{--items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']--}}
-                {{--},--}}
-                {{--'/',--}}
-                {{--{name: 'styles', items: ['Format', 'Font', 'FontSize']},--}}
-                {{--{name: 'colors', items: ['TextColor', 'BGColor']},--}}
-                {{--{name: 'tools', items: ['Maximize', 'ShowBlocks']},--}}
-                {{--{name: 'others', items: ['-']},--}}
-            {{--]--}}
-        {{--};--}}
-        {{--CKEDITOR.replace('mission', options);--}}
-        {{--CKEDITOR.replace('about', options);--}}
+    <script>
+        var options = {
+            toolbar: [
+                {name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'Undo', 'Redo']},
+                {
+                    name: 'basicstyles',
+                    groups: ['basicstyles', 'cleanup'],
+                    items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']
+                },
+                {
+                    name: 'paragraph',
+                    groups: ['list', 'indent', 'blocks', 'align', 'bidi'],
+                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
+                },
+                {name: 'links', items: ['Link', 'Unlink']},
+                {
+                    name: 'insert',
+                    items: ['Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+                },
+                '/',
+                {name: 'styles', items: ['Format', 'Font', 'FontSize']},
+                {name: 'colors', items: ['TextColor', 'BGColor']},
+                {name: 'tools', items: ['Maximize', 'ShowBlocks']},
+                {name: 'others', items: ['-']},
+            ]
+        };
+        CKEDITOR.replace('mission', options);
+        CKEDITOR.replace('about', options);
 
-        {{--function ckeditor(id) {--}}
-            {{--CKEDITOR.replace(id, options);--}}
-            {{--CKEDITOR.instances[id].setData('');--}}
-        {{--}--}}
-    {{--</script>--}}
+        function ckeditor(id) {
+            CKEDITOR.replace(id, options);
+            CKEDITOR.instances[id].setData('');
+        }
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -440,6 +441,13 @@
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
                 $(this).remove();
+            });
+            $('.humanIncognitoCheckbox').click(function(){
+                if($(this).is(':checked')){
+                    $(this).siblings('.checker').val('on');
+                }else{
+                    $(this).siblings('.checker').val('off');
+                }
             });
         });
     </script>
@@ -518,6 +526,13 @@
             var clone = $(this).siblings('.partnerBlock.firstChild').clone();
             clone.removeClass('firstChild');
             clone.appendTo($(this).siblings('.inBlock'));
+            $('.humanIncognitoCheckbox').click(function(){
+                if($(this).is(':checked')){
+                    $(this).siblings('.checker').val('on');
+                }else{
+                    $(this).siblings('.checker').val('off');
+                }
+            });
         });
         $('select#status').change(function(){
             if($(this).val() == 'finished'){
