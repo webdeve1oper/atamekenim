@@ -30,4 +30,24 @@ class Project extends Model
         return $this->belongsToMany(Scenario::class,'project_scenarios', 'project_id', 'scenario_id');
     }
 
+    public function hasPartners(){
+        return $this->hasMany(ProjectPartners::class,'project_id', 'id');
+    }
+
+    public function hasHumans(){
+        return $this->hasMany(ProjectHumans::class,'project_id', 'id');
+    }
+
+    public function hasSponsors(){
+        return $this->hasMany(ProjectSponsors::class,'project_id', 'id');
+    }
+
+    public function hasCompanies(){
+        return $this->hasMany(ProjectCompanies::class,'project_id', 'id');
+    }
+
+    public function hasGallery(){
+        return $this->hasMany(ProjectGallery::class,'project_id', 'id');
+    }
+
 }

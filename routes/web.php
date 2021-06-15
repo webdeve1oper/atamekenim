@@ -10,6 +10,7 @@ Route::get('/develope', function(){
 })->name('dev');
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
+Route::get('/project/{id}', 'Backend\ProjectController@index')->name('innerProject');
 Route::post('/fond/donation', 'Frontend\FondController@donationToFond')->name('donation_to_fond');
 Route::post('/fond/donation-recurrent', 'Frontend\FondController@cloudPaymentsDonation')->name('donation_cloudpayments_fond');
 Route::get('/payment-success', function(){

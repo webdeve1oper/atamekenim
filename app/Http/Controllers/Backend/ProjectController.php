@@ -36,6 +36,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
+    public function index($id){
+        $project = Project::find($id);
+        return view('frontend.fond.project')->with(compact('project'));
+    }
 
     public function projects(Request $request){
         $projects = Project::whereFondId(Auth::user()->id)->get();

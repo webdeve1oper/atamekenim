@@ -161,11 +161,11 @@
                                                 <div>
                                                     <div class="helpBlock">
                                                         <div class="content">
-                                                            <p>{{trans('fonds-page.help')}} <span class="tag blue">Спорт</span></p>
+                                                            {{--<p>{{trans('fonds-page.help')}} <span class="tag blue">Спорт</span></p>--}}
                                                             <p>{{trans('fonds-page.name-project')}} <span>{{$project->title}}</span></p>
                                                             <p>{{trans('fonds-page.who')}} <span>{{trans('fonds-page.paral')}}</span></p>
                                                             <p><b>{{trans('fonds-page.desc')}} </b>{!! mb_substr($project->about, 0, 150) !!}...</p>
-                                                            <a href="" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
+                                                            <a href="{{ route('innerProject', $project->id) }}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                                         </div>
                                                         <p class="date">{{trans('fonds-page.status')}} <span>{{trans('fonds-page.archev')}}</span></p>
                                                     </div>
