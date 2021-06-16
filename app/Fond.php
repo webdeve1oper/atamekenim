@@ -99,8 +99,12 @@ class Fond extends Authenticatable
         return $this->belongsToMany(Region::class, 'fond_regions', 'fond_id', 'region_id', 'id', 'region_id');
     }
 
+    public function districts(){
+        return $this->belongsToMany(District::class, 'fond_districts', 'fond_id', 'district_id', 'id', 'district_id');
+    }
+
     public function cities(){
-        return $this->belongsToMany(City::class, 'fond_cities', 'fond_id', 'city_id');
+        return $this->belongsToMany(City::class, 'fond_cities', 'fond_id', 'city_id', 'id', 'city_id');
     }
 
     public function region(){

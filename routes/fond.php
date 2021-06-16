@@ -13,7 +13,7 @@ Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::delete('/cabinet/fond/delete_partner', 'Backend\FondController@deletePartner')->name('delete_partner');
     Route::match(['get','post'], '/cabinet/fond/partners', 'Backend\FondController@partners')->name('partners');
     Route::match(['get','post'], '/cabinet/fond/gallery', 'Backend\FondController@gallery')->name('gallery');
-    Route::delete('/cabinet/fond/gallery', 'Backend\FondController@delete_gallery')->name('delete_gallery');
+    Route::delete('/cabinet/fond/gallery', 'Backend\FondController@deleteGallery')->name('delete_gallery');
     Route::post('/cabinet/fond/help-start/{id}', 'Backend\FondController@startHelp')->name('start_help');
     Route::post('/cabinet/fond/help-finish/{id}', 'Backend\FondController@finishHelp')->name('finish_help');
     Route::post('/cabinet/fond/help-cancel/{id}', 'Backend\FondController@cancelHelp')->name('cancel_help');

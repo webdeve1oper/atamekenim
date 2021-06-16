@@ -177,41 +177,60 @@
                         <div class="card-body">
                             {{--<select id="locations"  multiple></select>--}}
                             <div class="bigRegionsFather">
-                                <div class="regionsBlock" onclick="$('.regionsOpenBlock').toggle();"></div>
+                                <div class="regionsBlock" onclick="$('.regionsOpenBlock').toggle();">
+                                    <?php
+                                    $fondRegions = Auth::user()->regions()->get();
+                                    if($fondRegions){
+                                        $fondRegions = $fondRegions->toArray();
+                                        $fondRegions = array_column($fondRegions, 'region_id');
+                                    }
+                                    $fondcities = Auth::user()->cities()->get();
+                                    if($fondcities){
+                                        $fondcities = $fondcities->toArray();
+                                        $fondcities = array_column($fondcities, 'city_id');
+                                    }
+                                    $fonddistricts = Auth::user()->districts()->get();
+                                    if($fonddistricts){
+                                        $fonddistricts = $fonddistricts->toArray();
+                                        $fonddistricts = array_column($fonddistricts, 'district_id');
+                                    }
+                                    ?>
+                                </div>
                                 <div class="regionsOpenBlock">
                                     @foreach($regions as $region)
                                         <!--Регионы-->
                                         @if(count($region['districts'])>0)
                                             <div class="optionBlock">
                                                 <a class="toggleButton" onclick="$(this).siblings('.inOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                                                <div class="inputBlock @if(in_array($region->region_id, $fondRegions)) active @endif" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" @if(in_array($region->region_id, $fondRegions)) checked @endif value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
                                                 <div class="inOptionBlock">
                                                     <!--Район-->
                                                     @foreach($region['districts'] as $district)
                                                         @if(count($district['cities'])>0)
                                                             <div class="optionBlock">
                                                                 <a class="toggleButton" onclick="$(this).siblings('.thirdInOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock @if(in_array($district->district_id, $fonddistricts)) active @endif" id="district_{{$district->district_id}}" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click')"><input id="{{$district->district_id}}" value="{{$district->district_id}}" @if(in_array($district->district_id, $fonddistricts)) checked @endif type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
                                                                 <div class="inOptionBlock thirdInOptionBlock">
                                                                     <!--Город/Село-->
                                                                     @foreach($district['cities'] as $city)
                                                                         <div class="optionBlock">
-                                                                            <div class="inputBlock" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
+                                                                            <div class="inputBlock @if(in_array($city->city_id, $fondcities)) active @endif" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click')" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" @if(in_array($city->city_id, $fondcities)) checked @endif value="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
                                                             </div>
                                                         @else
                                                             <div class="optionBlock">
-                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock @if(in_array($district->district_id, $fonddistricts)) active @endif" onclick="$('.inputBlock.active#region_{{$district->district_id}}').trigger('click')" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" value="{{$district->district_id}}" @if(in_array($district->district_id, $fonddistricts)) checked @endif type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
                                                             </div>
                                                         @endif
                                                     @endforeach
                                                 </div>
                                             </div>
                                         @else
+
                                             <div class="optionBlock">
-                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                                                <div class="inputBlock @if(in_array($region->region_id, $fondRegions)) active @endif" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}"  @if(in_array($region->region_id, $fondRegions)) checked @endif  value="{{$region->region_id}}"  type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
                                             </div>
                                         @endif
                                     @endforeach
@@ -314,7 +333,8 @@
                     <div class="panel panel-default">
                         <div class="card-header">
                             <a data-toggle="collapse" class="collapsed" href="#collapse1">Информация по реквизитам поможет потенциальному благотворителю оказать финансовую помощь Вашей организации.
-                                <i class="fas fa-angle-up"></i></a>
+                                <i class="fas fa-angle-up"></i>
+                            </a>
                         </div>
                         <div id="collapse1" class="panel-collapse collapse">
                             <div class="card-body">
@@ -325,7 +345,6 @@
                                             @if(Auth::user()->requisites)
                                                 <?php
                                                 $requisites = json_decode(Auth::user()->requisites, true);
-
                                                 ?>
                                                 @foreach($requisites as $i=> $requisite)
                                                         <div class="requisites">
@@ -354,10 +373,10 @@
                                                                 <input type="text" name="requisites[{{$i}}][address]" data-key="address" value="{{$requisite['address']}}" class="form-control">
                                                             </div>
                                                             @if($i == 0)
-                                                                <div class="payment">
-                                                                    Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
-                                                                    <input type="checkbox" @if($requisite['payment'] == 'on') checked @endif name="requisites[{{$i}}][payment]">
-                                                                </div>
+{{--                                                                <div class="payment">--}}
+{{--                                                                    Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
+{{--                                                                    <input type="checkbox" @if($requisite['payment'] == 'on') checked @endif name="requisites[{{$i}}][payment]">--}}
+{{--                                                                </div>--}}
                                                             @endif
                                                             <hr class="mt-3 mb-2">
                                                         </div>
@@ -388,10 +407,10 @@
                                                         <label for="">Юридический адрес:*</label>
                                                         <input type="text" name="requisites[0][address]" data-key="address" value="" class="form-control">
                                                     </div>
-                                                    <div class="payment">
-                                                        Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
-                                                        <input type="checkbox" name="requisites[0][payment]">
-                                                    </div>
+{{--                                                    <div class="payment">--}}
+{{--                                                        Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
+{{--                                                        <input type="checkbox" name="requisites[0][payment]">--}}
+{{--                                                    </div>--}}
                                                     <hr class="mt-3 mb-2">
                                                 </div>
                                             @endif
@@ -456,10 +475,10 @@
                                                                 <input type="text" name="offices[{{$i}}][work_time]" data-key="work_time" value="{{$requisite['work_time']}}" class="form-control">
                                                             </div>
                                                             @if($i == 0)
-                                                            <div class="central">
-                                                                Данный филиал является центральным офисом
-                                                                <input type="checkbox" @if($requisite['central'] == 'on') checked @endif data-key="central" name="offices[{{$i}}][central]">
-                                                            </div>
+{{--                                                            <div class="central">--}}
+{{--                                                                Данный филиал является центральным офисом--}}
+{{--                                                                <input type="checkbox" @if($requisite['central'] == 'on') checked @endif data-key="central" name="offices[{{$i}}][central]">--}}
+{{--                                                            </div>--}}
                                                             @endif
                                                             <hr class="mt-3 mb-2">
                                                         </div>
@@ -486,10 +505,10 @@
                                                         <label for="">Часы работы :</label>
                                                         <input type="text" name="offices[0][work_time]" data-key="work_time" value="" class="form-control">
                                                     </div>
-                                                    <div class="central">
-                                                        Данный филиал является центральным офисом
-                                                        <input type="checkbox" name="offices[0][central]" data-key="central">
-                                                    </div>
+{{--                                                    <div class="central">--}}
+{{--                                                        Данный филиал является центральным офисом--}}
+{{--                                                        <input type="checkbox" name="offices[0][central]" data-key="central">--}}
+{{--                                                    </div>--}}
                                                     <hr class="mt-3 mb-2">
                                                 </div>
                                             @endif
@@ -561,8 +580,12 @@
     </script>
     <script>
         $(document).ready(function () {
+            var inputss = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+            inputss.find('input').remove();
+            $('.regionsBlock').html(inputss);
             $('.regionsOpenBlock input[type="checkbox"]').click(function(){
                 var inputs = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+                inputs.find('input').remove();
                 $('.regionsBlock').html(inputs);
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
@@ -575,7 +598,11 @@
                 });
             });
             $('.regionsBlock .inputBlock').click(function(){
+                alert();
                 var id = $(this).attr("id");
+                if($('.regionsOpenBlock').is(':visible')){
+                    $('.regionsOpenBlock').show();
+                }
                 $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
