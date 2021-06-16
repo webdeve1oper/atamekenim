@@ -158,8 +158,8 @@
                                             @endif
                                             <div class="checkbox">
                                                 <input type="checkbox" @if(in_array($destination['name_ru'], $cashHelpSizess)) checked
-                                                       @endif name="cashHelpTypes[]" value="{{$destination['id']}}" id="cashHelpTypes{{$destination['id']}}">
-                                                <label for="cashHelpTypes{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
+                                                       @endif name="cashHelpSizes[]" value="{{$destination['id']}}" id="cashHelpSizes{{$destination['id']}}">
+                                                <label for="cashHelpSizes{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</label>
                                             </div>
                                         @endforeach
                                     </div>
