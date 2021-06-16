@@ -67,14 +67,11 @@
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="card-body">
                                 <div class="row">
-                                    <?php $baseHelpTypess = array_column(Auth::user()->baseHelpTypes->toArray(), 'name_ru');?>
                                     @foreach($baseHelpTypes as $destination)
                                         <div class="col-sm-6">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input @if(in_array($destination['name_ru'], $baseHelpTypess)) checked
-                                                           @endif type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]"
-                                                           value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b> @if($destination['description_ru'])<p>(<?php echo mb_strtolower($destination['description_ru']) ?> )@endif</p>
+                                                    <input  type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]" value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b> @if($destination['description_ru'])<p>(<?php echo mb_strtolower($destination['description_ru']) ?> )@endif</p>
                                                 </label>
                                             </div>
                                         </div>
