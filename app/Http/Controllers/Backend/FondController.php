@@ -116,7 +116,6 @@ class FondController extends Controller
 
     public function cancelHelp(Request $request)
     {
-//        if (Auth::user()->helps->contains($id)) {
         if (strlen($request->desc) > 0) {
             $help = Help::find($request->help_id);
             $help->fond_status = 'cancel';
@@ -132,10 +131,6 @@ class FondController extends Controller
         } else {
             return redirect()->back()->with('error', 'Заполните пожалуйста причину отклонения!');
         }
-
-//        } else {
-//            return redirect()->back()->with('error', 'Заявка уже принята');
-//        }
     }
 
 
@@ -157,6 +152,7 @@ class FondController extends Controller
             $fond->addHelpTypes()->sync($request->add_help_types);
             $fond->destinations()->sync($request->destinations);
             $fond->cashHelpTypes()->sync($request->cashHelpTypes);
+            $fond->cashHelpSizes()->sync($request->cashHelpSizes);
             $fond->scenarios()->sync($request->scenario_id);
             return redirect()->back()->with(['success' => 'Информация успешно обновлена']);
         } else {
