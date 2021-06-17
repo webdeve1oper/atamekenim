@@ -341,98 +341,42 @@
                                 <div class="row">
                                     <div class="col-12 d-table">
                                         <div class="form-group pb-5">
-                                            <?php $requisites = []; ?>
-                                            @if(Auth::user()->requisites)
-                                                <?php
-                                                $requisites = json_decode(Auth::user()->requisites, true);
-                                                ?>
+                                            <?php $requisites = Auth::user()->requisites; ?>
+                                                <table class="table table-bordered">
+                                            @if(count($requisites) > 0)
+
+                                                    <thead>
+                                                        <tr>
+                                                            <td>БИН:</td>
+                                                            <td>БИК:</td>
+                                                            <td>ИИК:</td>
+                                                            <td>Название банка:</td>
+                                                            <td>Руководитель:</td>
+                                                            <td>Юридический адрес:</td>
+                                                            <td class="text-center" colspan="2">Действие</td>
+                                                        </tr>
+                                                    </thead>
                                                 @foreach($requisites as $i=> $requisite)
-                                                        <div class="requisites">
-                                                            <div class="form-group">
-                                                                <label for="">БИН:*</label>
-                                                                <input type="text"  name="requisites[{{$i}}][bin]" data-key="bin" value=@if($i == 0)"{{Auth::user()->bin}}" disabled @else"{{$requisite['bin']}}" @endif" class="form-control bin">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">ИИК:*</label>
-                                                                <input type="text" name="requisites[{{$i}}][address]" data-key="address" value="{{$requisite['address']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">БИК:*</label>
-                                                                <input type="text" name="requisites[{{$i}}][phone]" data-key="phone" value="{{$requisite['phone']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Название банка:*</label>
-                                                                <input type="text" name="requisites[{{$i}}][email]" data-key="email" value="{{$requisite['email']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Руководитель:*</label>
-                                                                <input type="text" name="requisites[{{$i}}][leader]" data-key="leader" value="{{$requisite['leader']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Юридический адрес:*</label>
-                                                                <input type="text" name="requisites[{{$i}}][address]" data-key="address" value="{{$requisite['address']}}" class="form-control">
-                                                            </div>
-                                                            @if($i == 0)
-{{--                                                                <div class="payment">--}}
-{{--                                                                    Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
-{{--                                                                    <input type="checkbox" @if($requisite['payment'] == 'on') checked @endif name="requisites[{{$i}}][payment]">--}}
-{{--                                                                </div>--}}
-                                                            @endif
-                                                            <hr class="mt-3 mb-2">
-                                                        </div>
+                                                    @include('backend.fond_cabinet.requisite')
                                                 @endforeach
+                                                <p class="btn btn-default p-2 float-right mt-2 mb-5 d-table" data-toggle="modal" data-target="#newRequiesite">
+                                                    + добавить еще один счет
+                                                </p>
                                             @else
-                                                <div class="requisites">
-                                                    <div class="form-group">
-                                                        <label for="">БИН:*</label>
-                                                        <input type="text" disabled name="requisites[0][bin]" data-key="bin" value="{{Auth::user()->bin}}" class="form-control bin">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">ИИК:*</label>
-                                                        <input type="text" name="requisites[0][address]" data-key="address" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">БИК:*</label>
-                                                        <input type="text" name="requisites[0][phone]" data-key="phone" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Название банка:*</label>
-                                                        <input type="text" name="requisites[0][email]" data-key="email" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Руководитель:*</label>
-                                                        <input type="text" name="requisites[0][leader]" data-key="leader" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Юридический адрес:*</label>
-                                                        <input type="text" name="requisites[0][address]" data-key="address" value="" class="form-control">
-                                                    </div>
-{{--                                                    <div class="payment">--}}
-{{--                                                        Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz--}}
-{{--                                                        <input type="checkbox" name="requisites[0][payment]">--}}
-{{--                                                    </div>--}}
-                                                    <hr class="mt-3 mb-2">
-                                                </div>
+                                                <tr>
+                                                    <td rowspan="6">
+                                                        <p class="btn btn-default p-2 float-right mt-2 mb-5 d-table" data-toggle="modal" data-target="#newRequiesite">
+                                                            &nbsp;+ добавить счет&nbsp;
+                                                        </p>
+                                                    </td>
+                                                </tr>
                                             @endif
-                                                <p class="btn btn-default float-right mt-2 mb-5 d-table"
-                                                        onclick="if($('.requisites').length <5){
-                                                            var office = $(this).prev().clone();
-                                                            office.find('input').each(function(value, index){
-                                                                var key = $(index).attr('data-key');
-                                                                $(index).attr('name', 'requisites['+$('.requisites').length + ']['+key+']').val('');
-                                                            });
-                                                            office
-                                                            .find('.bin').val('')
-                                                            .removeAttr('disabled')
-                                                            .parents('.requisites')
-                                                            .find('.payment').remove();
-                                                            $(office).insertBefore(this)
-                                                        } return false;">
-                                                + добавить еще один счет
-                                            </p>
+                                            </table>
+
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -447,82 +391,34 @@
                                 <div class="row">
                                     <div class="col-12 d-table">
                                         <div class="form-group pb-5">
-                                            <?php $offices = []; ?>
-                                            @if(Auth::user()->offices)
-                                                <?php
-                                                $offices = json_decode(Auth::user()->offices, true);
-                                                ?>
-                                                @foreach($offices as $i=> $requisite)
-                                                        <div class="office">
-                                                            <div class="form-group">
-                                                                <label for="">Руководитель:</label>
-                                                                <input type="text" name="offices[{{$i}}][leader]" data-key="leader" value="{{$requisite['leader']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Адрес:</label>
-                                                                <input type="text" name="offices[{{$i}}][address]" data-key="address" value="{{$requisite['address']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Телефон:</label>
-                                                                <input type="text" name="offices[{{$i}}][phone]" data-key="phone" value="{{$requisite['phone']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Электронная почта:</label>
-                                                                <input type="text" name="offices[{{$i}}][email]" data-key="email" value="{{$requisite['email']}}" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="">Часы работы :</label>
-                                                                <input type="text" name="offices[{{$i}}][work_time]" data-key="work_time" value="{{$requisite['work_time']}}" class="form-control">
-                                                            </div>
-                                                            @if($i == 0)
-{{--                                                            <div class="central">--}}
-{{--                                                                Данный филиал является центральным офисом--}}
-{{--                                                                <input type="checkbox" @if($requisite['central'] == 'on') checked @endif data-key="central" name="offices[{{$i}}][central]">--}}
-{{--                                                            </div>--}}
-                                                            @endif
-                                                            <hr class="mt-3 mb-2">
-                                                        </div>
+                                            <?php
+                                                $offices = Auth::user()->offices;
+                                            ?>
+                                                <table class="table table-bordered">
+                                            @if(count($offices) > 0)
+                                                    <thead>
+                                                    <tr>
+                                                        <td>Руководитель:</td>
+                                                        <td>Адрес:</td>
+                                                        <td>Телефон:</td>
+                                                        <td>Электронная почта:</td>
+                                                        <td>Часы работы:</td>
+                                                        <td class="text-center" colspan="2">Действие</td>
+                                                    </tr>
+                                                    </thead>
+                                                @foreach($offices as $i=> $office)
+                                                        @include('backend.fond_cabinet.office')
                                                 @endforeach
+                                                    <p class="btn btn-default float-right mt-2 mb-5 d-table" data-toggle="modal" data-target="#newOffice">
+                                                        + добавить еще один центральный офис
+                                                    </p>
                                             @else
-                                                <div class="office">
-                                                    <div class="form-group">
-                                                        <label for="">Руководитель:</label>
-                                                        <input type="text" name="offices[0][leader]" data-key="leader" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Адрес:</label>
-                                                        <input type="text" name="offices[0][address]" data-key="address" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Телефон:</label>
-                                                        <input type="text" name="offices[0][phone]" data-key="phone" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Электронная почта:</label>
-                                                        <input type="text" name="offices[0][email]" data-key="email" value="" class="form-control">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Часы работы :</label>
-                                                        <input type="text" name="offices[0][work_time]" data-key="work_time" value="" class="form-control">
-                                                    </div>
-{{--                                                    <div class="central">--}}
-{{--                                                        Данный филиал является центральным офисом--}}
-{{--                                                        <input type="checkbox" name="offices[0][central]" data-key="central">--}}
-{{--                                                    </div>--}}
-                                                    <hr class="mt-3 mb-2">
-                                                </div>
+                                                    <p class="btn btn-default float-right mt-2 mb-5 d-table" data-toggle="modal" data-target="#newOffice">
+                                                        + добавить центральный офис
+                                                    </p>
                                             @endif
-                                            <p class="btn btn-default float-right mt-2 mb-5 d-table"
-                                                    onclick="if($('.office').length <5){var office = $(this).prev().clone();
-                                                            office.find('input').each(function(value, index){
-                                                                var key = $(index).attr('data-key');
-                                                                $(index).attr('name', 'offices['+$('.office').length + ']['+key+']').val('');
-                                                            });
-                                                            office
-                                                            .parents('.office')
-                                                            .find('.central').remove(); $(office).insertBefore(this)}return false;">
-                                                + добавить еще один центральный офис
-                                            </p>
+                                                </table>
+
                                         </div>
                                     </div>
                                 </div>
@@ -554,9 +450,195 @@
                 <input type="submit" class="btn btn-default" value="Сохранить">
             </div>
         </div>
-
     </form>
 
+    <div class="modal fade" id="newRequiesite" tabindex="-1" aria-labelledby="newRequiesite" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Реквизиты</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="requisites">
+                        <form action="{{route('requisite_create')}}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <label for="">БИН:*</label>
+                                <input type="text" name="bin" data-key="bin" value=""
+                                       class="form-control bin">
+                            </div>
+                            <div class="form-group">
+                                <label for="">ИИК:*</label>
+                                <input type="text" name="iik" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">БИК:*</label>
+                                <input type="text" name="bik" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Название банка:*</label>
+                                <input type="text" name="name" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Руководитель:*</label>
+                                <input type="text" name="leader" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Юридический адрес:*</label>
+                                <input type="text" name="yur_address" value="" class="form-control">
+                            </div>
+                            <div class="payment">
+                                Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
+                                <input type="checkbox" name="aggree">
+                            </div>
+                            <div class="form-group mt-2">
+                                <input type="submit" value="сохранить"  class="btn btn-default ">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="newOffice" tabindex="-1" aria-labelledby="newOffice" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Офисы</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('office_create')}}" method="post">
+                        @csrf
+                    <div class="office">
+                        <div class="form-group">
+                            <label for="">Руководитель:</label>
+                            <input type="text" name="leader"  value="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Адрес:</label>
+                            <input type="text" name="address" value="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Телефон:</label>
+                            <input type="text" name="phone" value="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Электронная почта:</label>
+                            <input type="text" name="email" value="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Часы работы :</label>
+                            <input type="text" name="time"  value="" class="form-control">
+                        </div>
+                        <div class="central">
+                            Данный филиал является центральным офисом
+                            <input type="checkbox" name="central" />
+                        </div>
+                        <div class="form-group mt-2">
+                            <input type="submit" value="сохранить"  class="btn btn-default ">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach($offices as $i=> $office)
+        <div class="modal fade" id="office{{$i}}" tabindex="-1" aria-labelledby="office{{$i}}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Офисы</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('office_edit', [$office->id])}}" method="post">
+                            @csrf
+                            <div class="office">
+                                <div class="form-group">
+                                    <label for="">Руководитель:</label>
+                                    <input type="text" name="leader"  value="{{$office['leader']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Адрес:</label>
+                                    <input type="text" name="address" value="{{$office['address']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Телефон:</label>
+                                    <input type="text" name="phone" value="{{$office['phone']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Электронная почта:</label>
+                                    <input type="text" name="email" value="{{$office['email']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Часы работы :</label>
+                                    <input type="text" name="time"  value="{{$office['time']}}" class="form-control">
+                                </div>
+                                <div class="central">
+                                    Данный филиал является центральным офисом
+                                    <input type="checkbox" name="central" @if($requisite['central']) checked @endif  />
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="submit" value="сохранить"  class="btn btn-default ">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    @foreach($requisites as $i=> $requisite)
+        <div class="modal fade" id="requisite{{$i}}" tabindex="-1" aria-labelledby="requisite" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Реквизиты</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{route('requisite_edit', [$requisite->id])}}" method="post">
+                            @csrf
+                            <div class="requisites">
+                                <div class="form-group">
+                                    <label for="">БИН:*</label>
+                                    <input type="text" name="bin" value="{{$requisite['bin']}}" class="form-control bin">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">ИИК:*</label>
+                                    <input type="text" name="iik" value="{{$requisite['iik']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">БИК:*</label>
+                                    <input type="text" name="bik" value="{{$requisite['bik']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Название банка:*</label>
+                                    <input type="text" name="email" value="{{$requisite['email']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Руководитель:*</label>
+                                    <input type="text" name="leader"  value="{{$requisite['leader']}}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Юридический адрес:*</label>
+                                    <input type="text" name="yur_address" value="{{$requisite['yur_address']}}" class="form-control">
+                                </div>
+                                <div class="payment">
+                                    Выражаю согласие от имени моей организации на сбор онлайн-переводов на сайте atamekenim.kz
+                                    <input type="checkbox" @if($requisite['aggree']) checked @endif  name="aggree">
+                                </div>
+                                <div class="form-group mt-2">
+                                    <input type="submit" value="сохранить"  class="btn btn-default ">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script src="/js/selecttree.js"></script>
     <link rel="stylesheet" href="/css/selecttree.css">
@@ -577,6 +659,25 @@
             {{--CKEDITOR.replace(id, options);--}}
             {{--CKEDITOR.instances[id].setData('');--}}
         {{--}--}}
+        function deleteRequisite(id){
+            $.ajax({
+                url: '/ru/cabinet/fond/requisite/delete/'+id,
+                method: 'post',
+                data: {'_token': '{{csrf_token()}}'},
+                success: function(){
+                    $('#requisite_item_'+id).remove();
+                }
+            })
+        }
+        function deleteOffice(id){
+            $.ajax({
+                url: '/ru/cabinet/fond/office/delete/'+id,
+                method: 'post',
+                success: function(){
+                    $('#office_item_'+id).remove();
+                }
+            })
+        }
     </script>
     <script>
         $(document).ready(function () {

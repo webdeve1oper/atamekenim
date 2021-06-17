@@ -2,6 +2,12 @@
 
 Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
     Route::get('/cabinet/fond', 'Backend\FondController@index')->name('fond_cabinet');
+    Route::post('/cabinet/fond/requisite/create', 'Backend\FondController@requisiteCreate')->name('requisite_create');
+    Route::post('/cabinet/fond/requisite/edit/{id}', 'Backend\FondController@requisiteEdit')->name('requisite_edit');
+    Route::post('/cabinet/fond/requisite/delete/{id}', 'Backend\FondController@requisiteDelete')->name('requisite_delete');
+    Route::post('/cabinet/fond/office/create', 'Backend\FondController@officeCreate')->name('office_create');
+    Route::post('/cabinet/fond/office/edit/{id}', 'Backend\FondController@officeEdit')->name('office_edit');
+    Route::post('/cabinet/fond/office/delete/{id}', 'Backend\FondController@officeDelete')->name('office_delete');
     Route::get('/cabinet/fond/edit', 'Backend\FondController@edit')->name('fond_setting');
     Route::match(['get','post'], '/cabinet/fond/edit-activity', 'Backend\FondController@editActivity')->name('fond_editActivity');
     Route::get('/cabinet/fond/projects', 'Backend\ProjectController@projects')->name('fond_projects');
