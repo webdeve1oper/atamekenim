@@ -220,5 +220,10 @@
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
+
+        .card a{
+            color: rgb(0 83 165);
+            font-weight: 600;
+        }
     </style>
 @endsection
