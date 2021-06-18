@@ -62,23 +62,48 @@ class ProjectController extends Controller
     public function createProject(Request $request)
     {
         if ($request->method() == 'POST') {
+            $allInputs = $request->all();
             $validator = Validator::make($request->all(),
                 [
                     'title' => 'required|min:3',
-                    'image' => 'mimes:jpeg,jpg,png|max:10000',
+                    'logo' => 'mimes:jpeg,jpg,png|max:1000',
                 ]
             );
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-//            $socials = [];
-//            foreach ($request->socials as $social) {
-//                array_push($socials, ['link' => $social]);
-//            }
-//            $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
+            $fields =[];
+            $rules =[];
+            if($allInputs['partnerImg']){
+                foreach ($allInputs['partnerImg']  as $key => $percent) {
+                    $fields['partnerImg['.$key.']'] = $percent;
+                    $rules['partnerImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['sponsorImg']){
+                foreach ($allInputs['sponsorImg']  as $key => $percent) {
+                    $fields['sponsorImg[['.$key.']'.']'] = $percent;
+                    $rules['sponsorImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['companyImg']){
+                foreach ($allInputs['companyImg']  as $key => $percent) {
+                    $fields['companyImg[['.$key.']'.']'] = $percent;
+                    $rules['companyImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['gallery']){
+                foreach ($allInputs['gallery']  as $key => $percent) {
+                    $fields['gallery['.$key.']'] = $percent;
+                    $rules['gallery['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            $validator = Validator::make($fields, $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             $fond = Fond::find(Auth::user()->id);
             $data = $request->all();
-//            dd($request->all());
             $originalImage = $request->file('logo');
             $thumbnailImage = Image::make($originalImage);
             $thumbnailPath = '/img/projects';
@@ -213,6 +238,46 @@ class ProjectController extends Controller
 
     public function updatePage(Request $request, $id){
         if ($request->method() == 'POST') {
+            $allInputs = $request->all();
+            $validator = Validator::make($request->all(),
+                [
+                    'title' => 'required|min:3',
+                    'logo' => 'mimes:jpeg,jpg,png|max:1000',
+                ]
+            );
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $fields =[];
+            $rules =[];
+            if($allInputs['partnerImg']){
+                foreach ($allInputs['partnerImg']  as $key => $percent) {
+                    $fields['partnerImg['.$key.']'] = $percent;
+                    $rules['partnerImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['sponsorImg']){
+                foreach ($allInputs['sponsorImg']  as $key => $percent) {
+                    $fields['sponsorImg[['.$key.']'.']'] = $percent;
+                    $rules['sponsorImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['companyImg']){
+                foreach ($allInputs['companyImg']  as $key => $percent) {
+                    $fields['companyImg[['.$key.']'.']'] = $percent;
+                    $rules['companyImg['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            if($allInputs['gallery']){
+                foreach ($allInputs['gallery']  as $key => $percent) {
+                    $fields['gallery['.$key.']'] = $percent;
+                    $rules['gallery['.$key.']'] = 'mimes:jpeg,jpg,png|max:1000';
+                }
+            }
+            $validator = Validator::make($fields, $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             $fond = Fond::find(Auth::user()->id);
             $data = $request->all();
 //            dd($request->all());
@@ -304,6 +369,9 @@ class ProjectController extends Controller
                         $company->save();
                     }
                 }
+            }
+            function createFunction(){
+
             }
             if ($humans) {
                 foreach ($humans as $k4 => $item) {

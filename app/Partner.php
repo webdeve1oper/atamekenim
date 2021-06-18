@@ -9,5 +9,5 @@ class Partner extends Model
     //
     protected $table = 'fond_partners';
 
-    protected $fillable = ['image', 'title', 'orders', 'fond_id'];
+    protected $fillable = ['image', 'title', 'orders', 'fond_id','descr'];
 }

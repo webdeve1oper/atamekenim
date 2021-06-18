@@ -255,14 +255,14 @@
                         <div class="galleryBlock">
                             <h3>{{trans('fonds-page.photo-org')}}</h3>
                             <div class="row">
-                                @foreach($fond->images as $i=> $image)
+                                @foreach($fond->images()->orderBy('orders','asc')->get() as $i=> $image)
                                     @if($i == 3)
                                         @break
                                     @endif
                                         <div class="col-sm-3 col-6"><a href="{{$image->image}}" class="fondImg openGallery" data-lightbox="gallery"><img src="{{$image->image}}" alt=""></a></div>
                                 @endforeach
-                                @if(count($fond->images)>2)
-                                <div class="col-sm-3 col-6"><a href="{{$fond->images[3]->image}}" class="fondImg openGallery" data-lightbox="gallery"><img src="{{$fond->images[3]->image}}" alt=""><span>+{{count($fond->images)-4}}</span></a></div>
+                                @if(count($fond->images)>3)
+                                <div class="col-sm-3 col-6"><a href="{{$fond->images[2]->image}}" class="fondImg openGallery" data-lightbox="gallery"><img src="{{$fond->images[2]->image}}" alt=""><span>+{{count($fond->images)-3}}</span></a></div>
                                 @endif
                             </div>
                         </div>
@@ -434,7 +434,8 @@
                     </div>
                     <div class="col-sm-12 partners">
                         <div class="row">
-                            @foreach($fond->partners as $partner)
+                            <?php $partners = $fond->partners()->orderBy('orders','asc')->get();?>
+                            @foreach($partners as $partner)
                             <div class="col-sm-2">
                                 <div class="block">
                                     <img src="{{$partner->image}}" alt="">
