@@ -476,8 +476,8 @@
                                     <label for="">Часы работы :</label>
                                     <input type="text" name="time" value="{{$office['time']}}" class="form-control">
                                 </div>
-                                <input type="hidden" name="longitude" id="longitude{{$office->id}}" value="{{$office['longitude']}}" class="form-control">
-                                <input type="hidden" name="latitude" id="latitude{{$office->id}}" value="{{$office['latitude']}}" class="form-control">
+                                <input type="hidden" class="longitude" name="longitude" id="longitude{{$office->id}}" value="{{$office['longitude']}}" class="form-control">
+                                <input type="hidden" class="latitude" name="latitude" id="latitude{{$office->id}}" value="{{$office['latitude']}}" class="form-control">
                                 <div class="form-group">
                                     <div id="map{{$office->id}}" class="w-100" style="height: 300px;"></div>
                                 </div>
@@ -556,7 +556,8 @@
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
-        .card a{
+
+        .card a {
             color: rgb(0 83 165);
             font-weight: 600;
         }
