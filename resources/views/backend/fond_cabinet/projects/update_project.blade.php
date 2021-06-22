@@ -398,7 +398,8 @@
                                         <label for="">Введите имя благотворителя:</label>
                                         <input type="text" name="humanName[]" class="form-control" placeholder="Введите имя благотворителя">
                                         <label for="" class="mt-3">Благотворитель пожелал остаться неизвестным (чекбокс):</label>
-                                        <input type="checkbox" name="humanIncognito[]" class="form-control" style="width: auto;">
+                                        <input type="checkbox" class="form-control humanIncognitoCheckbox" style="width: auto;">
+                                        <input type="text" name="humanIncognito[]" class="checker d-none" value="off">
                                         <label for="" class="mt-3">Сумма оказанной помощи, в тенге:</label>
                                         <input type="number" name="humanSumm[]" class="form-control" placeholder="Сумма оказанной помощи, в тенге">
                                     </div>
