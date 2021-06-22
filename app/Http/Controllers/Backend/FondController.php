@@ -178,15 +178,9 @@ class FondController extends Controller
             $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
             unset($data['bin']);
             $fond = Fond::find(Auth::user()->id);
-             if($request->region) {
                  $fond->regions()->sync($request->region);
-             }
-             if($request->district) {
                  $fond->districts()->sync($request->district);
-             }
-            if($request->city){
                 $fond->cities()->sync($request->city);
-            }
             if ($request->file('logo')) {
                 $originalImage = $request->file('logo');
                 $thumbnailImage = Image::make($originalImage);

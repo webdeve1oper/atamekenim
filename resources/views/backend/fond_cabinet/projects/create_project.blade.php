@@ -53,10 +53,10 @@
                     <label for="">Ссылка на видео:</label>
                     <input type="text" name="video" value="" class="form-control">
                 </div>
-                <div class="form-group">
-                    <label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>
-                    <input type="file" name="document" value="" class="form-control">
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>--}}
+                    {{--<input type="file" name="document" value="" class="form-control">--}}
+                {{--</div>--}}
             </div>
             <div class="col-sm-12">
                 <div class="card mb-3">
@@ -184,34 +184,36 @@
                                         @if(count($region['districts'])>0)
                                             <div class="optionBlock">
                                                 <a class="toggleButton" onclick="$(this).siblings('.inOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
+                                                <div class="inputBlock " id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
                                                 <div class="inOptionBlock">
                                                     <!--Район-->
                                                     @foreach($region['districts'] as $district)
                                                         @if(count($district['cities'])>0)
                                                             <div class="optionBlock">
                                                                 <a class="toggleButton" onclick="$(this).siblings('.thirdInOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click')"><input id="{{$district->district_id}}" value="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
                                                                 <div class="inOptionBlock thirdInOptionBlock">
                                                                     <!--Город/Село-->
                                                                     @foreach($district['cities'] as $city)
                                                                         <div class="optionBlock">
-                                                                            <div class="inputBlock" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
+                                                                            <div class="inputBlock" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click');$('.inputBlock.active#district_{{$district->district_id}}').trigger('click');" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" value="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
                                                             </div>
                                                         @else
                                                             <div class="optionBlock">
-                                                                <div class="inputBlock" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock" onclick="$('.inputBlock.active#region_{{$district->district_id}}').trigger('click')" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" value="{{$district->district_id}}"  type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
                                                             </div>
                                                         @endif
                                                     @endforeach
                                                 </div>
                                             </div>
                                         @else
+
                                             <div class="optionBlock">
-                                                <div class="inputBlock" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
+                                                <div class="inputBlock" id="region_{{$region->region_id}}">
+                                                    <input id="{{$region->region_id}}" value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
                                             </div>
                                         @endif
                                     @endforeach
@@ -419,32 +421,32 @@
 
     <script>
         $(document).ready(function () {
-            $('.regionsOpenBlock input[type="checkbox"]').click(function(){
+            var inputss = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+            inputss.find('input').remove();
+            $('.regionsBlock').html(inputss);
+            $('.regionsOpenBlock input[type="checkbox"]').click(function () {
                 var inputs = $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').clone();
+                inputs.find('input').remove();
                 $('.regionsBlock').html(inputs);
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
-                $('.regionsBlock .inputBlock').click(function(){
+                $('.regionsBlock .inputBlock').click(function () {
                     var id = $(this).attr("id");
-                    $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                    $('.regionsOpenBlock #' + id).find('input').prop("checked", false);
                     $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                     $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
                     $(this).remove();
                 });
             });
-            $('.regionsBlock .inputBlock').click(function(){
+            $('.regionsBlock .inputBlock').click(function () {
                 var id = $(this).attr("id");
-                $('.regionsOpenBlock #'+id).find('input').prop( "checked", false );
+                if ($('.regionsOpenBlock').is(':visible')) {
+                    $('.regionsOpenBlock').show();
+                }
+                $('.regionsOpenBlock #' + id).find('input').prop("checked", false);
                 $('.regionsOpenBlock input[type="checkbox"]').parents('.inputBlock').removeClass("active");
                 $('.regionsOpenBlock input[type="checkbox"]:checked').parents('.inputBlock').addClass("active");
                 $(this).remove();
-            });
-            $('.humanIncognitoCheckbox').click(function(){
-                if($(this).is(':checked')){
-                    $(this).siblings('.checker').val('on');
-                }else{
-                    $(this).siblings('.checker').val('off');
-                }
             });
         });
     </script>

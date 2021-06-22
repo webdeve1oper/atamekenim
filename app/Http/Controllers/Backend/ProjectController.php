@@ -104,19 +104,30 @@ class ProjectController extends Controller
             }
             $fond = Fond::find(Auth::user()->id);
             $data = $request->all();
-            $originalImage = $request->file('logo');
-            $thumbnailImage = Image::make($originalImage);
-            $thumbnailPath = '/img/projects';
-            File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-            $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
-            $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
-            $data['logo'] = $thumbnailPath . '/' . $path;
-
+            if($request->file('logo')){
+                $originalImage = $request->file('logo');
+                $thumbnailImage = Image::make($originalImage);
+                $thumbnailPath = '/img/projects';
+                File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
+                $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                $data['logo'] = $thumbnailPath . '/' . $path;
+            }
             $data['fond_id'] = $fond->id;
             $project = Project::create($data);
             $project->fond()->associate($fond);
             $project->AddHelpType()->sync($request->base_help_types);
             $project->scenarios()->sync($request->scenario_id);
+
+            if($request->region) {
+                $project->regions()->sync($request->region);
+            }
+            if($request->district) {
+                $project->districts()->sync($request->district);
+            }
+            if($request->city){
+                $project->cities()->sync($request->city);
+            }
 
             $partners = $request->get('partnerName');
             $sponsors = $request->get('sponsorName');
@@ -212,6 +223,12 @@ class ProjectController extends Controller
             $project->fond()->associate($fond);
             $project->AddHelpType()->sync($request->base_help_types);
             $project->scenarios()->sync($request->scenario_id);
+
+
+
+            $project->regions()->sync($request->region);
+            $project->districts()->sync($request->district);
+            $project->cities()->sync($request->city);
 
             $partners = $request->get('partnerName');
             $sponsors = $request->get('sponsorName');

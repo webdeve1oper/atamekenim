@@ -1,15 +1,15 @@
 <?php
-$fondRegions = Auth::user()->regions()->get();
+$fondRegions = $project->regions()->get();
 if ($fondRegions) {
     $fondRegions = $fondRegions->toArray();
     $fondRegions = array_column($fondRegions, 'region_id');
 }
-$fondcities = Auth::user()->cities()->get();
+$fondcities = $project->cities()->get();
 if ($fondcities) {
     $fondcities = $fondcities->toArray();
     $fondcities = array_column($fondcities, 'city_id');
 }
-$fonddistricts = Auth::user()->districts()->get();
+$fonddistricts = $project->districts()->get();
 if ($fonddistricts) {
     $fonddistricts = $fonddistricts->toArray();
     $fonddistricts = array_column($fonddistricts, 'district_id');
@@ -23,7 +23,7 @@ if ($fonddistricts) {
             <div class="inputBlock @if(in_array($region->region_id, $fondRegions)) active @endif" id="region_{{$region->region_id}}"><input id="{{$region->region_id}}"
                                                                                                                                             @if(in_array($region->region_id, $fondRegions)) checked
                                                                                                                                             @endif value="{{$region->region_id}}" type="checkbox"
-                                                                                                                                            name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                                                                                                                                            name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
             <div class="inOptionBlock">
                 <!--Район-->
                 @foreach($region['districts'] as $district)
@@ -59,7 +59,7 @@ if ($fonddistricts) {
 
         <div class="optionBlock">
             <div class="inputBlock @if(in_array($region->region_id, $fondRegions)) active @endif" id="region_{{$region->region_id}}">
-                <input id="{{$region->region_id}}" @if(in_array($region->region_id, $fondRegions)) checked @endif  value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->text}}</span></div>
+                <input id="{{$region->region_id}}" @if(in_array($region->region_id, $fondRegions)) checked @endif  value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
         </div>
     @endif
 @endforeach
