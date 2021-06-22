@@ -70,23 +70,24 @@
 </script>
 <script>
     ymaps.ready(function(){
-        init('map0');
+        init('0');
         @foreach($offices as $i=> $office)
-
+        init('{{$office->id}}', '{{$office->longitude}}', '{{$office->latitude}}');
         @endforeach
     });
 
     function init(id, longitude = null, latitude = null) {
+        var mapId = 'map'+id;
         var myPlacemark,
-            myMap = new ymaps.Map(id, {
-                zoom: longitude ? 15 : 5,
-                center: [longitude ?? 51.16029659526363, latitude ?? 71.41972787147488],
+            myMap = new ymaps.Map(mapId, {
+                zoom: longitude == '' ? 15 : 5,
+                center: [longitude == ''? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488:latitude],
                 controls: ['searchControl']
             }, {
                 searchControlProvider: 'yandex#search'
             });
 
-            myPlacemark = createPlacemark([longitude ?? 51.16029659526363, latitude ?? 71.41972787147488]);
+            myPlacemark = createPlacemark([longitude == ''? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488:latitude]);
         myMap.geoObjects.add(myPlacemark);
         // Слушаем клик на карте.
         myMap.events.add('click', function (e) {
@@ -105,7 +106,7 @@
                     getAddress(myPlacemark.geometry.getCoordinates());
                 });
             }
-            getAddress(coords);
+            getAddress(coords, id);
         });
 
         // Создание метки.
@@ -119,14 +120,15 @@
         }
 
         // Определяем адрес по координатам (обратное геокодирование).
-        function getAddress(coords) {
-            console.log(coords);
-            $('#longitude').val(coords[0]);
-            $('#latitude').val(coords[1]);
+        function getAddress(coords, id) {
+            console.log('#longitude'+id);
+            var longitude = $('#longitude'+id);
+            var latitude = $('#latitude'+id);
+            longitude.val(coords[0]);
+            latitude.val(coords[1]);
             myPlacemark.properties.set('iconCaption', 'поиск...');
             ymaps.geocode(coords).then(function (res) {
                 var firstGeoObject = res.geoObjects.get(0);
-
                 myPlacemark.properties
                     .set({
                         // Формируем строку с данными об объекте.

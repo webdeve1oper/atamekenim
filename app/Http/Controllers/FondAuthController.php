@@ -108,7 +108,7 @@ class FondAuthController extends Controller
             $bin_year = '20'.$bin_year;
         }
         $data = $request->all();
-        $data['status'] = '1';
+        $data['status'] = '2';
         $data['foundation_date'] = $bin_year.'-'.$bin_month.'-01';
         $data['phone'] = str_replace(['+','(',')', ' '], ['','','',''], $data['phone']);
         $check = $this->create($data);
