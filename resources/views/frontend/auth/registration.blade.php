@@ -40,27 +40,27 @@
                                         </form>
                                         <form action="{{route('post_registration_user')}}" id="mainForm" class="w-100" method="post">
                                             @csrf
-                                            <div class="form-group d-none">
-                                                <input name="first_name" type="text" value="{{old('first_name')}}test" class="form-control mb-3" placeholder="Имя" />
+                                            <div class="form-group">
+                                                <input name="first_name" type="text" value="{{old('first_name')}}" class="form-control mb-3" placeholder="Имя" />
                                                 @if($errors->has('first_name'))
                                                     <span class="error">{{ $errors->first('first_name') }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group d-none">
-                                                <input name="last_name" type="text" value="{{old('last_name')}}test" class="form-control mb-3" placeholder="Фамилия" />
+                                            <div class="form-group">
+                                                <input name="last_name" type="text" value="{{old('last_name')}}" class="form-control mb-3" placeholder="Фамилия" />
                                                 @if($errors->has('last_name'))
                                                     <span class="error">{{ $errors->first('last_name') }}</span>
                                                 @endif
                                             </div>
-                                            <div class="form-group d-none">
-                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}980111454545" class="form-control mb-3" placeholder="ИИН" />
+                                            <div class="form-group">
+                                                <input id="iin" name="iin" type="text" value="{{old('iin')}}" class="form-control mb-3" placeholder="ИИН" />
                                                 @if($errors->has('iin'))
                                                     <span class="error">{{ $errors->first('iin') }}</span>
                                                 @endif
                                             </div>
 
-                                            <div class="form-group d-none">
-                                                <input name="email" type="email" value="{{old('email')}}test@test.ru" class="form-control mb-3" placeholder="Почта" />
+                                            <div class="form-group">
+                                                <input name="email" type="email" value="{{old('email')}}" class="form-control mb-3" placeholder="Почта" />
                                                 @if($errors->has('email'))
                                                     <span class="error">{{ $errors->first('email') }}</span>
                                                 @endif

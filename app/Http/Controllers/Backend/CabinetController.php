@@ -6,6 +6,8 @@ use App\AddHelpType;
 use App\BaseHelpType;
 use App\Fond;
 use App\Help;
+use App\HelpDoc;
+use App\HelpImage;
 use App\Http\Controllers\Controller;
 use App\Review;
 use App\User;
@@ -32,10 +34,11 @@ class CabinetController extends Controller
         $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->with('reviews')->get();
         $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->with('reviews')->get();
 
-        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps','moderateHelps'));
+        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps'));
     }
 
-    public function create(){
+    public function create()
+    {
         $baseHelpTypes = BaseHelpType::all();
         $addHelpTypes = AddHelpType::all();
         $fonds = Fond::all();
@@ -44,21 +47,22 @@ class CabinetController extends Controller
     }
 
 
-    public function help(Request $request){
+    public function help(Request $request)
+    {
         $validator = Validator::make($request->all(),
             [
-                'title'=>'required|min:5',
-                'body'=>'required|min:5',
-                'baseHelpTypes'=>'required',
-                'addHelpTypes'=>'required',
-                'city_id'=>'required',
-                'region_id'=>'required',
+                'title' => 'required|min:5',
+                'body' => 'required|min:5',
+                'baseHelpTypes' => 'required',
+                'addHelpTypes' => 'required',
+                'city_id' => 'required',
+                'region_id' => 'required',
             ],
             [
-                'title.required'=>'Поле обязательно для заполнения'
+                'title.required' => 'Поле обязательно для заполнения'
             ]
         );
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors());
         }
         $data = $request->all();
@@ -67,40 +71,40 @@ class CabinetController extends Controller
         $help = Help::create($data);
 
         $fonds = Fond::pluck('id');
-//        $fonds = Fond::whereIn('id', $data['fond'])->count();
 
-        if($fonds == count($fonds)){
+        if ($fonds == count($fonds)) {
             $help->fond()->attach($fonds);
-        }else{
-            return redirect()->back()->with(['error'=>'Укажите хотябы один фонд']);
+        } else {
+            return redirect()->back()->with(['error' => 'Укажите хотябы один фонд']);
         }
 
-        if(isset($data['addHelpTypes']) && count($data['addHelpTypes'])>0){
+        if (isset($data['addHelpTypes']) && count($data['addHelpTypes']) > 0) {
             $help->addHelpTypes()->attach($data['addHelpTypes']);
         }
 
-        if($help){
-            return redirect()->back()->with(['success'=>'Заявка успешно принята']);
-        }else{
-            return redirect()->back()->with(['error'=>'Что то пошло не так. Попробуйте снова']);
+        if ($help) {
+            return redirect()->back()->with(['success' => 'Заявка успешно принята']);
+        } else {
+            return redirect()->back()->with(['error' => 'Что то пошло не так. Попробуйте снова']);
         }
 
     }
 
-    public function review_to_fond(Request $request){
+    public function review_to_fond(Request $request)
+    {
         $validator = Validator::make($request->all(),
             [
-                'title'=>'required|min:10',
-                'body'=>'required|min:100',
+                'title' => 'required|min:10',
+                'body' => 'required|min:100',
             ]
         );
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $data = $request->all();
         $help = Help::findOrFail($data['help_id']);
-        if($help->status != 'finished'){
+        if ($help->status != 'finished') {
             return redirect()->back()->with('error', 'Заявка еще не завершена!');
         }
         $data['user_id'] = Auth::user()->id;
@@ -108,14 +112,16 @@ class CabinetController extends Controller
         return redirect()->back()->with('success', 'Отзыв отправлен!');
     }
 
-    public function helpPage($id){
+    public function helpPage($id)
+    {
         $help = Help::find($id);
         return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 
-    public function editPage($id){
+    public function editPage($id)
+    {
         $help = Help::find($id);
-        if($help->user_id == Auth::user()->id){
+        if ($help->user_id == Auth::user()->id) {
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
             $baseHelpTypes = AddHelpType::all();
             $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
@@ -123,12 +129,13 @@ class CabinetController extends Controller
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
             return view('backend.cabinet.help.help_edit')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
-        }else{
+        } else {
             return redirect()->route('cabinet')->with(['error' => 'Это заявка не пренадлежит Вам!']);
         }
     }
 
-    public function updateHelp(Request $request, $help_id){
+    public function updateHelp(Request $request, $help_id)
+    {
 //        $validator = Validator::make($request->all(),
 //            [
 //                'body'=>'required|min:5',
@@ -164,6 +171,21 @@ class CabinetController extends Controller
         $help->fonds()->sync($fonds);
         $help->update($data);
         return redirect()->back()->with(['success' => 'Ваша заявка усешно обновлена!']);
+    }
 
+    public function deleteImage(Request $request)
+    {
+        $image = HelpImage::find($request->id);
+        \File::delete(public_path($image->image));
+        $image->delete();
+        return 'success';
+    }
+
+    public function deleteFile(Request $request)
+    {
+        $file = HelpDoc::find($request->id);
+        \File::delete(public_path($file->path));
+        $file->delete();
+        return 'success';
     }
 }

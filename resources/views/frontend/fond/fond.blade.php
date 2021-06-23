@@ -236,9 +236,6 @@
                         <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.mobileGrayContent').slideToggle();">Смотреть реквизиты <i class="fas fa-chevron-down"></i></button>
                         <?php $requisites = []; ?>
                         @if($fond->requisites)
-                            <?php
-                            $requisites = json_decode($fond->requisites, true);
-                            ?>
                             @foreach($requisites as $requisite)
                         <div class="grayContent mobileGrayContent">
                             <h3>{{trans('fonds-page.rec')}}</h3>

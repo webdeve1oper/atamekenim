@@ -8,8 +8,8 @@
                     <div class="col-sm-12">
                         <h1>{{trans('cabinet-appl.appl-personal-page')}}</h1>
                         <ul class="myAccountMenu">
-                            <li><a href="{{route('history')}}">{{trans('cabinet-appl.hist-mess')}}</a></li>
-                            <li><a href="{{route('reviews')}}">{{trans('cabinet-appl.my-rev')}}</a></li>
+                            <li><a href="#{{route('history')}}">{{trans('cabinet-appl.hist-mess')}}</a></li>
+                            <li><a href="#{{route('reviews')}}">{{trans('cabinet-appl.my-rev')}}</a></li>
                             <li><a href="">{{trans('cabinet-appl.message')}}</a></li>
                             <li><a href="">{{trans('cabinet-appl.my-photo')}}</a></li>
                         </ul>
@@ -58,11 +58,16 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>50 000 - 100 000 тг</p>
+                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                                 <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @if($help->admin_status == 'edit')
+                                                <div class="alert alert-info mt-4">
+                                                    Ваша заявка не прошла модерацию! Статус - на доработке
+                                                </div>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
@@ -178,7 +183,7 @@
                     <div class="col-sm-4">
                         <div class="greyContent accountGreyContent">
                             <p class="big">{{trans('cabinet-appl.pers-info')}}</p>
-                            <a href="{{route('editUser', [Auth::user()->id])}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
+{{--                            <a href="{{route('editUser', [Auth::user()->id])}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>--}}
                             <p>
                                 <span>{{trans('cabinet-appl.place-birth')}}</span>
 {{--                                <span>{{Auth::user()}}</span>--}}

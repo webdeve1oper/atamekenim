@@ -81,10 +81,11 @@
                     data: data
                 },
                 function (options) { // success
+                console.log(options);
                     $.ajax({
                       url: '{{route('donation_to_fond')}}',
                       method: 'POST',
-                        data: {'fio': options.data.customerInfo, 'amount': options.amount, 'fond_id': {{$fond->id}},
+                        data: {'fio': options.data.customerInfo, 'amount': options.amount, 'fond_id': {{$fond->id}}},
                         success: function(data){
                           {{--window.location.href= '{{route('success_payment')}}';--}}
                         }
