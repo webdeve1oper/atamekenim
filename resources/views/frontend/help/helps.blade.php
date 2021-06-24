@@ -14,18 +14,18 @@
                                             <input type="text" name="search" placeholder="{{trans('help-search.search-fond')}}">
                                             <button class="btn-default blue" id="search2">{{trans('help-search.find')}}</button>
                                         </div>
-                                        <ul>
-                                            <li>
-                                                <input type="checkbox" name="news" id="news">
-                                                <label for="news" onclick="$(this).toggleClass('active');">{{trans('help-search.new-appl')}}</label>
-                                            </li>
-                                            @foreach($baseHelpTypes as $help)
-                                                <li>
-                                                    <input type="checkbox" name="baseHelpTypes" id="check{{$help->id}}" value="{{$help->id}}">
-                                                    <label type="checkbox" id="check{{$help->id}}" onclick="$(this).toggleClass('active');">{{$help['name_'.app()->getLocale()]}}</label>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                        {{--<ul>--}}
+                                            {{--<li>--}}
+                                                {{--<input type="checkbox" name="news" id="news">--}}
+                                                {{--<label for="news" onclick="$(this).toggleClass('active');">{{trans('help-search.new-appl')}}</label>--}}
+                                            {{--</li>--}}
+                                            {{--@foreach($baseHelpTypes as $help)--}}
+                                                {{--<li>--}}
+                                                    {{--<input type="checkbox" name="baseHelpTypes" id="check{{$help->id}}" value="{{$help->id}}">--}}
+                                                    {{--<label type="checkbox" id="check{{$help->id}}" onclick="$(this).toggleClass('active');">{{$help['name_'.app()->getLocale()]}}</label>--}}
+                                                {{--</li>--}}
+                                            {{--@endforeach--}}
+                                        {{--</ul>--}}
 {{--                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">{{trans('help-search.ras-search')}} <i class="fas fa-chevron-down"></i></a>--}}
                                         <div class="selectBlock" style="display: block">
                                             <div class="dropdown">
@@ -105,7 +105,7 @@
                                             </div>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton7" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    {{('help-search.cat-help')}}
+                                                    {{trans('help-search.cat-help')}}
                                                 </button>
                                                 <div class="dropdown-menu checkbox-menu allow-focus p-2" aria-labelledby="dropdownMenuButton9">
                                                     @foreach($baseHelpTypes as $help)

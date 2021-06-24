@@ -23,7 +23,13 @@ class HelpController extends Controller
                 $helps->orWhereHas('user', function($query) use ($search){
                     $query->where('first_name', $search);
                 });
-                $helps->paginate(5);
+                $helps->orWhereHas('user', function($query) use ($search){
+                    $query->where('last_name', $search);
+                });
+                $helps->orWhereHas('user', function($query) use ($search){
+                    $query->where('patron', $search);
+                });
+                $helps = $helps->paginate(5);
 
                 return view('frontend.help.help_list', compact('helps'));
             }
@@ -50,11 +56,17 @@ class HelpController extends Controller
 
             if ($request->exists('baseHelpTypes')) {
                 $baseHelpTypes = $request->baseHelpTypes;
-                $helps->whereHas('baseHelpTypes', function ($query) use ($baseHelpTypes) {
-                    $query->whereIn('base_help_id', $baseHelpTypes);
+                $helps->whereHas('addHelpTypes', function ($query) use ($baseHelpTypes) {
+                    $query->whereIn('add_help_id', $baseHelpTypes);
                 });
             }
-            $helps->paginate(5);
+            if ($request->exists('regions')) {
+                $regions = $request->regions;
+                $helps->whereHas('region', function ($query) use ($regions) {
+                    $query->whereIn('region_id', $regions);
+                });
+            }
+            $helps = $helps->paginate(5);
 
             return view('frontend.help.help_list', compact('helps'));
         }else{

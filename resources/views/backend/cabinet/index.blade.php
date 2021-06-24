@@ -97,7 +97,7 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>50 000 - 100 000 тг</p>
+                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Кому:</p>
@@ -136,7 +136,7 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>50 000 - 100 000 тг</p>
+                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
@@ -166,7 +166,7 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>50 000 - 100 000 тг</p>
+                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
