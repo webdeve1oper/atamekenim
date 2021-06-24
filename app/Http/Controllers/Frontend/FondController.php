@@ -253,10 +253,11 @@ class FondController extends Controller
     {
         $payment = new Payment();
         $payment->fond_id = $request->fond_id;
-        $payment->anonim = $request->anonim;
+        $payment->anonim = $request->anonim ? 1 : 0;
         $payment->fio = $request->fio;
+        $payment->amount = $request->amount;
         $payment->save();
-        return redirect()->back();
+        return 'ok';
     }
 
 }

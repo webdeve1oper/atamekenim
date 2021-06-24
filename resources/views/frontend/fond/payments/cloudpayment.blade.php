@@ -32,70 +32,55 @@
 </div>
 <script src="https://widget.cloudpayments.ru/bundles/cloudpayments"></script>
 <script type="text/javascript">
-        function payHandler(amount, fio, anonim) {
-            var amount = parseFloat(amount);
-            var widget = new cp.CloudPayments();
-            var receipt = {
-                taxationSystem: 0,
-                email: 'web@conversion.kz', //e-mail покупателя, если нужно отправить письмо с чеком
-                phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
-                customerInfo: fio,
-                isBso: false, //чек является бланком строгой отчетности
-            };
-
-            var old = {
-                Items: [//товарные позиции
-                    {
-                        label: 'Наименование товара 3', //наименование товара
-                        price: 10.00, //цена
-                        quantity: 1.00, //количество
-                        amount: 10.00, //сумма
-                        vat: 0, //ставка НДС
-                        method: 0, // тег-1214 признак способа расчета - признак способа расчета
-                        object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
-                    }
-                ],
-                taxationSystem: 0, //система налогообложения; необязательный, если у вас одна система налогообложения
-                email: 'web@conversion.kz', //e-mail покупателя, если нужно отправить письмо с чеком
-                phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
-                isBso: false, //чек является бланком строгой отчетности
-                amounts:
-                    {
-                        electronic: 900.00, // Сумма оплаты электронными деньгами
-                        advancePayment: 0.00, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
-                        credit: 0.00, // Сумма постоплатой(в кредит) (2 знака после запятой)
-                        provision: 0.00 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
-                    }
-            };
-
-            var data = {};
-            data.cloudPayments = {recurrent: { interval: 'Day', period: 1, customerReceipt: receipt}}; //создание ежемесячной подписки
-
-            widget.charge({ // options
-                    publicId: '{{config('services.cloud_payments.public_id')}}', //id из личного кабинета
-                    description: 'Подписка на ежемесячные платежи', //назначение
-                    amount: amount, //сумма
-                    currency: 'KZT', //валюта
-                    invoiceId: '3', //номер заказа  (необязательно)
-                    accountId: 'web2@conversion.kz', //идентификатор плательщика (обязательно для создания подписки)
-                    data: data
-                },
-                function (options) { // success
-                console.log(options);
-                    $.ajax({
-                      url: '{{route('donation_to_fond')}}',
-                      method: 'POST',
-                        data: {'fio': options.data.customerInfo, 'amount': options.amount, 'fond_id': {{$fond->id}}},
-                        success: function(data){
-                          {{--window.location.href= '{{route('success_payment')}}';--}}
-                        }
-                    });
-                    //действие при успешной оплате
-                },
-                function (reason, options) { // fail
-                    //действие при неуспешной оплате
-                });
+    function payHandler(amount, fio, anonim) {
+        var amount = parseFloat(amount);
+        var widget = new cp.CloudPayments();
+        var receipt = {
+            taxationSystem: 0,
+            email: 'web@conversion.kz', //e-mail покупателя, если нужно отправить письмо с чеком
+            phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+            customerInfo: fio,
+            isBso: false, //чек является бланком строгой отчетности
         };
 
-</script>
+        var receipt = {
+            anonim: anonim,
+            fund: '{{$fond['title_ru']}}',
+            customerInfo: fio,
+            taxationSystem: 0, //система налогообложения; необязательный, если у вас одна система налогообложения
+            email: 'web@conversion.kz', //e-mail покупателя, если нужно отправить письмо с чеком
+            isBso: false, //чек является бланком строгой отчетности
+        };
 
+        var data = {};
+        data.cloudPayments = {recurrent: { interval: 'Day', period: 1, customerReceipt: receipt}}; //создание ежемесячной подписки
+
+        widget.charge({ // options
+                publicId: '{{config('services.cloud_payments.public_id')}}', //id из личного кабинета
+                description: 'Подписка на ежемесячные платежи', //назначение
+                amount: amount, //сумма
+                currency: 'KZT', //валюта
+                customerInfo: fio,
+                invoiceId: '3', //номер заказа  (необязательно)
+                accountId: 'web2@conversion.kz', //идентификатор плательщика (обязательно для создания подписки)
+                data: data
+            },
+            function (options) { // success
+                console.log(options);
+                $.ajax({
+                    url: '{{route('donation_cloudpayments_fond')}}',
+                    method: 'POST',
+                    data: {'_token': '{{csrf_token()}}','fio': options.customerInfo, 'amount': options.amount, 'fond_id': {{$fond->id}}, 'anonim': options.data.cloudPayments.recurrent.customerReceipt.anonim},
+                    success: function(data){
+                        console.log(data);
+                        $('#cloudpayments').modal('hide');
+                    }
+                });
+                //действие при успешной оплате
+            },
+            function (reason, options) { // fail
+                //действие при неуспешной оплате
+            });
+    };
+
+</script>

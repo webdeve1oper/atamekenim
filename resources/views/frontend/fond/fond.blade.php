@@ -178,31 +178,50 @@
                             @endif
                         </div>
                         <div class="bottomContent">
+                            <?php $offices = $fond->offices; ?>
+                            @if($offices)
                             <h3>{{trans('fonds-page.org-map')}}</h3>
-                            <div id="map" class="map"></div>
+                            <select name="" onchange="$('.maps').hide();$('.map'+$(this).val()).show();" class="form-control w-25 float-sm-right mr-sm-5" id="">
+                                @foreach($offices as $key=> $office)
+                                    <option value="{{$office->id}}">{{$office->address}} {{$office->central ? '(Центральный офис)':''}}</option>
+                                @endforeach
+                            </select>
+                            @foreach($offices as $key=> $office)
+                                <div class="map{{$office->id}} maps" style="{{$key!=0?'display:none':''}}">
+                                    <div id="map{{$office->id}}" class="map" ></div>
+                                </div>
+                            @endforeach
                             <a href="{{route('request_help')}}" class="btn-default blue">{{trans('fonds-page.appl-ass')}}</a>
                             <script>
-                                ymaps.ready(init);
-                                function init() {
+                                ymaps.ready(function() {
+                                    @foreach($offices as $office)
+                                    init('{{$office->id}}', '{{$office->longitude}}', '{{$office->latitude}}', '{{$office['address']}}');
+                                    @endforeach
+                                });
+                                function init(id, longitude = null, latitude = null, title) {
+                                    var mapId = 'map' + id;
                                     var myPlacemark,
-                                        myMap = new ymaps.Map('map', {
-                                            @if($fond->longitude && $fond->latitude)
-                                            center: [{{$fond->longitude}}, {{$fond->latitude}}],
+                                        myMap = new ymaps.Map(mapId, {
                                             zoom: 15,
-                                            @else
-                                            center: [48.045133, 67.492732],
-                                            zoom: 5,
-                                            @endif
+                                            center: [longitude == '' ? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488 : latitude],
                                             controls: ['searchControl']
                                         }, {
                                             searchControlProvider: 'yandex#search'
                                         });
-                                    @if($fond->longitude && $fond->latitude)
-                                        myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
-                                        myMap.geoObjects.add(myPlacemark);
-                                    @endif
+
+                                    myPlacemark = createPlacemark([longitude == '' ? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488 : latitude], title);
+                                    myMap.geoObjects.add(myPlacemark);
+                                }
+                                function createPlacemark(coords, title) {
+                                    return new ymaps.Placemark(coords, {
+                                        iconCaption: title
+                                    }, {
+                                        preset: 'islands#violetDotIconWithCaption',
+                                        draggable: false
+                                    });
                                 }
                             </script>
+                                @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -249,9 +268,9 @@
                     </div>
                     @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
-                        <div class="galleryBlock">
+                        <div class="galleryBlock ml-0">
                             <h3>{{trans('fonds-page.photo-org')}}</h3>
-                            <div class="row">
+                            <div class="row m-0">
                                 @foreach($fond->images()->orderBy('orders','asc')->get() as $i=> $image)
                                     @if($i == 3)
                                         @break
