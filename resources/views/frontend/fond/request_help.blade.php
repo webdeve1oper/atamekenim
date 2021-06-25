@@ -151,7 +151,7 @@
 
                             <div class="form-group mb-4">
                                 <label for="">{{trans('fonds.video-share')}}</label>
-                                <input type="text" name="videoUrl" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
+                                <input type="text" name="video" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
                             </div>
 
                             <div class="form-group mb-4">

@@ -235,16 +235,15 @@ class FondController extends Controller
         }
     }
 
-    public function requisiteCreate(Request $request, $id){
+    public function requisiteCreate(Request $request){
         $requisites = $request->all();
-        $requisite = FondRequisite::find($id);
         $requisites['fond_id'] = Auth::user()->id;
         if(array_key_exists('aggree', $requisites)){
             if($requisites['aggree'] == 'on'){
                 $requisites['aggree'] = 1;
             }
         }
-        $requisite->update($requisites);
+        $requisite = FondRequisite::create($requisites);
         if($requisite){
             return  redirect()->back();
         }else{

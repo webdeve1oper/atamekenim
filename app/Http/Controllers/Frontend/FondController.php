@@ -51,7 +51,7 @@ class FondController extends Controller
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
 
-    public function request_help(Request $request)
+    public function requestHelp(Request $request)
     {
 //        if ($request->ajax()) {
 //            $relatedHelpIds = $request->destinations;
@@ -70,7 +70,7 @@ class FondController extends Controller
 //                ]);
                 foreach($request->file('photo') as $image)
                 {
-                    $filename = time() . $help->id . '.' . $image->getClientOriginalExtension();
+                    $filename = microtime().$help->id.'.'.$image->getClientOriginalExtension();
                     $thumbnailImage = Image::make($image);
                     $path = '/img/help/'.$filename;
                     $thumbnailImage->resize(700, null)->save(public_path().$path);
@@ -83,7 +83,7 @@ class FondController extends Controller
 //                ]);
                 foreach($request->file('doc') as $doc)
                 {
-                    $filename = time() . $help->id . '.' . $doc->getClientOriginalExtension();
+                    $filename = microtime().$help->id.'.'.$doc->getClientOriginalExtension();
                     $path = '/img/help/docs/';
                     $doc->move(public_path().$path, $filename);
                     HelpDoc::create(['help_id'=>$help->id, 'path'=>$path.$filename, 'original_name'=>$doc->getClientOriginalName()]);
@@ -253,10 +253,11 @@ class FondController extends Controller
     {
         $payment = new Payment();
         $payment->fond_id = $request->fond_id;
-        $payment->anonim = $request->anonim;
+        $payment->anonim = $request->anonim ? 1 : 0;
         $payment->fio = $request->fio;
+        $payment->amount = $request->amount;
         $payment->save();
-        return redirect()->back();
+        return 'ok';
     }
 
 }

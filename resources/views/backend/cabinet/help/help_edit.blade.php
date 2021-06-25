@@ -141,6 +141,19 @@
 
                         <div class="form-group mb-4">
                             <label for="exampleInputEmail1">{{trans('fonds.attach-photo-video')}}</label>
+                            <ul class="justify-content-start d-flex list-unstyled">
+                                @foreach($help->images as $image)
+                                    <li class="mr-4" style="position: relative;" id="file-{{$image->id}}">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <img src="{{$image->image}}" class="img-fluid" style="max-width: 200px; height: 100px; object-fit: cover;" alt="">
+                                                <button class="deletefile" type="button" style="top: 5px;" onclick="deleteImage({{$image->id}});"><i style="color: #0053a5;" class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
                             <br>
                             <div class="input-group">
                                 <input type="file" id="file" name="photo[]" class="form-control photo">
@@ -153,12 +166,17 @@
 
                         <div class="form-group mb-4">
                             <label for="">{{trans('fonds.video-share')}}</label>
-                            <input type="text" name="videoUrl" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
+                            <input type="text" name="video" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
                         </div>
 
                         <div class="form-group mb-4">
                             <label for="exampleInputEmail1">{{trans('fonds.attach-doc-help')}}</label>
                             <br>
+                            <ul class="justify-content-start d-flex list-unstyled">
+                                @foreach($help->docs as $doc)
+                                    <li class="pr-4"><div class="card p-2 pr-4"><a href="{{$doc->path}}">{{$doc->original_name}}</a><button class="deletefile" type="button" onclick="deleteFile({{$doc->id}});"><i class="fas fa-times" style="color: #0053a5"></i></button></div></li>
+                                @endforeach
+                            </ul>
                             <div class="input-group">
                                 <input type="file"  class="form-control docs" name="doc[]">
                                 <div class="input-group-append" style="display: none;">
@@ -176,6 +194,45 @@
             </div>
         </div>
     </div>
+    <style>
+        .deletefile{
+            position: absolute;
+            right: 2px;
+            padding: 3px;
+            padding-top: 0px;
+            background: none;
+            border: none;
+            box-shadow: none;
+        }
+    </style>
+    <script>
+        function deleteImage(id){
+            $.ajax({
+                url: '{{route('delete_help_image')}}',
+                method: 'GET',
+                data: {'_token':'{{csrf_token()}}', 'id': id},
+                success: function(){
+                    $('#image-'+id).fadeOut('slow');
+                    setTimeout(function(){
+                        $('#image-'+id).remove();
+                    }, 600);
+                }
+            })
+        }
+        function deleteFile(id){
+            $.ajax({
+                url: '{{route('delete_help_file')}}',
+                method: 'GET',
+                data: {'_token':'{{csrf_token()}}', 'id': id},
+                success: function(){
+                    $('#file-'+id).fadeOut('slow');
+                    setTimeout(function(){
+                        $('#file-'+id).remove();
+                    }, 600);
+                }
+            })
+        }
+    </script>
     @include('backend.cabinet.help.script')
 @endsection
 @extends('frontend.layout')

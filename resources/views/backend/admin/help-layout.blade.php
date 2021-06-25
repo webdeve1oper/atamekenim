@@ -7,7 +7,7 @@
             <h1>Обращение: ID{{ $help->id }}</h1>
         </div>
         <div class="col-sm-6">
-            @if($help->admin_status == 'moderate')
+            @if($help->admin_status == 'moderate' or $help->admin_status == 'edit')
                 <ul class="controlButton">
                     <li>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить</button>
@@ -64,14 +64,28 @@
                         echo "в течение 1 года";
                         break;
                 }
+                $user = \App\User::find($help->user_id)->first();
+                $images = $help->images;
                 ?></p>
             <p><span>Описание необходимой помощи:</span> </p>
             <p>{{ $help->body }}</p>
-            <p><span>Фотографии получателя помощи:</span> Отсутствуют</p>
-            <p><span>Видео получателя помощи:</span> Отсутствует</p>
-            <p><span>Документы:</span> @foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
-            <p><span>Контакты заявителя:</span> +77012222232</p>
-            <p><span>E-mail:</span> ivan@mail.ru</p>
+            <p><span>Фотографии получателя помощи:</span> @if($images)
+                <ul class="justify-content-start d-flex list-unstyled">
+                    @foreach($images as $image)
+                        <li class="mr-4" style="position: relative;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="{{$image->image}}" class="img-fluid" style="max-width: 200px; height: 100px; object-fit: cover;" alt="">
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                @endif</p>
+            <p><span>Видео получателя помощи:</span> {{$help->video ?? 'отсутствует'}}</p>
+            <p><span>Документы:</span> <br>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a> <br>@endforeach</p>
+            <p><span>Контакты заявителя:</span> {{$user->phone}}</p>
+            <p><span>E-mail:</span> {{$user->email}}</p>
 
 
             <!-- Одобрить запрос -->

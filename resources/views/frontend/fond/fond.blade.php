@@ -178,31 +178,50 @@
                             @endif
                         </div>
                         <div class="bottomContent">
+                            <?php $offices = $fond->offices; ?>
+                            @if($offices)
                             <h3>{{trans('fonds-page.org-map')}}</h3>
-                            <div id="map" class="map"></div>
+                            <select name="" onchange="$('.maps').hide();$('.map'+$(this).val()).show();" class="form-control w-25 float-sm-right mr-sm-5" id="">
+                                @foreach($offices as $key=> $office)
+                                    <option value="{{$office->id}}">{{$office->address}} {{$office->central ? '(Центральный офис)':''}}</option>
+                                @endforeach
+                            </select>
+                            @foreach($offices as $key=> $office)
+                                <div class="map{{$office->id}} maps" style="{{$key!=0?'display:none':''}}">
+                                    <div id="map{{$office->id}}" class="map" ></div>
+                                </div>
+                            @endforeach
                             <a href="{{route('request_help')}}" class="btn-default blue">{{trans('fonds-page.appl-ass')}}</a>
                             <script>
-                                ymaps.ready(init);
-                                function init() {
+                                ymaps.ready(function() {
+                                    @foreach($offices as $office)
+                                    init('{{$office->id}}', '{{$office->longitude}}', '{{$office->latitude}}', '{{$office['address']}}');
+                                    @endforeach
+                                });
+                                function init(id, longitude = null, latitude = null, title) {
+                                    var mapId = 'map' + id;
                                     var myPlacemark,
-                                        myMap = new ymaps.Map('map', {
-                                            @if($fond->longitude && $fond->latitude)
-                                            center: [{{$fond->longitude}}, {{$fond->latitude}}],
+                                        myMap = new ymaps.Map(mapId, {
                                             zoom: 15,
-                                            @else
-                                            center: [48.045133, 67.492732],
-                                            zoom: 5,
-                                            @endif
+                                            center: [longitude == '' ? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488 : latitude],
                                             controls: ['searchControl']
                                         }, {
                                             searchControlProvider: 'yandex#search'
                                         });
-                                    @if($fond->longitude && $fond->latitude)
-                                        myPlacemark =  new ymaps.Placemark([{{$fond->longitude}}, {{$fond->latitude}}]);
-                                        myMap.geoObjects.add(myPlacemark);
-                                    @endif
+
+                                    myPlacemark = createPlacemark([longitude == '' ? 51.16029659526363 : longitude, latitude == '' ? 71.41972787147488 : latitude], title);
+                                    myMap.geoObjects.add(myPlacemark);
+                                }
+                                function createPlacemark(coords, title) {
+                                    return new ymaps.Placemark(coords, {
+                                        iconCaption: title
+                                    }, {
+                                        preset: 'islands#violetDotIconWithCaption',
+                                        draggable: false
+                                    });
                                 }
                             </script>
+                                @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -236,9 +255,6 @@
                         <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.mobileGrayContent').slideToggle();">Смотреть реквизиты <i class="fas fa-chevron-down"></i></button>
                         <?php $requisites = []; ?>
                         @if($fond->requisites)
-                            <?php
-                            $requisites = json_decode($fond->requisites, true);
-                            ?>
                             @foreach($requisites as $requisite)
                         <div class="grayContent mobileGrayContent">
                             <h3>{{trans('fonds-page.rec')}}</h3>
@@ -252,9 +268,9 @@
                     </div>
                     @if(count($fond->images)>0)
                     <div class="col-sm-4 bottomContent">
-                        <div class="galleryBlock">
+                        <div class="galleryBlock ml-0">
                             <h3>{{trans('fonds-page.photo-org')}}</h3>
-                            <div class="row">
+                            <div class="row m-0">
                                 @foreach($fond->images()->orderBy('orders','asc')->get() as $i=> $image)
                                     @if($i == 3)
                                         @break
@@ -347,83 +363,50 @@
             </div>
                 @endif
         </div>
-
-        <div class="container-fluid default organizationsBlock inOrganizationsBlock d-none">
+        <?php $payments = $fond->payments ?>
+        @if($payments)
+        <div class="container-fluid default organizationsBlock inOrganizationsBlock">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
                         <h4>{{trans('fonds-page.th-trusted')}}</h4>
                         <a href="" class="readMore">{{trans('fonds-page.all-see')}} <span class="miniArrow">›</span></a>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="paginationBlock">
-                            <ul class="pagination">
-                                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>
-                                <li class="page-item"><a class="page-link" href="">2</a></li>
-                                <li class="page-item"><a class="page-link" href="">3</a></li>
-                                <li class="page-item"><a class="page-link" href="">4</a></li>
-                                <li class="page-item"><a class="page-link" href="">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link arrows" href="" rel="next" aria-label="pagination.next">›</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+{{--                    <div class="col-sm-6">--}}
+{{--                        <div class="paginationBlock">--}}
+{{--                            <ul class="pagination">--}}
+{{--                                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>--}}
+{{--                                <li class="page-item"><a class="page-link" href="">2</a></li>--}}
+{{--                                <li class="page-item"><a class="page-link" href="">3</a></li>--}}
+{{--                                <li class="page-item"><a class="page-link" href="">4</a></li>--}}
+{{--                                <li class="page-item"><a class="page-link" href="">5</a></li>--}}
+{{--                                <li class="page-item">--}}
+{{--                                    <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>--}}
+{{--                                </li>--}}
+{{--                                <li class="page-item">--}}
+{{--                                    <a class="page-link arrows" href="" rel="next" aria-label="pagination.next">›</a>--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="col-sm-12">
                         <div class="organizationsList">
+                            @foreach($payments as $payment)
                             <div class="item">
                                 <ul>
                                     <li><p class="name">Частное лицо</p></li>
-                                    <li><p>11.150.000 тг</p></li>
-                                    <li><p>20:15, 19.10.2020</p></li>
+                                    <li><p>{{$payment->amount}} тг</p></li>
+                                    <li><p>{{date('H:i d-m-Y', strtotime($payment->created_at))}}</p></li>
                                     <li><p>Онлайн перевод</p></li>
-                                    <li><a href="">Национальный Музей</a></li>
                                 </ul>
                             </div>
-                            <div class="item">
-                                <ul>
-                                    <li><a href="" class="name">Менің Атамекенім</a></li>
-                                    <li><p>11.150.000 тг</p></li>
-                                    <li><p>20:15, 19.10.2020</p></li>
-                                    <li><p>Онлайн перевод</p></li>
-                                    <li><a href="">Национальный Музей</a></li>
-                                </ul>
-                            </div>
-                            <div class="item">
-                                <ul>
-                                    <li><p class="name">Частное лицо</p></li>
-                                    <li><p>11.150.000 тг</p></li>
-                                    <li><p>20:15, 19.10.2020</p></li>
-                                    <li><p>Онлайн перевод</p></li>
-                                    <li><a href="">Национальный Музей</a></li>
-                                </ul>
-                            </div>
-                            <div class="item">
-                                <ul>
-                                    <li><a href="" class="name">Менің Атамекенім</a></li>
-                                    <li><p>11.150.000 тг</p></li>
-                                    <li><p>20:15, 19.10.2020</p></li>
-                                    <li><p>Онлайн перевод</p></li>
-                                    <li><a href="">Национальный Музей</a></li>
-                                </ul>
-                            </div>
-                            <div class="item">
-                                <ul>
-                                    <li><p class="name">Частное лицо</p></li>
-                                    <li><p>11.150.000 тг</p></li>
-                                    <li><p>20:15, 19.10.2020</p></li>
-                                    <li><p>Онлайн перевод</p></li>
-                                    <li><a href="">Национальный Музей</a></li>
-                                </ul>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @endif
         @if(count($fond->partners)>0)
         <div class="container-fluid default ourPartners d-none d-sm-block">
             <div class="container">
