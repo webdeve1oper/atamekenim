@@ -34,10 +34,6 @@ class Fond extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-//    public function __construct() {
-//        parent::__construct();
-//    }
-
     public function getAuthPassword()
     {
         return $this->password;
@@ -77,10 +73,6 @@ class Fond extends Authenticatable
     {
         return $this->belongsToMany(Destination::class, 'fond_destinations', 'fond_id', 'destination_id');
     }
-
-//    public function destinations_attribute(){
-//        return $this->belongsToMany(DestinationAttribute::class, 'fond_destinations_attribute', 'fond_id', 'destination_attribute_id');
-//    }
 
     public function cashHelpTypes()
     {
@@ -150,5 +142,10 @@ class Fond extends Authenticatable
     public function scenarios()
     {
         return $this->belongsToMany(Scenario::class, 'fond_scenarios', 'fond_id', 'scenario_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
