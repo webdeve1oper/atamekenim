@@ -138,7 +138,6 @@ class FondController extends Controller
         if ($request->method() == 'POST') {
             $fond = Fond::find(Auth::user()->id);
             $fond->baseHelpTypes()->sync($request->base_help_types);
-            $fond->regions()->sync($request->regions);
             $fond->addHelpTypes()->sync($request->add_help_types);
             $fond->destinations()->sync($request->destinations);
             $fond->cashHelpTypes()->sync($request->cashHelpTypes);

@@ -137,7 +137,10 @@
             $('#districts').select2({data: datas, allowClear: true});
         }else{
             $('.districts').hide();
+            $('#districts').select2({data: [{id: '0', text: ''}], allowClear: true});
+            $('.districts option').first().prop('selected', true);
             $('.cities').hide();
+            $('.cities option').first().prop('selected', true);
         }
     });
 
@@ -158,7 +161,7 @@
         });
 
         $('#cities').empty();
-        datas.push({id: '0', text: '-'});
+        datas.push({id: 0, text: '-'});
         for (let [key, value] of Object.entries(json[region_id].districts[district_id].cities)) {
             datas.push({id: value.city_id, text: value.title_ru});
         }
@@ -167,6 +170,7 @@
             $('#cities').select2({data: datas, allowClear: true});
         }else{
             $('.cities').hide();
+            $('#districts').select2({data: [{id: '0', text: ''}], allowClear: true});
         }
 
     });

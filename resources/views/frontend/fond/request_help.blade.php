@@ -86,14 +86,18 @@
                                 <div class="col-sm-4 districts" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">{{trans('fonds.disctrit')}}</label>
-                                        <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts"></select>
+                                        <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts">
+                                            <option value="0"></option>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-4 cities" style="display: none">
                                     <div class="form-group mb-4">
                                         <label for="">{{trans('fonds.city')}}</label>
-                                        <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities"></select>
+                                        <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities">
+                                            <option value="0"></option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +105,7 @@
 
                             <div class="form-group mb-4 baseHelpTypes">
                                 <label for="baseHelpTypes">{{trans('fonds.check-scope-help')}}</label>
-                                <select name="baseHelpTypes[]" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
+                                <select name="baseHelpTypes" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
                                     @foreach($baseHelpTypes as $destionation)
                                         <option value="{{$destionation->id}}">{{$destionation->name_ru}}</option>
                                     @endforeach
@@ -172,17 +176,18 @@
                         </form>
                         @include('frontend.fond.script')
                         <script>
-                            {{--$('#request_help').submit(function () {--}}
-                            {{--    $.ajax({--}}
-                            {{--        method: 'get',--}}
-                            {{--        url: '{{route('request_help')}}',--}}
-                            {{--        data: $('#request_help').serialize(),--}}
-                            {{--        success: function (data) {--}}
-                            {{--            console.log(data);--}}
-                            {{--        }--}}
-                            {{--    });--}}
-                            {{--    return false;--}}
-                            {{--});--}}
+                            $('#request_help').submit(function () {
+
+                                $.ajax({
+                                    method: 'get',
+                                    url: '{{route('request_help')}}',
+                                    data: $('#request_help').serialize(),
+                                    success: function (data) {
+                                        console.log(data);
+                                    }
+                                });
+                                return false;
+                            });
                         </script>
                     </div>
                 </div>

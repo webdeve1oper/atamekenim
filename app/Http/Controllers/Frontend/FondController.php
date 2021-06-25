@@ -31,12 +31,8 @@ use Intervention\Image\Facades\Image;
 
 class FondController extends Controller
 {
-
-    //
     public function fond($id)
     {
-//        $client = new Config(config('app.PUBLIC_KEY'), config('app.PRIVATE_KEY'));
-//        $request = SubscriptionsCreateRequestBuilder::buildRequest();
         $fond = Fond::where('id', $id)->with('projects')->with('helps')->first();
         $baseHelpTypes = AddHelpType::all();
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
@@ -53,15 +49,54 @@ class FondController extends Controller
 
     public function requestHelp(Request $request)
     {
-//        if ($request->ajax()) {
+        if ($request->ajax()) {
+            $inputs = $request->all();
+
+            $fonds = Fond::select(['id','title_ru'])->whereHas('scenarios', function($query) use ($inputs){
+                $query->where('scenario_id', $inputs['who_need_help']);
+            })->whereHas('baseHelpTypes', function($query) use ($inputs){
+                $query->where('base_help_id', $inputs['baseHelpTypes']);
+            })->orWhereHas('addHelpTypes', function($query) use ($inputs){
+                $query->where('add_help_id', $inputs['baseHelpTypes']);
+            });
+
+            if ($inputs['city_id'] != 0) {
+                $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
+                    $query->where('fond_cities.city_id', $inputs['city_id']);
+                });
+            }elseif($inputs['district_id'] != 0){
+                $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
+                    $query->where('fond_districts.district_id', $inputs['district_id']);
+                });
+            }else{
+                $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
+                    $query->where('fond_regions.region_id', $inputs['region_id']);
+                });
+            }
+
+            $fonds = $fonds->with(['cities', 'districts', 'regions'])->get()->toArray();
+            dd($fonds);
+            $compares = [];
+            foreach ($fonds as $fond){
+
+            }
+
+            dd($fonds);
+            return 'tset';
 //            $relatedHelpIds = $request->destinations;
 //            $scenario_id = $request->who_need_help;
 //            $relatedFonds = Fond::whereHas('scenarios', function($query) use ($scenario_id){
 //                $query->where('scenario_id', $scenario_id);
 //            })->get();
 //            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
-//        }
+        }
         if ($request->method() == 'POST') {
+            $this->validate($request, [
+                'body' => 'required|min:3',
+                'destinations' => 'required',
+                'baseHelpTypes' => 'required',
+            ]);
+
             $request['user_id'] = Auth::user()->id;
             $help = Help::create($request->all());
             if($request->hasFile('photo')){
@@ -121,7 +156,6 @@ class FondController extends Controller
 
             if ($request->exists('destination')) {
                 $destination = $request->destination;
-
                 $fonds->whereHas('destinations', function ($query) use ($destination) {
                     $query->whereIn('destinations.id', $destination);
                 });
@@ -149,7 +183,6 @@ class FondController extends Controller
                     $query->whereIn('cash_help_size_id', $cashHelpSize);
                 });
             }
-
 
             if ($request->exists('baseHelpTypes')) {
                 $baseHelpTypes = $request->baseHelpTypes;
@@ -196,7 +229,6 @@ class FondController extends Controller
                     $query->whereIn('cash_help_size_id', $cashHelpSize);
                 });
             }
-
 
             if ($request->exists('baseHelpTypes')) {
                 $baseHelpTypes = $request->baseHelpTypes;

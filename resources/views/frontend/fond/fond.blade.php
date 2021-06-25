@@ -179,7 +179,7 @@
                         </div>
                         <div class="bottomContent">
                             <?php $offices = $fond->offices; ?>
-                            @if($offices)
+                            @if(count($offices)>0)
                             <h3>{{trans('fonds-page.org-map')}}</h3>
                             <select name="" onchange="$('.maps').hide();$('.map'+$(this).val()).show();" class="form-control w-25 float-sm-right mr-sm-5" id="">
                                 @foreach($offices as $key=> $office)
@@ -364,48 +364,48 @@
                 @endif
         </div>
         <?php $payments = $fond->payments ?>
-        @if($payments)
-        <div class="container-fluid default organizationsBlock inOrganizationsBlock">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4>{{trans('fonds-page.th-trusted')}}</h4>
-                        <a href="" class="readMore">{{trans('fonds-page.all-see')}} <span class="miniArrow">›</span></a>
-                    </div>
-{{--                    <div class="col-sm-6">--}}
-{{--                        <div class="paginationBlock">--}}
-{{--                            <ul class="pagination">--}}
-{{--                                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>--}}
-{{--                                <li class="page-item"><a class="page-link" href="">2</a></li>--}}
-{{--                                <li class="page-item"><a class="page-link" href="">3</a></li>--}}
-{{--                                <li class="page-item"><a class="page-link" href="">4</a></li>--}}
-{{--                                <li class="page-item"><a class="page-link" href="">5</a></li>--}}
-{{--                                <li class="page-item">--}}
-{{--                                    <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>--}}
-{{--                                </li>--}}
-{{--                                <li class="page-item">--}}
-{{--                                    <a class="page-link arrows" href="" rel="next" aria-label="pagination.next">›</a>--}}
-{{--                                </li>--}}
-{{--                            </ul>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                    <div class="col-sm-12">
-                        <div class="organizationsList">
-                            @foreach($payments as $payment)
-                            <div class="item">
-                                <ul>
-                                    <li><p class="name">Частное лицо</p></li>
-                                    <li><p>{{$payment->amount}} тг</p></li>
-                                    <li><p>{{date('H:i d-m-Y', strtotime($payment->created_at))}}</p></li>
-                                    <li><p>Онлайн перевод</p></li>
-                                </ul>
+        @if(count($payments)>0)
+            <div class="container-fluid default organizationsBlock inOrganizationsBlock">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>{{trans('fonds-page.th-trusted')}}</h4>
+                            <a href="" class="readMore">{{trans('fonds-page.all-see')}} <span class="miniArrow">›</span></a>
+                        </div>
+    {{--                    <div class="col-sm-6">--}}
+    {{--                        <div class="paginationBlock">--}}
+    {{--                            <ul class="pagination">--}}
+    {{--                                <li class="page-item active" aria-current="page"><span class="page-link">1</span></li>--}}
+    {{--                                <li class="page-item"><a class="page-link" href="">2</a></li>--}}
+    {{--                                <li class="page-item"><a class="page-link" href="">3</a></li>--}}
+    {{--                                <li class="page-item"><a class="page-link" href="">4</a></li>--}}
+    {{--                                <li class="page-item"><a class="page-link" href="">5</a></li>--}}
+    {{--                                <li class="page-item">--}}
+    {{--                                    <a class="page-link arrows" href="" rel="prev" aria-label="pagination.previous">‹</a>--}}
+    {{--                                </li>--}}
+    {{--                                <li class="page-item">--}}
+    {{--                                    <a class="page-link arrows" href="" rel="next" aria-label="pagination.next">›</a>--}}
+    {{--                                </li>--}}
+    {{--                            </ul>--}}
+    {{--                        </div>--}}
+    {{--                    </div>--}}
+                        <div class="col-sm-12">
+                            <div class="organizationsList">
+                                @foreach($payments as $payment)
+                                <div class="item">
+                                    <ul>
+                                        <li><p class="name">Частное лицо</p></li>
+                                        <li><p>{{$payment->amount}} тг</p></li>
+                                        <li><p>{{date('H:i d-m-Y', strtotime($payment->created_at))}}</p></li>
+                                        <li><p>Онлайн перевод</p></li>
+                                    </ul>
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         @endif
         @if(count($fond->partners)>0)
         <div class="container-fluid default ourPartners d-none d-sm-block">
@@ -432,7 +432,7 @@
             </div>
         </div>
         @endif
-
+        @if(count($relatedFonds)>0)
             <div class="container-fluid default otherOrganizations d-none d-sm-block">
             <div class="container">
                 <div class="row">
@@ -452,6 +452,7 @@
                 </div>
             </div>
         </div>
+            @endif
     </div>
 @include('frontend.fond.payments.cloudpayment')
 @include('frontend.fond.payments.jusan')
