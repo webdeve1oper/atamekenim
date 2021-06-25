@@ -14,6 +14,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Image;
 use App\Scenario;
 use App\Region;
 use App\Destination;
@@ -118,8 +120,40 @@ class CabinetController extends Controller
         return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 
-    public function editPage($id)
-    {
+    public function editUser(){
+        $user = User::find(Auth::user()->id);
+            return view('backend.cabinet.edit_info')->with(compact('user'));
+    }
+    public function updateUser(Request $request){
+        $user = User::find(Auth::user()->id);
+        if($request){
+                $validator = Validator::make($request->all(),
+                    [
+                        'avatar' => 'mimes:jpeg,jpg,png|max:1000',
+                    ]
+                );
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+                if($request->file('avatar')){
+                    $originalImage = $request->file('avatar');
+                    $thumbnailImage = Image::make($originalImage);
+                    $thumbnailPath = '/img/avatars';
+                    File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                    $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
+                    $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                    $user->avatar = $thumbnailPath . '/' . $path;
+                }
+                $user->email = $request->email;
+                $user->about = $request->about;
+                $user->save();
+                return redirect()->route('cabinet')->with(['success' => 'Личная информация успешно обновлена!']);
+        }else{
+            return redirect()->route('cabinet')->with(['error' => 'Что то пошло не так!']);
+        }
+    }
+
+    public function editPage($id){
         $help = Help::find($id);
         if ($help->user_id == Auth::user()->id) {
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
