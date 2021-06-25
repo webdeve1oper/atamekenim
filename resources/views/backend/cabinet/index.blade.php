@@ -178,7 +178,7 @@
                     <div class="col-sm-4">
                         <div class="greyContent accountGreyContent">
                             <p class="big">{{trans('cabinet-appl.pers-info')}}</p>
-                            <a href="{{route('editUser', [Auth::user()->id])}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
+                            <a href="{{route('editUser')}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
                             <p>
                                 <span>{{trans('cabinet-appl.place-birth')}}</span>
 {{--                                <span>{{Auth::user()}}</span>--}}

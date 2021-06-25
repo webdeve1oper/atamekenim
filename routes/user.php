@@ -3,7 +3,8 @@
 //Auth::routes();
 Route::group(['middleware'=>'auth'], function(){
     Route::match(['get','post'], 'request-for-help', 'Frontend\FondController@request_help')->name('request_help');
-    Route::get('cabinet/{id}/edit', 'Backend\CabinetController@editUser')->name('editUser');
+    Route::get('cabinet/edit', 'Backend\CabinetController@editUser')->name('editUser');
+    Route::post('cabinet/update-info', 'Backend\CabinetController@updateUser')->name('updateUser');
     Route::post('cabinet/{id}/edit', 'Backend\CabinetController@updateHelp')->name('update_help');
     Route::get('cabinet', 'Backend\CabinetController@index')->name('cabinet');
     Route::post('fond/help', 'Backend\CabinetController@help')->name('helpfond');
