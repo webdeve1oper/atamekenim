@@ -32,6 +32,6 @@ class HistoryForFonds extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('history_for_fonds');
     }
 }

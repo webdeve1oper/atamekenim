@@ -80,8 +80,8 @@
         </div>
     </div>
     <div class="col-sm-6 rightBlock">
-        <button class="btn-default blue">{{trans('fonds.reg-reestr')}}</button>
-        <button class="btn-default">{{trans('fonds.more-analytics')}}</button>
+        <a href="{{route('registration_fond')}}" class="btn-default blue">{{trans('fonds.reg-reestr')}}</a>
+{{--        <button class="btn-default">{{trans('fonds.more-analytics')}}</button>--}}
     </div>
     @else
     <div class="col-sm-12">
