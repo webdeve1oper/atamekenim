@@ -52,43 +52,64 @@ class FondController extends Controller
         if ($request->ajax()) {
             $inputs = $request->all();
 
-            $fonds = Fond::select(['id','title_ru'])->whereHas('scenarios', function($query) use ($inputs){
+            $fonds = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->whereHas('scenarios', function($query) use ($inputs){
                 $query->where('scenario_id', $inputs['who_need_help']);
             })->whereHas('baseHelpTypes', function($query) use ($inputs){
                 $query->where('base_help_id', $inputs['baseHelpTypes']);
             })->orWhereHas('addHelpTypes', function($query) use ($inputs){
                 $query->where('add_help_id', $inputs['baseHelpTypes']);
             });
-
-            if ($inputs['city_id'] != 0) {
-                $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
-                    $query->where('fond_cities.city_id', $inputs['city_id']);
-                });
-            }elseif($inputs['district_id'] != 0){
-                $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
-                    $query->where('fond_districts.district_id', $inputs['district_id']);
-                });
-            }else{
-                $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
-                    $query->where('fond_regions.region_id', $inputs['region_id']);
-                });
+            if($inputs['region_id'] != 728){
+                if ($inputs['city_id'] != 0) {
+                    $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
+                        $query->where('fond_cities.city_id', $inputs['city_id']);
+                    });
+                }elseif($inputs['district_id'] != 0){
+                    $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
+                        $query->where('fond_districts.district_id', $inputs['district_id']);
+                    });
+                }else{
+                    $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
+                        $query->where('fond_regions.region_id', $inputs['region_id']);
+                    });
+                }
             }
 
-            $fonds = $fonds->with(['cities', 'districts', 'regions'])->get()->toArray();
-            dd($fonds);
-            $compares = [];
-            foreach ($fonds as $fond){
+            $fonds = $fonds->with(['destinations'=> function($query){
+                $query->select('id', 'name_ru', 'points');
+            }, 'cashHelpTypes'=>function($query){
+                $query->select('id', 'name_ru');
+            }, 'cashHelpSizes'=>function($query){
+                $query->select('id', 'name_ru');
+            }])->get()->toArray();
 
+            $cashHelpSizes = CashHelpSize::pluck('id')->toArray();
+            $fondsByPoints = [];
+            foreach ($fonds as $key=> $fond){
+                $fondsByPoints[$key] = $fond;
+                $fondsByPoints[$key]['points'] = 0;
+                foreach ($fond['destinations'] as $destination){
+                    if(in_array($destination['id'], $inputs['destinations'])){
+                        $fondsByPoints[$key]['points'] += $destination['points'];
+                    }
+                }
+                foreach ($fond['cash_help_types'] as $cashHelpType){
+                    if(in_array($cashHelpType['id'], $inputs['cashHelpTypes'])){
+                        $fondsByPoints[$key]['points'] += 5;
+                    }
+                }
+                foreach ($fond['cash_help_sizes'] as $cashHelpSize){
+                    if($inputs['cash_help_size_id'] == $cashHelpSize['id']){
+                        $fondsByPoints[$key]['points'] += array_search($cashHelpSize['id'], $cashHelpSizes) + 4;
+                    }
+                }
             }
 
-            dd($fonds);
-            return 'tset';
-//            $relatedHelpIds = $request->destinations;
-//            $scenario_id = $request->who_need_help;
-//            $relatedFonds = Fond::whereHas('scenarios', function($query) use ($scenario_id){
-//                $query->where('scenario_id', $scenario_id);
-//            })->get();
-//            return view('frontend.fond.request_help_fonds')->with(compact('relatedFonds'));
+            usort($fondsByPoints, function($a, $b) {
+                return $b['points'] <=> $a['points'];
+            });
+
+            return view('frontend.fond.help_fond_list')->with(compact('fondsByPoints'));
         }
         if ($request->method() == 'POST') {
             $this->validate($request, [

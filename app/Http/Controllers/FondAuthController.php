@@ -66,7 +66,7 @@ class FondAuthController extends Controller
             }
             return redirect()->route('fond_cabinet');
         }
-        return redirect()->route('login')->with('error', 'Что-то пошло не так!');
+        return redirect()->route('login-fond')->with('error', 'Что-то пошло не так!');
     }
 
     public function postRegistration(Request $request)

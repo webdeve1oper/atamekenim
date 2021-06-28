@@ -175,6 +175,8 @@
                             <input type="submit" class="btn btn-default m-auto d-table" value="Отправить">
                         </form>
                         @include('frontend.fond.script')
+                        <div class="row" id="fond_lists">
+                        </div>
                         <script>
                             $('#request_help').submit(function () {
 
@@ -183,7 +185,7 @@
                                     url: '{{route('request_help')}}',
                                     data: $('#request_help').serialize(),
                                     success: function (data) {
-                                        console.log(data);
+                                        $('#fond_lists').html(data);
                                     }
                                 });
                                 return false;
