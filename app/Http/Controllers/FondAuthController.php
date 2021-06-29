@@ -50,10 +50,14 @@ class FondAuthController extends Controller
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email|max:150',
                 'password' => 'required'
+            ],[
+                'email.email' => 'Некорректная почта',
+                'email.required' => 'Введите почту',
+                'password.required' => 'Введите пароль',
             ]);
 
             if($validator->fails()){
-                return response()->json($validator->errors()->toJson(), 400);
+                return  redirect()->back()->withErrors($validator)->withInput();
             }
 
             $request->iin = $request->email;

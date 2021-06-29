@@ -172,7 +172,7 @@
 
                             <textarea name="body" placeholder="{{trans('fonds.desc-help')}}" class="form-control mb-3" id="helpBody" cols="20" rows="10">{{old('body')}}</textarea>
                             {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
-                            <input type="submit" class="btn btn-default m-auto d-table" value="Отправить">
+                            <input type="submit" class="btn btn-default m-auto d-table" value="Найти">
                         </form>
                         @include('frontend.fond.script')
                         <div class="row" id="fond_lists">
@@ -186,6 +186,21 @@
                                     data: $('#request_help').serialize(),
                                     success: function (data) {
                                         $('#fond_lists').html(data);
+                                        $('#request_help').hide()
+                                    },
+                                    error: function (err) {
+                                        if (err.status == 422) { // when status code is 422, it's a validation issue
+                                            console.log(err.responseJSON);
+                                            $('#success_message').fadeIn().html(err.responseJSON.message);
+
+                                            // you can loop through the errors object and show it to the user
+                                            console.warn(err.responseJSON.errors);
+                                            // display errors on each form field
+                                            $.each(err.responseJSON.errors, function (i, error) {
+                                                var el = $(document).find('[name="'+i+'"]');
+                                                el.after($('<span class="error" style="color: red;">'+error[0]+'</span>'));
+                                            });
+                                        }
                                     }
                                 });
                                 return false;

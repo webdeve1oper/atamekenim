@@ -52,6 +52,12 @@ class FondController extends Controller
         if ($request->ajax()) {
             $inputs = $request->all();
 
+            $this->validate($request, [
+                'body' => 'required|min:3',
+                'destinations' => 'required',
+                'baseHelpTypes' => 'required',
+            ]);
+
             $fonds = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->whereHas('scenarios', function($query) use ($inputs){
                 $query->where('scenario_id', $inputs['who_need_help']);
             })->whereHas('baseHelpTypes', function($query) use ($inputs){
@@ -114,8 +120,12 @@ class FondController extends Controller
         if ($request->method() == 'POST') {
             $this->validate($request, [
                 'body' => 'required|min:3',
-                'destinations' => 'required',
-                'baseHelpTypes' => 'required',
+                'destinations.*.' => 'required',
+                'baseHelpTypes.*' => 'required',
+                'cashHelpTypes.*' => 'required',
+            ], [
+                'body.required' =>'заполните описание',
+                'cashHelpTypes.required' =>'заполните описание',
             ]);
 
             $request['user_id'] = Auth::user()->id;

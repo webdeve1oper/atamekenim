@@ -47,6 +47,9 @@ $script = "<script src='/js/masked.input.js'></script>
                                                 <span class="error">{{ $errors->first('email') }}</span>
                                             @endif
                                             <input name="email" type="text" value="{{old('email')}}" class="form-control mb-3" placeholder="ИИН или почта">
+                                            @if($errors->has('password'))
+                                                <span class="error">{{ $errors->first('password') }}</span>
+                                            @endif
                                             <input name="password" type="password" class="form-control mb-3" placeholder="Пароль">
 
                                             <button class="btn btn-primary" type="submit">Продолжить</button>
