@@ -54,8 +54,8 @@
                     <input type="text" name="video" value="" class="form-control">
                 </div>
                 {{--<div class="form-group">--}}
-                    {{--<label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>--}}
-                    {{--<input type="file" name="document" value="" class="form-control">--}}
+                {{--<label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>--}}
+                {{--<input type="file" name="document" value="" class="form-control">--}}
                 {{--</div>--}}
             </div>
             <div class="col-sm-12">
@@ -71,7 +71,8 @@
                                         <div class="col-sm-6">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input  type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]" value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b> @if($destination['description_ru'])<p>(<?php echo mb_strtolower($destination['description_ru']) ?> )@endif</p>
+                                                    <input type="checkbox" id="base_help_types{{$destination['id']}}" name="base_help_types[]" value="{{$destination['id']}}"> <b>{{$destination['name_ru']}}</b> @if($destination['description_ru'])<p>
+                                                        (<?php echo mb_strtolower($destination['description_ru']) ?> )@endif</p>
                                                 </label>
                                             </div>
                                         </div>
@@ -136,7 +137,8 @@
                                         <div class="col-sm-6 @if($destination['id'] == 3)d-none @endif">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
+                                                    <input @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]"
+                                                           value="{{$destination['id']}}">
                                                     <b>@switch($destination['id'])
                                                             @case(2)
                                                             отдельные лица (адресная помощь)
@@ -184,26 +186,35 @@
                                         @if(count($region['districts'])>0)
                                             <div class="optionBlock">
                                                 <a class="toggleButton" onclick="$(this).siblings('.inOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                <div class="inputBlock " id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" value="{{$region->region_id}}" type="checkbox" name="region[]"><span class="regionText">{{$region->title_ru}}</span></div>
+                                                <div class="inputBlock " id="region_{{$region->region_id}}"><input id="{{$region->region_id}}" value="{{$region->region_id}}" type="checkbox" name="region[]"><span
+                                                        class="regionText">{{$region->title_ru}}</span></div>
                                                 <div class="inOptionBlock">
                                                     <!--Район-->
                                                     @foreach($region['districts'] as $district)
                                                         @if(count($district['cities'])>0)
                                                             <div class="optionBlock">
                                                                 <a class="toggleButton" onclick="$(this).siblings('.thirdInOptionBlock').toggle();$(this).toggleClass('opened');"><i class="fas fa-chevron-down"></i></a>
-                                                                <div class="inputBlock" id="district_{{$district->district_id}}" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click')"><input id="{{$district->district_id}}" value="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock" id="district_{{$district->district_id}}" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click')"><input id="{{$district->district_id}}"
+                                                                                                                                                                                                                         value="{{$district->district_id}}"
+                                                                                                                                                                                                                         type="checkbox"
+                                                                                                                                                                                                                         name="district[]"><span
+                                                                        class="districtText">{{$district->text}}</span></div>
                                                                 <div class="inOptionBlock thirdInOptionBlock">
                                                                     <!--Город/Село-->
                                                                     @foreach($district['cities'] as $city)
                                                                         <div class="optionBlock">
-                                                                            <div class="inputBlock" onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click');$('.inputBlock.active#district_{{$district->district_id}}').trigger('click');" id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" value="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span></div>
+                                                                            <div class="inputBlock"
+                                                                                 onclick="$('.inputBlock.active#region_{{$region->region_id}}').trigger('click');$('.inputBlock.active#district_{{$district->district_id}}').trigger('click');"
+                                                                                 id="city_{{$city->city_id}}"><input id="{{$city->city_id}}" value="{{$city->city_id}}" type="checkbox" name="city[]"><span class="cityText">{{$city->title_ru}}</span>
+                                                                            </div>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
                                                             </div>
                                                         @else
                                                             <div class="optionBlock">
-                                                                <div class="inputBlock" onclick="$('.inputBlock.active#region_{{$district->district_id}}').trigger('click')" id="district_{{$district->district_id}}"><input id="{{$district->district_id}}" value="{{$district->district_id}}"  type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
+                                                                <div class="inputBlock" onclick="$('.inputBlock.active#region_{{$district->district_id}}').trigger('click')" id="district_{{$district->district_id}}"><input
+                                                                        id="{{$district->district_id}}" value="{{$district->district_id}}" type="checkbox" name="district[]"><span class="districtText">{{$district->text}}</span></div>
                                                             </div>
                                                         @endif
                                                     @endforeach
@@ -356,33 +367,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-6">
-                <div class="panel-group mb-4">
-                    <div class="panel panel-default">
-                        <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse5">Укажите
-                                расположение организации <i class="fas fa-angle-up"></i></a>
-                        </div>
-                        <div id="collapse5" class="panel-collapse collapse">
-                            <div class="form-group">
-                                <input type="hidden" name="longitude"
-                                       value="{{Auth::user()->longitude}}" id="longitude">
-                                <input type="hidden" name="latitude"
-                                       value="{{Auth::user()->latitude}}" id="latitude">
-                                <div id="map" class="w-100" style="height: 300px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-sm-12">
                 <input type="submit" class="btn btn-default" value="Сохранить">
             </div>
         </div>
     </form>
-
-
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script>
         var options = {
@@ -452,6 +441,7 @@
     </script>
     <script>
         ymaps.ready(init);
+
         function init() {
             var myPlacemark,
                 myMap = new ymaps.Map('map', {
@@ -488,6 +478,7 @@
                 }
                 getAddress(coords);
             });
+
             // Создание метки.
             function createPlacemark(coords) {
                 return new ymaps.Placemark(coords, {
@@ -497,6 +488,7 @@
                     draggable: true
                 });
             }
+
             // Определяем адрес по координатам (обратное геокодирование).
             function getAddress(coords) {
                 $('#longitude').val(coords[0]);
@@ -525,18 +517,18 @@
             var clone = $(this).siblings('.partnerBlock.firstChild').clone();
             clone.removeClass('firstChild');
             clone.appendTo($(this).siblings('.inBlock'));
-            $('.humanIncognitoCheckbox').click(function(){
-                if($(this).is(':checked')){
+            $('.humanIncognitoCheckbox').click(function () {
+                if ($(this).is(':checked')) {
                     $(this).siblings('.checker').val('on');
-                }else{
+                } else {
                     $(this).siblings('.checker').val('off');
                 }
             });
         });
-        $('select#status').change(function(){
-            if($(this).val() == 'finished'){
+        $('select#status').change(function () {
+            if ($(this).val() == 'finished') {
                 $('.finishedDateBlock').removeClass('d-none');
-            }else{
+            } else {
                 $('.finishedDateBlock').addClass('d-none');
             }
         });
@@ -545,9 +537,11 @@
         .fa-angle-up {
             float: right;
         }
+
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
+
         .partnerBlock {
             display: table;
             border: 1px solid #eee;
@@ -559,14 +553,20 @@
             border-radius: 5px;
             position: relative;
         }
+
         .partnerBlock .close {
             position: absolute;
             right: 15px;
             top: 10px;
             font-size: 26px;
         }
+
         .partnerBlock.firstChild .close {
             display: none;
+        }
+        .card a {
+            color: rgb(0 83 165);
+            font-weight: 600;
         }
     </style>
 @endsection

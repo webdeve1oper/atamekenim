@@ -48,18 +48,18 @@
                         <option value="active" @if($project->status == "active") selected="selected" @endif>Действующий</option>
                         <option value="finished" @if($project->status == "finished") selected="selected" @endif>Завершен</option>
                     </select>
-                        <div class="finishedDateBlock mt-4 @if($project->status != "finished") d-none @endif">
-                            <label for="">Выбор даты завершения проекта:</label>
-                            <input type="date" name="finished_date" class="form-control" value="@if($project->finished_date){{ $project->finished_date }}@endif">
-                        </div>
+                    <div class="finishedDateBlock mt-4 @if($project->status != "finished") d-none @endif">
+                        <label for="">Выбор даты завершения проекта:</label>
+                        <input type="date" name="finished_date" class="form-control" value="@if($project->finished_date){{ $project->finished_date }}@endif">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="">Ссылка на видео:</label>
                     <input type="text" name="video" value="@if($project->video){{ $project->video }}@endif" class="form-control">
                 </div>
                 {{--<div class="form-group">--}}
-                    {{--<label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>--}}
-                    {{--<input type="file" name="document" value="" class="form-control">--}}
+                {{--<label for="">Загрузите отчет по проекту в формате doc, xls, pdf:</label>--}}
+                {{--<input type="file" name="document" value="" class="form-control">--}}
                 {{--</div>--}}
             </div>
             <div class="col-sm-12">
@@ -145,7 +145,8 @@
                                         <div class="col-sm-6 @if($destination['id'] == 3)d-none @endif">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input @if(in_array($destination['name_ru'], $scenarios2)) checked @endif @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox" id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
+                                                    <input @if(in_array($destination['name_ru'], $scenarios2)) checked @endif @if($destination['id'] == 1) onchange="$('#scenario_id3').prop('checked', $(this).prop('checked'))" @endif type="checkbox"
+                                                           id="scenario_id{{$destination['id']}}" name="scenario_id[]" value="{{$destination['id']}}">
                                                     <b>@switch($destination['id'])
                                                             @case(2)
                                                             отдельные лица (адресная помощь)
@@ -411,33 +412,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-sm-6">
-                <div class="panel-group mb-4">
-                    <div class="panel panel-default">
-                        <div class="card-header">
-                            <a data-toggle="collapse" class="collapsed" href="#collapse5">Укажите
-                                расположение организации <i class="fas fa-angle-up"></i></a>
-                        </div>
-                        <div id="collapse5" class="panel-collapse collapse">
-                            <div class="form-group">
-                                <input type="hidden" name="longitude"
-                                       value="{{Auth::user()->longitude}}" id="longitude">
-                                <input type="hidden" name="latitude"
-                                       value="{{Auth::user()->latitude}}" id="latitude">
-                                <div id="map" class="w-100" style="height: 300px;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-sm-12">
                 <input type="submit" class="btn btn-default" value="Сохранить">
             </div>
         </div>
     </form>
-
-
     <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
     <script>
         var options = {
@@ -585,18 +564,18 @@
             var clone = $(this).siblings('.partnerBlock.firstChild').clone();
             clone.removeClass('firstChild');
             clone.appendTo($(this).siblings('.inBlock'));
-            $('.humanIncognitoCheckbox').click(function(){
-                if($(this).is(':checked')){
+            $('.humanIncognitoCheckbox').click(function () {
+                if ($(this).is(':checked')) {
                     $(this).siblings('.checker').val('on');
-                }else{
+                } else {
                     $(this).siblings('.checker').val('off');
                 }
             });
         });
-        $('select#status').change(function(){
-            if($(this).val() == 'finished'){
+        $('select#status').change(function () {
+            if ($(this).val() == 'finished') {
                 $('.finishedDateBlock').removeClass('d-none');
-            }else{
+            } else {
                 $('.finishedDateBlock').addClass('d-none');
             }
         });
@@ -609,6 +588,7 @@
         .collapsed .fa-angle-up::before {
             content: "\f107";
         }
+
         .partnerBlock {
             display: table;
             border: 1px solid #eee;
@@ -620,14 +600,20 @@
             border-radius: 5px;
             position: relative;
         }
+
         .partnerBlock .close {
             position: absolute;
             right: 15px;
             top: 10px;
             font-size: 26px;
         }
+
         .partnerBlock.firstChild .close {
             display: none;
+        }
+        .card a {
+            color: rgb(0 83 165);
+            font-weight: 600;
         }
     </style>
 @endsection
