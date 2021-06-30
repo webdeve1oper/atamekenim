@@ -124,7 +124,7 @@
                             <label for="exampleInputEmail1">{{trans('fonds.indicate-summ-help')}}</label>
                             <select name="cash_help_size_id" class="select2 w-100" placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes">
                                 @foreach($cashHelpSizes as $destination)
-                                    <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                    <option value="{{$destination['id']}}" @if($help->cash_help_size_id == $destination['id']) selected @endif>{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -166,7 +166,7 @@
 
                         <div class="form-group mb-4">
                             <label for="">{{trans('fonds.video-share')}}</label>
-                            <input type="text" name="video" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
+                            <input type="text" name="video" class="form-control" value="{{ $help->video }}" placeholder="{{trans('fonds.share-video2')}}">
                         </div>
 
                         <div class="form-group mb-4">
