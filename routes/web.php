@@ -9,6 +9,12 @@ Route::get('/develope', function(){
     return view('frontend.develope');
 })->name('dev');
 
+Route::get('/test', function(){
+    $client = new \GuzzleHttp\Client();
+    $client = $client->get('http://127.0.0.1:8900/personStatus/<iin>');
+    dd($client->getBody());
+})->name('develope');
+
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
 Route::get('/project/{id}', 'Backend\ProjectController@index')->name('innerProject');
 Route::post('/fond/donation', 'Frontend\FondController@donationToFond')->name('donation_to_fond');

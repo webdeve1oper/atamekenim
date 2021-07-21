@@ -20,6 +20,11 @@ class Help extends Model
         return $this->belongsToMany(Fond::class, 'help_fond', 'help_id', 'fond_id');
     }
 
+    public function activeFond()
+    {
+        return $this->belongsToMany(Fond::class, 'help_fond', 'help_id', 'fond_id')->where('help_fond.fond_status', '=', 'enable');
+    }
+
     public function fondByStatus()
     {
         return $this->belongsToMany(Fond::class, 'help_fond', 'help_id', 'fond_id')->where('help_fond.fond_status', '=', 'enable');

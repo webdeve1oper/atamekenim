@@ -33,16 +33,16 @@
                         <div class="bigImage">
                             <?php $images = $help->images->toArray(); ?>
                             @if($images)
-                                <a href=""><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
+                                <a href="{{$images[0]['image']}}" data-lightbox="gallery"><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
                                 <?php array_shift($images); ?>
                             @else
-                                <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                                <a href="#"><img src="/img/nophoto.jpg" alt=""></a>
                             @endif
                         </div>
                         <div class="galleryBlock">
                             @if($images)
                                 @foreach($images as $image)
-                                    <a href=""><img src="{{$image['image']}}" alt=""></a>
+                                    <a href="{{$image['image']}}" data-lightbox="gallery"><img src="{{$image['image']}}" alt=""></a>
                                 @endforeach
                             @endif
                         </div>
@@ -132,35 +132,6 @@
                         <p><span>Документы:</span>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid default helperBlock helpInProjectPage">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4>Другие исполненные заявки</h4>
-                    <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
-                </div>
-                @foreach($finished_helps as $help)
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
-                                <p>Кому: <span>
-                                @if(Auth::guard('fond')->check())
-                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
-                                        @else
-                                            @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
-                                        @endif</span></p>
-                                <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                @endforeach
             </div>
         </div>
     </div>
@@ -345,5 +316,37 @@
                 }
             }
         </script>
+        <script src="/js/lightbox.js"></script>
+        <link rel="stylesheet" href="/css/lightbox.css">
     @endif
+    <div class="container-fluid default helperBlock helpInProjectPage">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Другие исполненные заявки</h4>
+                    <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
+                </div>
+                @foreach($finished_helps as $help)
+                    <div class="col-sm-3">
+                        <div class="helpBlock newHelp">
+                            <div class="content">
+                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
+                                <p>Кому: <span>
+                                @if(Auth::guard('fond')->check())
+                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
+                                        @else
+                                            @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
+                                        @endif</span></p>
+                                <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
+                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                            </div>
+                            <p class="date">Открытая заявка</p>
+                            <img src="/img/support1.svg" alt="" class="bkg">
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
 @endsection

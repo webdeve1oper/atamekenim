@@ -14,3 +14,23 @@ if (! function_exists('lang')) {
         return app()->getLocale();
     }
 }
+
+
+
+if (! function_exists('gender')) {
+    function gender($gender)
+    {
+        switch ($gender){
+            case 'male':
+                $gender =  'мужчина';
+                break;
+            case 'female':
+                $gender =  'женщина';
+                break;
+            default:
+                $gender = 'не указан';
+        }
+
+        return $gender;
+    }
+}

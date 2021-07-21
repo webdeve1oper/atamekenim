@@ -144,7 +144,7 @@
                             <div class="col-sm-6">
                                 <p class="bigName">{{trans('fonds.found')}} <b class="total">{{$fonds->total()}}</b> {{trans('fonds.org')}}</p>
                             </div>
-                            <div class="col-sm-6 rightBlock">
+                            <div class="col-sm-6 rightBlock d-none">
                                 <div class="dropdown organizationDrop">
                                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Сортировка по рейтингу

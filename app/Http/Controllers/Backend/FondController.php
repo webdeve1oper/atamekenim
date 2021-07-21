@@ -16,6 +16,7 @@ use App\History;
 use App\Region;
 use App\Scenario;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Image;
 use App\Http\Controllers\Controller;
@@ -34,19 +35,19 @@ class FondController extends Controller
 
     public function startHelp($id)
     {
-//        if (Auth::user()->helps->contains($id)) {
-        $help = Help::find($id);
-        $help->fond_status = 'process';
-        $help->date_fond_start = Carbon::today();
-//            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) { // надо сделать
-//                return redirect()->back()->with('error', 'Заявка уже принята другим фондом'); // надо сделать
-//            }
-//            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']); // надо сделать
-        $help->save();
-        return redirect()->back()->with('success', 'Успех');
-//        } else {
-//            return redirect()->back()->with('error', 'Заявка уже принята');
-//        }
+        if (Auth::user()->containsHelps->contains($id)) {
+            $help = Help::find($id);
+            $help->fond_status = 'process';
+            $help->date_fond_start = Carbon::today();
+            if (DB::table('help_fond')->whereHelpId($id)->whereFondStatus('enable')->first()) { // надо сделать
+                return redirect()->back()->with('error', 'Заявка уже принята другим фондом'); // надо сделать
+            }
+            DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']); // надо сделать
+            $help->save();
+            return redirect()->back()->with('success', 'Успех');
+        } else {
+            return redirect()->back()->with('error', 'Заявка уже принята');
+        }
     }
 
     public function finishHelp(Request $request)
@@ -81,27 +82,12 @@ class FondController extends Controller
                     }
                 }
             }
-//            if($request->hasFile('photo')){
-//                foreach($request->file('photo') as $image)
-//                {
-//                    $filename = time() . $finishHelp->id . '.' . $image->getClientOriginalExtension();
-//                    $thumbnailImage = Image::make($image);
-//                    $path = '/img/help/'.$filename;
-//                    $thumbnailImage->resize(700, null)->save(public_path().$path);
-//                    HelpImage::create(['help_id'=>$finishHelp->id, 'image'=>$path]);
-//                }
-//            }
             $help = Help::find($request->help_id);
             $help->fond_status = 'finished';
             $help->date_fond_finish = Carbon::today();
             $help->save();
             return redirect()->back()->with('success', 'Благодарим Вашу организацию за оказанную помощь заявителю по обращению ID' . getHelpId($help->id) . '!');
         }
-//        if (Auth::user()->helps->contains($id)) {
-
-//        } else {
-//            return redirect()->back()->with('error', 'Заявка уже принята');
-//        }
     }
 
     public function cancelHelp(Request $request)
@@ -280,7 +266,10 @@ class FondController extends Controller
 
     public function helpPage($id)
     {
-        $help = Help::find($id);
+        $help = Auth::user()->containsHelps()->where('help_id', $id)->first();
+        if(in_array($help->fond_status, ['process', 'moderate', 'finished','cancel']) and $help->activeFond->first()->id != Auth::user()->id){
+            return redirect()->route('fond_cabinet')->with('error', 'Заявка уже принята другим фондом');
+        }
         $cashHelpTypes = CashHelpType::all();
         $finished_helps = Help::whereFondStatus('finished')->paginate(4);
         return view('backend.fond_cabinet.help_page')->with(compact('help', 'finished_helps', 'cashHelpTypes'));

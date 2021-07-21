@@ -26,7 +26,6 @@
                                 <span class="error">{{ $errors->first('title') }}</span>
                             @endif
                             <div class="row">
-
                                 <div class="col-sm-6">
                                     <div class="form-group mb-4">
                                         <label for="who_need_help">{{trans('fonds.who-helps')}}</label>
@@ -102,7 +101,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group mb-4 baseHelpTypes">
                                 <label for="baseHelpTypes">{{trans('fonds.check-scope-help')}}</label>
                                 <select name="baseHelpTypes" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
@@ -169,24 +167,24 @@
                                 </div>
                                 <button class="btn btn-default p-2 mt-2" onclick="if($('.docs').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
-
+                            <input type="text" class="form-control" name="help_fond" id="help_fond">
                             <textarea name="body" placeholder="{{trans('fonds.desc-help')}}" class="form-control mb-3" id="helpBody" cols="20" rows="10">{{old('body')}}</textarea>
                             {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
-                            <input type="submit" class="btn btn-default m-auto d-table" value="Найти">
+                            <button  class="btn btn-default m-auto d-table" id="request_help_button">Найти</button>
                         </form>
                         @include('frontend.fond.script')
                         <div class="row" id="fond_lists">
                         </div>
                         <script>
-                            $('#request_help').submit(function () {
-
+                            var help_fond = [];
+                            $('#request_help_button').click(function () {
                                 $.ajax({
                                     method: 'get',
                                     url: '{{route('request_help')}}',
                                     data: $('#request_help').serialize(),
                                     success: function (data) {
                                         $('#fond_lists').html(data);
-                                        $('#request_help').hide()
+                                        // $('#request_help').hide()
                                     },
                                     error: function (err) {
                                         if (err.status == 422) { // when status code is 422, it's a validation issue

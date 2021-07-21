@@ -99,7 +99,7 @@
                                         @foreach($help->reviews()->get() as $review)
                                             <div>
                                                 <div class="block">
-                                                    <p class="name">{{$help->user->first_name}}, {{$help->region->title_ru}}, {{$help->city->title_ru}}</p>
+                                                    <p class="name">@if(Auth::check()){{$help->user->first_name}} @else {{gender($help->user->gender)}}  @endif, {{$help->region->title_ru ?? ''}}, {{$help->city->title_ru ?? ''}}</p>
                                                     <p class="descr textContent">
                                                         {{$review->body}}
                                                     </p>
@@ -227,8 +227,8 @@
                     <div class="col-sm-4">
                         <div class="redContent">
                             <h2>{{trans('fonds-page.help-org')}}</h2>
-                            <p>{{trans('fonds-page.donated')}} <span>100 000 000 тенге</span></p>
-                            <p>{{trans('fonds-page.took-part')}} <span>4000 человек</span></p>
+                            <p>{{trans('fonds-page.donated')}} <span>{{$fond->donations ? array_sum(array_column($fond->donations->toArray(),'amount')) . ' тг': ''}}</span></p>
+                            <p>{{trans('fonds-page.took-part')}} <span>{{$fond->donations ? count($fond->donations) . ' человек': ''}} </span></p>
                             <p>{{trans('fonds-page.help-text')}}</p>
                             <form>
                                 <div class="inputBlock">
@@ -316,7 +316,7 @@
                                     <div class="content">
                                         <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
-                                        <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>{{trans('fonds-page.who')}} <span>@if(Auth::check()){{$help->user->first_name}} {{$help->user->last_name}} @else {{gender($help->user->gender)}}  @endif</span></p>
                                         <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>
@@ -346,7 +346,7 @@
                                     <div class="content">
                                         <p>{{trans('fonds-page.help')}} <span class="tag blue">{{$help->addHelpTypes[0]->name_ru}}</span></p>
                                         <p>{{trans('fonds-page.org')}} <img src="/img/logo.svg" alt=""></p>
-                                        <p>{{trans('fonds-page.who')}} <span>{{$help->user->first_name}} {{$help->user->last_name}}</span></p>
+                                        <p>{{trans('fonds-page.who')}} <span>@if(Auth::check()){{$help->user->first_name}} {{$help->user->last_name}} @else {{gender($help->user->gender)}}  @endif</span></p>
                                         <a href="{{route('help', [$help->id])}}" class="more">{{trans('fonds-page.hr')}} <span class="miniArrow">›</span></a>
                                     </div>
                                     <p class="date">{{$help->date_fond_finish}}</p>

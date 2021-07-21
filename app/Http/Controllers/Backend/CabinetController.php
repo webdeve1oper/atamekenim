@@ -96,8 +96,8 @@ class CabinetController extends Controller
     {
         $validator = Validator::make($request->all(),
             [
-                'title' => 'required|min:10',
-                'body' => 'required|min:100',
+                'title' => 'required|min:5',
+                'body' => 'required|min:10',
             ]
         );
         if ($validator->fails()) {
@@ -106,7 +106,7 @@ class CabinetController extends Controller
 
         $data = $request->all();
         $help = Help::findOrFail($data['help_id']);
-        if ($help->status != 'finished') {
+        if ($help->fond_status != 'finished') {
             return redirect()->back()->with('error', 'Заявка еще не завершена!');
         }
         $data['user_id'] = Auth::user()->id;
@@ -120,40 +120,44 @@ class CabinetController extends Controller
         return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 
-    public function editUser(){
+    public function editUser()
+    {
         $user = User::find(Auth::user()->id);
-            return view('backend.cabinet.edit_info')->with(compact('user'));
+        return view('backend.cabinet.edit_info')->with(compact('user'));
     }
-    public function updateUser(Request $request){
+
+    public function updateUser(Request $request)
+    {
         $user = User::find(Auth::user()->id);
-        if($request){
-                $validator = Validator::make($request->all(),
-                    [
-                        'avatar' => 'mimes:jpeg,jpg,png|max:1000',
-                    ]
-                );
-                if ($validator->fails()) {
-                    return redirect()->back()->withErrors($validator)->withInput();
-                }
-                if($request->file('avatar')){
-                    $originalImage = $request->file('avatar');
-                    $thumbnailImage = Image::make($originalImage);
-                    $thumbnailPath = '/img/avatars';
-                    File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
-                    $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
-                    $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
-                    $user->avatar = $thumbnailPath . '/' . $path;
-                }
-                $user->email = $request->email;
-                $user->about = $request->about;
-                $user->save();
-                return redirect()->route('cabinet')->with(['success' => 'Личная информация успешно обновлена!']);
-        }else{
+        if ($request) {
+            $validator = Validator::make($request->all(),
+                [
+                    'avatar' => 'mimes:jpeg,jpg,png|max:1000',
+                ]
+            );
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            if ($request->file('avatar')) {
+                $originalImage = $request->file('avatar');
+                $thumbnailImage = Image::make($originalImage);
+                $thumbnailPath = '/img/avatars';
+                File::isDirectory(public_path() . $thumbnailPath) or File::makeDirectory(public_path() . $thumbnailPath, 0777, true, true);
+                $path = microtime() . '.' . $originalImage->getClientOriginalExtension();
+                $thumbnailImage->save(public_path() . $thumbnailPath . '/' . $path);
+                $user->avatar = $thumbnailPath . '/' . $path;
+            }
+            $user->email = $request->email;
+            $user->about = $request->about;
+            $user->save();
+            return redirect()->route('cabinet')->with(['success' => 'Личная информация успешно обновлена!']);
+        } else {
             return redirect()->route('cabinet')->with(['error' => 'Что то пошло не так!']);
         }
     }
 
-    public function editPage($id){
+    public function editPage($id)
+    {
         $help = Help::find($id);
         if ($help->user_id == Auth::user()->id) {
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
@@ -201,6 +205,29 @@ class CabinetController extends Controller
         }
         if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
             $help->cashHelpTypes()->sync($request->cashHelpTypes);
+        }
+        $this->validate($request, [
+            'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+        if ($request->hasFile('photo')) {
+            foreach ($request->file('photo') as $image) {
+                $filename = microtime() . $help->id . '.' . $image->getClientOriginalExtension();
+                $thumbnailImage = \Intervention\Image\Facades\Image::make($image);
+                $path = '/img/help/' . $filename;
+                $thumbnailImage->resize(700, null)->save(public_path() . $path);
+                HelpImage::create(['help_id' => $help->id, 'image' => $path]);
+            }
+        }
+        $this->validate($request, [
+            'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,xlsx,txt|max:5000'
+        ]);
+        if ($request->hasFile('doc')) {
+            foreach ($request->file('doc') as $doc) {
+                $filename = microtime() . $help->id . '.' . $doc->getClientOriginalExtension();
+                $path = '/img/help/docs/';
+                $doc->move(public_path() . $path, $filename);
+                HelpDoc::create(['help_id' => $help->id, 'path' => $path . $filename, 'original_name' => $doc->getClientOriginalName()]);
+            }
         }
         $help->fonds()->sync($fonds);
         $help->update($data);

@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-sm-8">
                     <div class="greyInfoBlock mini">
-                        <?php $waitHelps = $fond->helpsByStatus('wait')->get();?>
+                        <?php $waitHelps = $fond->helpsByStatus('wait')->get();  ?>
                         <p class="countTag blue">{{trans('fond-cab.new-appl')}} <span>{{$waitHelps->count()}}</span></p>
                         {{--<a href="" class="btn-default">Поиск по всем заявкам</a>--}}
                         @if($waitHelps->count()>0)
@@ -38,7 +38,6 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
-                                            {{--                                                <p><span>{{}}</span>, 30 лет</p>--}}
                                             <p><span></span>{{ \Carbon\Carbon::createFromFormat("Y-m-d", $help->user->born)->age }} лет</p>
                                             <p>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
                                                     , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
@@ -63,7 +62,7 @@
                             @endforeach
                         @endif
                     </div>
-                    <?php $processHelps = $fond->helpsByStatus('process')->get(); ?>
+                    <?php $processHelps = $fond->helpsByStatus('process')->where('help_fond.fond_status', '=', 'enable')->get(); ?>
                     <div class="greyInfoBlock mini">
                         <p class="countTag red">{{trans('fond-cab.work-appl')}} <span>{{$processHelps->count()}}</span></p>
                         @if($processHelps->count()>0)
@@ -100,7 +99,7 @@
                         @endif
                     </div>
 
-                    <?php $finishedHelps = $fond->helpsByStatus('finished')->get(); ?>
+                    <?php $finishedHelps = $fond->helpsByStatus('finished')->where('help_fond.fond_status', '=', 'enable')->get(); ?>
                     <div class="greyInfoBlock mini">
                         <p class="countTag green">{{trans('fond-cab.done-appl')}} <span>{{$finishedHelps->count()}}</span></p>
                         @if($finishedHelps->count()>0)

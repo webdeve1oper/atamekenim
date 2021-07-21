@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\AddHelpType;
-use App\BaseHelpType;
 use App\CashHelpSize;
 use App\CashHelpType;
 use App\City;
-use App\Country;
 use App\Destination;
-use App\DestinationAttribute;
 use App\Fond;
 use App\FondDonation;
 use App\Help;
@@ -19,14 +16,8 @@ use App\Http\Controllers\Controller;
 use App\Payment;
 use App\Region;
 use App\Scenario;
-use AvtoDev\CloudPayments\Config;
-use AvtoDev\CloudPayments\Client;
-use AvtoDev\CloudPayments\Requests\Subscriptions\SubscriptionsCreateRequestBuilder;
-use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class FondController extends Controller
@@ -54,7 +45,7 @@ class FondController extends Controller
 
             $this->validate($request, [
                 'body' => 'required|min:3',
-                'destinations' => 'required',
+//                'destinations' => 'required',
                 'baseHelpTypes' => 'required',
             ]);
 
@@ -91,14 +82,18 @@ class FondController extends Controller
 
             $cashHelpSizes = CashHelpSize::pluck('id')->toArray();
             $fondsByPoints = [];
+
             foreach ($fonds as $key=> $fond){
                 $fondsByPoints[$key] = $fond;
                 $fondsByPoints[$key]['points'] = 0;
-                foreach ($fond['destinations'] as $destination){
-                    if(in_array($destination['id'], $inputs['destinations'])){
-                        $fondsByPoints[$key]['points'] += $destination['points'];
+                if(array_key_exists('destinations',$inputs)){
+                    foreach ($fond['destinations'] as $destination){
+                        if(in_array($destination['id'], $inputs['destinations'])){
+                            $fondsByPoints[$key]['points'] += $destination['points'];
+                        }
                     }
                 }
+
                 foreach ($fond['cash_help_types'] as $cashHelpType){
                     if(in_array($cashHelpType['id'], $inputs['cashHelpTypes'])){
                         $fondsByPoints[$key]['points'] += 5;
@@ -110,6 +105,10 @@ class FondController extends Controller
                     }
                 }
             }
+            if(count($fondsByPoints)<=0){
+                $fondsByPoints[0] = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->where('id', 20)->first()->toArray();
+                $fondsByPoints[0]['points'] = 100;
+            }
 
             usort($fondsByPoints, function($a, $b) {
                 return $b['points'] <=> $a['points'];
@@ -118,9 +117,10 @@ class FondController extends Controller
             return view('frontend.fond.help_fond_list')->with(compact('fondsByPoints'));
         }
         if ($request->method() == 'POST') {
+//            dd($request->all());
             $this->validate($request, [
                 'body' => 'required|min:3',
-                'destinations.*.' => 'required',
+//                'destinations.*.' => 'required',
                 'baseHelpTypes.*' => 'required',
                 'cashHelpTypes.*' => 'required',
             ], [
@@ -129,7 +129,15 @@ class FondController extends Controller
             ]);
 
             $request['user_id'] = Auth::user()->id;
-            $help = Help::create($request->all());
+            $data = $request->all();
+            if($data['city_id']==0){
+                unset($data['city_id']);
+            }
+            if($data['district_id']==0){
+                unset($data['district_id']);
+            }
+
+            $help = Help::create($data);
             if($request->hasFile('photo')){
 //                $this->validate($request, [
 //                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
@@ -155,7 +163,12 @@ class FondController extends Controller
                     HelpDoc::create(['help_id'=>$help->id, 'path'=>$path.$filename, 'original_name'=>$doc->getClientOriginalName()]);
                 }
             }
-            $fonds = Fond::pluck('id');
+            $fonds = Fond::query();
+            if($request->exists('help_fond')){
+                $help_fonds = explode(',', $request->help_fond);
+                $fonds = $fonds->whereIn('id', $help_fonds);
+            }
+            $fonds = $fonds->pluck('id');
             if (isset($request->destinations) && !empty($request->destinations)) {
                 $help->destinations()->sync($request->destinations);
             }

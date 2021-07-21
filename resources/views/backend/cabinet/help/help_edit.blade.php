@@ -22,7 +22,7 @@
                 <div class="col-sm-12 mb-4">
                 </div>
                 <div class="col-sm-12">
-                    <form action="{{ route('update_help',$help->id) }}" method="POST">
+                    <form action="{{ route('update_help',$help->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @if($errors->has('title'))
                             <span class="error">{{ $errors->first('title') }}</span>

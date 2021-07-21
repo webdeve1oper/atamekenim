@@ -7,7 +7,7 @@
                     <ul>
                         <li><a href="{{ route('home') }}">Главная</a></li>
                         @if(Auth::check())
-                        <li><a href="{{ route('cabinet') }}">Кабинет</a></li>
+                            <li><a href="{{ route('cabinet') }}">Кабинет</a></li>
                         @endif
                         <li><a>Заявка id:{{ getHelpId($help->id) }}</a></li>
                     </ul>
@@ -28,43 +28,51 @@
                         <div class="bigImage">
                             <?php $images = $help->images->toArray(); ?>
                             @if($images)
-                                    <a href=""><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
+                                <a href="{{$images[0]['image']}}" data-lightbox="gallery"><img src="{{$images[0]['image']}}" alt="" style="object-fit: cover!important"></a>
                                 <?php array_shift($images); ?>
                             @else
-                                <a href=""><img src="/img/nophoto.jpg" alt=""></a>
+                                <a href="#"><img src="/img/nophoto.jpg" alt=""></a>
                             @endif
-
                         </div>
                         <div class="galleryBlock">
                             @if($images)
                                 @foreach($images as $image)
-                                    <a href=""><img src="{{$image['image']}}" alt=""></a>
+                                    <a href="{{$image['image']}}" data-lightbox="gallery"><img src="{{$image['image']}}" alt=""></a>
                                 @endforeach
                             @endif
-{{--                            <a href="" class="fondImg"><img src="/img/nophoto.jpg" alt=""></a>--}}
-{{--                            <a href="" class="fondImg openGallery"><img src="/img/nophoto.jpg" alt=""><span>+20</span></a>--}}
                         </div>
                     </div>
                     <div class="greyContent">
-                        <p class="name">{{ $help->user->last_name }} {{ $help->user->first_name }}, @if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null), {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
+                        <p class="name"> @if(Auth::check() or Auth::guard('fond')->check())
+                                {{ $help->user->last_name }} {{ $help->user->first_name }} @else {{ gender($help->user->gender) }} @endif,
+                                    @if($help->region_id != null)
+                                        {{ $help->region->title_ru }}
+                                    @endif
+                                    @if($help->district_id != null)
+                                        , {{ $help->district->title_ru }}
+                                    @endif
+                                    @if($help->city_id != null),
+                                        {{ $help->city->title_ru }}
+                                    @endif
+                            </p>
                         <div class="text">
-                           {{ $help->body }}
+                            {{ $help->body }}
                         </div>
                     </div>
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
                 </div>
                 <div class="col-sm-5">
                     @if(Auth::check())
-                    @if($help->user_id == Auth::user()->id)
-                        @if($help->admin_status == 'edit')
-                            <div class="alert alert-info">
-                                Ваша заявка не прошла модерацию! Статус - на доработке
+                        @if($help->user_id == Auth::user()->id)
+                            @if($help->admin_status == 'edit')
+                                <div class="alert alert-info">
+                                    Ваша заявка не прошла модерацию! Статус - на доработке
+                                </div>
+                            @endif
+                            <div class="helpEditBlock">
+                                <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
                             </div>
                         @endif
-                        <div class="helpEditBlock">
-                            <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
-                        </div>
-                    @endif
                     @endif
                     <div class="infoBlock">
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
@@ -83,17 +91,17 @@
                                     @break
                                 @endswitch
                             @else
-                            @switch($help->fond_status)
-                                @case('moderate')
+                                @switch($help->fond_status)
+                                    @case('moderate')
                                     на модерации
-                                @break
-                                @case('wait')
+                                    @break
+                                    @case('wait')
                                     в ожидании благотворителя
-                                @break
-                                @case('process')
+                                    @break
+                                    @case('process')
                                     в работе
-                                @break
-                            @endswitch
+                                    @break
+                                @endswitch
                             @endif
                         </p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
@@ -116,35 +124,43 @@
                                     break;
                             }
                             ?></p>
+                        @if(Auth::check() or Auth::guard('fond')->check())
                         <p><span>Документы по запрашиваемой помощи: </span>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
+                            @endif
                     </div>
                 </div>
             </div>
+            @if(Auth::check())
+                @if(Auth::user()->id == $help->user_id)
             <div class="row mt-3">
                 <div class="col-12">
                     <?php $comments = $help->comments; ?>
-                        @if($comments)
-                            @foreach($comments as $comment)
-                                @if($comment->admin_id)
-                                    <div class="card mb-3" style="border: 1px solid #cfcfff;">
-                                        <div class="card-header" style="background: #f9f9ff;">Администратор</div>
-                                        <div class="card-body">
-                                            <p>{{$comment->desc}}</p>
-                                        </div>
+                    @if($comments)
+                        @foreach($comments as $comment)
+                            @if($comment->admin_id)
+                                <div class="card mb-3" style="border: 1px solid #cfcfff;">
+                                    <div class="card-header" style="background: #f9f9ff;">Администратор</div>
+                                    <div class="card-body">
+                                        <p>{{$comment->desc}}</p>
                                     </div>
-                                @endif
-                                @if($comment->fond_id)
-                                        <div class="card mb-3" style="border: 1px solid #cfcfff;">
-                                            <div class="card-header" style="background: #f9f9ff;">Фонд: {{$comment->fond->title_ru}}</div>
-                                            <div class="card-body">
-                                                <p>{{$comment->desc}}</p>
-                                            </div>
-                                        </div>
-                                @endif
-                            @endforeach
-                        @endif
+                                </div>
+                            @endif
+                            @if($comment->fond_id)
+                                <div class="card mb-3" style="border: 1px solid #cfcfff;">
+                                    <div class="card-header" style="background: #f9f9ff;">Фонд: {{$comment->fond->title_ru}}</div>
+                                    <div class="card-body">
+                                        <p>{{$comment->desc}}</p>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                 </div>
             </div>
+            @endif
+            @endif
         </div>
     </div>
+    <script src="/js/lightbox.js"></script>
+    <link rel="stylesheet" href="/css/lightbox.css">
 @endsection

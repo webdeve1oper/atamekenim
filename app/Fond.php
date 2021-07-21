@@ -64,6 +64,11 @@ class Fond extends Authenticatable
         return $this->hasMany(FondImage::class);
     }
 
+    public function containsHelps()
+    {
+        return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id');
+    }
+
     public function helps()
     {
         return $this->belongsToMany(Help::class, 'help_fond', 'fond_id', 'help_id')->where('help_fond.fond_status', '=', 'enable');
@@ -147,5 +152,10 @@ class Fond extends Authenticatable
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(FondDonation::class);
     }
 }

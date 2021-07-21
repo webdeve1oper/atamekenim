@@ -177,5 +177,6 @@
 
     $(document).ready(function () {
         $("#who_need_help option:first").change();
+
     });
 </script>
