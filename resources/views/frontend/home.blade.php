@@ -509,7 +509,13 @@
                                     <div class="block">
                                         <p class="date">{!! date('d.m'.'<b>'.'Y'.'</b>', strtotime($new['public_date'])) !!}</p>
                                         <p class="name"><a href="{{route('new', $new['slug'])}}">{{$new['title_'.app()->getLocale()]??$new['title_ru']}}</a></p>
-                                        <p class="descr">{{$new['body_'.app()->getLocale()]??$new['body_ru']}}</p>
+                                        <div class="descr">{!! $new['body_'.app()->getLocale()]??$new['body_ru'] !!}</div>
+                                        <style>
+                                            .newsBlock .newsSlick .slick-slide .block .descr * {
+                                                margin: 0;
+                                                line-height: 1.6;
+                                            }
+                                        </style>
                                     </div>
                                 </div>
                             @endforeach

@@ -14,13 +14,33 @@
             </div>
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
-                    <a href="{{ route('admin_helps') }}">Запросы на помощь</a>
+                    <a href="{{ route('admin_helps') }}">Заявки от получателей помощи</a>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="col border-info border p-5 text-center">
+                    <a href="{{ route('admin_fonds') }}">Заявки от благотворительных организаций</a>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="col border-info border p-5 text-center">
+                    <a href="{{ route('admin_news') }}">Новости</a>
                 </div>
             </div>
         @elseif(Auth::user()->role_id == 2)
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
-                    <a href="{{ route('admin_helps') }}">Запросы на помощь</a>
+                    <a href="{{ route('admin_helps') }}">Заявки от получателей помощи</a>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="col border-info border p-5 text-center">
+                    <a href="{{ route('admin_fonds') }}">Заявки от благотворительных организаций</a>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="col border-info border p-5 text-center">
+                    <a href="{{ route('admin_news') }}">Новости</a>
                 </div>
             </div>
         @endif
