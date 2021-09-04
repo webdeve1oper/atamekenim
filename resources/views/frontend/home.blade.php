@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-sm-12">
                         <a class="btn-default" href="{{route('fonds')}}">{{trans('home.all-org')}}<span class="miniArrow">›</span></a>
-                        <button class="btn-default blue">{{trans('home.hepls-fonds')}}</button>
+                        {{--<button class="btn-default blue">{{trans('home.hepls-fonds')}}</button>--}}
                         <a href="{{route('registration_fond')}}" class="btn-default blue">{{trans('home.reg-reestr')}}</a>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
         <div class="container-fluid default supportBlock">
             <div class="container">
                 <div class="row fat">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 d-none">
                         <h3>{{trans('home.have-helps')}}</h3>
                         <form action="" id="helpForm">
                             <div class="inputBlock">
@@ -157,14 +157,18 @@
                                 <p class="regulations">{{trans('home.helps-offerts')}}</p>
                             </div>
                         </form>
+                        <div class="inputBlock topper">
+                            <a href="{{route('request_help')}}" class="login btn-default blue">{{trans('home.apply')}}</a>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <p class="bigName">{{trans('home.what-regis')}}</p>
                         <p class="descr">
                             {{trans('home.what-regis-text')}}
                         </p>
-                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>
-                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>
+                        <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply')}}</a>
+{{--                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>--}}
+{{--                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>--}}
                     </div>
                 </div>
             </div>

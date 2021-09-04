@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     public function canceledHelps(){
-        return $this->hasMany(Help::class,'user_id', 'id')->where('admin_status', '=', 'cancel');
+        return $this->hasMany(Help::class,'user_id', 'id')->where('admin_status', '=', 'cancel')->orWhere('fond_status', '=', 'cancel');
     }
 
     public function born_location_country(){

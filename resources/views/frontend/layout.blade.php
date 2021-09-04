@@ -28,7 +28,7 @@
     <a class="d-block d-sm-none burger" onclick="$('header ul.menu').slideToggle();"><i class="fas fa-stream"></i></a>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-6 pr-0">
                 <a href="{{route('home')}}" class="logo"><img src="/img/logo11.png" alt=""></a>
                 <ul class="menu">
                     <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
@@ -89,7 +89,7 @@
                         <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>
                     </ul>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-3 d-none">
                     <form class="searchBlock">
                         <input type="text" name="search" placeholder="{{trans('home.site-search')}}">
                         <button><img src="/img/search.svg" alt=""></button>

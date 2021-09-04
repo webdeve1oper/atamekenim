@@ -154,7 +154,7 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
-                                            <p class="tags default mini blue">{{trans('cabinet-appl.edu')}}</p>
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.data-filing')}}</p>
@@ -186,7 +186,7 @@
                                     <div class="row">
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
-                                            <p class="tags default mini blue">{{trans('cabinet-appl.edu')}}</p>
+                                            @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.data-filing')}}</p>

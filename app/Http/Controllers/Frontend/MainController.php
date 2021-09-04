@@ -25,8 +25,14 @@ class MainController extends Controller
             $fonds = Fond::where('status', true);
 
             if($request->exists('bin') && $request->bin !=''){
-                $fonds->where('bin','like', $request->bin.'%');
+                if(is_numeric($request->bin)){
+                    $fonds->where('title_ru','like', $request->bin.'%');
+                }else{
+                    $fonds->where('bin','like', $request->bin.'%');
+                }
+
             }
+
 
             if($request->exists('destination') && $request->input('destination')[0]!='all'){
                 $destination = $request->destination;

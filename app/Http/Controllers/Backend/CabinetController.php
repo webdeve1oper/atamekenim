@@ -31,10 +31,10 @@ class CabinetController extends Controller
 
     public function index()
     {
-        $moderateHelps = Auth::user()->helpsByStatus('moderate')->with('fonds')->with('reviews')->get();
-        $waitHelps = Auth::user()->helpsByStatus('wait')->with('fonds')->with('reviews')->get();
-        $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->with('reviews')->get();
-        $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->with('reviews')->get();
+        $moderateHelps = Auth::user()->helpsByStatus('moderate')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $waitHelps = Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $finishedHelps = Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $processHelps = Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
         $cancledHelps = Auth::user()->canceledHelps()->get();
 
         return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps', 'cancledHelps'));

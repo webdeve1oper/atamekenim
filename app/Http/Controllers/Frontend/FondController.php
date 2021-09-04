@@ -40,7 +40,7 @@ class FondController extends Controller
         return view('frontend.fond.fond')->with(compact('fond', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'relatedFonds'));
     }
 
-    public function requestHelp(Request $request)
+    public function requestHelp(Request $request, $help_id = null)
     {
         if ($request->method() == 'POST') {
             $this->validate($request, [
@@ -51,17 +51,28 @@ class FondController extends Controller
                 'body.required' =>'заполните описание',
                 'cashHelpTypes.required' =>'заполните описание',
             ]);
-
             $request['user_id'] = Auth::user()->id;
             $data = $request->all();
-            if($data['city_id']==0){
-                unset($data['city_id']);
+            if(array_key_exists('city_id',$data)){
+                if($data['city_id']==0){
+                    unset($data['city_id']);
+                }
             }
-            if($data['district_id']==0){
-                unset($data['district_id']);
+            if(array_key_exists('district_id', $data)){
+                if($data['district_id']==0){
+                    unset($data['district_id']);
+                }
             }
             $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
-            $help = Help::create($data);
+            if($help_id != null){
+                $help = Help::find($help_id);
+                $data['admin_status'] = 'moderate';
+                $data['fond_status'] = 'moderate';
+                $help->update($data);
+            }else{
+                $help = Help::create($data);
+            }
+
             if($request->hasFile('photo')){
 //                $this->validate($request, [
 //                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
@@ -71,7 +82,8 @@ class FondController extends Controller
                     $filename = microtime().$help->id.'.'.$image->getClientOriginalExtension();
                     $thumbnailImage = Image::make($image);
                     $path = '/img/help/'.$filename;
-                    $thumbnailImage->resize(700, null)->save(public_path().$path);
+//                    $thumbnailImage->resize(700, null)->save(public_path().$path);
+                    $thumbnailImage->save(public_path().$path);
                     HelpImage::create(['help_id'=>$help->id, 'image'=>$path]);
                 }
             }
@@ -102,19 +114,38 @@ class FondController extends Controller
                 $query->where('add_help_id', $inputs['baseHelpTypes']);
             });
             if($inputs['region_id'] != 728){
-                if ($inputs['city_id'] != 0) {
-                    $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
-                        $query->where('fond_cities.city_id', $inputs['city_id']);
-                    });
-                }elseif($inputs['district_id'] != 0){
-                    $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
-                        $query->where('fond_districts.district_id', $inputs['district_id']);
-                    });
-                }else{
+                if(array_key_exists('city_id',$inputs)){
+                    if ($inputs['city_id'] != 0) {
+                        $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
+                            $query->where('fond_cities.city_id', $inputs['city_id']);
+                        });
+                    }
+                }
+                if(array_key_exists('district_id', $inputs)){
+                    if($inputs['district_id'] != 0){
+                        $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
+                            $query->where('fond_districts.district_id', $inputs['district_id']);
+                        });
+                    }
+                }
+                if(array_key_exists('region_id', $inputs)){
                     $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
                         $query->where('fond_regions.region_id', $inputs['region_id']);
                     });
                 }
+//                if ($inputs['city_id'] != 0) {
+//                    $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
+//                        $query->where('fond_cities.city_id', $inputs['city_id']);
+//                    });
+//                }elseif($inputs['district_id'] != 0){
+//                    $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
+//                        $query->where('fond_districts.district_id', $inputs['district_id']);
+//                    });
+//                }else{
+//                    $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
+//                        $query->where('fond_regions.region_id', $inputs['region_id']);
+//                    });
+//                }
             }
 
             $fonds = $fonds->with(['destinations'=> function($query){
@@ -149,18 +180,25 @@ class FondController extends Controller
                         $fondsByPoints[$key]['points'] += array_search($cashHelpSize['id'], $cashHelpSizes) + 4;
                     }
                 }
+                if($fond['id']==20){
+                    $fondsByPoints[$key]['points'] = 100;
+                }
             }
             if(count($fondsByPoints)<=0){
-                $fondsByPoints[0] = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->where('id', 20)->first()->toArray();
+                $fondsByPoints[0] = Fond::select(['id'])->where('id', 20)->first()->toArray();
                 $fondsByPoints[0]['points'] = 100;
             }
             $fondsids= [];
             foreach($fondsByPoints as $key => $fondsByPoint){
+
                 $coincidence = round($fondsByPoint['points'] / $fondsByPoints[0]['points'] * 100);
                 if($coincidence < 45){
                     continue;
                 }
-                $fondsids[] = $fondsByPoint['id'];
+                $fondsids[] = [
+                    'fond_id' => $fondsByPoint['id'],
+                    'fond_status' => 'disable'
+                ];
             }
             if (isset($request->destinations) && !empty($request->destinations)) {
                 $help->destinations()->sync($request->destinations);
@@ -174,7 +212,7 @@ class FondController extends Controller
 
 
             Log::info($help->id, $fondsids);
-            $help->fonds()->attach($fondsids);
+            $help->fonds()->sync($fondsids);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка усешно отправлена!', 'info' => 'Заявка отправена на модерацию']);
         }
         if ($request->method() == 'GET') {
@@ -232,7 +270,14 @@ class FondController extends Controller
             }
             if ($request->exists('bin') && $request->input('bin')!='') {
                 $fonds = Fond::where('status', true);
-                $fonds->where('bin', 'like', $request->bin . '%');
+                if($request->exists('bin') && $request->bin !=''){
+                    if(is_numeric($request->bin)){
+                        $fonds->where('bin','like', $request->bin.'%');
+                    }else{
+                        $fonds->where('title_ru','like', '%'.$request->bin.'%');
+                    }
+
+                }
             }
 
             $fonds = $fonds->paginate(4);
