@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class UserAuthController extends Controller
@@ -68,41 +68,43 @@ class UserAuthController extends Controller
 
     public function postRegistration(Request $request)
     {
-       $validator = Validator::make($request->all(),[
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'iin' => 'required|unique:users|min:12',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ],[
-            'first_name.required'=>'Заполните имя',
-            'last_name.required'=>'Заполните фамилию',
-            'iin.required'=>'Заполните ИИН',
-            'password.required'=>'Введите пароль',
-            'email.required'=>'Заполните почту',
-        ]);
-
-        if($validator->fails()){
-            return redirect()->back()->withErrors($validator->errors());
-        }
-
-        $bin_year = substr($request->get('iin'), 0, 2);
-        $bin_month = substr($request->get('iin'), 2, 2);
-        $bin_day = substr($request->get('iin'), 4, 2);
-        if($bin_year > 30){
-            $bin_year = '19'.$bin_year;
-        }else{
-            $bin_year = '20'.$bin_year;
-        }
-        $data = $request->all();
-
-        $data['born'] = $bin_year.'-'.$bin_month.'-'.$bin_day;
-        $check = $this->create($data);
-        if($check){
-            return redirect()->route('login')->withSuccess('Вы успешно зарегистрированы!');
-        }else{
-            return redirect('back')->withErrors('Что то пошло не так! Попробуйте снова');
-        }
+        $state = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, 23);
+        return redirect()->to(config('app.idp_url' . $state));
+//       $validator = Validator::make($request->all(),[
+//            'first_name' => 'required',
+//            'last_name' => 'required',
+//            'iin' => 'required|unique:users|min:12',
+//            'email' => 'required|email|unique:users',
+//            'password' => 'required|min:6|confirmed',
+//        ],[
+//            'first_name.required'=>'Заполните имя',
+//            'last_name.required'=>'Заполните фамилию',
+//            'iin.required'=>'Заполните ИИН',
+//            'password.required'=>'Введите пароль',
+//            'email.required'=>'Заполните почту',
+//        ]);
+//
+//        if($validator->fails()){
+//            return redirect()->back()->withErrors($validator->errors());
+//        }
+//
+//        $bin_year = substr($request->get('iin'), 0, 2);
+//        $bin_month = substr($request->get('iin'), 2, 2);
+//        $bin_day = substr($request->get('iin'), 4, 2);
+//        if($bin_year > 30){
+//            $bin_year = '19'.$bin_year;
+//        }else{
+//            $bin_year = '20'.$bin_year;
+//        }
+//        $data = $request->all();
+//
+//        $data['born'] = $bin_year.'-'.$bin_month.'-'.$bin_day;
+//        $check = $this->create($data);
+//        if($check){
+//            return redirect()->route('login')->withSuccess('Вы успешно зарегистрированы!');
+//        }else{
+//            return redirect('back')->withErrors('Что то пошло не так! Попробуйте снова');
+//        }
 
     }
 
@@ -138,5 +140,43 @@ class UserAuthController extends Controller
     {
         Auth::logout();
         return Redirect('/');
+    }
+
+    public function checkUser(Request $request){
+        $client = new \GuzzleHttp\Client();
+        $credentials = base64_encode('meninatam:9Bst@n6T!P^3ux:#');
+
+        try {
+            $response = $client->request('POST', 'http://test.idp.egov.kz/idp/oauth/token', [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'Basic ' . $credentials,
+                ],
+                'form_params' => [
+                    'grant_type' => 'authorization_code',
+                    'client_id' => 'meninatam',
+                    'redirect_uri' => 'https://atamekenim.kz/ru/check_user',
+                    'code' => $request->code
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            return redirect()->to('/')->withErrors($e->getMessage());
+        }
+        if($response){
+            $json = json_decode($response->getBody()->getContents(), true)['access_token'];
+
+            try {
+                $response = $client->request('GET', 'http://test.idp.egov.kz/idp/resource/user/basic', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $json,
+                    ]
+                ]);
+                echo '<pre>';
+                print_r($response->getBody()->getContents());
+                echo '</pre>';
+            } catch (GuzzleException $e) {
+                return redirect()->to('/')->withErrors($e->getMessage());
+            }
+        }
     }
 }

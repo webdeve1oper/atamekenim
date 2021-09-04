@@ -1,5 +1,5 @@
 <?php
-
+Route::get('/check_user', 'UserAuthController')->name('check_user');
 //Auth::routes();
 Route::group(['middleware'=>'auth'], function(){
     Route::match(['get','post'], 'request-for-help', 'Frontend\FondController@requestHelp')->name('request_help');
