@@ -167,72 +167,16 @@
                                 </div>
                                 <button class="btn btn-default p-2 mt-2" onclick="if($('.docs').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
                             </div>
-                            <input type="text" class="form-control" name="help_fond" id="help_fond">
+                            <input type="hidden" class="form-control" name="help_fond" id="help_fond">
                             <textarea name="body" placeholder="{{trans('fonds.desc-help')}}" class="form-control mb-3" id="helpBody" cols="20" rows="10">{{old('body')}}</textarea>
                             {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
                             <button  class="btn btn-default m-auto d-table" id="request_help_button">Найти</button>
                         </form>
                         @include('frontend.fond.script')
-                        <div class="row" id="fond_lists">
-                        </div>
-                        <script>
-                            var help_fond = [];
-                            $('#request_help_button').click(function () {
-                                $.ajax({
-                                    method: 'get',
-                                    url: '{{route('request_help')}}',
-                                    data: $('#request_help').serialize(),
-                                    success: function (data) {
-                                        $('#fond_lists').html(data);
-                                        // $('#request_help').hide()
-                                    },
-                                    error: function (err) {
-                                        if (err.status == 422) { // when status code is 422, it's a validation issue
-                                            console.log(err.responseJSON);
-                                            $('#success_message').fadeIn().html(err.responseJSON.message);
-
-                                            // you can loop through the errors object and show it to the user
-                                            console.warn(err.responseJSON.errors);
-                                            // display errors on each form field
-                                            $.each(err.responseJSON.errors, function (i, error) {
-                                                var el = $(document).find('[name="'+i+'"]');
-                                                el.after($('<span class="error" style="color: red;">'+error[0]+'</span>'));
-                                            });
-                                        }
-                                    }
-                                });
-                                return false;
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-<?php
-$script = "<script>
-    $(document).ready(function () {
-        $('.newsSlick').slick({
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            responsive: [
-                {
-                    breakpoint: 679,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        rows: 1,
-                        infinite: true,
-                    }
-                }
-            ]
-        });
-    });
-</script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js' integrity='sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==' crossorigin='anonymous'></script>
-";
-?>
-
-@extends('frontend.layout', ['script'=>$script])
+@extends('frontend.layout')

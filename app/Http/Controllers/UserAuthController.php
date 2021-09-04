@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class UserAuthController extends Controller
@@ -19,7 +21,8 @@ class UserAuthController extends Controller
 
     public function registration()
     {
-        return view('frontend.auth.registration');
+        return Redirect::to(config('app.idp_url').symbolGeneration(23));
+//        return view('frontend.auth.registration');
     }
 
     public function postLogin(Request $request)
@@ -53,23 +56,17 @@ class UserAuthController extends Controller
             $request->iin = $request->email;
             $credentials = $request->only('email', 'password');
         }
-
-        if (Auth::attempt($credentials)) {
-            if(Auth::guard('fond')){
-                Auth::guard('fond')->logout();
-            }
-            if(Auth::guard('admin')){
-                Auth::guard('admin')->logout();
-            }
+        if($this->attempts($credentials)){
             return redirect()->intended('cabinet');
         }
+
         return redirect()->route('login')->with('error', 'Что-то пошло не так!');
     }
 
     public function postRegistration(Request $request)
     {
-        $state = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, 23);
-        return redirect()->to(config('app.idp_url' . $state));
+//        $state = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, 23);
+//        return redirect()->to(config('app.idp_url' . $state));
 //       $validator = Validator::make($request->all(),[
 //            'first_name' => 'required',
 //            'last_name' => 'required',
@@ -143,6 +140,15 @@ class UserAuthController extends Controller
     }
 
     public function checkUser(Request $request){
+        if($this->idpAuth($request)){
+            return redirect()->route('cabinet');
+        }else{
+            return redirect()->to('/')->with(['error'=>'Что пошло не так! Попробуйте позже']);
+        }
+//        'Что пошло не так! Попробуйте позже'
+    }
+
+    private function idpAuth($request){
         $client = new \GuzzleHttp\Client();
         $credentials = base64_encode('meninatam:9Bst@n6T!P^3ux:#');
 
@@ -160,7 +166,7 @@ class UserAuthController extends Controller
                 ],
             ]);
         } catch (GuzzleException $e) {
-            return redirect()->to('/')->withErrors($e->getMessage());
+            return false;
         }
         if($response){
             $json = json_decode($response->getBody()->getContents(), true)['access_token'];
@@ -171,12 +177,59 @@ class UserAuthController extends Controller
                         'Authorization' => 'Bearer ' . $json,
                     ]
                 ]);
-                echo '<pre>';
-                print_r($response->getBody()->getContents());
-                echo '</pre>';
+                $password = symbolGeneration(10);
+                $idpPerson = json_decode($response->getBody()->getContents());
+                $user = User::where('iin', $idpPerson->person->iin)->first();
+                $personData = $idpPerson->person;
+                if($user){
+                    $data = [
+                        'first_name' => $personData->name,
+                        'last_name' => $personData->surname,
+                        'patron' => $personData->patronymic,
+                        'iin' => $personData->iin,
+                        'born' => $personData->birthDate,
+                        'gender' => getGenderByIin($personData->iin),
+                        'password' => Hash::make($password)
+                    ];
+                    $user->update($data);
+                    $credential = ['iin'=>$user->iin, 'password'=>$password];
+                    if($this->attempts($credential)){
+                        return true;
+                    }
+                }else{
+                    $data = [
+                        'first_name' => $personData->name,
+                        'last_name' => $personData->surname,
+                        'patron' => $personData->patronymic,
+                        'iin' => $personData->iin,
+                        'born' => $personData->birthDate,
+                        'status' => 1,
+                        'gender' => getGenderByIin($personData->iin),
+                        'password' => Hash::make($password)
+                    ];
+                    $user = User::create($data);
+                    $credentials = ['iin'=>$user->iin, 'password'=>$password];
+                    if($this->attempts($credentials)){
+                        return true;
+                    }
+                }
             } catch (GuzzleException $e) {
-                return redirect()->to('/')->withErrors($e->getMessage());
+                return false;
             }
+        }
+    }
+
+    private function attempts($credentials){
+        if (Auth::attempt($credentials)) {
+            if(Auth::guard('fond')){
+                Auth::guard('fond')->logout();
+            }
+            if(Auth::guard('admin')){
+                Auth::guard('admin')->logout();
+            }
+            return true;
+        }else{
+            return false;
         }
     }
 }

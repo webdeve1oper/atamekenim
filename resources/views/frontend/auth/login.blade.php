@@ -40,23 +40,25 @@ $script = "<script src='/js/masked.input.js'></script>
                                 <div class="tab-content w-100">
                                     <div class="tab-pane container active w-100" id="user">
                                         @include('frontend.alerts')
-                                        <h1>Авторизация пользователя </h1>
-                                        <form action="{{route('post_login_user')}}" class="w-100" method="post">
-                                            @csrf
-                                            @if($errors->has('email'))
-                                                <span class="error">{{ $errors->first('email') }}</span>
-                                            @endif
-                                            <input name="email" type="text" value="{{old('email')}}" class="form-control mb-3" placeholder="ИИН или почта">
-                                            @if($errors->has('password'))
-                                                <span class="error">{{ $errors->first('password') }}</span>
-                                            @endif
-                                            <input name="password" type="password" class="form-control mb-3" placeholder="Пароль">
+                                        {{--<h1>Авторизация пользователя </h1>--}}
+                                        <h1>Авторизация </h1>
+                                        {{--<form action="{{route('post_login_user')}}" class="w-100" method="post">--}}
+                                            {{--@csrf--}}
+                                            {{--@if($errors->has('email'))--}}
+                                                {{--<span class="error">{{ $errors->first('email') }}</span>--}}
+                                            {{--@endif--}}
+                                            {{--<input name="email" type="text" value="{{old('email')}}" class="form-control mb-3" placeholder="ИИН или почта">--}}
+                                            {{--@if($errors->has('password'))--}}
+                                                {{--<span class="error">{{ $errors->first('password') }}</span>--}}
+                                            {{--@endif--}}
+                                            {{--<input name="password" type="password" class="form-control mb-3" placeholder="Пароль">--}}
 
-                                            <button class="btn btn-primary" type="submit">Продолжить</button>
-                                        </form>
+                                            {{--<button class="btn btn-primary" type="submit">Продолжить</button>--}}
+                                        {{--</form>--}}
                                         <hr>
-                                        <a href="{{route('registration_user')}}">Регистрация</a>
-                                        <a class="ml-3" href="{{route('login-fond')}}">Войти как фонд</a>
+                                        <a class="login btn-default blue" href="{{route('registration_user')}}">Войти или зарегистрироваться</a>
+                                        {{--<a class="login btn-default blue" href="{{route('registration_user')}}">Регистрация</a>--}}
+                                        <a class="login btn-default blue" class="ml-3" href="{{route('login-fond')}}">Войти как фонд</a>
                                     </div>
                                 </div>
                             </div>

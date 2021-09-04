@@ -11,8 +11,8 @@ Route::get('/develope', function(){
 
 Route::get('/test', function(){
     $client = new \GuzzleHttp\Client();
-    $client = $client->get('http://127.0.0.1:8900/personStatus/<iin>');
-    dd($client->getBody());
+    $client = $client->get('http://127.0.0.1:8900/personStatus/820803450535');
+    dd(json_decode($client->getBody()->getContents()));
 })->name('develope');
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');

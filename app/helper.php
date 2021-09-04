@@ -34,3 +34,25 @@ if (! function_exists('gender')) {
         return $gender;
     }
 }
+
+if (! function_exists('symbolGeneration')) {
+    function symbolGeneration($length)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyz"), 0, $length);
+    }
+}
+
+if (! function_exists('getGenderByIin')) {
+    function getGenderByIin(string $iin): ?string
+    {
+        $genderAndCentury = (int)substr($iin, 6, 1);
+
+        if (in_array($genderAndCentury, [1, 3, 5])) {
+            return 'male';
+        } elseif (in_array($genderAndCentury, [2, 4, 6])) {
+            return 'female';
+        }
+
+        return null;
+    }
+}

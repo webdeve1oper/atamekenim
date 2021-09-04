@@ -118,7 +118,15 @@
                         <p><span>ФИО заявителя:</span>{{ $help->user->last_name }} {{ $help->user->first_name }}</p>
                         <p><span>Место оказания помощи:</span>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
                                 , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
-                        <p><span>ТЖС:</span>--</p>
+                        {{--<p><span>ТЖС:</span>--</p>--}}
+                        <p><span>Статус:</span>@if($help->statuses)
+                            <?php
+                            $statuses = json_decode($help->statuses, true);
+                            ?>
+                            @foreach($statuses as $status)
+                                {{$status['valueRu']}} <hr>
+                                @endforeach
+                                @endif</p>
                         <p><span>Год рождения:</span>{{ $help->user->born }}</p>
                         <p><span>Контактный телефон:</span>{{ $help->user->phone }}</p>
                         <p><span>E-mail:</span>{{ $help->user->email }}</p>

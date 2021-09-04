@@ -35,8 +35,9 @@ class CabinetController extends Controller
         $waitHelps = Auth::user()->helpsByStatus('wait')->with('fonds')->with('reviews')->get();
         $finishedHelps = Auth::user()->helpsByStatus('finished')->with('fonds')->with('reviews')->get();
         $processHelps = Auth::user()->helpsByStatus('process')->with('fonds')->with('reviews')->get();
+        $cancledHelps = Auth::user()->canceledHelps()->get();
 
-        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps'));
+        return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps', 'cancledHelps'));
     }
 
     public function create()
@@ -117,6 +118,9 @@ class CabinetController extends Controller
     public function helpPage($id)
     {
         $help = Help::find($id);
+        if($help->status == 'cancel'){
+            return redirect()->back()->with(['error' => 'Заявка отклонена']);
+        }
         return view('backend.cabinet.help.help_page')->with(compact('help'));
     }
 
@@ -159,6 +163,9 @@ class CabinetController extends Controller
     public function editPage($id)
     {
         $help = Help::find($id);
+        if($help->admin_status == 'cancel'){
+            return redirect()->back()->with(['error' => 'Заявка отклонена']);
+        }
         if ($help->user_id == Auth::user()->id) {
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
             $baseHelpTypes = AddHelpType::all();

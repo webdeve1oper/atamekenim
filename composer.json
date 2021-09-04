@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.2",
         "avto-dev/cloud-payments-laravel": "^1.1",
-        "doctrine/dbal": "^2.0",
+        "doctrine/dbal": "2.*",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
         "intervention/image": "^2.5",

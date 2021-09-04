@@ -4,7 +4,7 @@
     <div class="row">
         @include('frontend.alerts')
         <div class="col-sm-6 mt-2 mb-2">
-            <h1>Обращение: ID{{ $help->id }}</h1>
+            <h1>Обращение: ID{{ getHelpId($help->id) }}</h1>
         </div>
         <div class="col-sm-6">
             @if($help->admin_status == 'moderate' or $help->admin_status == 'edit')
@@ -27,7 +27,7 @@
         </div>
         <div class="col-12">
             <p><span>Статус Админа:</span> {{ $help->admin_status }},<br><span>Статус Фонда:</span>  {{ $help->fond_status }}</p>
-            <p><span>Благотворительная организация, которой адресован запрос:</span><span class="fondNames">@foreach($help->fonds as $fond)Фонд: {{$fond->title_ru}}<br>@endforeach</span></p>
+            <p><span>Благотворительная организация, которой адресован запрос:</span><span class="fondNames">@foreach($help->fonds as $fond) Фонд: {{$fond->title_ru}}<br> @endforeach</span></p>
             <style>
                 span.fondNames {
                     display: table;

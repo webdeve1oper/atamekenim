@@ -163,9 +163,9 @@ class FondController extends Controller
             $data['social'] = json_encode($socials, JSON_UNESCAPED_UNICODE);
             unset($data['bin']);
             $fond = Fond::find(Auth::user()->id);
-                 $fond->regions()->sync($request->region);
-                 $fond->districts()->sync($request->district);
-                $fond->cities()->sync($request->city);
+            $fond->regions()->sync($request->region);
+            $fond->districts()->sync($request->district);
+            $fond->cities()->sync($request->city);
             if ($request->file('logo')) {
                 $originalImage = $request->file('logo');
                 $thumbnailImage = Image::make($originalImage);
@@ -185,89 +185,96 @@ class FondController extends Controller
         }
     }
 
-    public function requisiteEdit(Request $request){
+    public function requisiteEdit(Request $request)
+    {
         $requisites = $request->all();
         $requisites['fond_id'] = Auth::user()->id;
-        if(array_key_exists('aggree', $requisites)){
-            if($requisites['aggree'] == 'on'){
+        if (array_key_exists('aggree', $requisites)) {
+            if ($requisites['aggree'] == 'on') {
                 $requisites['aggree'] = 1;
             }
         }
         $requisites = FondRequisite::create($requisites);
-        if($requisites){
-            return  redirect()->back();
-        }else{
+        if ($requisites) {
+            return redirect()->back();
+        } else {
             return redirect()->back();
         }
     }
 
-    public function officeEdit(Request $request, $id){
+    public function officeEdit(Request $request, $id)
+    {
         $requisites = $request->all();
         $office = FondOffice::find($id);
         $requisites['fond_id'] = Auth::user()->id;
-        if(array_key_exists('central', $requisites)){
-            if($requisites['central'] == 'on'){
+        if (array_key_exists('central', $requisites)) {
+            if ($requisites['central'] == 'on') {
                 $requisites['central'] = 1;
             }
-        }else{
+        } else {
             $requisites['central'] = 0;
         }
         $office->update($requisites);
-        if($office){
-            return  redirect()->back();
-        }else{
+        if ($office) {
+            return redirect()->back();
+        } else {
             return redirect()->back();
         }
     }
 
-    public function requisiteCreate(Request $request){
+    public function requisiteCreate(Request $request)
+    {
         $requisites = $request->all();
         $requisites['fond_id'] = Auth::user()->id;
-        if(array_key_exists('aggree', $requisites)){
-            if($requisites['aggree'] == 'on'){
+        if (array_key_exists('aggree', $requisites)) {
+            if ($requisites['aggree'] == 'on') {
                 $requisites['aggree'] = 1;
             }
         }
         $requisite = FondRequisite::create($requisites);
-        if($requisite){
-            return  redirect()->back();
-        }else{
+        if ($requisite) {
+            return redirect()->back();
+        } else {
             return redirect()->back();
         }
     }
 
-    public function officeCreate(Request $request){
+    public function officeCreate(Request $request)
+    {
         $offices = $request->all();
         $offices['fond_id'] = Auth::user()->id;
-        if(array_key_exists('central', $offices)){
-            if($offices['central'] == 'on'){
+        if (array_key_exists('central', $offices)) {
+            if ($offices['central'] == 'on') {
                 $offices['central'] = 1;
             }
         }
         $offices = FondOffice::create($offices);
-        if($offices){
-            return  redirect()->back();
-        }else{
+        if ($offices) {
+            return redirect()->back();
+        } else {
             return redirect()->back();
         }
     }
 
-    public function officeDelete($id){
-        if(FondOffice::destroy($id)){
+    public function officeDelete(int $id)
+    {
+        if (FondOffice::destroy($id)) {
             return 'ok';
         }
     }
 
-    public function requisiteDelete($id){
-        if(FondRequisite::destroy($id)){
+    public function requisiteDelete(int $id)
+    {
+        if (FondRequisite::destroy($id)) {
             return 'ok';
         }
     }
+    
 
     public function helpPage($id)
     {
         $help = Auth::user()->containsHelps()->where('help_id', $id)->first();
-        if(in_array($help->fond_status, ['process', 'moderate', 'finished','cancel']) and $help->activeFond->first()->id != Auth::user()->id){
+        if (in_array($help->fond_status, ['process', 'moderate', 'finished', 'cancel']) and $help->activeFond->first()->id != Auth::user()->id) {
             return redirect()->route('fond_cabinet')->with('error', 'Заявка уже принята другим фондом');
         }
         $cashHelpTypes = CashHelpType::all();

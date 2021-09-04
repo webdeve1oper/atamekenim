@@ -46,9 +46,19 @@
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
                                             <p>{!! mb_substr($help->body, 0,100) !!}...</p>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <p class="name">{{trans('fond-cab.status-tjs')}}</p>
-                                            <p class="tags default mini red">120 баллов</p>
+                                        <div class="col-sm-2 pr-0">
+                                            {{--<p class="name">{{trans('fond-cab.status-tjs')}}</p>--}}
+                                            <p class="name">Статус получателя</p>
+                                            <p class="tags default mini red" style="line-height: 1;font-size: 12px; padding: 5px;">
+                                                @if($help->statuses)
+                                                    <?php
+                                                        $statuses = json_decode($help->statuses, true);
+                                                    ?>
+                                                    @foreach($statuses as $status)
+                                                        {{$status['valueRu']}} <hr>
+                                                    @endforeach
+                                                @endif
+                                            </p>
                                         </div>
                                         <div class="col-sm-3">
                                             <a href="{{ route('fond_help_page',$help->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
@@ -79,12 +89,22 @@
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
                                             <p>{!! mb_substr($process->body, 0,100) !!}...</p>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <p class="name">{{trans('fond-cab.status-tjs')}}</p>
-                                            <p class="tags default mini red">120 баллов</p>
+                                        <div class="col-sm-2 pr-0">
+                                            {{--<p class="name">{{trans('fond-cab.status-tjs')}}</p>--}}
+                                            <p class="name">Статус получателя</p>
+                                            <p class="tags default mini red" style="line-height: 1;font-size: 12px; padding: 5px;">
+                                            @if($process->statuses)
+                                                <?php
+                                                $statuses = json_decode($process->statuses, true);
+                                                ?>
+                                                @foreach($statuses as $status)
+                                                    {{$status['valueRu']}} <hr>
+                                                    @endforeach
+                                                    @endif
+                                                    </p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p class="name center">{{trans('fond-cab.status')}}:</p>
+                                            <p class="name center">{{trans('fond-cab.status')}}</p>
                                             <a href="{{ route('fond_help_page',$process->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
                                             <p class="tags default mini grey mb-3 w-100">В работе с {{\Carbon\Carbon::parse($process->date_fond_start)->format('d.m.Y')}}</p>
                                             {{--<form action="{{route('finish_help', $process->id)}}" method="post">--}}
@@ -116,9 +136,19 @@
                                             <p class="name">{{trans('fond-cab.desc')}}</p>
                                             <p>{!! mb_substr($process->body, 0,100) !!}...</p>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <p class="name">{{trans('fond-cab.status-tjs')}}</p>
-                                            <p class="tags default mini red">120 баллов</p>
+                                        <div class="col-sm-2 pr-0">
+                                            {{--<p class="name">{{trans('fond-cab.status-tjs')}}</p>--}}
+                                            <p class="name">Статус получателя</p>
+                                            <p class="tags default mini red" style="line-height: 1;font-size: 12px; padding: 5px;">
+                                            @if($process->statuses)
+                                                <?php
+                                                $statuses = json_decode($process->statuses, true);
+                                                ?>
+                                                @foreach($statuses as $status)
+                                                    {{$status['valueRu']}} <hr>
+                                                    @endforeach
+                                                    @endif
+                                                    </p>
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name center">{{trans('fond-cab.status')}}</p>

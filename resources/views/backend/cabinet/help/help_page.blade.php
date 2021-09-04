@@ -70,7 +70,13 @@
                                 </div>
                             @endif
                             <div class="helpEditBlock">
+                                @if($help->admin_status != 'cancel')
                                 <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
+                                    @else
+                                    <div class="alert alert-danger">
+                                        Ваша заявка отклонена!
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     @endif

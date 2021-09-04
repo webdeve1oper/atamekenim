@@ -46,11 +46,23 @@ class User extends Authenticatable
     }
 
     public function helpsByStatus($status = 'wait'){
-        return $this->hasMany(Help::class,'user_id')->where('fond_status', '=', $status);
+        return $this->hasMany(Help::class,'user_id', 'id')->where('fond_status', '=', $status);
+    }
+
+    public function canceledHelps(){
+        return $this->hasMany(Help::class,'user_id', 'id')->where('admin_status', '=', 'cancel');
     }
 
     public function born_location_country(){
-        return $this->hasMany(Country::class);
+        return $this->hasOne(Country::class, 'country_id', 'born_location_country');
+    }
+
+    public function born_location_region(){
+        return $this->hasOne(Region::class, 'region_id', 'born_location_region');
+    }
+
+    public function born_location_city(){
+        return $this->hasOne(City::class);
     }
 
     public function images(){

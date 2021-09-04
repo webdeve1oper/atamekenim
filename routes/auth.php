@@ -1,11 +1,12 @@
 <?php
 
 //User Auth
+Route::get('/check_user', 'UserAuthController@checkUser')->name('check_user'); // idp
 Route::get('login-user', 'UserAuthController@index')->name('login');
-Route::post('post-login-user', 'UserAuthController@postLogin')->name('post_login_user');
-Route::get('registration_user', 'UserAuthController@registration')->name('registration_user');
-Route::post('post-registration-user', 'UserAuthController@postRegistration')->name('post_registration_user');
-Route::post('post_sms_user', 'UserAuthController@postSmsRegistration')->name('post_sms_user');
+//Route::post('post-login-user', 'UserAuthController@postLogin')->name('post_login_user');
+Route::get('registration_user', 'UserAuthController@registration')->name('registration_user'); // redirect to idp
+//Route::post('post-registration-user', 'UserAuthController@postRegistration')->name('post_registration_user');
+//Route::post('post_sms_user', 'UserAuthController@postSmsRegistration')->name('post_sms_user');
 
 //Fond Auth
 Route::get('login-fond', 'FondAuthController@index')->name('login-fond');

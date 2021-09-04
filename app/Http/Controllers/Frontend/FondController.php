@@ -16,8 +16,10 @@ use App\Http\Controllers\Controller;
 use App\Payment;
 use App\Region;
 use App\Scenario;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 
 class FondController extends Controller
@@ -40,14 +42,57 @@ class FondController extends Controller
 
     public function requestHelp(Request $request)
     {
-        if ($request->ajax()) {
-            $inputs = $request->all();
-
+        if ($request->method() == 'POST') {
             $this->validate($request, [
                 'body' => 'required|min:3',
-//                'destinations' => 'required',
-                'baseHelpTypes' => 'required',
+                'baseHelpTypes.*' => 'required',
+                'cashHelpTypes.*' => 'required',
+            ], [
+                'body.required' =>'заполните описание',
+                'cashHelpTypes.required' =>'заполните описание',
             ]);
+
+            $request['user_id'] = Auth::user()->id;
+            $data = $request->all();
+            if($data['city_id']==0){
+                unset($data['city_id']);
+            }
+            if($data['district_id']==0){
+                unset($data['district_id']);
+            }
+            $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
+            $help = Help::create($data);
+            if($request->hasFile('photo')){
+//                $this->validate($request, [
+//                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+//                ]);
+                foreach($request->file('photo') as $image)
+                {
+                    $filename = microtime().$help->id.'.'.$image->getClientOriginalExtension();
+                    $thumbnailImage = Image::make($image);
+                    $path = '/img/help/'.$filename;
+                    $thumbnailImage->resize(700, null)->save(public_path().$path);
+                    HelpImage::create(['help_id'=>$help->id, 'image'=>$path]);
+                }
+            }
+            if($request->hasFile('doc')){
+//                $this->validate($request, [
+//                    'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
+//                ]);
+                foreach($request->file('doc') as $doc)
+                {
+                    $filename = microtime().$help->id.'.'.$doc->getClientOriginalExtension();
+                    $path = '/img/help/docs/';
+                    $doc->move(public_path().$path, $filename);
+                    HelpDoc::create(['help_id'=>$help->id, 'path'=>$path.$filename, 'original_name'=>$doc->getClientOriginalName()]);
+                }
+            }
+            $fonds = Fond::query();
+            if($request->exists('help_fond')){
+                $help_fonds = explode(',', $request->help_fond);
+                $fonds = $fonds->whereIn('id', $help_fonds);
+            }
+            $inputs = $request->all();
 
             $fonds = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->whereHas('scenarios', function($query) use ($inputs){
                 $query->where('scenario_id', $inputs['who_need_help']);
@@ -109,66 +154,14 @@ class FondController extends Controller
                 $fondsByPoints[0] = Fond::select(['id','title_ru', 'logo', 'created_at', 'foundation_date', 'about_ru'])->where('id', 20)->first()->toArray();
                 $fondsByPoints[0]['points'] = 100;
             }
-
-            usort($fondsByPoints, function($a, $b) {
-                return $b['points'] <=> $a['points'];
-            });
-
-            return view('frontend.fond.help_fond_list')->with(compact('fondsByPoints'));
-        }
-        if ($request->method() == 'POST') {
-//            dd($request->all());
-            $this->validate($request, [
-                'body' => 'required|min:3',
-//                'destinations.*.' => 'required',
-                'baseHelpTypes.*' => 'required',
-                'cashHelpTypes.*' => 'required',
-            ], [
-                'body.required' =>'заполните описание',
-                'cashHelpTypes.required' =>'заполните описание',
-            ]);
-
-            $request['user_id'] = Auth::user()->id;
-            $data = $request->all();
-            if($data['city_id']==0){
-                unset($data['city_id']);
-            }
-            if($data['district_id']==0){
-                unset($data['district_id']);
-            }
-
-            $help = Help::create($data);
-            if($request->hasFile('photo')){
-//                $this->validate($request, [
-//                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
-//                ]);
-                foreach($request->file('photo') as $image)
-                {
-                    $filename = microtime().$help->id.'.'.$image->getClientOriginalExtension();
-                    $thumbnailImage = Image::make($image);
-                    $path = '/img/help/'.$filename;
-                    $thumbnailImage->resize(700, null)->save(public_path().$path);
-                    HelpImage::create(['help_id'=>$help->id, 'image'=>$path]);
+            $fondsids= [];
+            foreach($fondsByPoints as $key => $fondsByPoint){
+                $coincidence = round($fondsByPoint['points'] / $fondsByPoints[0]['points'] * 100);
+                if($coincidence < 45){
+                    continue;
                 }
+                $fondsids[] = $fondsByPoint['id'];
             }
-            if($request->hasFile('doc')){
-//                $this->validate($request, [
-//                    'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
-//                ]);
-                foreach($request->file('doc') as $doc)
-                {
-                    $filename = microtime().$help->id.'.'.$doc->getClientOriginalExtension();
-                    $path = '/img/help/docs/';
-                    $doc->move(public_path().$path, $filename);
-                    HelpDoc::create(['help_id'=>$help->id, 'path'=>$path.$filename, 'original_name'=>$doc->getClientOriginalName()]);
-                }
-            }
-            $fonds = Fond::query();
-            if($request->exists('help_fond')){
-                $help_fonds = explode(',', $request->help_fond);
-                $fonds = $fonds->whereIn('id', $help_fonds);
-            }
-            $fonds = $fonds->pluck('id');
             if (isset($request->destinations) && !empty($request->destinations)) {
                 $help->destinations()->sync($request->destinations);
             }
@@ -178,7 +171,10 @@ class FondController extends Controller
             if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
                 $help->cashHelpTypes()->sync($request->cashHelpTypes);
             }
-            $help->fonds()->attach($fonds);
+
+
+            Log::info($help->id, $fondsids);
+            $help->fonds()->attach($fondsids);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка усешно отправлена!', 'info' => 'Заявка отправена на модерацию']);
         }
         if ($request->method() == 'GET') {
@@ -334,6 +330,28 @@ class FondController extends Controller
         $payment->amount = $request->amount;
         $payment->save();
         return 'ok';
+    }
+
+    private function getPersonStatus(string $iin)
+    {
+        if($iin == '980101351561'){
+            $iins = ['820803450538', '820803450535', '820803450537'];
+            $iin = $iins[array_rand($iins)];
+        }
+        try{
+            $client = new \GuzzleHttp\Client();
+            $client = $client->get('http://127.0.0.1:8900/personStatus/'.$iin);
+            $statuses = json_decode($client->getBody()->getContents());
+            if($statuses){
+                return json_encode($statuses->statuses);
+            }else{
+                return json_encode(['valueRu' => 'Данные не найдены', 'valueKz'=> '']);
+            }
+        }catch (GuzzleException $exception){
+            return json_encode(['valueRu' => 'Данные не найдены', 'valueKz'=> '']);
+        }
+
+
     }
 
 }

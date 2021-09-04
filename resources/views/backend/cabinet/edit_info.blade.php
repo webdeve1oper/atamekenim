@@ -8,10 +8,10 @@
                     <div class="col-sm-12">
                         <h1>{{trans('cabinet-appl.appl-personal-page')}}</h1>
                         <ul class="myAccountMenu">
-                            <li><a href="{{route('history')}}">{{trans('cabinet-appl.hist-mess')}}</a></li>
-                            <li><a href="{{route('reviews')}}">{{trans('cabinet-appl.my-rev')}}</a></li>
-                            <li><a href="">{{trans('cabinet-appl.message')}}</a></li>
-                            <li><a href="">{{trans('cabinet-appl.my-photo')}}</a></li>
+                            {{--<li><a href="{{route('history')}}">{{trans('cabinet-appl.hist-mess')}}</a></li>--}}
+                            {{--<li><a href="{{route('reviews')}}">{{trans('cabinet-appl.my-rev')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('cabinet-appl.message')}}</a></li>--}}
+                            {{--<li><a href="">{{trans('cabinet-appl.my-photo')}}</a></li>--}}
                         </ul>
                     </div>
                 </div>

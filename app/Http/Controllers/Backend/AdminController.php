@@ -24,7 +24,7 @@ class AdminController extends Controller
     public function showHelps(){
         if(Auth::user()->role_id <= 2){
             $helps1 = Help::where('admin_status','moderate')->get();
-            $helps2 = Help::where('admin_status','finished')->get();
+            $helps2 = Help::where('admin_status','finished')->where('fond_status', 'wait')->get();
             $helps3 = Help::where('fond_status','process')->get();
             $helps4 = Help::where('admin_status','cancel')->get();
             $helps5 = Help::where('admin_status','edit')->get();
@@ -54,7 +54,7 @@ class AdminController extends Controller
                     break;
                 case 'finished':
                     $title = 'В ожидании благотворителя';
-                    $helps = Help::where('admin_status', $category)->get();
+                    $helps = Help::where('admin_status', $category)->where('fond_status', 'wait')->get();
                     break;
                 case 'fond_process':
                     $title = 'В работе';
