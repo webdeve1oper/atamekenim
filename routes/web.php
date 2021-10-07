@@ -25,10 +25,12 @@ Route::get('/payment-success', function(){
 Route::get('/about', 'Frontend\MainController@about')->name('about');
 Route::get('/contacts', 'Frontend\MainController@contacts')->name('contacts');
 Route::get('/question-answer', 'Frontend\MainController@qa')->name('qa');
-Route::get('/helps', 'Frontend\HelpController@helps')->name('helps');
+//Route::get('/helps', 'Frontend\HelpController@helps')->name('helps');
+Route::get('/sos', 'Frontend\HelpController@helps')->name('helps');
 Route::get('/help/{id}', 'Frontend\MainController@helpPage')->name('help');
 Route::get('/help-page', 'Frontend\MainController@help')->name('help-page');
 Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');
-Route::get('/fonds', 'Frontend\FondController@fonds')->name('fonds');
+//Route::get('/fonds', 'Frontend\FondController@fonds')->name('fonds');
+Route::get('/organizations', 'Frontend\FondController@fonds')->name('fonds');
 Route::get('/news', 'Frontend\MainController@news')->name('news');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Реестр Фондов</title>
+    {{--<title>Реестр Фондов</title>--}}
+    <title>{{$meta['title'] ?? $title ?? 'Реестр Фондов'}}</title>
     <meta name="description" content="">
     <link rel="shortcut icon" href="img/favicon.png" type="image/png">
     <meta name="robots" content="noindex, nofollow"/>
@@ -36,15 +37,21 @@
                     <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
                     <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>
                 </ul>
-                <ul class="socials">
+                <ul class="socials d-none">
                     <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
                     <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 </ul>
             </div>
             <div class="col-sm-6">
                 <ul class="control">
-                    <li>
-                        <p class="share"><span>{{trans('home.share')}}</span><a href=""><i class="fas fa-share-alt"></i></a></p>
+                    <li style="position: relative;">
+                        <p class="share" onclick="$('.shareSoc').slideToggle();"><span>{{trans('home.share')}}</span><a href="javascript://0" ><i class="fas fa-share-alt"></i></a>
+                        </p>
+                        <div class="shareSoc" style="display: none;">
+                            <a href="http://www.facebook.com/share.php?u={{url()->full()}}"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com/intent/tweet?url={{url()->full()}}"><i class="fab fa-twitter"></i></a>
+                            <a href="https://t.me/share/url?url={{url()->full()}}"><i class="fab fa-telegram"></i></a>
+                        </div>
                     </li>
                     <li>
                         <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:1432">1432</a></p>
@@ -130,7 +137,7 @@
                 </ul>
             </div>
             <div class="col-sm-3">
-                <button class="share"><span>{{trans('home.share-social')}}</span><img src="/img/share.svg" alt=""></button>
+                <button class="share d-none"><span>{{trans('home.share-social')}}</span><img src="/img/share.svg" alt=""></button>
                 <form action="">
                     <input type="text" placeholder="{{trans('home.site-search')}}">
                     <button><img src="/img/search.svg" alt=""></button>
@@ -142,7 +149,8 @@
             </div>
             <div class="col-sm-2">
                 <ul>
-                    <li><a href="{{route('dev')}}">{{trans('home.call-center')}}</a></li>
+                    {{--<li><a href="{{route('dev')}}">{{trans('home.call-center')}}</a></li>--}}
+                    <li><a href="https://wa.me/7763337766">WhatsApp</a></li>
                     <li><a href="{{route('dev')}}">{{trans('home.social')}}</a></li>
                 </ul>
             </div>
@@ -152,7 +160,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="siteCopyr"><span>{{trans('home.copyright')}}:</span><img src="/img/logo23.png" alt=""></div>
+                    <div class="siteCopyr"><span>{{trans('home.copyright')}}:</span><img src="/img/logo-atameken.svg" alt=""></div>
                 </div>
                 <div class="col-sm-6">
                     <div class="siteCopyr realCopyright"><span>{{trans('home.copyright-dev')}}: </span><img src="/img/conversion.svg" alt=""></div>
@@ -174,6 +182,15 @@
 
             header ul.menu {
                 margin: 0 5px 0 0;
+            }
+            *{
+                font-family: 'Montserrat';
+            }
+            .menu2 li{
+                margin: 0 22px 0 0!important;
+            }
+            .menu2 li a{
+                font-size: 13px;
             }
         </style>
     @endif
@@ -222,5 +239,16 @@
         }
     });
 </script>
+<style>
+    .shareSoc {
+        position: absolute;
+        right: 0;
+        z-index: 3;
+    }
+
+    .shareSoc a {display: table;vertical-align: middle;width: 30px;height: 30px;border-radius: 3px;background: #e6f0fa;text-align: center;margin: 5px 0;}
+
+    .shareSoc a i {display: table-cell;vertical-align: middle;color: #3976bb;}
+</style>
 </body>
 </html>

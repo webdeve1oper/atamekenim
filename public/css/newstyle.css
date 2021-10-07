@@ -1,3 +1,6 @@
+header{
+    overflow: visible;
+}
 .faqBlock .accordion {
     display: table;
     margin: 40px 0 0;

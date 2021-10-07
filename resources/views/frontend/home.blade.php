@@ -1,4 +1,4 @@
-@extends('frontend.layout')
+@extends('frontend.layout', ['title' => trans('fonds-page.reestr')])
 
 @section('content')
     <div class="fatherBlock">
@@ -9,7 +9,8 @@
                         <h1>{{trans('home.main-h1')}}</h1>
                         <p class="descr">{{trans('home.main-descr')}}</p>
                         <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply-for-assistance')}}</a>
-                        <a href="{{route('registration_fond')}}" class="btn-default">{{trans('home.partic')}}</a>
+                        {{--<a href="{{route('registration_fond')}}" class="btn-default">{{trans('home.partic')}}</a>--}}
+                        <a href="{{route('about')}}" class="btn-default">{{trans('home.partic')}}</a>
                     </div>
                 </div>
                 <img src="/img/slide.svg" alt="" class="slideImg">
@@ -36,10 +37,31 @@
                             </select>
                             <select name="destination[]" id="select2" style="max-width: 300px;">
                                 <option value="all">{{trans('home.adresat')}}</option>
+                                @php $i = 1 @endphp
                                 @foreach($destionations as $destination)
+                                    @if($i != $destination->paren_id )
+                                        @php $i = $destination->paren_id @endphp
+                                        <option disabled class="categoryName">{{trans('fonds.status')}}</option>
+                                    @endif
+                                    @if($loop->index == 16)
+                                        <option disabled class="categoryName">{{trans('fonds.life-sit')}}</option>
+                                    @endif
+                                    @if($loop->index == 24)
+                                        <option disabled class="categoryName">{{trans('fonds.origin')}}</option>
+                                    @endif
+                                    @if($loop->index == 27)
+                                        <option disabled class="categoryName">{{trans('fonds.healths')}}</option>
+                                    @endif
                                     <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                 @endforeach
                             </select>
+                            <style>
+                                option.categoryName {
+                                    font-weight: 800;
+                                    font-size: 16px;
+                                    color: #000;
+                                }
+                            </style>
                             {{--<select name="city[]" id="select3">--}}
                                 {{--<option value="all">Все города</option>--}}
                                 {{--@foreach($cities as $id => $city)--}}
@@ -104,7 +126,8 @@
                             @foreach($newFonds as $key=> $fond)
                                 <div class="item">
                                     <ul>
-                                        <li><p class="number">{{$key+1}}</p></li>
+                                        {{--<li><p class="number">{{$key+1}}</p></li>--}}
+                                        <li><p class="number">{{$fond->id}}</p></li>
                                         <li>
                                             @if($fond->logo)
                                                 <img src="{{$fond->logo}}" alt="" class="logotype">
@@ -121,54 +144,6 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid default supportBlock">
-            <div class="container">
-                <div class="row fat">
-                    <div class="col-sm-6 d-none">
-                        <h3>{{trans('home.have-helps')}}</h3>
-                        <form action="" id="helpForm">
-                            <div class="inputBlock">
-                                <label for="input1">{{trans('home.your-iin')}}</label>
-                                <input type="text" id="input1" placeholder="{{trans('home.12-num')}}">
-                            </div>
-                            <div class="inputBlock">
-                                <label for="citySelector">{{trans('home.your-regions')}}</label>
-                                <select name="" id="citySelector">
-                                    <option value="">{{trans('home.select-region')}}</option>
-                                    @foreach($cities as $city)
-                                        <option  value="{{$city->id}}">
-                                            {{$city['title_'.app()->getLocale()]}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="inputBlock">
-                                <label for="input3">{{trans('home.your-number')}}</label>
-                                <input type="text" id="input3" placeholder="8 (7**) *** *** **">
-                            </div>
-                            <div class="inputBlock topper">
-                                <button>{{trans('home.apply')}}</button>
-                            </div>
-                            <div class="inputBlock topper">
-                                <p class="regulations">{{trans('home.helps-offerts')}}</p>
-                            </div>
-                        </form>
-                        <div class="inputBlock topper">
-                            <a href="{{route('request_help')}}" class="login btn-default blue">{{trans('home.apply')}}</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <p class="bigName">{{trans('home.what-regis')}}</p>
-                        <p class="descr">
-                            {{trans('home.what-regis-text')}}
-                        </p>
-                        <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply')}}</a>
-{{--                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>--}}
-{{--                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>--}}
                     </div>
                 </div>
             </div>
@@ -226,6 +201,56 @@
                 </div>
             </div>
         </div>
+
+        <div class="container-fluid default supportBlock">
+            <div class="container">
+                <div class="row fat">
+                    <div class="col-sm-6 d-none">
+                        <h3>{{trans('home.have-helps')}}</h3>
+                        <form action="" id="helpForm">
+                            <div class="inputBlock">
+                                <label for="input1">{{trans('home.your-iin')}}</label>
+                                <input type="text" id="input1" placeholder="{{trans('home.12-num')}}">
+                            </div>
+                            <div class="inputBlock">
+                                <label for="citySelector">{{trans('home.your-regions')}}</label>
+                                <select name="" id="citySelector">
+                                    <option value="">{{trans('home.select-region')}}</option>
+                                    @foreach($cities as $city)
+                                        <option  value="{{$city->id}}">
+                                            {{$city['title_'.app()->getLocale()]}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="inputBlock">
+                                <label for="input3">{{trans('home.your-number')}}</label>
+                                <input type="text" id="input3" placeholder="8 (7**) *** *** **">
+                            </div>
+                            <div class="inputBlock topper">
+                                <button>{{trans('home.apply')}}</button>
+                            </div>
+                            <div class="inputBlock topper">
+                                <p class="regulations">{{trans('home.helps-offerts')}}</p>
+                            </div>
+                        </form>
+                        <div class="inputBlock topper">
+                            <a href="{{route('request_help')}}" class="login btn-default blue">{{trans('home.apply')}}</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="bigName">{{trans('home.what-regis')}}</p>
+                        <p class="descr">
+                            {{trans('home.what-regis-text')}}
+                        </p>
+                        <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply')}}</a>
+                        {{--                        <a href="{{route('login')}}" class="btn-default blue"><img src="/img/lofin.svg" alt="">{{trans('auth.sign-in')}}</a>--}}
+                        {{--                        <a href="{{route('registration_user')}}" class="btn-default transparent">{{trans('auth.sign-up')}}</a>--}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container-fluid default helperBlock">
             <div class="container">
                 <div class="row">
@@ -389,6 +414,8 @@
                     </div>
                     <div class="col-sm-12">
                         <h4>{{trans('home.faq3')}}</h4>
+                        <button class="btn-default blue">{{trans('home.ask-question')}}</button>
+                        <button class="btn-default">{{trans('home.coll-center')}}</button>
                     </div>
                     <div class="col-sm-12">
                          <div id="accordion2" class="accordion">
@@ -561,8 +588,8 @@
                             </div>
                             <div class="col">
                                 <div class="block">
-                                    <img src="/img/kaspi.png" alt="">
-                                    <p>{{trans('home.kaspi')}}</p>
+                                    <img src="/img/goverment.png" alt="">
+                                    <p>{{trans('home.m-ior')}}</p>
                                 </div>
                             </div>
                             <div class="col">

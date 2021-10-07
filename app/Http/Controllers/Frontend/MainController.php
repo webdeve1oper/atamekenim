@@ -60,7 +60,7 @@ class MainController extends Controller
             $fonds = Fond::where('status', true)->paginate(8);
             $destionations = Destination::all();
             $cities = Region::all();
-            $newFonds = Fond::where('status', true)->orderBy('created_at')->paginate(6);
+            $newFonds = Fond::where('status', true)->orderBy('created_at','desc')->paginate(6);
             $helpsCount = Help::count();
             $helps = Help::whereFondStatus('finished')->paginate(4);
             $newHelps = Help::whereFondStatus('wait')->paginate(4);

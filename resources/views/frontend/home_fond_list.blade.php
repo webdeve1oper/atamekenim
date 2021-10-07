@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-6">
-        <p class="name">Ими гордится страна</p>
+        {{--<p class="name">Ими гордится страна</p>--}}
         <div class="dropdown d-none">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 За все время
@@ -48,7 +48,7 @@
                         </li>
                         <li><a href="{{route('innerFond', [$fond->id])}}" class="name">{{$fond['title_'.lang()]??$fond['title_ru']}}</a></li>
                         <li><p>{{$fond->helpSizes}}</p></li>
-                        <li><p>@foreach($fond->baseHelpTypes()->get() as $help){{$help['name_'.lang()]}}, @endforeach</p></li>
+                        <li><p>@foreach($fond->baseHelpTypes()->get() as $help)<span>{{$help['name_'.lang()]}}</span> @endforeach</p></li>
                         <?php $city = $fond->city; ?>
                         <li><p>@if($city)г. {{$city->title_ru}}@endif</p></li>
                         <li><p>Отзывы (0)</p></li>
@@ -56,6 +56,9 @@
                     </ul>
                 </div>
             @endforeach
+                <style>
+                    .organizationsBlock .organizationsList .item ul li p span + span:before {content: ', ';margin-left: -3px;}
+                </style>
 
         </div>
     </div>

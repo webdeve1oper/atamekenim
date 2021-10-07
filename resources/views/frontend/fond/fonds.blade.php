@@ -242,4 +242,4 @@ $script = "<script>
     });
 </script>";
 ?>
-@extends('frontend.layout' , ['script'=>$script])
+@extends('frontend.layout' , ['script'=>$script, 'title'=> 'Реестр фондов - Реестр благотврорительных организаций РК'])

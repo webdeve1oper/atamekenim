@@ -510,4 +510,4 @@ $script = "<script>
 ";
 ?>
 
-@extends('frontend.layout', ['script'=>$script])
+@extends('frontend.layout', ['script'=>$script, 'title' => $fond['title_'.app()->getLocale()] . ' - ' . trans('fonds-page.reestr') ?? $fond[''] ])
