@@ -124,7 +124,7 @@
                             $statuses = json_decode($help->statuses, true);
                             ?>
                             @foreach($statuses as $status)
-                                {{$status['valueRu']}} <hr>
+                                    {{$status['valueRu'] ??''}} <hr>
                                 @endforeach
                                 @endif</p>
                         <p><span>Год рождения:</span>{{ $help->user->born }}</p>

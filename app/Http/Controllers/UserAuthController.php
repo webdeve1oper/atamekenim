@@ -153,7 +153,7 @@ class UserAuthController extends Controller
         $credentials = base64_encode('meninatam:9Bst@n6T!P^3ux:#');
 
         try {
-            $response = $client->request('POST', 'http://test.idp.egov.kz/idp/oauth/token', [
+            $response = $client->request('POST', 'https://idp.egov.kz/idp/oauth/token', [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                     'Authorization' => 'Basic ' . $credentials,
@@ -172,7 +172,7 @@ class UserAuthController extends Controller
             $json = json_decode($response->getBody()->getContents(), true)['access_token'];
 
             try {
-                $response = $client->request('GET', 'http://test.idp.egov.kz/idp/resource/user/basic', [
+                $response = $client->request('GET', 'https://idp.egov.kz/idp/resource/user/basic', [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $json,
                     ]

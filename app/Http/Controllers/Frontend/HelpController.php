@@ -70,7 +70,7 @@ class HelpController extends Controller
 
             return view('frontend.help.help_list', compact('helps'));
         }else{
-            $helps = Help::with('addHelpTypes')->paginate(5);
+            $helps = Help::with('addHelpTypes')->where('fond_status', 'process')->paginate(5);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = BaseHelpType::all();

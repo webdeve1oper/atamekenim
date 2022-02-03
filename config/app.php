@@ -233,6 +233,7 @@ return [
     'C_SHARED_KEY'=>'01234567890123456789012',
     'PUBLIC_KEY' => 'pk_9026f5b5e5cc4f2a6651dd579939b',
     'PRIVATE_KEY' => 'c96f1f360ae56ac9d06cd0caef8d8caa',
-    'idp_url' => 'http://test.idp.egov.kz/idp/oauth/authorize?response_type=code&client_id=meninatam&redirect_uri=https://atamekenim.kz/ru/check_user&state=',
+//    'idp_url' => 'http://test.idp.egov.kz/idp/oauth/authorize?response_type=code&client_id=meninatam&redirect_uri=https://atamekenim.kz/ru/check_user&state=',
+    'idp_url' => 'https://idp.egov.kz/idp/oauth/authorize?response_type=code&client_id=meninatam&redirect_uri=https://atamekenim.kz/ru/check_user&state=',
     'tzhs' => 'http://127.0.0.1:8900/personStatus/' // ТЖС api
 ];

@@ -9,11 +9,12 @@ Route::get('/develope', function(){
     return view('frontend.develope');
 })->name('dev');
 
-Route::get('/test', function(){
-    $client = new \GuzzleHttp\Client();
-    $client = $client->get('http://127.0.0.1:8900/personStatus/820803450535');
-    dd(json_decode($client->getBody()->getContents()));
-})->name('develope');
+//Route::get('/test', function(){
+//    $client = new \GuzzleHttp\Client();
+////    $client = $client->get('http://127.0.0.1:8900/personStatus/820803450535');
+//    $client = $client->get('http://127.0.0.1:8900/personStatus/980101351561');
+//    dd(json_decode($client->getBody()->getContents()));
+//})->name('develope');
 
 Route::get('/fond/{id}', 'Frontend\FondController@fond')->name('innerFond');
 Route::get('/project/{id}', 'Backend\ProjectController@index')->name('innerProject');
@@ -34,3 +35,5 @@ Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');
 Route::get('/organizations', 'Frontend\FondController@fonds')->name('fonds');
 Route::get('/news', 'Frontend\MainController@news')->name('news');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');
+
+

@@ -304,7 +304,7 @@
                                     @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
                                 @endif</span></p>
                                 <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                <a href="{{route('help', $help->id)}}" class="more">Подробнее <span class="miniArrow">›</span></a>
                             </div>
                             <p class="date">Открытая заявка</p>
                             <img src="/img/support1.svg" alt="" class="bkg">

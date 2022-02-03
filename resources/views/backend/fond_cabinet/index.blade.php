@@ -49,16 +49,17 @@
                                         <div class="col-sm-2 pr-0">
                                             {{--<p class="name">{{trans('fond-cab.status-tjs')}}</p>--}}
                                             <p class="name">Статус получателя</p>
-                                            <p class="tags default mini red" style="line-height: 1;font-size: 12px; padding: 5px;">
+
                                                 @if($help->statuses)
                                                     <?php
                                                         $statuses = json_decode($help->statuses, true);
-                                                    ?>
+                                                    ?> <p class="tags default mini red" style="line-height: 1;font-size: 12px; padding: 5px;">
                                                     @foreach($statuses as $status)
-                                                        {{$status['valueRu']}} <hr>
+                                                        {{$status['valueRu'] ??''}} <hr>
                                                     @endforeach
+                                                    </p>
                                                 @endif
-                                            </p>
+
                                         </div>
                                         <div class="col-sm-3">
                                             <a href="{{ route('fond_help_page',$help->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
@@ -98,7 +99,7 @@
                                                 $statuses = json_decode($process->statuses, true);
                                                 ?>
                                                 @foreach($statuses as $status)
-                                                    {{$status['valueRu']}} <hr>
+                                                        {{$status['valueRu'] ??''}} <hr>
                                                     @endforeach
                                                     @endif
                                                     </p>
@@ -145,7 +146,7 @@
                                                 $statuses = json_decode($process->statuses, true);
                                                 ?>
                                                 @foreach($statuses as $status)
-                                                    {{$status['valueRu']}} <hr>
+                                                        {{$status['valueRu'] ??''}} <hr>
                                                     @endforeach
                                                     @endif
                                                     </p>

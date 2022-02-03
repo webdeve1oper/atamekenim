@@ -14,7 +14,7 @@ return [
     */
 
     'test' => 'Russian',
-    'menu-projects' => 'О Проекте',
+    'menu-projects' => 'О проекте',
     'menu-news' => 'Новости',
     'menu-faq' => 'Вопрос-ответ',
     'menu-contacts' => 'Контакты',
@@ -26,7 +26,7 @@ return [
     'helps' => 'Им нужна помощь',
     'help-project' => 'Помочь проекту',
 //    'map-charity' => 'Карта благотворительности',
-    'map-charity' => 'Аналитка',
+    'map-charity' => 'Аналитика',
     'we-support' => 'Нас поддержали',
     'site-search' => 'Поиск по сайту',
     'call-center' => 'Call-центр',
