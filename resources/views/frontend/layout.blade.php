@@ -6,7 +6,7 @@
     {{--<title>Реестр Фондов</title>--}}
     <title>{{$meta['title'] ?? $title ?? 'Реестр Фондов'}}</title>
     <meta name="description" content="">
-    <link rel="shortcut icon" href="img/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/img/favicon.png" type="image/png">
     <meta name="robots" content="noindex, nofollow"/>
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
@@ -29,20 +29,20 @@
     <a class="d-block d-sm-none burger" onclick="$('header ul.menu').slideToggle();"><i class="fas fa-stream"></i></a>
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 pr-0">
+            <div class="col-sm-5 pr-0">
                 <a href="{{route('home')}}" class="logo"><img src="/img/logo11.png" alt=""></a>
                 <ul class="menu">
-                    <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
-                    <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
-                    <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
-                    <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>
+{{--                    <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>--}}
+{{--                    <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>--}}
+{{--                    <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>--}}
+{{--                    <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>--}}
                 </ul>
                 <ul class="socials d-none">
                     <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
                     <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
                 </ul>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
                 <ul class="control">
                     <li style="position: relative;">
                         <p class="share" onclick="$('.shareSoc').slideToggle();"><span>{{trans('home.share')}}</span><a href="javascript://0" ><i class="fas fa-share-alt"></i></a>
@@ -53,9 +53,9 @@
                             <a href="https://t.me/share/url?url={{url()->full()}}"><i class="fab fa-telegram"></i></a>
                         </div>
                     </li>
-                    <li>
-                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:1432">1432</a></p>
-                    </li>
+{{--                    <li>--}}
+{{--                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:1432">1432</a></p>--}}
+{{--                    </li>--}}
                     <li>
                         <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
                     </li>
@@ -89,18 +89,20 @@
             <div class="row">
                 <div class="col-sm-9">
                     <ul class="menu2">
+                        <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
+{{--                        <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>--}}
                         <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
                         <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
-                        <li><a href="{{route('dev')}}">{{trans('home.help-project')}}</a></li>
-                        <li><a href="{{route('dev')}}">{{trans('home.map-charity')}}</a></li>
-                        <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>
+{{--                        <li><a href="{{route('dev')}}">{{trans('home.help-project')}}</a></li>--}}
+{{--                        <li><a href="{{route('dev')}}">{{trans('home.map-charity')}}</a></li>--}}
+{{--                        <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>--}}
                     </ul>
                 </div>
                 <div class="col-sm-3 d-none">
-                    <form class="searchBlock">
-                        <input type="text" name="search" placeholder="{{trans('home.site-search')}}">
-                        <button><img src="/img/search.svg" alt=""></button>
-                    </form>
+{{--                    <form class="searchBlock">--}}
+{{--                        <input type="text" name="search" placeholder="{{trans('home.site-search')}}">--}}
+{{--                        <button><img src="/img/search.svg" alt=""></button>--}}
+{{--                    </form>--}}
                 </div>
             </div>
         </div>
@@ -120,9 +122,9 @@
                         <ul>
                             <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
                             <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>
-                            <li><a href="{{route('allreviews')}}">{{trans('home.menu-testimonials')}}</a></li>
-                            <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>
-                            <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>
+{{--                            <li><a href="{{route('allreviews')}}">{{trans('home.menu-testimonials')}}</a></li>--}}
+{{--                            <li><a href="{{route('qa')}}">{{trans('home.menu-faq')}}</a></li>--}}
+{{--                            <li><a href="{{route('contacts')}}">{{trans('home.menu-contacts')}}</a></li>--}}
                         </ul>
                     </div>
                 </div>
@@ -131,17 +133,17 @@
                 <ul>
                     <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
                     <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
-                    <li><a href="{{route('dev')}}">{{trans('home.foot-help-project')}}</a></li>
-                    <li><a href="{{route('dev')}}">{{trans('home.foot-map-charity')}}</a></li>
-                    <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>
+{{--                    <li><a href="{{route('dev')}}">{{trans('home.foot-help-project')}}</a></li>--}}
+{{--                    <li><a href="{{route('dev')}}">{{trans('home.foot-map-charity')}}</a></li>--}}
+{{--                    <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>--}}
                 </ul>
             </div>
             <div class="col-sm-3">
                 <button class="share d-none"><span>{{trans('home.share-social')}}</span><img src="/img/share.svg" alt=""></button>
-                <form action="">
-                    <input type="text" placeholder="{{trans('home.site-search')}}">
-                    <button><img src="/img/search.svg" alt=""></button>
-                </form>
+{{--                <form action="">--}}
+{{--                    <input type="text" placeholder="{{trans('home.site-search')}}">--}}
+{{--                    <button><img src="/img/search.svg" alt=""></button>--}}
+{{--                </form>--}}
                 @if(!Auth::check())
                     <a href="{{route('registration_user')}}" class="authButton">{{trans('auth.sign-up')}}</a>
                     <a href="{{route('login')}}" class="authButton login">{{trans('auth.sign-in')}}</a>
@@ -151,7 +153,7 @@
                 <ul>
                     {{--<li><a href="{{route('dev')}}">{{trans('home.call-center')}}</a></li>--}}
                     <li><a href="https://wa.me/7763337766">WhatsApp</a></li>
-                    <li><a href="{{route('dev')}}">{{trans('home.social')}}</a></li>
+{{--                    <li><a href="{{route('dev')}}">{{trans('home.social')}}</a></li>--}}
                 </ul>
             </div>
         </div>

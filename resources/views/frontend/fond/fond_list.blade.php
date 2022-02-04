@@ -49,10 +49,11 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-6">
                         <a href="{{route('innerFond', [$fond->id])}}" class="btn-default">{{trans('fonds.more-org')}} <span class="miniArrow">›</span></a>
-                        <button class="btn-default blue" @if(Auth::user()) onclick="$('#helpfond input#fond_id').val({{$fond->id}}); $('#helpCallback').modal()" @else onclick="window.location = '{{route('login')}}'" @endif> {{trans('fonds.req-help')}}</button>
+{{--                        <button class="btn-default blue" @if(Auth::user()) onclick="$('#helpfond input#fond_id').val({{$fond->id}}); $('#helpCallback').modal()" @else onclick="window.location = '{{route('login')}}'" @endif> {{trans('fonds.req-help')}}</button>--}}
+                        <a class="btn-default blue" href="{{route('request_help')}}"> {{trans('fonds.req-help')}}</a>
                     </div>
                     <div class="col-sm-4">
-                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default red"><img src="/img/help.svg" alt=""> {{trans('fonds.supp-org')}} <span class="miniArrow">›</span></a>
+{{--                        <a href="{{route('innerFond', [$fond->id])}}" class="btn-default red"><img src="/img/help.svg" alt=""> {{trans('fonds.supp-org')}} <span class="miniArrow">›</span></a>--}}
                     </div>
                 </div>
             </div>

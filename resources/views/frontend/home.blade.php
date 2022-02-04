@@ -321,7 +321,7 @@
                     <div class="col-sm-12">
                         <h4>{{trans('home.faq2')}}</h4>
                         <button class="btn-default blue">{{trans('home.ask-question')}}</button>
-                        <button class="btn-default">{{trans('home.coll-center')}}</button>
+{{--                        <button class="btn-default">{{trans('home.coll-center')}}</button>--}}
                     </div>
                     <div class="col-sm-12">
                         <div id="accordion" class="accordion">
@@ -415,7 +415,7 @@
                     <div class="col-sm-12">
                         <h4>{{trans('home.faq3')}}</h4>
                         <button class="btn-default blue">{{trans('home.ask-question')}}</button>
-                        <button class="btn-default">{{trans('home.coll-center')}}</button>
+{{--                        <button class="btn-default">{{trans('home.coll-center')}}</button>--}}
                     </div>
                     <div class="col-sm-12">
                          <div id="accordion2" class="accordion">

@@ -35,6 +35,8 @@
                                 </div>
                                 <div class="col-sm-10 col-8">
                                     <p class="name">{{trans('cabinet-appl.welcome')}}, {{Auth::user()->first_name}} {{Auth::user()->patron}}!</p>
+                                    <br>
+                                    <a href="{{route('request_help')}}" class="btn-default blue">{{trans('home.apply-for-assistance')}}</a>
                                     {{--<p class="descr">В {{date('Y')}} г. Вам оказали помощь на сумму в 1 254 000 тенге</p>--}}
                                 </div>
                             </div>
@@ -45,6 +47,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
+                                            <p><b>Заявка ID:</b>{{ getHelpId($help->id) }}</p>
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
@@ -84,6 +87,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
+                                            <p><b>Заявка ID:</b>{{ getHelpId($help->id) }}</p>
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
@@ -123,6 +127,7 @@
                                     <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
+                                            <p><b>Заявка ID:</b>{{ getHelpId($help->id) }}</p>
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
@@ -153,6 +158,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
+                                            <p><b>Заявка ID:</b>{{ getHelpId($help->id) }}</p>
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
@@ -185,6 +191,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-2">
+                                            <p><b>Заявка ID:</b>{{ getHelpId($help->id) }}</p>
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
@@ -245,6 +252,10 @@
                                 <span class="fullText">
                                    {{Auth::user()->about}}
                                 </span>
+                                <style>
+
+                                    .myAccountPage .accountGreyContent p span.fullText {word-break: break-all;}
+                                </style>
                             </p>
                         </div>
                     </div>

@@ -35,11 +35,13 @@
                                             <img src="/img/no-photo.png" alt="" class="avatar">
                                         @endif
                                         <br>
-                                        <span style="display: table; margin: 0 0 10px;width: 100%;">Загурзить аватар</span>
-                                            <input type="file" name="avatar">
+                                        <span style="display: table; margin: 0 0 10px;width: 100%;">Загрузить аватар</span>
+                                        <input type="file" name="avatar" accept="image/png, image/jpeg">
+                                        <span id="errorAvatar" class="d-none" style="color: red;">Максимальный размер аватар может быть не более 1МБ!!</span>
+                                        <span id="errorAvatar2" class="d-none" style="color: red;">Загружать только в форматах: 'jpg', 'jpeg', 'png'!!</span>
                                     </div>
                                     <div class="col-sm-8 col-8">
-                                        <p class="name">{{Auth::user()->first_name}} {{Auth::user()->patron}}!</p>
+                                        <p class="name">{{Auth::user()->first_name}} {{Auth::user()->patron}}</p>
                                         {{--<p class="descr">В {{date('Y')}} г. Вам оказали помощь на сумму в 1 254 000 тенге</p>--}}
                                     </div>
                                 </div>
@@ -91,4 +93,21 @@
             width: 100%;
         }
     </style>
+    <script>
+        $('input[name="avatar"]').change(function() {
+            var size = this.files[0].size;
+            var name = this.files[0].name;
+            $('#errorAvatar').addClass("d-none");
+            $('#errorAvatar2').addClass("d-none");
+            if(1000000 < size){
+                $('#errorAvatar').removeClass("d-none");
+                $('input[name="avatar"]').val('');
+            }
+            var fileExtension = ['jpg', 'jpeg', 'png']; // допустимые типы файлов
+            if ($.inArray(name.split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $('#errorAvatar2').removeClass("d-none");
+                $('input[name="avatar"]').val('');
+            }
+        });
+    </script>
 @endsection

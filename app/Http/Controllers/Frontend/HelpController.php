@@ -19,17 +19,17 @@ class HelpController extends Controller
 
             if ($request->input('search') != '') {
                 $search = $request->search;
-                $helps->where('body', 'like','%'.$search.'%');
-                $helps->orWhereHas('user', function($query) use ($search){
+                $helps = $helps->where('body', 'like','%'.$search.'%');
+                $helps = $helps->orWhereHas('user', function($query) use ($search){
                     $query->where('first_name', $search);
                 });
-                $helps->orWhereHas('user', function($query) use ($search){
+                $helps = $helps->orWhereHas('user', function($query) use ($search){
                     $query->where('last_name', $search);
                 });
-                $helps->orWhereHas('user', function($query) use ($search){
+                $helps = $helps->orWhereHas('user', function($query) use ($search){
                     $query->where('patron', $search);
                 });
-                $helps = $helps->paginate(5);
+                $helps = $helps->where('admin_status', 'finished')->whereIn('fond_status', ['process','wait'])->paginate(5);
 
                 return view('frontend.help.help_list', compact('helps'));
             }
@@ -66,11 +66,11 @@ class HelpController extends Controller
                     $query->whereIn('region_id', $regions);
                 });
             }
-            $helps = $helps->paginate(5);
+            $helps = $helps->where('admin_status', 'finished')->whereIn('fond_status', ['process','wait'])->paginate(5);
 
             return view('frontend.help.help_list', compact('helps'));
         }else{
-            $helps = Help::with('addHelpTypes')->where('fond_status', 'process')->paginate(5);
+            $helps = Help::with('addHelpTypes')->where('admin_status', 'finished')->whereIn('fond_status', ['process','wait'])->paginate(5);
             $cities = City::whereIn('title_ru', ['Нур-Султан', 'Алма-Ата', 'Шымкент'])->pluck('title_ru','city_id');
             $regions = Region::where('country_id', 1)->pluck('title_ru', 'region_id');
             $baseHelpTypes = BaseHelpType::all();

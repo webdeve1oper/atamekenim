@@ -235,5 +235,10 @@ return [
     'PRIVATE_KEY' => 'c96f1f360ae56ac9d06cd0caef8d8caa',
 //    'idp_url' => 'http://test.idp.egov.kz/idp/oauth/authorize?response_type=code&client_id=meninatam&redirect_uri=https://atamekenim.kz/ru/check_user&state=',
     'idp_url' => 'https://idp.egov.kz/idp/oauth/authorize?response_type=code&client_id=meninatam&redirect_uri=https://atamekenim.kz/ru/check_user&state=',
-    'tzhs' => 'http://127.0.0.1:8900/personStatus/' // ТЖС api
+    'tzhs' => 'http://127.0.0.1:8900/personStatus/', // ТЖС api
+    'cache_time'=>[
+        'hour'=>3600,
+        'minute'=>60,
+        'five_minute'=>360,
+    ]
 ];

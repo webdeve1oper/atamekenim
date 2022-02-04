@@ -187,7 +187,7 @@ class UserAuthController extends Controller
                         'last_name' => $personData->surname,
                         'patron' => $personData->patronymic,
                         'iin' => $personData->iin,
-                        'born' => $personData->birthDate,
+                        'born' => $personData->birthDate ?? null,
                         'gender' => getGenderByIin($personData->iin),
                         'password' => Hash::make($password)
                     ];
@@ -202,7 +202,7 @@ class UserAuthController extends Controller
                         'last_name' => $personData->surname,
                         'patron' => $personData->patronymic,
                         'iin' => $personData->iin,
-                        'born' => $personData->birthDate,
+                        'born' => $personData->birthDate ?? null,
                         'status' => 1,
                         'gender' => getGenderByIin($personData->iin),
                         'password' => Hash::make($password)

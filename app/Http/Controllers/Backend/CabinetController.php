@@ -11,8 +11,10 @@ use App\HelpImage;
 use App\Http\Controllers\Controller;
 use App\Review;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Image;
@@ -31,12 +33,22 @@ class CabinetController extends Controller
 
     public function index()
     {
-        $moderateHelps = Auth::user()->helpsByStatus('moderate')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        $waitHelps = Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        $finishedHelps = Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        $processHelps = Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        $cancledHelps = Auth::user()->canceledHelps()->get();
-
+        $expiresAt = Carbon::now()->addMinutes(5);
+        $moderateHelps = Cache::remember('moderateHelps'.Auth::id(), $expiresAt, function() {
+            return Auth::user()->helpsByStatus('moderate')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        });
+        $waitHelps = Cache::remember('waitHelps'.Auth::id(), $expiresAt, function() {
+            return Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        });
+        $finishedHelps = Cache::remember('finishedHelps'.Auth::id(), $expiresAt, function() {
+            return Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        });
+        $processHelps = Cache::remember('processHelps'.Auth::id(), $expiresAt, function() {
+            return Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        });
+        $cancledHelps = Cache::remember('cancelHelps'.Auth::id(), $expiresAt, function() {
+            return  Auth::user()->canceledHelps()->get();
+        });
         return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps', 'cancledHelps'));
     }
 
@@ -118,6 +130,12 @@ class CabinetController extends Controller
     public function helpPage($id)
     {
         $help = Help::find($id);
+        if(Auth::id() == $help->user_id){
+            return view('backend.cabinet.help.help_page')->with(compact('help'));
+        }
+        if($help->admin_status!='finished' and Auth::guard('web')->check()){
+            return abort(404);
+        }
         if($help->status == 'cancel'){
             return redirect()->back()->with(['error' => 'Заявка отклонена']);
         }

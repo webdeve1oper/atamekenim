@@ -13,6 +13,7 @@ use App\News;
 use App\Region;
 use App\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -30,10 +31,8 @@ class MainController extends Controller
                 }else{
                     $fonds->where('bin','like', $request->bin.'%');
                 }
-
             }
-
-
+            
             if($request->exists('destination') && $request->input('destination')[0]!='all'){
                 $destination = $request->destination;
                 $fonds->whereHas('destinations', function($query) use ($destination){
@@ -89,7 +88,14 @@ class MainController extends Controller
 
     public function helpPage($id){
         $help = Help::find($id);
+        if(Auth::id() == $help->user_id){
+            return view('backend.cabinet.help.help_page')->with(compact('help'));
+        }
+        if($help->admin_status!='finished' and Auth::guard('web')->check()){
+            return abort(404);
+        }
         return view('backend.cabinet.help.help_page')->with(compact('help'));
+
     }
 
     public function reviews(){
@@ -97,7 +103,7 @@ class MainController extends Controller
     }
 
     public function about(){
-        return view('frontend.develope');
+        return view('frontend.about');
     }
 
     public function contacts(){

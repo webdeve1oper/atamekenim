@@ -225,33 +225,33 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="redContent">
-                            <h2>{{trans('fonds-page.help-org')}}</h2>
-                            <p>{{trans('fonds-page.donated')}} <span>{{$fond->donations ? array_sum(array_column($fond->donations->toArray(),'amount')) . ' тг': ''}}</span></p>
-                            <p>{{trans('fonds-page.took-part')}} <span>{{$fond->donations ? count($fond->donations) . ' человек': ''}} </span></p>
-                            <p>{{trans('fonds-page.help-text')}}</p>
-                            <form>
-                                <div class="inputBlock">
-                                    <span>Указать сумму</span>
-                                    <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">
-                                    <label  for="sumInput1" onclick="$('#sum').val(100)">100 тг</label>
-                                    <label  for="sumInput2" onclick="$('#sum').val(1000)">1000 тг</label>
-                                    <label  for="sumInput3" onclick="$('#sum').val(10000)">10000 тг</label>
-                                </div>
-                                <div class="inputBlock">
-                                    <span>Указать периодичность</span>
-                                    <label class="label active" for="dayInput1">Разовое пожертвование</label>
-                                    <label class="label" for="dayInput2">каждый день</label>
-                                    <label class="label" for="dayInput3">Ежемесячно</label>
-                                    <input type="radio" checked onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput1\']').addClass('active')}" id="dayInput1" name="time" value="onetime">
-                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput2\']').addClass('active')}" id="dayInput2" name="time" value="daily">
-                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput3\']').addClass('active')}" id="dayInput3" name="time" value="monthly">
-                                </div>
-                            </form>
-                            <button class="btn-default red" onclick="if($('#sum').val()==''){ $('#sum').css({'border-color':'red'});return false;}$('.modal input[name=\'amount\']').val($('#sum').val()); if($('#dayInput1').is(':checked')){$('#jusan').modal();}else{$('#cloudpayments').modal();}">
-                                <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}
-                            </button>
-                        </div>
+{{--                        <div class="redContent">--}}
+{{--                            <h2>{{trans('fonds-page.help-org')}}</h2>--}}
+{{--                            <p>{{trans('fonds-page.donated')}} <span>{{$fond->donations ? array_sum(array_column($fond->donations->toArray(),'amount')) . ' тг': ''}}</span></p>--}}
+{{--                            <p>{{trans('fonds-page.took-part')}} <span>{{$fond->donations ? count($fond->donations) . ' человек': ''}} </span></p>--}}
+{{--                            <p>{{trans('fonds-page.help-text')}}</p>--}}
+{{--                            <form>--}}
+{{--                                <div class="inputBlock">--}}
+{{--                                    <span>Указать сумму</span>--}}
+{{--                                    <input type="text" name="AMOUNT" id="sum" placeholder="{{trans('fonds-page.donat-amount')}}">--}}
+{{--                                    <label  for="sumInput1" onclick="$('#sum').val(100)">100 тг</label>--}}
+{{--                                    <label  for="sumInput2" onclick="$('#sum').val(1000)">1000 тг</label>--}}
+{{--                                    <label  for="sumInput3" onclick="$('#sum').val(10000)">10000 тг</label>--}}
+{{--                                </div>--}}
+{{--                                <div class="inputBlock">--}}
+{{--                                    <span>Указать периодичность</span>--}}
+{{--                                    <label class="label active" for="dayInput1">Разовое пожертвование</label>--}}
+{{--                                    <label class="label" for="dayInput2">каждый день</label>--}}
+{{--                                    <label class="label" for="dayInput3">Ежемесячно</label>--}}
+{{--                                    <input type="radio" checked onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput1\']').addClass('active')}" id="dayInput1" name="time" value="onetime">--}}
+{{--                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput2\']').addClass('active')}" id="dayInput2" name="time" value="daily">--}}
+{{--                                    <input type="radio" onchange="$(this).parents('.inputBlock').find('label').removeClass('active'); if($(this).prop('checked')==true){$('label[for=\'dayInput3\']').addClass('active')}" id="dayInput3" name="time" value="monthly">--}}
+{{--                                </div>--}}
+{{--                            </form>--}}
+{{--                            <button class="btn-default red" onclick="if($('#sum').val()==''){ $('#sum').css({'border-color':'red'});return false;}$('.modal input[name=\'amount\']').val($('#sum').val()); if($('#dayInput1').is(':checked')){$('#jusan').modal();}else{$('#cloudpayments').modal();}">--}}
+{{--                                <img src="/img/help.svg" alt=""> {{trans('fonds-page.supp-org')}}--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
                         <button class="btn-default d-block d-sm-none mobileOpenContent" onclick="$(this).toggleClass('active');$('.mobileGrayContent').slideToggle();">Смотреть реквизиты <i class="fas fa-chevron-down"></i></button>
                         <?php $requisites = []; ?>
                         @if($fond->requisites)

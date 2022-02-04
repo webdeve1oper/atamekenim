@@ -28,6 +28,9 @@
                                         {{--</ul>--}}
 {{--                                        <a class="btn-default transparent" onclick="$(this).hide();$('.selectBlock').show();$('.rangeBarBlock').show();">{{trans('help-search.ras-search')}} <i class="fas fa-chevron-down"></i></a>--}}
                                         <div class="selectBlock" style="display: block">
+                                            <div class="w-100 checkedListValueBlock1" style="display: none; margin-bottom: 15px">Адресаты помощи: <span></span></div>
+                                            <div class="w-100 checkedListValueBlock2" style="display: none; margin-bottom: 15px">Регионы: <span></span></div>
+                                            <div class="w-100 checkedListValueBlock3" style="display: none; margin-bottom: 15px">Категории помощи: <span></span></div>
                                             <div class="dropdown">
                                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     {{trans('fonds.adresat')}}:
@@ -183,6 +186,48 @@
             });
             return false;
             });
+
+
+        $('div[aria-labelledby="dropdownMenuButton1"] input').change(function(){
+            var value = '';
+            $('div[aria-labelledby="dropdownMenuButton1"] input:checked').each(function () {
+                value = value +', '+ $(this).siblings('label').text();
+            });
+            $('.checkedListValueBlock1 span').text(value);
+            if($('.checkedListValueBlock1 span').text() === ''){
+                $('.checkedListValueBlock1').hide();
+            }else{
+                $('.checkedListValueBlock1').show();
+            }
+        });
+
+
+        $('div[aria-labelledby="dropdownMenuButton3"] input').change(function(){
+            var value = '';
+            $('div[aria-labelledby="dropdownMenuButton3"] input:checked').each(function () {
+                value = value +', '+ $(this).siblings('label').text();
+            });
+            $('.checkedListValueBlock2 span').text(value);
+            if($('.checkedListValueBlock2 span').text() === ''){
+                $('.checkedListValueBlock2').hide();
+            }else{
+                $('.checkedListValueBlock2').show();
+            }
+        });
+
+
+        $('div[aria-labelledby="dropdownMenuButton9"] input').change(function(){
+            var value = '';
+            $('div[aria-labelledby="dropdownMenuButton9"] input:checked').each(function () {
+                value = value +', '+ $(this).siblings('label').text();
+            });
+            $('.checkedListValueBlock3 span').text(value);
+            if($('.checkedListValueBlock3 span').text() === ''){
+                $('.checkedListValueBlock3').hide();
+            }else{
+                $('.checkedListValueBlock3').show();
+            }
+        });
     </script>
     <style>
         .checkbox-menu li label {
@@ -221,6 +266,7 @@
              background-color: #0053a5!important;
              color: white!important;
          }
+        #helpsSearch .dropdown-menu {max-height: 150px!important;width: 300px!important;}
     </style>
 @endsection
 <?php

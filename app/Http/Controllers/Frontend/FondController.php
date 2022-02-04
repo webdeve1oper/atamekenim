@@ -16,18 +16,28 @@ use App\Http\Controllers\Controller;
 use App\Payment;
 use App\Region;
 use App\Scenario;
+use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class FondController extends Controller
 {
     public function fond($id)
     {
-        $fond = Fond::where('id', $id)->with('projects')->with('helps')->first();
-        $baseHelpTypes = AddHelpType::all();
+        $expiresAt = Carbon::now()->addMinutes(5);
+        $fond = Cache::remember('fond'.$id, $expiresAt, function() use ($id){
+            return Fond::where('id', $id)->with('projects')->with('helps')->first();
+        });
+        if($fond->status == false or $fond->status ==0){
+            return abort(404);
+        }
+        $baseHelpTypes = Cache::remember('fond'.$id, $expiresAt, function() use ($id){
+            return AddHelpType::all();
+        });
         $regions = Region::select('region_id', 'title_ru as text')->where('country_id', 1)->with('districts')->get();
         $destinations = Destination::all();
         $cashHelpTypes = CashHelpType::all();
@@ -43,15 +53,24 @@ class FondController extends Controller
     public function requestHelp(Request $request, $help_id = null)
     {
         if ($request->method() == 'POST') {
-            $this->validate($request, [
+            $validator = validator::make($request->all(), [
                 'body' => 'required|min:3',
                 'baseHelpTypes.*' => 'required',
                 'cashHelpTypes.*' => 'required',
             ], [
                 'body.required' =>'заполните описание',
-                'cashHelpTypes.required' =>'заполните описание',
+                'body.min' =>'заполните описание',
             ]);
             $request['user_id'] = Auth::user()->id;
+
+            if ($validator->fails()) {
+                return redirect()->back()->with('error', $validator->errors());
+            }
+
+            if(Help::where('user_id',Auth::user()->id)->where('fond_status', 'moderate')->count()>=20){
+                return redirect()->back()->with('error', 'Превышено максимальное количество заявок');
+            }
+
             $data = $request->all();
             if(array_key_exists('city_id',$data)){
                 if($data['city_id']==0){
@@ -65,18 +84,20 @@ class FondController extends Controller
             }
             $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
             if($help_id != null){
-                $help = Help::find($help_id);
-                $data['admin_status'] = 'moderate';
-                $data['fond_status'] = 'moderate';
-                $help->update($data);
+                $help = Help::find($help_id)->update(['admin_status'=>'moderate','fond_status'=>'moderate']);
             }else{
                 $help = Help::create($data);
             }
 
             if($request->hasFile('photo')){
-//                $this->validate($request, [
-//                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
-//                ]);
+                $validator = validator::make($request->all(), [
+                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+                ], [
+                    'photo.max'=>'Размер фото не должен превышать 2мб'
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()->with('error', $validator->errors());
+                }
                 foreach($request->file('photo') as $image)
                 {
                     $filename = microtime().$help->id.'.'.$image->getClientOriginalExtension();
@@ -88,9 +109,14 @@ class FondController extends Controller
                 }
             }
             if($request->hasFile('doc')){
-//                $this->validate($request, [
-//                    'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
-//                ]);
+                $validator = validator::make($request->all(), [
+                    'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
+                ], [
+                    'doc.max'=>'Размер файла не должен превышать 5мб'
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()->with('error', $validator->errors());
+                }
                 foreach($request->file('doc') as $doc)
                 {
                     $filename = microtime().$help->id.'.'.$doc->getClientOriginalExtension();
@@ -133,19 +159,6 @@ class FondController extends Controller
                         $query->where('fond_regions.region_id', $inputs['region_id']);
                     });
                 }
-//                if ($inputs['city_id'] != 0) {
-//                    $fonds = $fonds->whereHas('cities', function($query) use ($inputs){
-//                        $query->where('fond_cities.city_id', $inputs['city_id']);
-//                    });
-//                }elseif($inputs['district_id'] != 0){
-//                    $fonds = $fonds->whereHas('districts', function($query) use ($inputs){
-//                        $query->where('fond_districts.district_id', $inputs['district_id']);
-//                    });
-//                }else{
-//                    $fonds = $fonds->whereHas('regions', function($query) use ($inputs){
-//                        $query->where('fond_regions.region_id', $inputs['region_id']);
-//                    });
-//                }
             }
 
             $fonds = $fonds->with(['destinations'=> function($query){
@@ -189,9 +202,12 @@ class FondController extends Controller
                 $fondsByPoints[0]['points'] = 100;
             }
             $fondsids= [];
+            $coincidence = 0;
+            array_sort_by_column($fondsByPoints, 'points');
             foreach($fondsByPoints as $key => $fondsByPoint){
-
-                $coincidence = round($fondsByPoint['points'] / $fondsByPoints[0]['points'] * 100);
+                if($fondsByPoint['points']>0){
+                    $coincidence = round($fondsByPoint['points'] / $fondsByPoints[0]['points'] * 100);
+                }
                 if($coincidence < 45){
                     continue;
                 }
@@ -200,6 +216,7 @@ class FondController extends Controller
                     'fond_status' => 'disable'
                 ];
             }
+
             if (isset($request->destinations) && !empty($request->destinations)) {
                 $help->destinations()->sync($request->destinations);
             }
@@ -211,7 +228,7 @@ class FondController extends Controller
             }
 
 
-            Log::info($help->id, $fondsids);
+//            Log::info($help->id, $fondsids);
             $help->fonds()->sync($fondsids);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка усешно отправлена!', 'info' => 'Заявка отправена на модерацию']);
         }
@@ -395,8 +412,6 @@ class FondController extends Controller
         }catch (GuzzleException $exception){
             return json_encode(['valueRu' => 'Данные не найдены', 'valueKz'=> '']);
         }
-
-
     }
 
 }

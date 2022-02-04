@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="greyContent">
-                        <p class="name"> @if(Auth::check() or Auth::guard('fond')->check())
+                        <p class="name"> @if(Auth::guard('fond')->check())
                                 {{ $help->user->last_name }} {{ $help->user->first_name }} @else {{ gender($help->user->gender) }} @endif,
                                     @if($help->region_id != null)
                                         {{ $help->region->title_ru }}
@@ -113,7 +113,7 @@
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
                         <p><span>Тип помощи:</span>@foreach($help->cashHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
                         <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
-                        <p><span>Ссылка на видео:</span>{{ $help->cashHelpSize->name_ru }}</p>
+                        <p><span>Ссылка на видео:</span>--</p>
                         <p><span>Срочность:</span><?php
                             switch ($help->urgency_date) {
                                 case 1:
@@ -130,7 +130,7 @@
                                     break;
                             }
                             ?></p>
-                        @if(Auth::check() or Auth::guard('fond')->check())
+                        @if(Auth::check() and Auth::guard('fond')->check())
                         <p><span>Документы по запрашиваемой помощи: </span>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a>@endforeach</p>
                             @endif
                     </div>
