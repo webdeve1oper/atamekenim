@@ -56,7 +56,7 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="phone_number">Укажите ваш номер телефона</label>
-                                            <?php $phone = ''; if($help){$phone = $help->phone}else{ $phone= old('phone');}?>
+                                            <?php $phone = ''; if($help){$phone = $help->phone;}else{ $phone= old('phone');}?>
                                             <input type="text" class="form-control" required value="{{$phone}}"  id="phone_number" name="phone" placeholder="Укажите ваш номер телефона">
                                         </div>
                                         <div class="col-sm-6">
