@@ -56,7 +56,7 @@ class FondController extends Controller
         if ($request->method() == 'POST') {
             $is_created = false;
             Log::info($request->all());
-//            Log::info(Auth::user()->id);
+            Log::info(Auth::user()->id);
                 $validator = validator::make($request->all(), [
                     'body' => 'required|min:3',
                     'baseHelpTypes.*' => 'required',
