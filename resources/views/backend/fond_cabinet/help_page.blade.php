@@ -137,6 +137,8 @@
                     <div class="infoBlock">
                         <p><span>Кому необходима помощь:</span>{{$help->whoNeedHelp->name_ru}}</p>
                         <p><span>ФИО заявителя:</span>{{ $help->user->last_name }} {{ $help->user->first_name }}</p>
+                        @if($help->phone)<p><span>Телефон: </span>{{ $help->phone }}</p>@endif
+                        @if($help->email)<p><span>E-mail: </span>{{ $help->email }}</p>@endif
                         <p><span>Место оказания помощи:</span>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
                                 , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
                         {{--<p><span>ТЖС:</span>--</p>--}}

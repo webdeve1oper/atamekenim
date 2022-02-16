@@ -29,7 +29,19 @@
                         @endif
                         <div class="row">
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label for="phone_number">Укажите ваш номер телефона</label>
+                                        <input type="text" class="form-control" required id="phone_number" value="{{ $help->phone }}" name="phone" placeholder="Укажите ваш номер телефона">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="email">Укажите вашу электронную почту</label>
+                                        <input type="text" class="form-control" id="email" name="email" value="{{ $help->email }}" placeholder="Укажите вашу электронную почту">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mt-4">
                                 <div class="form-group mb-4">
                                     <label for="who_need_help">{{trans('fonds.who-helps')}}</label>
                                     <select name="who_need_help" id="who_need_help" class="form-control">

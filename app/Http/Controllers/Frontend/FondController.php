@@ -70,9 +70,9 @@ class FondController extends Controller
                     return redirect()->back()->with('error', $validator->errors());
                 }
 
-                if (Help::where('user_id', Auth::user()->id)->where('admin_status', 'moderate')->count() >= 1 and $help_id == null) {
-                    return redirect()->back()->with('error', __('cabinet-appl.error_before_create_help'));
-                }
+//                if (Help::where('user_id', Auth::user()->id)->where('admin_status', 'moderate')->count() >= 1 and $help_id == null) {
+//                    return redirect()->back()->with('error', __('cabinet-appl.error_before_create_help'));
+//                }
 
                 $data = $request->all();
                 if (array_key_exists('city_id', $data)) {
