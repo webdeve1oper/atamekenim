@@ -41,6 +41,8 @@
             <p><span>Дата подачи:</span> {{ date('d-m-Y', strtotime($help->created_at)) }}</p>
             <p><span>Кому необходима помощь:</span> {{ $help->whoNeedHelp->name_ru }}</p>
             <p><span>ФИО заявителя:</span> {{ $help->user->last_name }} {{ $help->user->first_name }}</p>
+            @if($help->phone)<p><span>Телефон: </span>{{ $help->phone }}</p>@endif
+            @if($help->email)<p><span>E-mail: </span>{{ $help->email }}</p>@endif
             <hr>
             <p><span>ТЖС:</span> --</p>
             @foreach($help->destinations as $destination)<p><span>{{config('destinations')[$destination->parent_id]}}</span>: {{$destination->name_ru}}</p>@endforeach

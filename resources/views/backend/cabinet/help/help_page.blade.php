@@ -98,6 +98,8 @@
                             </div>
                         @endif
                     <div class="infoBlock">
+                        @if($help->phone)<p><span>Телефон:</span>{{ $help->phone }}</p>@endif
+                        @if($help->email)<p><span>E-mail:</span>{{ $help->email }}</p>@endif
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
                         @foreach($help->destinations as $destination)<p><span>{{config('destinations')[$destination->parent_id]}}</span> {{$destination->name_ru}}</p>@endforeach
                         <p><span>Статус заявки:</span>

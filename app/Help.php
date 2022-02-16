@@ -8,7 +8,7 @@ class Help extends Model
 {
     //
     protected $table = 'helps';
-    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'district_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id', 'admin_status', 'fond_status', 'video', 'statuses'];
+    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'district_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id', 'admin_status', 'fond_status', 'video', 'statuses', 'phone', 'email'];
 
     public function user()
     {

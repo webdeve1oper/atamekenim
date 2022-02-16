@@ -52,7 +52,19 @@
                                 <input type="hidden" name="help_id" value="{{$help->id}}">
                             @endif
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="phone_number">Укажите ваш номер телефона</label>
+                                            <input type="text" class="form-control" required id="phone_number" name="phone" placeholder="Укажите ваш номер телефона">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="email">Укажите вашу электронную почту</label>
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Укажите вашу электронную почту">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mt-4">
                                     <div class="form-group mb-4">
                                         {{--<label for="who_need_help">{{trans('fonds.who-helps')}}</label>--}}
                                         <label for="destinations1">Пожалуйста, укажите, кому необходима помощь.<br>
