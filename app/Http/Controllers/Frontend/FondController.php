@@ -71,9 +71,11 @@ class FondController extends Controller
                     return redirect()->back()->with('error', $validator->errors()->getMessages())->withInput();
                 }
 
-//                if (Help::where('user_id', Auth::user()->id)->where('admin_status', 'moderate')->count() >= 1 and $help_id == null) {
-//                    return redirect()->back()->with('error', __('cabinet-appl.error_before_create_help'));
-//                }
+                if(!$request->help_id){
+                    if (Help::where('user_id', Auth::user()->id)->where('admin_status', 'moderate')->count() >= 1 and $help_id == null) {
+                        return redirect()->back()->with('error', __('cabinet-appl.error_before_create_help'));
+                    }
+                }
 
                 $data = $request->all();
                 if (array_key_exists('city_id', $data)) {
@@ -89,7 +91,7 @@ class FondController extends Controller
 
                 $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
                 if ($request->help_id) {
-                    $help = Help::find($request->help_id);
+                    $help = Help::findOrFail($request->help_id);
                     $data['admin_status'] = 'moderate';
                     $data['fond_status'] = 'moderate';
                     $help->update($data);

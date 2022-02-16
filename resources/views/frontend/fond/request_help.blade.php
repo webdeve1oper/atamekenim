@@ -56,11 +56,11 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="phone_number">Укажите ваш номер телефона</label>
-                                            <input type="text" class="form-control" required id="phone_number" name="phone" placeholder="Укажите ваш номер телефона">
+                                            <input type="text" class="form-control" value="@if($help) {{$help->phone}} @else {{old('phone')}}  @endif" required id="phone_number" name="phone" placeholder="Укажите ваш номер телефона">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="email">Укажите вашу электронную почту</label>
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="Укажите вашу электронную почту">
+                                            <input type="text" class="form-control" id="email" name="email"  value="@if($help) {{$help->email}} @else {{old('email')}}  @endif" placeholder="Укажите вашу электронную почту">
                                         </div>
                                     </div>
                                 </div>
