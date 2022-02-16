@@ -184,7 +184,7 @@ class CabinetController extends Controller
             $destinations = Destination::all();
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
-            return view('backend.cabinet.help.help_edit')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+            return view('frontend.fond.request_help')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
         } else {
             return redirect()->route('cabinet')->with(['error' => 'Это заявка не пренадлежит Вам!']);
         }

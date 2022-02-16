@@ -54,8 +54,9 @@ class FondController extends Controller
     public function requestHelp(Request $request, $help_id = null)
     {
         if ($request->method() == 'POST') {
+            $is_created = false;
             Log::info($request->all());
-            Log::info(Auth::user()->id);
+//            Log::info(Auth::user()->id);
                 $validator = validator::make($request->all(), [
                     'body' => 'required|min:3',
                     'baseHelpTypes.*' => 'required',
@@ -67,7 +68,7 @@ class FondController extends Controller
                 $request['user_id'] = Auth::user()->id;
 
                 if ($validator->fails()) {
-                    return redirect()->back()->with('error', $validator->errors());
+                    return redirect()->back()->with('error', $validator->errors()->getMessages())->withInput();
                 }
 
                 if (Help::where('user_id', Auth::user()->id)->where('admin_status', 'moderate')->count() >= 1 and $help_id == null) {
@@ -85,42 +86,52 @@ class FondController extends Controller
                         unset($data['district_id']);
                     }
                 }
+
                 $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
-                if ($help_id != null) {
-                    $help = Help::find($help_id);
-                    $help->admin_status = 'moderate';
-                    $help->fond_status = 'moderate';
-                    $help->save();
+                if ($request->help_id) {
+                    $help = Help::find($request->help_id);
+                    $data['admin_status'] = 'moderate';
+                    $data['fond_status'] = 'moderate';
+                    $help->update($data);
                 } else {
                     $help = Help::create($data);
+                    $is_created = true;
                 }
 
                 if ($request->hasFile('photo')) {
                     $validator = validator::make($request->all(), [
-                        'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+                        'photo.*' => 'image|mimes:jpeg,png,jpg|max:1000'
                     ], [
-                        'photo.max' => 'Размер фото не должен превышать 2мб'
+                        'photo.*.image' => 'Неверный формат фото',
+                        'photo.*.max' => 'Размер фото не должен превышать 2мб',
+                        'photo.*.mimes' => 'Фото должно быть в формате: jpeg,png,jpg'
                     ]);
                     if ($validator->fails()) {
-                        return redirect()->back()->with('error', $validator->errors());
+                        if($is_created){
+                            $help->delete();
+                        }
+                        return redirect()->back()->with('error', $validator->errors()->getMessages())->withInput();
                     }
                     foreach ($request->file('photo') as $image) {
                         $filename = microtime() . $help->id . '.' . $image->getClientOriginalExtension();
                         $thumbnailImage = Image::make($image);
                         $path = '/img/help/' . $filename;
-//                    $thumbnailImage->resize(700, null)->save(public_path().$path);
                         $thumbnailImage->save(public_path() . $path);
                         HelpImage::create(['help_id' => $help->id, 'image' => $path]);
                     }
                 }
                 if ($request->hasFile('doc')) {
                     $validator = validator::make($request->all(), [
-                        'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:5000'
+                        'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt|max:3000'
                     ], [
-                        'doc.max' => 'Размер файла не должен превышать 5мб'
+                        'doc.*.max' => 'Размер документа не должен превышать 3мб',
+                        'doc.*.mimes' => 'Документ должен быть в формате: jpeg,png,jpg,doc,pdf,docx,xls,xlx,txt'
                     ]);
                     if ($validator->fails()) {
-                        return redirect()->back()->with('error', $validator->errors());
+                        if($is_created){
+                            $help->delete();
+                        }
+                        return redirect()->back()->with('error',  $validator->errors()->getMessages());
                     }
                     foreach ($request->file('doc') as $doc) {
                         $filename = microtime() . $help->id . '.' . $doc->getClientOriginalExtension();
@@ -128,11 +139,6 @@ class FondController extends Controller
                         $doc->move(public_path() . $path, $filename);
                         HelpDoc::create(['help_id' => $help->id, 'path' => $path . $filename, 'original_name' => $doc->getClientOriginalName()]);
                     }
-                }
-                $fonds = Fond::query();
-                if ($request->exists('help_fond')) {
-                    $help_fonds = explode(',', $request->help_fond);
-                    $fonds = $fonds->whereIn('id', $help_fonds);
                 }
                 $inputs = $request->all();
 
@@ -220,9 +226,10 @@ class FondController extends Controller
                         'fond_status' => 'disable'
                     ];
                 }
-
-                if (isset($request->destinations) && !empty($request->destinations)) {
-                    $help->destinations()->sync($request->destinations);
+                if($request->destinations){
+                    if (count($request->destinations)>0) {
+                        $help->destinations()->sync($request->destinations);
+                    }
                 }
                 if (isset($request->baseHelpTypes) && !empty($request->baseHelpTypes)) {
                     if(is_array( $request->baseHelpTypes)){
@@ -238,7 +245,6 @@ class FondController extends Controller
                                Log::info($request->baseHelpTypes);
                            }
                         }
-
                     }else{
                        try{
                            $help->addHelpTypes()->sync([$request->baseHelpTypes]);
@@ -248,20 +254,13 @@ class FondController extends Controller
                     }
                 }
                 if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
-                    try{
-                        $help->cashHelpTypes()->sync($request->cashHelpTypes);
-                    }catch (\Exception $exception){
-                        Log::info($request->cashHelpTypes);
-                    }
-
+                    $help->cashHelpTypes()->sync($request->cashHelpTypes);
                 }
-
-
-//            Log::info($help->id, $fondsids);
-                $help->fonds()->sync($fondsids);
+            $help->fonds()->sync($fondsids);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка успешно отправлена!', 'info' => 'Заявка отправлена на модерацию']);
         }
         if ($request->method() == 'GET') {
+            $help = null;
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
             $baseHelpTypes = AddHelpType::all();
             $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
@@ -269,7 +268,7 @@ class FondController extends Controller
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
         }
-        return view('frontend.fond.request_help')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios'));
+        return view('frontend.fond.request_help')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios', 'help'));
     }
 
     public function fonds(Request $request)

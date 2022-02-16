@@ -21,7 +21,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1>{{trans('fonds.req-help')}}</h1>
+
+                        @if($help)
+                            <h1 class="blueName">Редактирование заявки ID: {{ getHelpId($help->id) }}</h1>
+                        @else
+                            <h1>{{trans('fonds.req-help')}}</h1>
+                        @endif
                         <h2>Доводим до сведения, что заявки по погашения кредитов и по обеспечению жилью не принимаются
                             <br>
                             Кредиттерді өтеу және тұрғын үйді қамтамасыз ету бойынша өтінімдер қабылданбайтынын хабарлаймыз
@@ -42,6 +47,10 @@
                             @if($errors->has('title'))
                                 <span class="error">{{ $errors->first('title') }}</span>
                             @endif
+
+                            @if($help)
+                                <input type="hidden" name="help_id" value="{{$help->id}}">
+                            @endif
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group mb-4">
@@ -52,13 +61,19 @@
                                             </i>
                                         </label>
                                         <select name="who_need_help" id="who_need_help" class="form-control">
-                                            @foreach($scenarios as $value => $scenario)
-                                                <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
-                                            @endforeach
+                                            @if($help)
+                                                @foreach($scenarios as $value => $scenario)
+                                                    <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                @endforeach
+                                            @else
+                                                @foreach($scenarios as $value => $scenario)
+                                                    <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                @endforeach
+                                            @endif
+
                                         </select>
                                     </div>
                                 </div>
-
                                 <!--destination 1-->
                                 <div class="col-sm-12 destinations1">
                                     <div class="form-group mb-4 ">
@@ -69,6 +84,7 @@
                                             </i>
                                         </label>
                                         <select name="destinations[]" class="select2 w-100" multiple placeholder="{{trans('fonds.chois-stat-help2')}}" id="destinations1" ></select>
+
                                     </div>
                                 </div>
 
@@ -219,6 +235,21 @@
                                         Так организации смогут убедиться в том, что Вам действительно нужна помощь. Например, Вы можете прикрепить фото сгоревшего дома или своих жилищных условий.
                                     </i>
                                 </label>
+                                @if($help)
+                                <ul class="justify-content-start d-flex list-unstyled">
+                                    @foreach($help->images as $image)
+                                        <li class="mr-4" style="position: relative;" id="file-{{$image->id}}">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <img src="{{$image->image}}" class="img-fluid" style="max-width: 200px; height: 100px; object-fit: cover;" alt="">
+                                                    <button class="deletefile" type="button" style="top: 5px;" onclick="deleteImage({{$image->id}});"><i style="color: #0053a5;" class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                @endif
                                 <br>
                                 <div class="input-group">
                                     <input type="file" id="file" name="photo[]" class="form-control photo">
@@ -231,7 +262,7 @@
 
                             <div class="form-group mb-4">
                                 <label for="">{{trans('fonds.video-share')}}</label>
-                                <input type="text" name="video" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
+                                <input type="text" name="video" value="@if($help) {{$help->video}} @endif" class="form-control" placeholder="{{trans('fonds.share-video2')}}">
                             </div>
 
                             <div class="form-group mb-4">
@@ -242,6 +273,13 @@
                                         Например, медицинские справки, выписки, справку с места учебы, работы и т. д., подтверждающие правдивость Ваших слов. Укажите название документа и прикрепите файл в формате doc, jpeg или pdf.
                                     </i>
                                 </label>
+                                @if($help)
+                                    <ul class="justify-content-start d-flex list-unstyled">
+                                        @foreach($help->docs as $doc)
+                                            <li class="pr-4"><div class="card p-2 pr-4"><a href="{{$doc->path}}">{{$doc->original_name}}</a><button class="deletefile" type="button" onclick="deleteFile({{$doc->id}});"><i class="fas fa-times" style="color: #0053a5"></i></button></div></li>
+                                        @endforeach
+                                    </ul>
+                                @endif
                                 <br>
                                 <div class="input-group">
                                     <input type="file"  class="form-control docs" name="doc[]">
@@ -258,7 +296,7 @@
                                     Максимально полно опишите Ваш случай, чтобы организации поняли, как именно они могут Вам помочь.
                                 </i>
                             </label>
-                            <textarea name="body" placeholder="{{trans('fonds.desc-help')}}*" class="form-control mb-3" id="helpBody" cols="20" rows="10" required>{{old('body')}}</textarea>
+                            <textarea name="body" placeholder="{{trans('fonds.desc-help')}}*" class="form-control mb-3" id="helpBody" cols="20" rows="10" required>@if($help) {{$help->body}} @else {{old('body')}} @endif</textarea>
                             {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
                             <button  class="btn btn-default m-auto d-table" id="request_help_button">Подать заявку</button>
                         </form>
@@ -277,5 +315,44 @@
             text-decoration: underline;
         }
     </style>
+    <style>
+        .deletefile{
+            position: absolute;
+            right: 2px;
+            padding: 3px;
+            padding-top: 0px;
+            background: none;
+            border: none;
+            box-shadow: none;
+        }
+    </style>
+    <script>
+        function deleteImage(id){
+            $.ajax({
+                url: '{{route('delete_help_image')}}',
+                method: 'GET',
+                data: {'_token':'{{csrf_token()}}', 'id': id},
+                success: function(){
+                    $('#image-'+id).fadeOut('slow');
+                    setTimeout(function(){
+                        $('#image-'+id).remove();
+                    }, 600);
+                }
+            })
+        }
+        function deleteFile(id){
+            $.ajax({
+                url: '{{route('delete_help_file')}}',
+                method: 'GET',
+                data: {'_token':'{{csrf_token()}}', 'id': id},
+                success: function(){
+                    $('#file-'+id).fadeOut('slow');
+                    setTimeout(function(){
+                        $('#file-'+id).remove();
+                    }, 600);
+                }
+            })
+        }
+    </script>
 @endsection
 @extends('frontend.layout')

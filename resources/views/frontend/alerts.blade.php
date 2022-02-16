@@ -6,10 +6,33 @@
 @endif
 
 @if ($message = Session::get('error'))
-    <div class="alert alert-danger alert-block">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>{{ $message }}</strong>
-    </div>
+    @if(is_array($message))
+        @foreach($message as $mess)
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @if(is_array($mess))
+                @foreach($mess as $m)
+                    @if(is_array($m))
+                            @foreach($m as $m2)
+                                <strong>{{ $m2 }}</strong>
+                            @endforeach
+                        @else
+                            <strong>{{ $m }}</strong>
+                    @endif
+                @endforeach
+            @else
+                <strong>{{ $mess }}</strong>
+            @endif
+
+        </div>
+        @endforeach
+    @else
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ $message }}</strong>
+        </div>
+    @endif
+
 @endif
 
 @if ($message = Session::get('warning'))

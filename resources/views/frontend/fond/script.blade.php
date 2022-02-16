@@ -2,6 +2,51 @@
     var json = {!! $regions->toJson() !!};
     var jsonHelps = {!! $baseHelpTypes->toJson() !!};
     var scenarios = {!! json_encode($scenarios) !!};
+    var destinations = null;
+    var addHelpTypes = null;
+    var cashHelpTypes = null;
+    var whoNeedHelp = null;
+    var region = null;
+    var city = null;
+    var district = null;
+    var cashHelpSize = null;
+    var helpUrgencyDate = null;
+    @if($help)
+    destinations = {!! json_encode($help->destinations()->pluck('id')) !!};
+    addHelpTypes = {!! json_encode($help->addHelpTypes()->pluck('id')) !!};
+    cashHelpTypes = {!! json_encode($help->cashHelpTypes()->pluck('id')) !!};
+    whoNeedHelp = {{$help->whoNeedHelp->id}};
+    region = {{$help->region->region_id}};
+    city = {!! $help->city->city_id??'""' !!};
+    district = {!! $help->district->district_id??'""' !!};
+    cashHelpSize = {!! $help->cashHelpSize->cash_help_size_id??'""' !!};
+    helpUrgencyDate = {!! $help->urgency_date??'""' !!};
+    @else
+    @if(old('destinations'))
+         destinations = {!! json_encode(old('destinations')) !!};
+    @endif
+    @if(old('addHelpTypes'))
+         addHelpTypes = {!! json_encode(old('addHelpTypes')) !!};
+    @endif
+    @if(old('cashHelpTypes'))
+         cashHelpTypes = {!! json_encode(old('cashHelpTypes')) !!};
+    @endif
+    @if(old('whoNeedHelp'))
+         whoNeedHelp = {{old('whoNeedHelp') }};
+    @endif
+    @if(old('region'))
+         region = {{old('region') }};
+    @endif
+    @if(old('city'))
+        city = {{old('city') }};
+    @endif
+    @if(old('district'))
+        district = {{old('district') }};
+    @endif
+    @if(old('cashHelpSize'))
+        cashHelpSize = {{old('cashHelpSize') }};
+    @endif
+    @endif
 
     $('#destionations').select2({
         width: '100%',
@@ -179,6 +224,66 @@
 
     $(document).ready(function () {
         $("#who_need_help option:first").change();
+        @if($help or count(old())>0)
+        // Кто нуждается
+        if(whoNeedHelp){
+            $("#who_need_help option[value='"+whoNeedHelp+"']").prop('selected', true);
+            $("#who_need_help option[value='"+whoNeedHelp+"']").change();
+        }
 
+        // Выборка 4 destinations
+        if(destinations){
+            $(destinations).each(function (index, value) {
+                $("select[name=\"destinations[]\"] option[value='"+value+"']").prop('selected', true);
+                $("select[name=\"destinations[]\"] option[value='"+value+"']").change();
+            });
+        }
+        if(addHelpTypes){
+// Отметьте сферу необходимой помощи
+            $(addHelpTypes).each(function (index, value) {
+                $("select#baseHelpTypes option[value='"+value+"']").prop('selected', true);
+                $("select#baseHelpTypes option[value='"+value+"']").change();
+            });
+        }
+
+        // Отметьте вид необходимой помощи
+        if(cashHelpTypes){
+            $(cashHelpTypes).each(function (index, value) {
+                $("select#cashHelpTypes option[value='"+value+"']").prop('selected', true);
+                $("select#cashHelpTypes option[value='"+value+"']").change();
+            });
+        }
+
+        // Выбор региона
+        if(region){
+            $("select#regions option[value='"+region+"']").prop('selected', true);
+            $("select#regions option[value='"+region+"']").change();
+        }
+
+        if(cashHelpTypes){
+            // Выбор района
+            $("select#districts option[value='"+district+"']").prop('selected', true);
+            $("select#districts option[value='"+district+"']").change();
+        }
+
+        if(city){
+            // Выбор города
+            $("select#cities option[value='"+city+"']").prop('selected', true);
+            $("select#cities option[value='"+city+"']").change();
+        }
+
+        if(cashHelpSize){
+            // Сумма помощи
+            $("select#cashHelpSizes option[value='"+cashHelpSize+"']").prop('selected', true);
+            $("select#cashHelpSizes option[value='"+cashHelpSize+"']").change();
+        }
+
+        if(helpUrgencyDate){
+// Сумма помощи
+            $("select#helpUrgencyDate option[value='"+helpUrgencyDate+"']").prop('selected', true);
+            $("select#helpUrgencyDate option[value='"+helpUrgencyDate+"']").change();
+        }
+
+        @endif
     });
 </script>
