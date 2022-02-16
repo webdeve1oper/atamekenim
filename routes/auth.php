@@ -5,6 +5,7 @@ Route::get('/check_user', 'UserAuthController@checkUser')->name('check_user'); /
 Route::get('login-user', 'UserAuthController@index')->name('login');
 //Route::post('post-login-user', 'UserAuthController@postLogin')->name('post_login_user');
 Route::get('registration_user', 'UserAuthController@registration')->name('registration_user'); // redirect to idp
+Route::get('dev-auth', 'UserAuthController@userDevAuth')->name('user_dev_auth');
 //Route::post('post-registration-user', 'UserAuthController@postRegistration')->name('post_registration_user');
 //Route::post('post_sms_user', 'UserAuthController@postSmsRegistration')->name('post_sms_user');
 
