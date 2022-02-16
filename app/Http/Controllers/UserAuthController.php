@@ -170,7 +170,7 @@ class UserAuthController extends Controller
         }
         if($response){
             $json = json_decode($response->getBody()->getContents(), true)['access_token'];
-
+            $attempts = false;
             try {
                 $response = $client->request('GET', 'https://idp.egov.kz/idp/resource/user/basic', [
                     'headers' => [
@@ -188,13 +188,13 @@ class UserAuthController extends Controller
                         'patron' => $personData->patronymic,
                         'iin' => $personData->iin,
                         'born' => $personData->birthDate ?? null,
-                        'gender' => getGenderByIin($personData->iin),
+                        'gender' => getGenderByIin($personData->iin) ?? 'none',
                         'password' => Hash::make($password)
                     ];
                     $user->update($data);
                     $credential = ['iin'=>$user->iin, 'password'=>$password];
                     if($this->attempts($credential)){
-                        return true;
+                        $attempts =  true;
                     }
                 }else{
                     $data = [
@@ -204,15 +204,25 @@ class UserAuthController extends Controller
                         'iin' => $personData->iin,
                         'born' => $personData->birthDate ?? null,
                         'status' => 1,
-                        'gender' => getGenderByIin($personData->iin),
+                        'gender' => getGenderByIin($personData->iin) ?? 'none',
                         'password' => Hash::make($password)
                     ];
                     $user = User::create($data);
                     $credentials = ['iin'=>$user->iin, 'password'=>$password];
                     if($this->attempts($credentials)){
-                        return true;
+                        $attempts = true;
                     }
                 }
+//                if($attempts){
+//                    $response = $client->request('GET', 'https://idp.egov.kz/idp/resource/user/phone', [
+//                        'headers' => [
+//                            'Authorization' => 'Bearer ' . $json,
+//                        ]
+//                    ]);
+//                    $phone = json_decode($response->getBody()->getContents());
+//                    Log::info($phone);
+//                }
+                return $attempts;
             } catch (GuzzleException $e) {
                 return false;
             }

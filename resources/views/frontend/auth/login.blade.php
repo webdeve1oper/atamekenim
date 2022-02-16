@@ -41,11 +41,8 @@ $script = "<script src='/js/masked.input.js'></script>
                                     <div class="tab-pane container active w-100" id="user">
                                         @include('frontend.alerts')
                                         {{--<h1>Авторизация пользователя </h1>--}}
-                                        <h1>Авторизация </h1>
-                                        <p>Чтобы благотворительные организации могли проверить Вашу личность, Вам необходимо пройти авторизацию через сайт электронного правительства Республики Казахстан.
-                                            Вы можете подать заявку за себя и своих несовершеннолетних детей через свой аккаунт. Все другие заявители должны создать свои личные аккаунты.
-                                            Если у Вас возникнут проблемы с регистрацией, Вам следует обратиться в ближайший ЦОН для получения доступа к платформе электронного правительства (eGov).
-                                            После входа в кабинет Вы можете заполнить свой профиль, подать заявку на получение помощи или посмотреть текущий статус Вашей заявки.</p>
+                                        <h1>{{ trans('auth.auth') }}</h1>
+                                        <p>{{ trans('auth.auth_desc') }}</p>
                                         {{--<form action="{{route('post_login_user')}}" class="w-100" method="post">--}}
                                             {{--@csrf--}}
                                             {{--@if($errors->has('email'))--}}
@@ -60,7 +57,7 @@ $script = "<script src='/js/masked.input.js'></script>
                                             {{--<button class="btn btn-primary" type="submit">Продолжить</button>--}}
                                         {{--</form>--}}
                                         <hr>
-                                        <a class="login btn-default blue" href="{{route('registration_user')}}">Войти или зарегистрироваться</a>
+                                        <a class="login btn-default blue" href="{{route('registration_user')}}">{{ trans('auth.login_or_register') }}</a>
                                         {{--<a class="login btn-default blue" href="{{route('registration_user')}}">Регистрация</a>--}}
                                         <a class="login btn-default blue" class="ml-3" href="{{route('login-fond')}}">Войти как фонд</a>
                                     </div>

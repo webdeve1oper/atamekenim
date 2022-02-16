@@ -66,3 +66,11 @@ if (! function_exists('array_sort_by_column')) {
         array_multisort($sort_col, $dir, $arr);
     }
 }
+
+if(!function_exists('hideText')){
+    function hideText($string){
+        $search = "/(##)(.*?)(##)/";
+        $replace = "***************";
+        return preg_replace($search,$replace,$string);
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 //Auth::routes();
+//Route::get('logins', function(){return view('auth.login_iin');});
+//Route::post('logins', 'UserAuthController@postLogin');
 Route::group(['middleware'=>'auth'], function(){
     Route::match(['get','post'], 'request-for-help', 'Frontend\FondController@requestHelp')->name('request_help');
     Route::get('cabinet/edit', 'Backend\CabinetController@editUser')->name('editUser');

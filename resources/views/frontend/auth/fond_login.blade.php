@@ -19,6 +19,7 @@
                             <!-- Tab panes -->
                                 <div class="tab-content w-100">
                                     <div class="tab-pane container active w-100" id="fond">
+                                        @include('frontend.alerts')
                                         <h1>Авторизация Фонда</h1>
                                         <form action="{{route('post_login_fond')}}" class="w-100" method="post">
                                             @csrf

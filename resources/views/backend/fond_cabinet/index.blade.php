@@ -39,7 +39,7 @@
                                         <div class="col-sm-3">
                                             <p><b>Заявка ID:</b> {{ getHelpId($help->id) }}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
-                                            <p><span></span>{{ \Carbon\Carbon::createFromFormat("Y-m-d", $help->user->born)->age }} лет</p>
+                                            <p><span></span>@if(isset($help->user->born)){{ \Carbon\Carbon::createFromFormat("Y-m-d", $help->user->born)->age }} лет @endif</p>
                                             <p>@if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
                                                     , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif</p>
                                         </div>
@@ -87,7 +87,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p><b>Заявка ID:</b> {{ getHelpId($help->id) }}</p>
+                                            <p><b>Заявка ID:</b> {{ getHelpId($process->id) }}</p>
                                             @foreach($process->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                             {{--<p><span>Мужчина</span>, {{$process->user()->name}} лет</p>--}}
                                             <p>@if($process->region_id != null){{ $process->region->title_ru }}@endif @if($process->district_id != null)
@@ -135,7 +135,7 @@
                                 <div class="applicationBlock">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p><b>Заявка ID:</b> {{ getHelpId($help->id) }}</p>
+                                            <p><b>Заявка ID:</b> {{ getHelpId($process->id) }}</p>
                                             @foreach($process->addHelpTypes as $helps)<p class="tags default blue">{{$helps->name_ru}}</p>@endforeach
                                             <p><span>{{$process->user->gender=='male'?'Мужчина':'Женщина'}}</span>, {{\Carbon\Carbon::parse($process->user->born)->age }} лет </p>
                                             <p>@if($process->region_id != null){{ $process->region->title_ru }}@endif @if($process->district_id != null)

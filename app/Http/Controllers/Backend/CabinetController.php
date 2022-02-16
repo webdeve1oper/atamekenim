@@ -33,22 +33,12 @@ class CabinetController extends Controller
 
     public function index()
     {
-        $expiresAt = Carbon::now()->addMinutes(5);
-        $moderateHelps = Cache::remember('moderateHelps'.Auth::id(), $expiresAt, function() {
-            return Auth::user()->helpsByStatus('moderate')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        });
-        $waitHelps = Cache::remember('waitHelps'.Auth::id(), $expiresAt, function() {
-            return Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        });
-        $finishedHelps = Cache::remember('finishedHelps'.Auth::id(), $expiresAt, function() {
-            return Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        });
-        $processHelps = Cache::remember('processHelps'.Auth::id(), $expiresAt, function() {
-            return Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        });
-        $cancledHelps = Cache::remember('cancelHelps'.Auth::id(), $expiresAt, function() {
-            return  Auth::user()->canceledHelps()->get();
-        });
+//        $expiresAt = Carbon::now()->addMinutes(5);
+        $moderateHelps = Auth::user()->helpsByStatus('moderate')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $waitHelps = Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $finishedHelps = Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $processHelps =  Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
+        $cancledHelps =  Auth::user()->helpsByStatus('cancel')->where('admin_status', 'cancel')->get();
         return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps', 'cancledHelps'));
     }
 
@@ -155,6 +145,9 @@ class CabinetController extends Controller
             $validator = Validator::make($request->all(),
                 [
                     'avatar' => 'mimes:jpeg,jpg,png|max:1000',
+                    'about' =>'max:1000'
+                ], [
+                    'about.max'=>'максимальное количество символов 1000'
                 ]
             );
             if ($validator->fails()) {
@@ -231,9 +224,14 @@ class CabinetController extends Controller
         if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
             $help->cashHelpTypes()->sync($request->cashHelpTypes);
         }
-        $this->validate($request, [
+        $validator = validator::make($request->all(), [
             'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+        ], [
+            'photo.max'=>'Размер фото не должен превышать 2мб'
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->errors());
+        }
         if ($request->hasFile('photo')) {
             foreach ($request->file('photo') as $image) {
                 $filename = microtime() . $help->id . '.' . $image->getClientOriginalExtension();
@@ -243,9 +241,14 @@ class CabinetController extends Controller
                 HelpImage::create(['help_id' => $help->id, 'image' => $path]);
             }
         }
-        $this->validate($request, [
+        $validator = validator::make($request->all(), [
             'doc.*' => 'mimes:jpeg,png,jpg,doc,pdf,docx,xls,xlx,xlsx,txt|max:5000'
+        ], [
+            'doc.max'=>'Размер файла не может превышать 5мб'
         ]);
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->errors());
+        }
         if ($request->hasFile('doc')) {
             foreach ($request->file('doc') as $doc) {
                 $filename = microtime() . $help->id . '.' . $doc->getClientOriginalExtension();

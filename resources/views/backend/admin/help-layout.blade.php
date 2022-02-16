@@ -68,7 +68,20 @@
                 $images = $help->images;
                 ?></p>
             <p><span>Описание необходимой помощи:</span> </p>
-            <p>{{ $help->body }}</p>
+
+
+            <form action="{{ route('update_help_from_admin',$help->id) }}" method="POST">
+                @csrf
+                <textarea name="help_body" id="helpBody" style="width: 100%;height: 400px" placeholder="Введите описание">
+                    {{ $help->body }}
+                </textarea>
+                <button class="btn btn-primary" type="submit" style="margin-top: 15px">Изменить описание</button>
+            </form>
+            <br>
+            <br>
+
+
+
             <p><span>Фотографии получателя помощи:</span> @if($images)
                 <ul class="justify-content-start d-flex list-unstyled">
                     @foreach($images as $image)
@@ -84,8 +97,8 @@
                 @endif</p>
             <p><span>Видео получателя помощи:</span> {{$help->video ?? 'отсутствует'}}</p>
             <p><span>Документы:</span> <br>@foreach($help->docs as $doc)<a href="{{$doc->path}}">{{$doc->original_name}}</a> <br>@endforeach</p>
-            <p><span>Контакты заявителя:</span> {{$user->phone}}</p>
-            <p><span>E-mail:</span> {{$user->email}}</p>
+            <p><span>Контакты заявителя:</span> {{$help->user->phone ?? 'Данные отсутствуют'}}</p>
+            <p><span>E-mail:</span> {{$help->user->email ?? 'Данные отсутствуют'}}</p>
 
 
             <!-- Одобрить запрос -->

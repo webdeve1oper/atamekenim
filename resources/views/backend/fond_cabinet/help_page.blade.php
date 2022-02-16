@@ -51,7 +51,7 @@
                         <p class="name">{{ $help->user->last_name }} {{ $help->user->first_name }}, @if($help->region_id != null){{ $help->region->title_ru }}@endif @if($help->district_id != null)
                                 , {{ $help->district->title_ru }}@endif @if($help->city_id != null), {{ $help->city->title_ru }}@endif </p>
                         <div class="text">
-                            {{ $help->body }}
+                            {{ hideText($help->body) }}
                         </div>
                     </div>
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
@@ -74,6 +74,22 @@
                             <button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>
                         </form>
                     @endif
+                        @if($help->reviews)
+                            <button data-target="#review{{$help->reviews->id}}" data-toggle="modal" class="btn-default blue mb-3">Читать отзыв</button>
+                            <div id="review{{$help->reviews->id}}" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                                            <h5 class="modal-title text-center d-table m-auto">{{trans('cabinet-appl.review')}}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p> {{$help->reviews->body}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     <div class="infoBlock">
                         <p><span>Статус обращения:</span>
                             @switch($help->fond_status)
@@ -89,10 +105,15 @@
                                 @case('cancel')
                                 отклонен
                                 @break
+                                @case('finished')
+                                исполнен
+                                @break
                             @endswitch</p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
-                        <p><span>Тип помощи:</span>{{ $help->cashHelpTypes[0]->name_ru }}</p>
-                        <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
+                       @if(isset($help->cashHelpTypes[0])) <p><span>Тип помощи:</span>{{ $help->cashHelpTypes[0]->name_ru }}</p> @else
+                            @if(count($help->cashHelpTypes)>0) <p><span>Тип помощи:</span>{{ $help->cashHelpTypes->name_ru }}</p> @endif
+                        @endif
+                        @if(isset($help->cashHelpSize)) <p><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p> @endif
                         <p><span>Срочность:</span>
                             <?php
                             switch ($help->urgency_date) {
@@ -177,16 +198,18 @@
                             <input type="hidden" name="help_id" value="{{$help->id}}">
                             <div class="form-group mb-3">
                                 <label for="">Укажите дату получения помощи заявителем <span style="color: red">*</span></label>
-                                <input type="date" name="help_date" class="form-control">
+                                <input type="date" name="help_date" class="form-control" id="maxDateFunction">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">Заявка была реализована в рамках Проекта <span style="color: red">*</span></label>
-                                <?php $projects = Auth::user()->projects; ?>
-                                <select name="project" id="" class="form-control">
-                                    @foreach($projects as $project)
-                                        <option value="{{$project->id}}">{{$project->title}}</option>
-                                    @endforeach
-                                </select>
+                                @if(count(Auth::user()->projects) > 0)
+                                    <label for="">Заявка была реализована в рамках Проекта <span style="color: red">*</span></label>
+                                    <?php $projects = Auth::user()->projects; ?>
+                                    <select name="project" id="" class="form-control">
+                                        @foreach($projects as $project)
+                                            <option value="{{$project->id}}">{{$project->title}}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">
@@ -327,34 +350,52 @@
         <script src="/js/lightbox.js"></script>
         <link rel="stylesheet" href="/css/lightbox.css">
     @endif
-    <div class="container-fluid default helperBlock helpInProjectPage">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h4>Другие исполненные заявки</h4>
-                    <a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>
-                </div>
-                @foreach($finished_helps as $help)
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
-                                <p>Кому: <span>
-                                @if(Auth::guard('fond')->check())
-                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
-                                        @else
-                                            @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
-                                        @endif</span></p>
-                                <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
-                                <a href="" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
-                        </div>
+    @if(count($finished_helps) > 0)
+        <div class="container-fluid default helperBlock helpInProjectPage">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4>Другие исполненные заявки</h4>
+                        {{--<a href="{{route('dev')}}" class="readMore">Смотреть все <span class="miniArrow">›</span></a>--}}
                     </div>
-                @endforeach
+                    @foreach($finished_helps as $item)
+                        <div class="col-sm-3">
+                            <div class="helpBlock newHelp">
+                                <div class="content">
+                                    <p>Помощь: <span class="tag blue">@foreach($item->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
+                                    <p>Кому: <span>
+                                    @if(Auth::guard('fond')->check())
+                                                {{$item->user->first_name}},  {{\Carbon\Carbon::parse($item->user->born)->age }} лет
+                                            @else
+                                                @if($item->user->gender=='male') Мужчина @elseif($item->user->gender=='female') Женщина @else Не указано @endif
+                                            @endif</span></p>
+                                    <p>Регион: <span>@if($item->region){{$item->region->title_ru}}@endif</span></p>
+                                    <a href="{{ route('fond_help_page', $item->id) }}" class="more">Подробнее <span class="miniArrow">›</span></a>
+                                </div>
+                                <p class="date">Открытая заявка</p>
+                                <img src="/img/support1.svg" alt="" class="bkg">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+    @endif
+    <script>
+        $(document).ready(function () {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+            if(dd<10){
+                dd='0'+dd
+            }
+            if(mm<10){
+                mm='0'+mm
+            }
 
+            today = yyyy+'-'+mm+'-'+dd;
+            document.getElementById("maxDateFunction").setAttribute("max", today);
+        });
+    </script>
 @endsection

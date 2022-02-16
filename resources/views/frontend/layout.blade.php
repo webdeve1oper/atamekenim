@@ -92,7 +92,7 @@
                         <li><a href="{{route('about')}}">{{trans('home.menu-projects')}}</a></li>
 {{--                        <li><a href="{{route('news')}}">{{trans('home.menu-news')}}</a></li>--}}
                         <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
-                        <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
+{{--                        <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>--}}
 {{--                        <li><a href="{{route('dev')}}">{{trans('home.help-project')}}</a></li>--}}
 {{--                        <li><a href="{{route('dev')}}">{{trans('home.map-charity')}}</a></li>--}}
 {{--                        <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>--}}

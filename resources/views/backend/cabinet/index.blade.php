@@ -107,8 +107,25 @@
                                             <p class="name">Кому:</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
                                             @if(!$help->reviews)
-                                            <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue">{{trans('cabinet-appl.leave-rev')}}</button>
-                                                @endif
+                                                <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue mt-3">{{trans('cabinet-appl.leave-rev')}}</button>
+                                            @else
+                                                <button data-target="#review{{$help->reviews->id}}" data-toggle="modal" class="btn-default blue mt-3">Читать отзыв</button>
+                                                <div id="review{{$help->reviews->id}}" class="modal fade" role="dialog">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                                                                <h5 class="modal-title text-center d-table m-auto">{{trans('cabinet-appl.review')}}</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+{{--                                                               <h6> {{$help->reviews->title}}</h6>--}}
+                                                               <p> {{$help->reviews->body}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-3">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
                                 </div>

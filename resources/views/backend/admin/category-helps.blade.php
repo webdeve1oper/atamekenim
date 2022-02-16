@@ -20,5 +20,8 @@
                     </div>
                 </div>
             @endforeach
+        <div class="col-sm-12">
+            {{ $helps->links() }}
+        </div>
         </div>
 @endsection

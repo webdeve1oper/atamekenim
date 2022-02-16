@@ -18,7 +18,7 @@ class CheckFondStatus
     {
         if(Auth::guard('fond')->user()->status == 0 or Auth::guard('fond')->user()->status == 2){
             Auth::guard('fond')->logout();
-            return redirect()->route('login')->with(['error'=>'Ваш аккаунт не активен!']);
+            return redirect()->route('login')->with(['error'=>'Ваш аккаунт на модерации!']);
         }
         return $next($request);
     }

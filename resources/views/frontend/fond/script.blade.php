@@ -110,7 +110,9 @@
         $('#baseHelpTypes').empty();
         datas2.push({id: '0', text: ''});
         for (let [key, value] of Object.entries(scenarios[scenario_index].add_help_types)) {
-            datas2.push({id: value.id, text: value.name_ru + ' ('+value.description_ru+')'});
+            if(value.id != 7){
+                datas2.push({id: value.id, text: value.name_ru + ' ('+value.description_ru+')'});
+            }
         }
         $('#baseHelpTypes').select2({data: datas2, allowClear: true, minimumResultsForSearch: -1});
     });

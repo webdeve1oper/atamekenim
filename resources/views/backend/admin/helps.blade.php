@@ -9,42 +9,56 @@
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','moderate') }}">
-                    <span>На модерации <b>Кол-во: {{ count($helps1) }}</b></span>
+                    <span>На модерации <b>Кол-во: {{ $helps1 }}</b></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="categoryBlock">
+                <a href="{{ route('admin_helps_category','health') }}">
+                    <span>На модерации / Здоровье <b>Кол-во: {{ $helps7 }}</b></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="categoryBlock">
+                <a href="{{ route('admin_helps_category','health-moderated') }}">
+                    <span>Прошли модерацию / Здоровье <b>Кол-во: {{ $helps8 }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','finished') }}">
-                    <span>В ожидании благотворителя <b>Кол-во: {{ count($helps2) }}</b></span>
+                    <span>В ожидании благотворителя <b>Кол-во: {{ $helps2 }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','fond_process') }}">
-                    <span>В работе <b>Кол-во: {{ count($helps3) }}</b></span>
+                    <span>В работе <b>Кол-во: {{ $helps3 }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','cancel') }}">
-                    <span>Отклонена <b>Кол-во: {{ count($helps4) }}</b></span>
+                    <span>Отклонена <b>Кол-во: {{ $helps4 }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','edit') }}">
-                    <span>Требует правок <b>Кол-во: {{ count($helps5) }}</b></span>
+                    <span>Требует правок <b>Кол-во: {{ $helps5 }}</b></span>
                 </a>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="categoryBlock">
                 <a href="{{ route('admin_helps_category','fond_finished') }}">
-                    <span>Исполнена <b>Кол-во: {{ count($helps6) }}</b></span>
+                    <span>Исполнена <b>Кол-во: {{ $helps6 }}</b></span>
                 </a>
             </div>
         </div>

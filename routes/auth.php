@@ -10,7 +10,7 @@ Route::get('registration_user', 'UserAuthController@registration')->name('regist
 
 //Fond Auth
 Route::get('login-fond', 'FondAuthController@index')->name('login-fond');
-Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond');
+Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond')->middleware('throttle:3,5');
 Route::get('registration_fond', 'FondAuthController@registration')->name('registration_fond');
 Route::post('post-registration-fond', 'FondAuthController@postRegistration')->name('post_registration_fond');
 

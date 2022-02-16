@@ -70,7 +70,7 @@ class FondAuthController extends Controller
             }
             return redirect()->route('fond_cabinet');
         }
-        return redirect()->route('login-fond')->with('error', 'Что-то пошло не так!');
+        return redirect()->route('login-fond')->with(['error', 'Неверный логин или пароль']);
     }
 
     public function postRegistration(Request $request)
@@ -112,7 +112,7 @@ class FondAuthController extends Controller
             $bin_year = '20'.$bin_year;
         }
         $data = $request->all();
-        $data['status'] = '1';
+        $data['status'] = '0';
         $data['foundation_date'] = $bin_year.'-'.$bin_month.'-01';
         $data['phone'] = str_replace(['+','(',')', ' '], ['','','',''], $data['phone']);
         $check = $this->create($data);

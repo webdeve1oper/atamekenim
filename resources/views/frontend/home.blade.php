@@ -252,67 +252,67 @@
         </div>
 
         <div class="container-fluid default helperBlock">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4>{{trans('home.who-help')}}</h4>
-                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
-                    </div>
-                    <div class="col-sm-6 rightBlock">
-                        <p class="status">{{trans('home.total-appl')}} <span>{{$helpsCount}}</span></p>
-                        <p class="status">{{trans('home.well-done')}} <span>{{$helps->total()}}</span></p>
-                    </div>
-                    @foreach($helps as $help)
-                        <div class="col-sm-3">
-                            <div class="helpBlock">
-                                <div class="content">
-                                    <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
-                                    <p>Кому: <span>
-                                @if(Auth::guard('fond')->check())
-                                                {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
-                                            @else
-                                                @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
-                                            @endif</span></p>
-                                    <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
-                                    <a href="{{route('help', $help->id)}}" class="more">Подробнее <span class="miniArrow">›</span></a>
-                                </div>
-                                <p class="date">Открытая заявка</p>
-                                <img src="/img/support1.svg" alt="" class="bkg">
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4>{{trans('home.new-appl')}}</h4>
-                        <a href="" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>
-                    </div>
-                    <div class="col-sm-6 rightBlock">
-                        <p class="status">{{trans('home.under-conside')}} <span>{{$newHelps->total()}}</span></p>
-                    </div>
-                    @foreach($newHelps as $help)
-                    <div class="col-sm-3">
-                        <div class="helpBlock newHelp">
-                            <div class="content">
-                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>
-                                <p>Кому: <span>
-                                @if(Auth::guard('fond')->check())
-                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет
-                                @else
-                                    @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif
-                                @endif</span></p>
-                                <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>
-                                <a href="{{route('help', $help->id)}}" class="more">Подробнее <span class="miniArrow">›</span></a>
-                            </div>
-                            <p class="date">Открытая заявка</p>
-                            <img src="/img/support1.svg" alt="" class="bkg">
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+{{--            <div class="container">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-sm-6">--}}
+{{--                        <h4>{{trans('home.who-help')}}</h4>--}}
+{{--                        <a href="{{route('dev')}}" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-sm-6 rightBlock">--}}
+{{--                        <p class="status">{{trans('home.total-appl')}} <span>{{$helpsCount}}</span></p>--}}
+{{--                        <p class="status">{{trans('home.well-done')}} <span>{{$helps->total()}}</span></p>--}}
+{{--                    </div>--}}
+{{--                    @foreach($helps as $help)--}}
+{{--                        <div class="col-sm-3">--}}
+{{--                            <div class="helpBlock">--}}
+{{--                                <div class="content">--}}
+{{--                                    <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>--}}
+{{--                                    <p>Кому: <span>--}}
+{{--                                @if(Auth::guard('fond')->check())--}}
+{{--                                                {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет--}}
+{{--                                            @else--}}
+{{--                                                @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif--}}
+{{--                                            @endif</span></p>--}}
+{{--                                    <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>--}}
+{{--                                    <a href="{{route('help', $help->id)}}" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+{{--                                </div>--}}
+{{--                                <p class="date">Открытая заявка</p>--}}
+{{--                                <img src="/img/support1.svg" alt="" class="bkg">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <div class="container">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-sm-6">--}}
+{{--                        <h4>{{trans('home.new-appl')}}</h4>--}}
+{{--                        <a href="" class="readMore">{{trans('home.all-see')}}<span class="miniArrow">›</span></a>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-sm-6 rightBlock">--}}
+{{--                        <p class="status">{{trans('home.under-conside')}} <span>{{$newHelps->total()}}</span></p>--}}
+{{--                    </div>--}}
+{{--                    @foreach($newHelps as $help)--}}
+{{--                    <div class="col-sm-3">--}}
+{{--                        <div class="helpBlock newHelp">--}}
+{{--                            <div class="content">--}}
+{{--                                <p>Помощь: <span class="tag blue">@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</span></p>--}}
+{{--                                <p>Кому: <span>--}}
+{{--                                @if(Auth::guard('fond')->check())--}}
+{{--                                            {{$help->user->first_name}},  {{\Carbon\Carbon::parse($help->user->born)->age }} лет--}}
+{{--                                @else--}}
+{{--                                    @if($help->user->gender=='male') Мужчина @elseif($help->user->gender=='female') Женщина @else Не указано @endif--}}
+{{--                                @endif</span></p>--}}
+{{--                                <p>Регион: <span>@if($help->region){{$help->region->title_ru}}@endif</span></p>--}}
+{{--                                <a href="{{route('help', $help->id)}}" class="more">Подробнее <span class="miniArrow">›</span></a>--}}
+{{--                            </div>--}}
+{{--                            <p class="date">Открытая заявка</p>--}}
+{{--                            <img src="/img/support1.svg" alt="" class="bkg">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
 
         <div class="container-fluid default faqBlock">

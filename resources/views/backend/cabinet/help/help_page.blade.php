@@ -56,7 +56,7 @@
                                     @endif
                             </p>
                         <div class="text">
-                            {{ $help->body }}
+                            {{ hideText($help->body) }}
                         </div>
                     </div>
                     <p class="share"><span>Поделиться</span><a href=""><img src="/img/share2.svg" alt=""></a></p>
@@ -70,16 +70,33 @@
                                 </div>
                             @endif
                             <div class="helpEditBlock">
-                                @if($help->admin_status != 'cancel')
+                                @if($help->admin_status == 'edit' || $help->admin_status == 'moderate' || $help->admin_status == 'wait' || $help->fond_status == 'edit' || $help->fond_status == 'moderate' || $help->fond_status == 'wait')
                                 <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
-                                    @else
-                                    <div class="alert alert-danger">
-                                        Ваша заявка отклонена!
-                                    </div>
+                                @endif
+                                @if($help->admin_status == 'cancel' || $help->fond_status == 'cancel')
+                                        <div class="alert alert-danger">
+                                            Ваша заявка отклонена!
+                                        </div>
                                 @endif
                             </div>
                         @endif
                     @endif
+                        @if($help->reviews)
+                            <button data-target="#review{{$help->reviews->id}}" data-toggle="modal" class="btn-default blue mb-3">Читать отзыв</button>
+                            <div id="review{{$help->reviews->id}}" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" style="position:absolute; right: 30px;">&times;</button>
+                                            <h5 class="modal-title text-center d-table m-auto">{{trans('cabinet-appl.review')}}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p> {{$help->reviews->body}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     <div class="infoBlock">
                         <p><span>Регион:</span>{{ $help->region->title_ru }}</p>
                         @foreach($help->destinations as $destination)<p><span>{{config('destinations')[$destination->parent_id]}}</span> {{$destination->name_ru}}</p>@endforeach

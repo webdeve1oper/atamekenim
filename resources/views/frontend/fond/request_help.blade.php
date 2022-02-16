@@ -22,6 +22,18 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h1>{{trans('fonds.req-help')}}</h1>
+                        <h2>Доводим до сведения, что заявки по погашения кредитов и по обеспечению жилью не принимаются
+                            <br>
+                            Кредиттерді өтеу және тұрғын үйді қамтамасыз ету бойынша өтінімдер қабылданбайтынын хабарлаймыз
+                        </h2>
+                        <style>
+                            h2 {
+                                font-size: 16px;
+                                margin: 0 0 25px;
+                                text-decoration: underline;
+                                color: #e91e63;
+                            }
+                        </style>
                         <p>
                             Здравствуйте! Чтобы благотворительные организации получили максимально полную информацию о Вашем случае, заполните форму ниже. Разные организации оказывают помощь разным категориям населения. Чем более точно Вы укажете свои данные, тем выше будет вероятность того, что Ваш случай будет направлен верной организации, тем легче организациям будет принять решение о том, брать ли Ваш случай в работу, и тем вероятнее они это сделают.
                         </p>
@@ -56,7 +68,7 @@
                                                 Ваш социальный статус поможет организациям определить, работают ли они с указанной категорией населения. Например, только с детьми, или только с многодетными матерями.
                                             </i>
                                         </label>
-                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="{{trans('fonds.chois-stat-help2')}}" id="destinations1" required></select>
+                                        <select name="destinations[]" class="select2 w-100" multiple placeholder="{{trans('fonds.chois-stat-help2')}}" id="destinations1" ></select>
                                     </div>
                                 </div>
 
@@ -145,7 +157,7 @@
                                 </label>
                                 <select name="baseHelpTypes" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes" required>
                                     @foreach($baseHelpTypes as $destionation)
-                                        <option value="{{$destionation->id}}">{{$destionation->name_ru}}</option>
+                                            <option value="{{$destionation->id}}">{{$destionation->name_ru}}</option>
                                     @endforeach
                                 </select>
                                 <small class="form-text text-muted">{{trans('fonds.scope-help')}}</small>
@@ -161,7 +173,9 @@
                                 </label>
                                 <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes" required>
                                     @foreach($cashHelpTypes as $destination)
-                                        <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                        @if($destination['id'] != 3)
+                                            <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -246,7 +260,7 @@
                             </label>
                             <textarea name="body" placeholder="{{trans('fonds.desc-help')}}*" class="form-control mb-3" id="helpBody" cols="20" rows="10" required>{{old('body')}}</textarea>
                             {{--<input type="submit" class="btn btn-default m-auto d-table" value="{{trans('fonds.find')}}">--}}
-                            <button  class="btn btn-default m-auto d-table" onclick="$(this).attr('disabled', true)" id="request_help_button">Подать заявку</button>
+                            <button  class="btn btn-default m-auto d-table" id="request_help_button">Подать заявку</button>
                         </form>
                         @include('frontend.fond.script')
                     </div>
