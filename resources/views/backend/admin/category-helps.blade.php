@@ -13,7 +13,7 @@
                             {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Помощь {{ $item->id }}</h5>
+                            <h5 class="card-title">Помощь {{ getHelpId($item->id) }}</h5>
                             <p class="card-text">{{ $item->body }}</p>
                             <a href="{{ route('admin_help_check', $item->id) }}" class="btn btn-primary">Подробнее</a>
                         </div>
