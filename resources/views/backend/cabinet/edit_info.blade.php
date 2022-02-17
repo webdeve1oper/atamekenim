@@ -60,7 +60,7 @@
                                         <p>
                                             <span>{{trans('cabinet-appl.about')}}</span>
                                             <span class="fullText">
-                                                <textarea name="about" style="width: 100%;height: 150px;">
+                                                <textarea name="about" style="width: 100%;height: 150px;" maxlength="1000">
                                                     @if($user->about){{$user->about}}@endif
                                                 </textarea>
                                             </span>

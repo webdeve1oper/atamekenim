@@ -1,4 +1,5 @@
 <div class="col-sm-12">
+    @if(count($helps) > 0)
     @foreach($helps as $help)
         <div class="organizationBigBlock humanInfo">
             <div class="row">
@@ -41,6 +42,18 @@
             </div>
         </div>
     @endforeach
+        <style>
+            .redAlert{
+                display: none!important;
+            }
+        </style>
+    @else
+        <style>
+            .redAlert{
+                display: inline-table!important;
+            }
+        </style>
+    @endif
 </div>
 
 <div class="col-sm-6">

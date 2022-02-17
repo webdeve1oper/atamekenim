@@ -147,6 +147,7 @@
 {{--                                                <label for="checker">{{trans('help-search.repeat')}}</label>--}}
 {{--                                            </div>--}}
                                             <button class="btn-default blue" id="search">{{trans('help-search.find')}}</button>
+                                            <p class="redAlert" style="display:none; margin-left:15px;color:red;font-size: 16px;">{{ trans('home.not-exist') }}</p>
                                         </div>
                                     </form>
                                 </div>
