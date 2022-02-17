@@ -55,18 +55,18 @@ class FondController extends Controller
     {
         if ($request->method() == 'POST') {
             $is_created = false;
-            Log::info($request->all());
-            Log::info(Auth::user()->id);
                 $validator = validator::make($request->all(), [
                     'body' => 'required|min:3',
-                    'baseHelpTypes.*' => 'required',
+                    'baseHelpTypes' => 'required|not_in:0',
                     'cashHelpTypes.*' => 'required',
                 ], [
+                    'baseHelpTypes.required' => 'Укажите, в каком именно вопросе Вам требуется помощь',
+                    'baseHelpTypes.not_in' => 'Укажите, в каком именно вопросе Вам требуется помощь',
                     'body.required' => 'заполните описание',
                     'body.min' => 'заполните описание',
+                    'cashHelpTypes.*.required' => 'Укажите, какой тип помощи Вам необходим',
                 ]);
                 $request['user_id'] = Auth::user()->id;
-
                 if ($validator->fails()) {
                     return redirect()->back()->with('error', $validator->errors()->getMessages())->withInput();
                 }
