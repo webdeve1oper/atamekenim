@@ -180,7 +180,7 @@ class CabinetController extends Controller
         if ($help->user_id == Auth::user()->id) {
             $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
             $baseHelpTypes = AddHelpType::all();
-            $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->limit(10)->get();
+            $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->get();
             $destinations = Destination::all();
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
