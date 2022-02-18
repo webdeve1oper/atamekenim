@@ -44,7 +44,7 @@ class FondController extends Controller
             }
             DB::table('help_fond')->whereFondId(Auth::user()->id)->update(['fond_status' => 'enable']); // надо сделать
             $help->save();
-            return redirect()->back()->with('success', 'Заявка успешно принята в работу!');
+            return redirect()->back()->with('success', 'Успешно взято в работу');
         } else {
             return redirect()->back()->with('error', 'Заявка уже принята');
         }
@@ -269,7 +269,7 @@ class FondController extends Controller
             return 'ok';
         }
     }
-    
+
 
     public function helpPage($id)
     {

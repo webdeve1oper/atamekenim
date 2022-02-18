@@ -106,7 +106,7 @@
                                 отклонен
                                 @break
                                 @case('finished')
-                                исполнен
+                                Исполнено
                                 @break
                             @endswitch</p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
