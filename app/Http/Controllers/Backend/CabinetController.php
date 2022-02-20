@@ -123,11 +123,11 @@ class CabinetController extends Controller
         $help = Help::find($id);
         $finish_help = null;
         if(Auth::id() == $help->user_id){
-//            if($help->fond_status == 'finished'){
+            if($help->fond_status == 'finished'){
                 $finish_help = FinishedHelp::whereHelpId($help->id)->with(['helpHelpers'=> function($q){
                     $q->with('cashHelpTypes');
                 }, 'helpImages', 'cashHelpTypes', 'fond'])->first();
-//            }
+            }
             return view('backend.cabinet.help.help_page')->with(compact('help', 'finish_help'));
         }
         if($help->admin_status!='finished' and Auth::guard('web')->check()){
