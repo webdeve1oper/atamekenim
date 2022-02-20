@@ -43,6 +43,9 @@
                         </div>
                         <div class="greyInfoBlock mini">
                             <p class="countTag blue">{{trans('cabinet-appl.moder')}} <span>{{$moderateHelps->count()}}</span></p>
+                            <p class="floatRight">
+                                {{ trans('home.cabinet-moderate-notif') }}
+                            </p>
                             @foreach($moderateHelps as $help)
                                 <div class="applicationBlock">
                                     <div class="row">
@@ -140,6 +143,9 @@
                         </div>
                         <div class="greyInfoBlock mini">
                             <p class="countTag blue">{{trans('cabinet-appl.wait-the-benef')}} <span>{{$waitHelps->count()}}</span></p>
+{{--                            <p class="floatRight">--}}
+{{--                                Уважаемый {{Auth::user()->first_name}} {{Auth::user()->patron}}! Портал уведомляет Вас о том, что по заявке найдено Х (количество) фондов, которые могут дать Вам ответ.--}}
+{{--                            </p>--}}
                                 @foreach($waitHelps as $help)
                                     <div class="applicationBlock">
                                     <div class="row">
@@ -301,4 +307,13 @@
         </div>
 
     </div>
+    <style>
+        p.floatRight {
+            display: inline-table;
+            max-width: 60%;
+            vertical-align: middle;
+            margin: 0;
+            text-decoration: underline;
+        }
+    </style>
 @endsection
