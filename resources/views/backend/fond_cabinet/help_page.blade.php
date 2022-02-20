@@ -195,7 +195,7 @@
                         <h6 class=" text-center d-table m-auto">Просим Вас заполнить данные об оказанной помощи для того, чтобы ни одно доброе дело не осталось незамеченным.</h6>
                     </div>
                     <div class="modal-body">
-                        <form action="{{route('finish_help', $help->id)}}" method="post">
+                        <form action="{{route('finish_help', $help->id)}}" method="post"  enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="help_id" value="{{$help->id}}">
                             <div class="form-group mb-3">
@@ -296,7 +296,7 @@
                                         <button class="btn btn-default p-2" type="button" onclick="$(this).parents('.input-group').remove();"><i class="fas fa-times"></i></button>
                                     </div>
                                 </div>
-                                <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();} return false;">+ Добавить еще</button>
+                                <button class="btn btn-default p-2 mt-2" onclick="if($('.photo').length <5){$($(this).prev().clone()).insertBefore(this).find('.input-group-append').show();$(this).prev().find('input').val('');} return false;">+ Добавить еще</button>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Вставьте ссылку на видео процесса оказания помощи (youtube) </label>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\AddHelpType;
 use App\BaseHelpType;
+use App\FinishedHelp;
 use App\Fond;
 use App\Help;
 use App\HelpDoc;
@@ -120,8 +121,14 @@ class CabinetController extends Controller
     public function helpPage($id)
     {
         $help = Help::find($id);
+        $finish_help = null;
         if(Auth::id() == $help->user_id){
-            return view('backend.cabinet.help.help_page')->with(compact('help'));
+//            if($help->fond_status == 'finished'){
+                $finish_help = FinishedHelp::whereHelpId($help->id)->with(['helpHelpers'=> function($q){
+                    $q->with('cashHelpTypes');
+                }, 'helpImages', 'cashHelpTypes', 'fond'])->first();
+//            }
+            return view('backend.cabinet.help.help_page')->with(compact('help', 'finish_help'));
         }
         if($help->admin_status!='finished' and Auth::guard('web')->check()){
             return abort(404);

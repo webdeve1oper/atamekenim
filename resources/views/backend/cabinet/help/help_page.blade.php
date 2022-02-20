@@ -184,6 +184,83 @@
             </div>
             @endif
             @endif
+            @if($finish_help)
+                <style>
+                    .finish_help.greyContent h4{
+                        font-size: 15px;
+                        margin-bottom: 5px;
+                    }
+                </style>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="greyContent finish_help">
+                            @if($finish_help->fond)
+                                <h2>{{$finish_help->fond->title_ru ?? ''}}</h2>
+                            @endif
+
+                            <h4>
+                                дату получения помощи:
+                            </h4>
+                            <p>{{date('d-m-Y', strtotime($finish_help->help_date))}}</p>
+                            <h4>Информация по благотворителям (виды оказанной помоши):</h4>
+                            <p>
+                                @foreach($finish_help->cashHelpTypes as $cashHelpType)
+                                    {{$cashHelpType->name_ru}} @if(!$loop->last), @endif
+                                @endforeach
+                            </p>
+                            <h4>Сумма оказанной благотворительной помощи:</h4>
+                            <p>{{$finish_help->amount}}</p>
+                            @if(count($finish_help->helpHelpers)>0)
+                            <h4>Информация о благотворителях:</h4>
+                                <p>
+                                    @foreach($finish_help->helpHelpers as $help_helpers)
+                                        {{$help_helpers->type == 'fiz' ? 'Физ. лицо': 'Юр.лицо'}},
+                                        @if($help_helpers->anonim==0)
+                                            @if($help_helpers->fio)
+                                               ФИО: {{$help_helpers->fio}},
+                                            @endif
+                                                @if($help_helpers->iin)
+                                                   ИИН: {{$help_helpers->iin}},
+                                                @endif
+                                                @if($help_helpers->bin)
+                                                   БИН: {{$help_helpers->bin}},
+                                                @endif
+                                            @if($help_helpers->title)
+                                            {{$help_helpers->title}},
+                                            @endif
+                                                сумма оказанной благотворительной помощи:  {{$help_helpers->total}}
+
+                                            @if($help_helpers->cashHelpTypes)
+                                                <h5>Помощь которую оказал благотворитель</h5>
+                                                @foreach($help_helpers->cashHelpTypes as $help_cash_help)
+                                                    {{$help_cash_help->name_ru}} @if(!$loop->last), @endif
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            Анонимный благотворитель
+                                        @endif
+                                        <hr>
+                                    @endforeach
+                                </p>
+                            @endif
+                            <h4>Фото процесса оказания помощи:</h4>
+                            @if($finish_help->helpImages)
+                                <div class="col-12">
+                                    <div class="row d-flex">
+                                        @foreach($finish_help->helpImages as $image)
+                                            <div class="col-3">
+                                                <a href="{{$image->photo}}">
+                                                    <img src="{{$image->photo}}" class="img-fluid w-100" style="height: 200px;object-fit: cover;" alt="">
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
     <script src="/js/lightbox.js"></script>

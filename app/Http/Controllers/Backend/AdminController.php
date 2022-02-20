@@ -60,17 +60,23 @@ class AdminController extends Controller
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
 
-    public function showHelpsFromCategory($category){
+    public function showHelpsFromCategory($category, Request $request){
+        $helps = Help::query();
+        if(isset($request->id)){
+            if($request->id != ''){
+                $helps = $helps->whereId($request->id);
+            }
+        }
         if(Auth::user()->role_id <= 2){
             switch ($category) {
                 case 'moderate':
                     $title = 'На модерации';
-                    $helps = Help::where('admin_status', $category)->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->paginate(8);
                     break;
                 case 'health':
                     $title = 'На модерации / Здоровье';
                     try{
-                        $helps = Help::where('helps.admin_status', 'moderate')
+                        $helps = $helps->where('helps.admin_status', 'moderate')
                             ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
                             ->where('help_addhelptypes.add_help_id', '=', 1)->paginate(8);
                     }catch (\Exception $exception){
@@ -79,7 +85,7 @@ class AdminController extends Controller
                 case 'health-moderated':
                     $title = 'Прошли модерацию / Здоровье';
                     try{
-                        $helps = Help::where('helps.admin_status', 'finished')
+                        $helps = $helps->where('helps.admin_status', 'finished')
                             ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
                             ->where('help_addhelptypes.add_help_id', '=', 1)->paginate(8);
                     }catch (\Exception $exception){
@@ -87,23 +93,23 @@ class AdminController extends Controller
                     break;
                 case 'finished':
                     $title = 'В ожидании благотворителя';
-                    $helps = Help::where('admin_status', $category)->where('fond_status', 'wait')->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->where('fond_status', 'wait')->paginate(8);
                     break;
                 case 'fond_process':
                     $title = 'В работе';
-                    $helps = Help::where('fond_status', 'process')->paginate(8);
+                    $helps = $helps->where('fond_status', 'process')->paginate(8);
                     break;
                 case 'cancel':
                     $title = 'Отклонена';
-                    $helps = Help::where('admin_status', $category)->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->paginate(8);
                     break;
                 case 'edit':
                     $title = 'Требует правок';
-                    $helps = Help::where('admin_status', $category)->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->paginate(8);
                     break;
                 case 'fond_finished':
                     $title = 'Исполнена';
-                    $helps = Help::where('fond_status', 'finished')->paginate(8);
+                    $helps = $helps->where('fond_status', 'finished')->paginate(8);
                     break;
             }
             return view('backend.admin.category-helps')->with(compact('helps','title'));

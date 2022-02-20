@@ -2,6 +2,16 @@
 
 @section('content')
     <div class="row">
+        <div class="col-6">
+            <form action="">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="id" placeholder="Поиск по id">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">поиск</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="col-sm-12 mt-2 mb-4">
             <h1>Заявки от получателей помощи : {{ $title }}</h1>
             @include('frontend.alerts')

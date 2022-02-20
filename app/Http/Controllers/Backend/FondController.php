@@ -8,10 +8,12 @@ use App\CashHelpType;
 use App\Destination;
 use App\FinishedHelp;
 use App\FinishedHelpHelper;
+use App\FinishHelpImage;
 use App\Fond;
 use App\FondOffice;
 use App\FondRequisite;
 use App\Help;
+use App\HelpImage;
 use App\History;
 use App\Region;
 use App\Scenario;
@@ -55,14 +57,19 @@ class FondController extends Controller
         if ($request->method() == 'POST') {
             $finishHelp = new FinishedHelp();
             $finishHelp->help_date = date('Y-m-d', strtotime($request->help_date));
+            $finishHelp->fond_id = Auth::guard('fond')->id();
             $finishHelp->help_id = $request->help_id;
             $finishHelp->amount = $request->amount;
             $finishHelp->link = $request->link;
             $finishHelp->save();
+            $is_created = true;
             if ($request->cashHelpType) {
                 $finishHelp->cashHelpTypes()->sync($request->cashHelpType);
             }
             foreach ($request->iin as $i => $item) {
+                if($request->fio[$i] == null && $request->iin[$i] == null && $request->bin[$i] == null && $request->title[$i] == null && $request->total[$i] == null){
+                    continue;
+                }
                 $helper = new FinishedHelpHelper();
                 $helper->finish_help_id = $finishHelp->id;
                 $helper->iin = $request->iin[$i];
@@ -80,6 +87,28 @@ class FondController extends Controller
                     if (array_key_exists($i, $request->cashHelpTypes)) {
                         $helper->cashHelpTypes()->sync($request->cashHelpTypes[$i]);
                     }
+                }
+            }
+            if ($request->hasFile('photo')) {
+                $validator = validator::make($request->all(), [
+                    'photo.*' => 'image|mimes:jpeg,png,jpg|max:1000'
+                ], [
+                    'photo.*.image' => 'Неверный формат фото',
+                    'photo.*.max' => 'Размер фото не должен превышать 2мб',
+                    'photo.*.mimes' => 'Фото должно быть в формате: jpeg,png,jpg'
+                ]);
+                if ($validator->fails()) {
+                    if($is_created){
+                        $finishHelp->delete();
+                    }
+                    return redirect()->back()->with('error', $validator->errors()->getMessages())->withInput();
+                }
+                foreach ($request->file('photo') as $image) {
+                    $filename = microtime() . $finishHelp->id . '.' . $image->getClientOriginalExtension();
+                    $thumbnailImage = \Intervention\Image\Facades\Image::make($image);
+                    $path = '/img/help/' . $filename;
+                    $thumbnailImage->save(public_path() . $path);
+                    FinishHelpImage::create(['finished_help_id' => $finishHelp->id, 'photo' => $path]);
                 }
             }
             $help = Help::find($request->help_id);
