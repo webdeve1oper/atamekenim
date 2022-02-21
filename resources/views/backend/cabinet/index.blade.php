@@ -69,6 +69,12 @@
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                                 <p>{{$help->whoNeedHelp->name_ru}}</p>
+
+                                            @if(!$help->phone)
+                                                <div class="alert alert-danger mt-4">
+                                                    {{ trans('home.input-phone') }}
+                                                </div>
+                                            @endif
                                             @if($help->admin_status == 'edit')
                                                 <div class="alert alert-info mt-4">
                                                     Ваша заявка не прошла модерацию! Статус - на доработке
@@ -169,6 +175,11 @@
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @if(!$help->phone)
+                                                <div class="alert alert-danger mt-4">
+                                                    {{ trans('home.input-phone') }}
+                                                </div>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
