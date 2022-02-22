@@ -220,7 +220,7 @@ class FondController extends Controller
                     if ($fondsByPoint['points'] > 0) {
                         $coincidence = round($fondsByPoint['points'] / $fondsByPoints[0]['points'] * 100);
                     }
-                    if ($coincidence < 45) {
+                    if ($coincidence < 5) {
                         continue;
                     }
                     $fondsids[] = [
