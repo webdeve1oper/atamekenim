@@ -286,13 +286,16 @@ class FondController extends Controller
                 });
             }
 
-            if ($request->exists('city')) {
-                $destination = $request->city;
-                $fonds->whereIn('help_location_city', $destination);
-            }
-            if ($request->exists('regions')) {
-                $destination = $request->regions;
-                $fonds->whereIn('help_location_region', $destination);
+//            if ($request->exists('city')) {
+//                $destination = $request->city;
+//                $fonds->whereIn('help_location_city', $destination);
+//            }
+            if ($request->exists('regions')){
+                $regions = $request->regions;
+//                $fonds->whereIn('help_location_region', $destination);
+                $fonds->whereHas('regions', function ($query) use ($regions) {
+                    $query->whereIn('fond_regions.region_id', $regions);
+                });
             }
 
             if ($request->exists('cashHelpType')) {

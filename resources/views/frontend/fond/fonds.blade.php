@@ -117,15 +117,15 @@
                                     <p class="categoryName" onclick="$(this).parents('.siteBarList').toggleClass('active')">{{trans('fonds.regions')}} <i class="fas fa-chevron-down"></i></p>
                                     <div class="listBlock">
                                         {{--<p class="grey">Выберите один или несколько</p>--}}
-                                        @foreach($cities as $id => $city)
-                                            <div class="content">
-                                                <input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}">
-                                                <label for="city{{$id}}">{{$city}}</label>
-                                            </div>
-                                        @endforeach
+{{--                                        @foreach($cities as $id => $city)--}}
+{{--                                            <div class="content">--}}
+{{--                                                <input type="checkbox" name="city[]" id="city{{$id}}" value="{{$id}}">--}}
+{{--                                                <label for="city{{$id}}">{{$city}}</label>--}}
+{{--                                            </div>--}}
+{{--                                        @endforeach--}}
                                         @foreach($regions as $id => $city)
                                             <div class="content">
-                                                <input type="checkbox" name="regions[]" id="regions{{$city['region_id']}}" value="{{$id}}">
+                                                <input type="checkbox" name="regions[]" id="regions{{$city['region_id']}}" value="{{$city['region_id']}}">
                                                 <label for="regions{{$city['region_id']}}">{{$city['title_'.app()->getLocale()]}}</label>
                                             </div>
                                         @endforeach
