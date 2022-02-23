@@ -23,28 +23,43 @@ class AdminController extends Controller
     }
 
     public function showHelps(){
-        if(Auth::user()->role_id <= 2){
-            $helps1 = Help::where('admin_status','moderate')->count();
-            $helps2 = Help::where('admin_status','finished')->where('fond_status', 'wait')->count();
-            $helps3 = Help::where('fond_status','process')->count();
-            $helps4 = Help::where('admin_status','cancel')->count();
-            $helps5 = Help::where('admin_status','edit')->count();
-            $helps6 = Help::where('fond_status','finished')->count();
-            $helps7 = '';
-            $helps8 = '';
-            try{
-                $helps7 = Help::where('helps.admin_status', 'moderate')
-                    ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
-                    ->where('help_addhelptypes.add_help_id', '=', 1)->count();
-            }catch (\Exception $exception){
+        $helps1 = null;
+        $helps2 = null;
+        $helps3 = null;
+        $helps4 = null;
+        $helps5 = null;
+        $helps6 = null;
+        $helps7 = null;
+        $helps8 = null;
+        $helps9 = null;
+        $helps10 = null;
+        if(in_array(Auth::user()->role_id, [1,2,3])){
+            if(is_operator() or is_admin()){
+                $helps1 = Help::where('admin_status','moderate')->count();
+                $helps2 = Help::where('admin_status','finished')->where('fond_status', 'wait')->count();
+                $helps3 = Help::where('fond_status','process')->count();
+                $helps4 = Help::where('admin_status','cancel')->count();
+                $helps5 = Help::where('admin_status','edit')->count();
+                $helps6 = Help::where('fond_status','finished')->count();
+                try{
+                    $helps7 = Help::where('helps.admin_status', 'moderate')
+                        ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
+                        ->where('help_addhelptypes.add_help_id', '=', 1)->count();
+                }catch (\Exception $exception){
+                }
+                try{
+                    $helps8 = Help::where('helps.admin_status', 'finished')
+                        ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
+                        ->where('help_addhelptypes.add_help_id', '=', 1)->count();
+                }catch (\Exception $exception){
+                }
             }
-            try{
-                $helps8 = Help::where('helps.admin_status', 'finished')
-                    ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
-                    ->where('help_addhelptypes.add_help_id', '=', 1)->count();
-            }catch (\Exception $exception){
+            if (is_moderator() or is_admin()){
+                $helps9 = Help::getPossibleKHhelps()->count();
+                $helps10 = Help::getApprovedKHhelps()->count();
             }
-            return view('backend.admin.helps')->with(compact('helps1','helps2','helps3','helps4','helps5','helps6','helps7','helps8'));
+
+            return view('backend.admin.helps')->with(compact('helps1','helps2','helps3','helps4','helps5','helps6','helps7','helps8', 'helps9', 'helps10'));
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
@@ -213,6 +228,21 @@ class AdminController extends Controller
                 $new_history->desc = $request->get('whycancel');
                 $help->admin_status = $status_name;
             }
+
+            //if possible kh
+            if($status_name == 'kh'){
+                $help->admin_status = $status_name;
+                $help->fond_status = 'moderate';
+                $help->status_kh = Help::STATUS_KH_POSSIBLY;
+            }
+
+            //if possible kh
+            if($status_name == 'kh_approved'){
+                $help->admin_status = $status_name;
+                $help->fond_status = 'wait';
+                $help->status_kh = Help::STATUS_KH_APPROVED;
+            }
+
             $new_history->admin_id = Auth::user()->id;
             $new_history->help_id = $help->id;
             $new_history->status = $status_name;

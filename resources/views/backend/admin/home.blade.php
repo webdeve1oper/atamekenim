@@ -6,7 +6,7 @@
             <h1>Добро пожаловать {{ Auth::user()->name }}</h1>
             @include('frontend.alerts')
         </div>
-        @if(Auth::user()->role_id == 1)
+        @if(is_admin())
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
                     <a href="{{ route('admins') }}">Пользователи</a>
@@ -27,22 +27,19 @@
                     <a href="{{ route('admin_news') }}">Новости</a>
                 </div>
             </div>
-        @elseif(Auth::user()->role_id == 2)
+        @elseif(is_operator() or is_moderator())
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
                     <a href="{{ route('admin_helps') }}">Заявки от получателей помощи</a>
                 </div>
             </div>
+        @if(is_operator())
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
                     <a href="{{ route('admin_fonds') }}">Заявки от благотворительных организаций</a>
                 </div>
             </div>
-            <div class="col-sm">
-                <div class="col border-info border p-5 text-center">
-                    <a href="{{ route('admin_news') }}">Новости</a>
-                </div>
-            </div>
+            @endif
         @endif
 
     </div>
