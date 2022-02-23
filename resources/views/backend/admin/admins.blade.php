@@ -6,6 +6,9 @@
             <h1>Админы</h1>
             @include('frontend.alerts')
         </div>
+        <div class="col-sm-12" style="text-align: right">
+            <a href="{{ route('admin_create') }}">Добавить специалиста</a>
+        </div>
         <div class="col-sm-12">
             <table class="table">
                 <thead class="thead-dark">

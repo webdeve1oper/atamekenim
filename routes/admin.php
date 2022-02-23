@@ -10,6 +10,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
     Route::get('admins/{id}/edit', 'Backend\AdminUserController@edit')->name('admins_edit');
     Route::post('admins/{id}/update', 'Backend\AdminUserController@update')->name('admins_update');
     Route::post('admins/{id}/destroy', 'Backend\AdminUserController@destroy')->name('admins_delete');
+    Route::match(['get','post'], '/create', 'Backend\AdminUserController@create')->name('admin_create');
     Route::get('/admin-fonds', 'Backend\AdminController@showFonds')->name('admin_fonds');
     Route::get('/admin-helps/{category}', 'Backend\AdminController@showHelpsFromCategory')->name('admin_helps_category');
     Route::get('/admin-fonds/{category}', 'Backend\AdminController@showFondsFromCategory')->name('admin_fonds_category');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Help;
 use App\History;
 use App\Admin;
@@ -31,9 +32,24 @@ class AdminUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+    public function create(Request $request)
     {
-        //
+        if(Auth::user()->role_id == 1){
+            if ($request->method() == 'POST') {
+                $new_admin = new Admin;
+                $new_admin->name = $request->name;
+                $new_admin->email = $request->email;
+                $new_admin->role_id = $request->role_id;
+                $new_admin->password = Hash::make($request->password);
+                $new_admin->save();
+                return redirect()->route('admins')->with('success','Специалист добавлен!');
+            } elseif ($request->method() == 'GET') {
+                $roles = Role::all();
+                return view('backend.admin.create-page')->with(compact('roles'));
+            }
+        }
+        return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
 
     /**
@@ -88,7 +104,14 @@ class AdminUserController extends Controller
     public function update(Request $request, $id)
     {
         if(Auth::user()->role_id == 1){
-            Admin::whereId($id)->update($request->except(['_token']));
+            $get_user = Admin::whereId($id)->first();
+            $get_user->name = $request->name;
+            $get_user->email = $request->email;
+            $get_user->role_id = $request->role_id;
+            if($request->password){
+                $get_user->password = Hash::make($request->password);
+            }
+            $get_user->save();
             return redirect()->back()->with('success','Данные обновлены!');
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');

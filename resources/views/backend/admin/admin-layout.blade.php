@@ -17,7 +17,11 @@
                 </div>
                 <div class="form-check py-3 px-0 mb-4">
                     <label >E-mail пользователя</label>
-                        <input class="form-control" name="email" placeholder="Имя" value="{{ $admin->email }}">
+                        <input class="form-control" name="email" placeholder="Email" value="{{ $admin->email }}">
+                </div>
+                <div class="form-check py-3 px-0">
+                    <label >Пароль</label>
+                    <input class="form-control" name="password" placeholder="Пароль">
                 </div>
                 <span>На данный момент роль пользователя - </span><span class="badge bg-info mb-2">{{ $admin->role->name_ru }}</span>
                 <div class="form-floating mt-2">
