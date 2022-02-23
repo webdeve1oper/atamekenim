@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Help extends Model
 {
-    //
+    //KH STATUSES
+    const STATUS_POSSIBLY = 'possible';//возможно подходит кх
+    const STATUS_APPROVED = 'approved'; // одобрено для кх
+    const STATUS_NOT_APPROVED = 'not_approved'; // не одобрено
+
     protected $table = 'helps';
     protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'district_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id', 'admin_status', 'fond_status', 'video', 'statuses', 'phone', 'email'];
 
@@ -98,6 +102,11 @@ class Help extends Model
     public function comments()
     {
         return $this->hasMany(History::class, 'help_id', 'id')->orderBy('created_at', 'desc');
+    }
+
+    public function getKHhelps()
+    {
+        return $this->where('status_kh', self::STATUS_POSSIBLY);
     }
 
 }
