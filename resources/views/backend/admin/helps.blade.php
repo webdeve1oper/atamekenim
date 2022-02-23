@@ -6,62 +6,87 @@
             <h1>Заявки от получателей помощи</h1>
             @include('frontend.alerts')
         </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','moderate') }}">
-                    <span>На модерации <b>Кол-во: {{ $helps1 }}</b></span>
-                </a>
+        @if($helps9)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','moderate') }}">
+                        <span>На модерации <b>Кол-во: {{ $helps1 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','health') }}">
-                    <span>На модерации / Здоровье <b>Кол-во: {{ $helps7 }}</b></span>
-                </a>
+        @endif
+        @if($helps1)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','moderate') }}">
+                        <span>На модерации <b>Кол-во: {{ $helps1 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','health-moderated') }}">
-                    <span>Прошли модерацию / Здоровье <b>Кол-во: {{ $helps8 }}</b></span>
-                </a>
+        @endif
+        @if($helps7)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','health') }}">
+                        <span>На модерации / Здоровье <b>Кол-во: {{ $helps7 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','finished') }}">
-                    <span>В ожидании благотворителя <b>Кол-во: {{ $helps2 }}</b></span>
-                </a>
+        @endif
+        @if($helps8)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','health-moderated') }}">
+                        <span>Прошли модерацию / Здоровье <b>Кол-во: {{ $helps8 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','fond_process') }}">
-                    <span>В работе <b>Кол-во: {{ $helps3 }}</b></span>
-                </a>
+        @endif
+        @if($helps2)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','finished') }}">
+                        <span>В ожидании благотворителя <b>Кол-во: {{ $helps2 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','cancel') }}">
-                    <span>Отклонена <b>Кол-во: {{ $helps4 }}</b></span>
-                </a>
+        @endif
+        @if($helps3)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','fond_process') }}">
+                        <span>В работе <b>Кол-во: {{ $helps3 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','edit') }}">
-                    <span>Требует правок <b>Кол-во: {{ $helps5 }}</b></span>
-                </a>
+        @endif
+        @if($helps4)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','cancel') }}">
+                        <span>Отклонена <b>Кол-во: {{ $helps4 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="categoryBlock">
-                <a href="{{ route('admin_helps_category','fond_finished') }}">
-                    <span>Исполнена <b>Кол-во: {{ $helps6 }}</b></span>
-                </a>
+        @endif
+        @if($helps5)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','edit') }}">
+                        <span>Требует правок <b>Кол-во: {{ $helps5 }}</b></span>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
+        @if($helps6)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','fond_finished') }}">
+                        <span>Исполнена <b>Кол-во: {{ $helps6 }}</b></span>
+                    </a>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection
 <style>
@@ -94,6 +119,7 @@
     .categoryBlock:hover {
         box-shadow: 0 5px 13px #b5f3ff;
     }
+
     .categoryBlock a span b {
         display: table;
         font-weight: 300;

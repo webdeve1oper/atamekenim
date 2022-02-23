@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Help extends Model
 {
     //KH STATUSES
-    const STATUS_POSSIBLY = 'possible';//возможно подходит кх
-    const STATUS_APPROVED = 'approved'; // одобрено для кх
-    const STATUS_NOT_APPROVED = 'not_approved'; // не одобрено
+    const STATUS_KH_POSSIBLY = 'possible';//возможно подходит кх
+    const STATUS_KH_APPROVED = 'approved'; // одобрено для кх
+    const STATUS_KH_NOT_APPROVED = 'not_approved'; // не одобрено
+
+    // fond_status
+    const MODERATE = 'moderate'; // фонд не видит заявки
+    const WAIT = 'wait'; // фонд видит/может взять в работу
+    const PROCESS = 'process'; // заявка в работе у фонда
+    const FINISHED = 'finished'; // заявка завершена
 
     protected $table = 'helps';
-    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'district_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id', 'admin_status', 'fond_status', 'video', 'statuses', 'phone', 'email'];
+    protected $fillable = ['who_need_help', 'body', 'user_id', 'review_id', 'region_id', 'district_id', 'city_id', 'status', 'urgency_date', 'cash_help_size_id', 'admin_status', 'fond_status', 'video', 'statuses', 'phone', 'email','status_kh'];
 
     public function user()
     {
@@ -104,9 +110,14 @@ class Help extends Model
         return $this->hasMany(History::class, 'help_id', 'id')->orderBy('created_at', 'desc');
     }
 
-    public function getKHhelps()
+    public static function getPossibleKHhelps()
     {
-        return $this->where('status_kh', self::STATUS_POSSIBLY);
+        return self::where('status_kh', self::STATUS_KH_POSSIBLY);
+    }
+
+    public static function getApprovedKHhelps()
+    {
+        return self::where('status_kh', self::STATUS_KH_APPROVED);
     }
 
 }

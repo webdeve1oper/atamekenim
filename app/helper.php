@@ -74,3 +74,29 @@ if(!function_exists('hideText')){
         return preg_replace($search,$replace,$string);
     }
 }
+
+if(!function_exists('is_operator')){
+    function is_operator(){
+        if(\Illuminate\Support\Facades\Auth::user()->role_id == 2){
+            return true;
+        }
+        return false;
+    }
+}
+
+if(!function_exists('is_admin')){
+    function is_admin(){
+        if(\Illuminate\Support\Facades\Auth::user()->role_id == 1){
+            return true;
+        }
+        return false;
+    }
+}
+if(!function_exists('is_moderator')){
+    function is_moderator(){
+        if(\Illuminate\Support\Facades\Auth::user()->role_id == 3){
+            return true;
+        }
+        return false;
+    }
+}
