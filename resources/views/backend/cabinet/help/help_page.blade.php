@@ -71,7 +71,9 @@
                             @endif
                             <div class="helpEditBlock">
                                 @if($help->admin_status == 'edit' || $help->admin_status == 'moderate' || $help->admin_status == 'wait' || $help->fond_status == 'edit' || $help->fond_status == 'moderate' || $help->fond_status == 'wait')
-                                <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
+                                    @if($help->admin_status != 'cancel' && $help->fond_status != 'cancel')
+                                        <a href="{{ route('cabinet_edit_page',$help->id) }}" class="btn btn-info mb-4">Редактировать заявку</a>
+                                    @endif
                                 @endif
                                 @if($help->admin_status == 'cancel' || $help->fond_status == 'cancel')
                                         <div class="alert alert-danger">
