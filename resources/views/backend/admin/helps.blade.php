@@ -10,7 +10,16 @@
             <div class="col-sm-3">
                 <div class="categoryBlock">
                     <a href="{{ route('admin_helps_category','moderate') }}">
-                        <span>На модерации <b>Кол-во: {{ $helps1 }}</b></span>
+                        <span>На модерации <b>Кол-во: {{ $helps9 }}</b></span>
+                    </a>
+                </div>
+            </div>
+        @endif
+        @if($helps10)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','finished') }}">
+                        <span>В ожидании благотворителя <b>Кол-во: {{ $helps10 }}</b></span>
                     </a>
                 </div>
             </div>

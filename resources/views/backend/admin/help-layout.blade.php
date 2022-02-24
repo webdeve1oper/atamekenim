@@ -3,20 +3,38 @@
 @section('content')
     <div class="row">
         @include('frontend.alerts')
-        <div class="col-sm-6 mt-2 mb-2">
+        <div class="col-sm-5 mt-2 mb-2">
             <h1>Обращение: ID{{ getHelpId($help->id) }}</h1>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             @if($help->admin_status == 'moderate' or $help->admin_status == 'edit')
                 <ul class="controlButton">
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (Фондам)</button>
                     </li>
                     <li>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
                     </li>
                     <li>
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Одобрить (Возможно КХ)</button>
+                    </li>
+                </ul>
+            @elseif($help->admin_status == 'finished' or $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
+                <ul class="controlButton">
+                    <li>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (без КХ)</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрить (с КХ)</button>
                     </li>
                 </ul>
             @else

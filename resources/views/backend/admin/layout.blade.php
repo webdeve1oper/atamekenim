@@ -30,7 +30,7 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar mt-3">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                    @if(Auth::user()->role_id == 1)
+                    @if(is_admin())
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route('admins') }}">
                                 Пользователи
@@ -51,22 +51,19 @@
                                 Новости
                             </a>
                         </li>
-                    @elseif(Auth::user()->role_id == 2)
+                    @elseif(is_operator() or is_moderator())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin_helps') }}">
                                 Заявки от получателей помощи
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin_fonds') }}">
-                                Заявки от благотворительных организаций
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin_news') }}">
-                                Новости
-                            </a>
-                        </li>
+                        @if(is_operator())
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin_fonds') }}">
+                                    Заявки от благотворительных организаций
+                                </a>
+                            </li>
+                        @endif
                     @endif
                 </ul>
             </div>
