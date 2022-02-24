@@ -77,7 +77,7 @@
                                             @endif
                                             @if($help->admin_status == 'edit')
                                                 <div class="alert alert-info mt-4">
-                                                    Ваша заявка не прошла модерацию! Статус - на доработке
+                                                    {{ trans('home.cabinet-edit-moderate-notif') }}
                                                 </div>
                                             @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
@@ -180,6 +180,11 @@
                                                     {{ trans('home.input-phone') }}
                                                 </div>
                                             @endif
+                                            @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED)
+                                                <div class="alert alert-danger mt-4 d-none">
+                                                    {{ trans('home.without-kh') }}
+                                                </div>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
@@ -221,6 +226,9 @@
                         </div>
                         <div class="greyInfoBlock mini">
                             <p class="countTag red">Отклоненные <span>{{$cancledHelps->count()}}</span></p>
+                            <p class="floatRight">
+                                {{ trans('home.cabinet-cancel-notif') }}
+                            </p>
                             @foreach($cancledHelps as $help)
                                 <div class="applicationBlock">
                                     <div class="row">

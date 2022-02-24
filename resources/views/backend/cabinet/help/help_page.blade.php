@@ -165,20 +165,24 @@
                     @if($comments)
                         @foreach($comments as $comment)
                             @if($comment->admin_id)
-                                <div class="card mb-3" style="border: 1px solid #cfcfff;">
-                                    <div class="card-header" style="background: #f9f9ff;">Администратор</div>
-                                    <div class="card-body">
-                                        <p>{{$comment->desc}}</p>
+                                @if($comment->desc)
+                                    <div class="card mb-3" style="border: 1px solid #cfcfff;">
+                                        <div class="card-header" style="background: #f9f9ff;">Администратор</div>
+                                        <div class="card-body">
+                                            <p>{{$comment->desc}}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
                             @if($comment->fond_id)
-                                <div class="card mb-3" style="border: 1px solid #cfcfff;">
-                                    <div class="card-header" style="background: #f9f9ff;">Фонд: {{$comment->fond->title_ru}}</div>
-                                    <div class="card-body">
-                                        <p>{{$comment->desc}}</p>
-                                    </div>
-                                </div>
+                                    @if($comment->desc)
+                                            <div class="card mb-3" style="border: 1px solid #cfcfff;">
+                                                <div class="card-header" style="background: #f9f9ff;">Фонд: {{$comment->fond->title_ru}}</div>
+                                                <div class="card-body">
+                                                    <p>{{$comment->desc}}</p>
+                                                </div>
+                                            </div>
+                                    @endif
                             @endif
                         @endforeach
                     @endif

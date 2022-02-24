@@ -10,7 +10,7 @@
             @if(is_operator() && $help->admin_status == 'moderate' or is_operator() && $help->admin_status == 'edit' or is_admin() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'edit')
                 <ul class="controlButton">
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (Фондам)</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>
                     </li>
                     <li>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
@@ -19,13 +19,13 @@
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Одобрить (Возможно КХ)</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Отправить модератору КХ</button>
                     </li>
                 </ul>
             @elseif(is_moderator() && $help->admin_status == 'finished' && $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
                 <ul class="controlButton">
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (без КХ)</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>
                     </li>
                     <li>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
@@ -34,7 +34,7 @@
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрить (с КХ)</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрить</button>
                     </li>
                 </ul>
             @else
@@ -137,10 +137,10 @@
                                 <div class="form-check my-3 border-bottom pb-3">
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="finished" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        Одобрить запрос
+                                        Направляется всем фондам, кроме фонда “Қазақстан Халқына”
                                     </label>
                                 </div>
-                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить и отправить фондам</button>
                             </form>
                         </div>
                     </div>
@@ -161,10 +161,10 @@
                                 <div class="form-check my-3 border-bottom pb-3">
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="kh" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        Одобрить запрос возможно КХ
+                                        Направляется на рассмотрение модераторам “Қазақстан Халқына”
                                     </label>
                                 </div>
-                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Отправить модератору КХ</button>
                             </form>
                         </div>
                     </div>
@@ -185,10 +185,10 @@
                                 <div class="form-check my-3 border-bottom pb-3">
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="kh_approved" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        Одобрить запрос с поддержкой КХ
+                                        Направляется на рассмотрение фондам
                                     </label>
                                 </div>
-                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить</button>
                             </form>
                         </div>
                     </div>
@@ -209,13 +209,23 @@
                                 <div class="form-check my-3 border-bottom pb-3">
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault2" value="edit" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault2">
-                                        Отправить на доработку (необходимо написать причину***)
+                                        Отправить на доработку
                                     </label>
-
+                                    <!--select-->
+                                    <div class="form-floating mt-2">
+                                        <select class="form-select" id="floatingSelect" aria-label="Причина доработок?" name="whyedit">
+                                            <option disabled selected>Выбрать причину:</option>
+                                            <option value="Дубликат заявки">Доработка контактные данные</option>
+                                            <option value="Доработка документы">Доработка документы</option>
+                                            <option value="Доработка описание">Доработка описание</option>
+                                            <option value="Иное">Иное</option>
+                                        </select>
+                                        <label for="floatingSelect">Причина отклонения?</label>
+                                    </div>
                                     <!--editor-->
                                     <div class="form-floating mt-2">
-                                        <textarea class="form-control" name="whyfordesc" placeholder="Причина отправки запроса на доработку?" id="floatingTextarea"></textarea>
-                                        <label for="floatingTextarea">Причина?</label>
+                                        <textarea class="form-control" name="comment_edit" placeholder="Комментарий" id="floatingTextarea"></textarea>
+                                        <label for="floatingTextarea">Комментарий?</label>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-4 mx-auto d-table">Отправить на доработку</button>
@@ -240,18 +250,21 @@
                                 <div class="form-check my-3">
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault3" value="cancel" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault3">
-                                        Отклонить запрос (необходимо выбрать причину***)
+                                        Отклонить запрос
                                     </label>
 
                                     <!--select-->
                                     <div class="form-floating mt-2">
-                                        <select class="form-select" id="floatingSelect" aria-label="Причина отклонения запроса?" name="whycancel">
+                                        <select class="form-select" id="floatingSelect" aria-label="Причина отклонения?" name="whycancel">
                                             <option disabled selected>Выбрать причину:</option>
-                                            <option value="Нельзя">Нельзя</option>
-                                            <option value="Потому что">Потому что</option>
-                                            <option value="Документы">Документы</option>
+                                            <option value="Дубликат заявки">Дубликат заявки</option>
+                                            <option value="Иное">Иное</option>
                                         </select>
-                                        <label for="floatingSelect">Причина отклонения запроса?</label>
+                                        <label for="floatingSelect">Причина отклонения?</label>
+                                    </div>
+                                    <div class="form-floating mt-2">
+                                        <textarea class="form-control" name="comment_cancel" placeholder="Комментарий" id="floatingTextarea"></textarea>
+                                        <label for="floatingTextarea">Комментарий</label>
                                     </div>
                                 </div>
 
