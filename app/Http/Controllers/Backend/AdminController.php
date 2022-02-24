@@ -248,15 +248,14 @@ class AdminController extends Controller
             // if edit
             if($status_name == 'edit'){
                 $validator = Validator::make($request->all(),[
-                    'whyfordesc' => 'required|min:5',
+                    'whyedit' => 'required',
                 ], [
-                    'whyfordesc.required'=>'Не указана причина отправки запроса на доработку!',
-                    'whyfordesc.min'=>'Не указана причина отправки запроса на доработку!',
+                    'whyedit.required'=>'Не указана причина отправки запроса на доработку!',
                 ]);
                 if($validator->fails()){
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-                $new_history->desc = $request->get('whyfordesc');
+                $new_history->desc = $request->get('whyedit').', '.$request->get('comment_edit');
                 $help->admin_status = $status_name;
             }
 
@@ -271,7 +270,7 @@ class AdminController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $new_history->desc = $request->get('whycancel');
+                $new_history->desc = $request->get('whycancel').', '.$request->get('comment_cancel');
                 $help->admin_status = $status_name;
             }
 
