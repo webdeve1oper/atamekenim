@@ -132,7 +132,7 @@ class AdminController extends Controller
             switch ($category) {
                 case 'moderate':
                     $title = 'На модерации';
-                    $helps = $helps->where('status_kh',Help::STATUS_KH_POSSIBLY)->paginate(8);
+                    $helps = $helps->where('admin_status','finished')->where('status_kh',Help::STATUS_KH_POSSIBLY)->paginate(8);
                     break;
                 case 'health':
                     $title = 'На модерации / Здоровье';
@@ -154,7 +154,7 @@ class AdminController extends Controller
                     break;
                 case 'finished':
                     $title = 'В ожидании благотворителя';
-                    $helps = $helps->where('admin_status', $category)->where('fond_status', 'wait')->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->where('fond_status', 'wait')->where('status_kh',Help::STATUS_KH_APPROVED)->paginate(8);
                     break;
                 case 'fond_process':
                     $title = 'В работе';
@@ -224,7 +224,7 @@ class AdminController extends Controller
     }
 
     public function editHelpStatus(Request $request){
-        if(Auth::user()->role_id <= 2){
+        if(Auth::user()->role_id <= 3){
             $validator = Validator::make($request->all(),[
                 'status_name' => 'required',
             ], [

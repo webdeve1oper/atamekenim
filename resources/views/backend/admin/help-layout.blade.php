@@ -7,7 +7,7 @@
             <h1>Обращение: ID{{ getHelpId($help->id) }}</h1>
         </div>
         <div class="col-sm-7">
-            @if($help->admin_status == 'moderate' or $help->admin_status == 'edit')
+            @if(is_operator() && $help->admin_status == 'moderate' or is_operator() && $help->admin_status == 'edit' or is_admin() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'edit')
                 <ul class="controlButton">
                     <li>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (Фондам)</button>
@@ -19,10 +19,10 @@
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
-                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Одобрить (Возможно КХ)</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Одобрить (Возможно КХ)</button>
                     </li>
                 </ul>
-            @elseif($help->admin_status == 'finished' or $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
+            @elseif(is_moderator() && $help->admin_status == 'finished' && $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
                 <ul class="controlButton">
                     <li>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить (без КХ)</button>
@@ -39,7 +39,8 @@
                 </ul>
             @else
                 <div class="alert alert-info" role="alert">
-                    Статус указанный админом - <strong>{{ $help->admin_status }}</strong>
+                    Статус указанный оператора - <strong>{{ $help->admin_status }}</strong><br>
+                    Статус указанный модератор КХ - <strong>{{ $help->status_kh }}</strong>
                 </div>
             @endif
         </div>
@@ -137,6 +138,54 @@
                                     <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="finished" checked="checked">
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         Одобрить запрос
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Одобрить запрос Возможно КХ -->
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Одобрить запрос {{ $help->id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('edit_help_status') }}" method="post">
+                                @csrf
+                                <input type="text" name="help_id" class="d-none" value="{{ $help->id }}">
+                                <div class="form-check my-3 border-bottom pb-3">
+                                    <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="kh" checked="checked">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Одобрить запрос возможно КХ
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Одобрить запрос железно с КХ от КХ -->
+            <div class="modal fade" id="exampleModal5" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Одобрить запрос {{ $help->id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('edit_help_status') }}" method="post">
+                                @csrf
+                                <input type="text" name="help_id" class="d-none" value="{{ $help->id }}">
+                                <div class="form-check my-3 border-bottom pb-3">
+                                    <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="kh_approved" checked="checked">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Одобрить запрос с поддержкой КХ
                                     </label>
                                 </div>
                                 <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить запрос</button>
