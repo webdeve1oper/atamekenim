@@ -73,6 +73,15 @@
                                                 {{--@csrf--}}
                                                 {{--<button class="btn-default blue">{{trans('fond-cab.take-work')}}</button>--}}
                                             {{--</form>--}}
+                                            @if($help->status_kh == 'approved')
+                                                <div class="alert alert-info mt-4">
+                                                    @if(lang() == 'kz')
+                                                        Өтінім"Қазақстан халқына" қорының басым бағыттарына сәйкес келеді
+                                                    @else
+                                                        Заявка подходит под приоритетные направления “Қазақстан халқына”
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -119,6 +128,15 @@
                                                 {{--@csrf--}}
                                                 {{--<button class="btn-default blue">{{trans('fond-cab.well-done')}}</button>--}}
                                             {{--</form>--}}
+                                            @if($help->status_kh == 'approved')
+                                                <div class="alert alert-info mt-4">
+                                                    @if(lang() == 'kz')
+                                                        Өтінім"Қазақстан халқына" қорының басым бағыттарына сәйкес келеді
+                                                    @else
+                                                        Заявка подходит под приоритетные направления “Қазақстан халқына”
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -163,6 +181,15 @@
                                             <p class="name center">{{trans('fond-cab.status')}}</p>
                                             <a href="{{ route('fond_help_page',$process->id) }}" class="btn-default">{{trans('fond-cab.hr')}}</a>
                                             <p class="tags default mini green">{{trans('fond-cab.done')}} {{\Carbon\Carbon::parse($process->date_fond_finish)->format('d.m.Y')}}</p>
+                                            @if($help->status_kh == 'approved')
+                                                <div class="alert alert-info mt-4">
+                                                    @if(lang() == 'kz')
+                                                        Өтінім"Қазақстан халқына" қорының басым бағыттарына сәйкес келеді
+                                                    @else
+                                                        Заявка подходит под приоритетные направления “Қазақстан халқына”
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
