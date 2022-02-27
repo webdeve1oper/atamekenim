@@ -243,6 +243,7 @@ class AdminController extends Controller
             if($status_name == 'finished'){
                 $help->admin_status = $status_name;
                 $help->fond_status = 'wait';
+                $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
             }
 
             // if edit
@@ -257,6 +258,7 @@ class AdminController extends Controller
                 }
                 $new_history->desc = $request->get('whyedit').', '.$request->get('comment_edit');
                 $help->admin_status = $status_name;
+                $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
             }
 
             // if cancel
@@ -272,6 +274,7 @@ class AdminController extends Controller
 
                 $new_history->desc = $request->get('whycancel').', '.$request->get('comment_cancel');
                 $help->admin_status = $status_name;
+                $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
             }
 
             //if possible kh

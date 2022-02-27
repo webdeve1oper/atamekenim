@@ -154,8 +154,9 @@
         var datas2 = [];
         $('#baseHelpTypes').empty();
         datas2.push({id: '0', text: ''});
+        var disabledItems = [7,9,10,14,5,6];
         for (let [key, value] of Object.entries(scenarios[scenario_index].add_help_types)) {
-            if(value.id != 7){
+            if(!disabledItems.includes(value.id)){
                 datas2.push({id: value.id, text: value.name_ru + ' ('+value.description_ru+')'});
             }
         }

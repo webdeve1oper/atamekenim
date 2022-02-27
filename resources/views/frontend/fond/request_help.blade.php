@@ -76,11 +76,15 @@
                                         <select name="who_need_help" id="who_need_help" class="form-control">
                                             @if($help)
                                                 @foreach($scenarios as $value => $scenario)
-                                                    <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                    @if($scenario['id'] != 6)
+                                                        <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                    @endif
                                                 @endforeach
                                             @else
                                                 @foreach($scenarios as $value => $scenario)
-                                                    <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                    @if($scenario['id'] != 6)
+                                                        <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                    @endif
                                                 @endforeach
                                             @endif
 
