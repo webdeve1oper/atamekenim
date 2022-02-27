@@ -181,9 +181,11 @@
                                                 </div>
                                             @endif
                                             @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED)
-                                                <div class="alert alert-danger mt-4 d-none">
-                                                    {{ trans('home.without-kh') }}
-                                                </div>
+                                                @if($help->id > 31205)
+                                                    <div class="alert alert-danger mt-4">
+                                                        {{ trans('home.without-kh') }}
+                                                    </div>
+                                                @endif
                                             @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
