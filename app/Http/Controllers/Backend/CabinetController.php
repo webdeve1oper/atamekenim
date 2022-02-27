@@ -39,7 +39,7 @@ class CabinetController extends Controller
         $waitHelps = Auth::user()->helpsByStatus('wait')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
         $finishedHelps = Auth::user()->helpsByStatus('finished')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
         $processHelps =  Auth::user()->helpsByStatus('process')->where('admin_status', '!=','cancel')->with('fonds')->with('reviews')->get();
-        $cancledHelps =  Auth::user()->canceledHelps()->get();
+        $cancledHelps =  Auth::user()->helps()->where('admin_status', 'cancel')->get();
         return view('backend.cabinet.index')->with(compact('waitHelps', 'finishedHelps', 'processHelps', 'moderateHelps', 'cancledHelps'));
     }
 
