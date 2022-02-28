@@ -34,7 +34,7 @@
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрить</button>
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрено от КХ</button>
                     </li>
                 </ul>
             @else
@@ -188,7 +188,7 @@
                                         Направляется на рассмотрение фондам
                                     </label>
                                 </div>
-                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить</button>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрено от КХ</button>
                             </form>
                         </div>
                     </div>
