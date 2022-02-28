@@ -18,8 +18,8 @@
         </div>
             @foreach($helps as $item)
                 <div class="col-6">
-                    <div class="card my-3">
-                        <div class="card-header">
+                    <div class="card my-3" >
+                        <div class="card-header" @if($item->admin_status == 'finished' and $item->fond_status == 'wait' and $item->status_kh == 'possible') style="    background-color: #ff5630; color: white;" @endif>
                             {{ $item->whoNeedHelp->name_ru }}
                         </div>
                         <div class="card-body">
