@@ -132,7 +132,7 @@
             <div class="col-sm-3">
                 <ul>
                     <li><a href="{{route('fonds')}}">{{trans('home.fonds')}}</a></li>
-                    <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>
+{{--                    <li><a href="{{route('helps')}}">{{trans('home.helps')}}</a></li>--}}
 {{--                    <li><a href="{{route('dev')}}">{{trans('home.foot-help-project')}}</a></li>--}}
 {{--                    <li><a href="{{route('dev')}}">{{trans('home.foot-map-charity')}}</a></li>--}}
 {{--                    <li><a href="{{route('dev')}}">{{trans('home.we-support')}}</a></li>--}}
