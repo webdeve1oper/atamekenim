@@ -27,7 +27,7 @@ Route::get('/about', 'Frontend\MainController@about')->name('about');
 //Route::get('/contacts', 'Frontend\MainController@contacts')->name('contacts');
 //Route::get('/question-answer', 'Frontend\MainController@qa')->name('qa');
 //Route::get('/helps', 'Frontend\HelpController@helps')->name('helps');
-Route::get('/register-of-applications', 'Frontend\HelpController@helps')->name('helps');
+//Route::get('/register-of-applications', 'Frontend\HelpController@helps')->name('helps');
 Route::get('/help/{id}', 'Frontend\MainController@helpPage')->name('help');
 Route::get('/help-page', 'Frontend\MainController@help')->name('help-page');
 Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');

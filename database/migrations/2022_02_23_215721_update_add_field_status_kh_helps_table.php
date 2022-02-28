@@ -14,7 +14,7 @@ class UpdateAddFieldStatusKhHelpsTable extends Migration
     public function up()
     {
         Schema::table('helps', function (Blueprint $table) {
-            $table->string('status_kh')->default(\App\Help::STATUS_NOT_APPROVED);
+            $table->string('status_kh')->default(\App\Help::STATUS_KH_NOT_APPROVED);
         });
     }
 
