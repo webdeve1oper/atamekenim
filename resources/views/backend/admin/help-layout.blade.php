@@ -9,14 +9,14 @@
         <div class="col-sm-7">
             @if(is_operator() && $help->admin_status == 'moderate' or is_operator() && $help->admin_status == 'edit' or is_admin() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'edit')
                 <ul class="controlButton">
+{{--                    <li>--}}
+{{--                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>--}}
+{{--                    </li>--}}
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
-                    </li>
-                    <li>
-                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Отправить модератору КХ</button>
@@ -215,10 +215,11 @@
                                     <div class="form-floating mt-2">
                                         <select class="form-select" id="floatingSelect" aria-label="Причина доработок?" name="whyedit">
                                             <option disabled selected>Выбрать причину:</option>
-                                            <option value="Дубликат заявки">Доработка контактные данные</option>
-                                            <option value="Доработка документы">Доработка документы</option>
-                                            <option value="Доработка описание">Доработка описание</option>
-                                            <option value="Иное">Иное</option>
+                                            <option value="1">Доработка контактные данные</option>
+                                            <option value="2">Доработка документы</option>
+                                            <option value="3">Доработка описание</option>
+                                            <option value="4">Доработка сферы</option>
+                                            <option value="5">Иное</option>
                                         </select>
                                         <label for="floatingSelect">Причина отклонения?</label>
                                     </div>
@@ -257,8 +258,8 @@
                                     <div class="form-floating mt-2">
                                         <select class="form-select" id="floatingSelect" aria-label="Причина отклонения?" name="whycancel">
                                             <option disabled selected>Выбрать причину:</option>
-                                            <option value="Дубликат заявки">Дубликат заявки</option>
-                                            <option value="Иное">Иное</option>
+                                            <option value="1">Дубликат заявки</option>
+                                            <option value="2">Иное</option>
                                         </select>
                                         <label for="floatingSelect">Причина отклонения?</label>
                                     </div>

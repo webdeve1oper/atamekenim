@@ -110,6 +110,11 @@ class Help extends Model
         return $this->hasMany(History::class, 'help_id', 'id')->orderBy('created_at', 'desc');
     }
 
+    public function lastComment()
+    {
+        return $this->hasMany(History::class, 'help_id', 'id');
+    }
+
     public static function getPossibleKHhelps()
     {
         return self::where('status_kh', self::STATUS_KH_POSSIBLY);

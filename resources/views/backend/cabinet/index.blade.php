@@ -41,6 +41,48 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="greyContent accountGreyContent">
+                            <p class="big">{{trans('cabinet-appl.pers-info')}}</p>
+                            <a href="{{route('editUser')}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.place-birth')}}</span>--}}
+                            {{--                                <span>{{Auth::user()}}</span>--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.place-res')}}</span>--}}
+                            {{--<span>{{Auth::user()->born_location_country->title_ru ?? ''}}, {{Auth::user()->born_location_region->title_ru ?? ''}}, {{Auth::user()->born_location_city->title_ru ?? ''}}</span>--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.edu')}}</span>--}}
+                            {{--<span>{{Auth::user()->education ?? '-'}}</span>--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.place-work')}}</span>--}}
+                            {{--<span>{{Auth::user()->job ?? '-'}}</span>--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.amount-chil')}}</span>--}}
+                            {{--<span>{{Auth::user()->children_count == 0? '-':Auth::user()->children_count}}</span>--}}
+                            {{--</p>--}}
+                            {{--<p>--}}
+                            {{--<span>{{trans('cabinet-appl.contact')}}</span>--}}
+                            {{--<span>{{preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', Auth::user()->phone)}}</span>--}}
+                            {{--</p>--}}
+                            <p>
+                                <span>{{trans('cabinet-appl.about')}}</span>
+                                <span class="fullText">
+                                    {{ Str::limit(Auth::user()->about, 180) }}
+                                </span>
+                                <style>
+
+                                    .myAccountPage .accountGreyContent p span.fullText {word-break: break-all;}
+                                </style>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
                         <div class="greyInfoBlock mini">
                             <p class="countTag blue">{{trans('cabinet-appl.moder')}} <span>{{$moderateHelps->count()}}</span></p>
                             <p class="floatRight">
@@ -54,33 +96,42 @@
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.data-filing')}}</p>
                                             <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                                 <p>{{$help->whoNeedHelp->name_ru}}</p>
-
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
+                                        </div>
+                                        <div class="col-sm-4">
                                             @if(!$help->phone)
                                                 <div class="alert alert-danger mt-4">
                                                     {{ trans('home.input-phone') }}
                                                 </div>
                                             @endif
                                             @if($help->admin_status == 'edit')
-                                                <div class="alert alert-info mt-4">
-                                                    {{ trans('home.cabinet-edit-moderate-notif') }}
-                                                </div>
+                                                    <div class="alert alert-info mt-4">
+                                                        {{ trans('home.cabinet-edit-moderate-notif') }}
+                                                    </div>
+                                                <?php $last_comment = $help->lastComment->last() ?>
+                                                @if($last_comment)
+                                                    @if($last_comment->cause_value && $last_comment->cause_value != 'edit_5')
+                                                        <div class="alert alert-info mt-4">
+                                                            {{ trans('home.new_alert_'.$last_comment->cause_value) }}
+                                                        </div>
+                                                    @endif
+                                                @endif
                                             @endif
-                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -261,46 +312,6 @@
                             @endforeach
 
                             <!--<a href="" class="btn-default more">{{trans('cabinet-appl.all-see-appl-work')}}</a>-->
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="greyContent accountGreyContent">
-                            <p class="big">{{trans('cabinet-appl.pers-info')}}</p>
-                            <a href="{{route('editUser')}}" class="settings">{{trans('cabinet-appl.edit')}} <img src="/img/settings.svg" alt=""></a>
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.place-birth')}}</span>--}}
-{{--                                <span>{{Auth::user()}}</span>--}}
-                            {{--</p>--}}
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.place-res')}}</span>--}}
-                                {{--<span>{{Auth::user()->born_location_country->title_ru ?? ''}}, {{Auth::user()->born_location_region->title_ru ?? ''}}, {{Auth::user()->born_location_city->title_ru ?? ''}}</span>--}}
-                            {{--</p>--}}
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.edu')}}</span>--}}
-                                {{--<span>{{Auth::user()->education ?? '-'}}</span>--}}
-                            {{--</p>--}}
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.place-work')}}</span>--}}
-                                {{--<span>{{Auth::user()->job ?? '-'}}</span>--}}
-                            {{--</p>--}}
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.amount-chil')}}</span>--}}
-                                {{--<span>{{Auth::user()->children_count == 0? '-':Auth::user()->children_count}}</span>--}}
-                            {{--</p>--}}
-                            {{--<p>--}}
-                                {{--<span>{{trans('cabinet-appl.contact')}}</span>--}}
-                                {{--<span>{{preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '($1) $2-$3', Auth::user()->phone)}}</span>--}}
-                            {{--</p>--}}
-                            <p>
-                                <span>{{trans('cabinet-appl.about')}}</span>
-                                <span class="fullText">
-                                   {{Auth::user()->about}}
-                                </span>
-                                <style>
-
-                                    .myAccountPage .accountGreyContent p span.fullText {word-break: break-all;}
-                                </style>
-                            </p>
                         </div>
                     </div>
                 </div>

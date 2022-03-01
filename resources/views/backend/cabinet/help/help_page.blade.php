@@ -169,7 +169,11 @@
                                     <div class="card mb-3" style="border: 1px solid #cfcfff;">
                                         <div class="card-header" style="background: #f9f9ff;">Администратор</div>
                                         <div class="card-body">
-                                            <p>{{$comment->desc}}</p>
+                                            <p>
+                                                @if($comment->cause_value)
+                                                    {{trans('home.'.$comment->cause_value)}},
+                                                @endif
+                                                {{$comment->desc}}</p>
                                         </div>
                                     </div>
                                 @endif
@@ -179,7 +183,11 @@
                                             <div class="card mb-3" style="border: 1px solid #cfcfff;">
                                                 <div class="card-header" style="background: #f9f9ff;">Фонд: {{$comment->fond->title_ru}}</div>
                                                 <div class="card-body">
-                                                    <p>{{$comment->desc}}</p>
+                                                    <p>
+                                                        @if($comment->cause_value)
+                                                            {{trans('home.'.$comment->cause_value)}},
+                                                        @endif
+                                                        {{$comment->desc}}</p>
                                                 </div>
                                             </div>
                                     @endif

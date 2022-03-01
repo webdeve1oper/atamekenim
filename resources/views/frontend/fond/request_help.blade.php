@@ -157,7 +157,9 @@
                                         </label>
                                         <select name="region_id" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="regions" required>
                                             @foreach($regions as $region)
-                                                <option value="{{$region->region_id}}">{{$region->text}}</option>
+                                                @if($region->region_id != 728)
+                                                    <option value="{{$region->region_id}}">{{$region->text}}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                         <small>{{trans('fonds.name-settlement')}}</small>

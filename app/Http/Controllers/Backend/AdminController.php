@@ -256,7 +256,8 @@ class AdminController extends Controller
                 if($validator->fails()){
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
-                $new_history->desc = $request->get('whyedit').', '.$request->get('comment_edit');
+                $new_history->desc = $request->get('comment_edit');
+                $new_history->cause_value = 'edit_'.$request->get('whyedit');
                 $help->admin_status = $status_name;
                 $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
             }
@@ -272,7 +273,8 @@ class AdminController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $new_history->desc = $request->get('whycancel').', '.$request->get('comment_cancel');
+                $new_history->desc = $request->get('comment_cancel');
+                $new_history->cause_value = 'cancel_'.$request->get('whycancel');
                 $help->admin_status = $status_name;
                 $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
             }
