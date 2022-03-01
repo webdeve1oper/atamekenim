@@ -35,8 +35,7 @@ Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');
 Route::get('/organizations', 'Frontend\FondController@fonds')->name('fonds');
 Route::get('/news', 'Frontend\MainController@news')->name('news');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');
-
-
+Route::get('/export', 'ExcelController@export');
 //Route::get('/hash', function(){
 //    return \Illuminate\Support\Facades\Hash::make('PassExpo2022!');
 //});
