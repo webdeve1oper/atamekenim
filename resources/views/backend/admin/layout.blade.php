@@ -36,6 +36,11 @@
                                 Пользователи
                             </a>
                         </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('active_fonds') }}">
+                                Фонды в реестре
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin_helps') }}">
                                 Заявки от получателей помощи

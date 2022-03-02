@@ -14,6 +14,11 @@
             </div>
             <div class="col-sm">
                 <div class="col border-info border p-5 text-center">
+                    <a href="{{ route('active_fonds') }}">Фонды в реестре</a>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="col border-info border p-5 text-center">
                     <a href="{{ route('admin_helps') }}">Заявки от получателей помощи</a>
                 </div>
             </div>

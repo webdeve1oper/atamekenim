@@ -211,21 +211,24 @@
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.data-filing')}}</p>
                                             <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
+                                        </div>
+                                        <div class="col-sm-4">
                                             @if(!$help->phone)
                                                 <div class="alert alert-danger mt-4">
                                                     {{ trans('home.input-phone') }}
@@ -238,7 +241,11 @@
                                                     </div>
                                                 @endif
                                             @endif
-                                            <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
+                                            @if($help->status_kh == \App\Help::STATUS_KH_APPROVED)
+                                                <div class="alert alert-success mt-4">
+                                                    {{ trans('home.kh_approved_message_for_user') }}
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                     </div>
@@ -279,9 +286,6 @@
                         </div>
                         <div class="greyInfoBlock mini">
                             <p class="countTag red">Отклоненные <span>{{$cancledHelps->count()}}</span></p>
-                            <p class="floatRight">
-                                {{ trans('home.cabinet-cancel-notif') }}
-                            </p>
                             @foreach($cancledHelps as $help)
                                 <div class="applicationBlock">
                                     <div class="row">
@@ -290,22 +294,27 @@
                                             <p class="name">{{trans('cabinet-appl.help')}}</p>
                                             @foreach($help->addHelpTypes as $helps)<p class="tags default mini blue">{{$helps->name_ru}}</p>@endforeach
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.data-filing')}}</p>
                                             <p>{{date('d.m.Y', strtotime($help->created_at))}}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             <p>{{ $help->cashHelpSize->name_ru }}</p>
                                         </div>
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="alert alert-danger mt-4">
+                                                {{ trans('home.cabinet-cancel-notif') }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

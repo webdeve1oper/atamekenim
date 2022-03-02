@@ -23,4 +23,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
     Route::post('news/{id}/update', 'Backend\AdminNewsController@update')->name('admin_news_update');
     Route::match(['get','post'], 'news/create', 'Backend\AdminNewsController@create')->name('admin_news_create');
     Route::post('news/{id}/destroy', 'Backend\AdminNewsController@destroy')->name('admin_news_delete');
+
+    Route::get('/active-fonds', 'Backend\AdminController@activeFonds')->name('active_fonds');
+    Route::get('/active-fonds/{id}/check', 'Backend\AdminController@checkActiveFond')->name('active_fond_check');
+    Route::post('/active-fonds/{id}/edit', 'Backend\AdminController@editActiveFond')->name('active_fond_edit');
 });

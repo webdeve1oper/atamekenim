@@ -109,7 +109,9 @@
                         <li class="mr-4" style="position: relative;">
                             <div class="card">
                                 <div class="card-body">
-                                    <img src="{{$image->image}}" class="img-fluid" style="max-width: 200px; height: 100px; object-fit: cover;" alt="">
+                                    <a href="{{$image->image}}" target="_blank">
+                                        <img src="{{$image->image}}" class="img-fluid" style="max-width: 200px; height: 100px; object-fit: cover;" alt="">
+                                    </a>
                                 </div>
                             </div>
                         </li>
