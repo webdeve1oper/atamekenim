@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\AddHelpType;
+use App\CashHelpType;
 use App\Http\Controllers\Controller;
+use App\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Help;
@@ -76,7 +79,10 @@ class AdminController extends Controller
     }
 
     public function showHelpsFromCategory($category, Request $request){
-        $helps = Help::query();
+        $baseHelpTypes = AddHelpType::select('id', 'name_ru')->get();
+        $cashHelpTypes = CashHelpType::select('id', 'name_ru')->get();
+        $regions = Region::select('region_id', 'title_ru as text')->get();
+        $helps = Help::select('helps.id','helps.created_at', 'helps.urgency_date', 'helps.who_need_help', 'helps.body', 'helps.region_id');
         if(isset($request->id)){
             if($request->id != ''){
                 $helps = $helps->whereId($request->id);
@@ -85,8 +91,26 @@ class AdminController extends Controller
         if(Auth::user()->role_id <= 2){
             switch ($category) {
                 case 'moderate':
+                    if(isset($request->region)){
+                        $helps = $helps->whereIn('region_id', $request->region);
+                    }
+                    if(isset($request->baseHelpTypes)){
+                        $helps = $helps->leftJoin('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')->whereIn('help_addhelptypes.add_help_id', $request->baseHelpTypes);
+                    }
+                    if(isset($request->cashHelpTypes)){
+                        $helps = $helps->leftJoin('help_cashhelptypes', 'helps.id', '=', 'help_cashhelptypes.help_id')->whereIn('help_cashhelptypes.cash_help_id', $request->cashHelpTypes);
+                    }
+                    if(isset($request->urgency_date)){
+                        $helps = $helps->whereIn('urgency_date', $request->urgency_date);
+                    }
+                    if(isset($request->date_from)){
+                        $helps = $helps->where('helps.created_at','>=', $request->date_from.' 00:00:00');
+                    }
+                    if(isset($request->date_to)){
+                        $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
+                    }
                     $title = 'На модерации';
-                    $helps = $helps->where('admin_status', $category)->paginate(8);
+                    $helps = $helps->where('admin_status', $category)->groupBy('helps.id')->paginate(8);
                     break;
                 case 'health':
                     $title = 'На модерации / Здоровье';
@@ -127,7 +151,7 @@ class AdminController extends Controller
                     $helps = $helps->where('fond_status', 'finished')->paginate(8);
                     break;
             }
-            return view('backend.admin.category-helps')->with(compact('helps','title'));
+            return view('backend.admin.category-helps')->with(compact('helps','title', 'baseHelpTypes', 'cashHelpTypes','regions', 'category'));
         }elseif (is_moderator()){
             switch ($category) {
                 case 'moderate':
@@ -173,7 +197,7 @@ class AdminController extends Controller
                     $helps = $helps->where('fond_status', 'finished')->paginate(8);
                     break;
             }
-            return view('backend.admin.category-helps')->with(compact('helps','title'));
+            return view('backend.admin.category-helps')->with(compact('helps','title', 'baseHelpTypes', 'cashHelpTypes','regions','category'));
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
