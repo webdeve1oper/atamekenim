@@ -12,6 +12,7 @@ use App\HistoryFond;
 use App\Admin;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -349,6 +350,34 @@ class AdminController extends Controller
             $new_history->save();
 
             return redirect()->route('admin_fonds')->with('success', 'Статус запроса изменен!');
+        }
+        return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
+    }
+
+//    Редактирование фондов для супер админа
+    public function activeFonds(){
+        if(Auth::user()->role_id <= 1){
+            $fonds = Fond::where('status', 1)->paginate(10);
+            return view('backend.admin.active-fonds')->with(compact('fonds'));
+        }
+        return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
+    }
+    public function checkActiveFond($id){
+        if(Auth::user()->role_id <= 1){
+            $item = Fond::find($id);
+            return view('backend.admin.active-fond-layout')->with(compact('item'));
+        }
+        return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
+    }
+    public function editActiveFond(Request $request, $id){
+        if(Auth::user()->role_id <= 1){
+            $fond = Fond::find($id);
+            $fond->email = $request->email;
+            if($request->password){
+                $fond->password = Hash::make($request->password);
+            }
+            $fond->save();
+            return redirect()->back()->with('success','Данные обновлены!');
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
