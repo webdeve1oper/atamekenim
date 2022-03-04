@@ -60,6 +60,9 @@
             <p><span>Дата подачи:</span> {{ date('d-m-Y', strtotime($help->created_at)) }}</p>
             <p><span>Кому необходима помощь:</span> {{ $help->whoNeedHelp->name_ru }}</p>
             <p><span>ФИО заявителя:</span> {{ $help->user->last_name }} {{ $help->user->first_name }}</p>
+            <p><span>Пол:</span> {{ gender($help->user->gender) }}</p>
+            <p><span>Возраст:</span> {{  \Carbon\Carbon::parse($help->user->born)->age }}</p>
+            <p><span>Дата рождения:</span> {{  \Carbon\Carbon::parse($help->user->born)->format('d-m-Y') }}</p>
             @if($help->phone)<p><span>Телефон: </span>{{ $help->phone }}</p>@endif
             @if($help->email)<p><span>E-mail: </span>{{ $help->email }}</p>@endif
             <hr>
