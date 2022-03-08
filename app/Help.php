@@ -115,6 +115,10 @@ class Help extends Model
         return $this->hasMany(History::class, 'help_id', 'id');
     }
 
+    public function adminHistory(){
+        return  $this->hasMany(History::class, 'help_id', 'id');
+    }
+
     public static function getPossibleKHhelps()
     {
         return self::where('status_kh', self::STATUS_KH_POSSIBLY);
@@ -123,6 +127,11 @@ class Help extends Model
     public static function getApprovedKHhelps()
     {
         return self::where('status_kh', self::STATUS_KH_APPROVED);
+    }
+
+    public function getFullUserName(){
+        return $this->user->last_name . ' '. $this->user->first_name;
+//            $this->user->patron;
     }
 
 }
