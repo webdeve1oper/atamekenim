@@ -52,6 +52,8 @@ class ExcelController extends Controller
                 'regions.title_ru as region_title',
                 'regions.region_id',
                 'users.id as user_id',
+                'admins.email as admin_email',
+                'admins.id as admin_id',
                 'add_help_types.id',
                 'history.desc as desc',
                 'add_help_types.name_ru as add_help_name'
@@ -60,7 +62,7 @@ class ExcelController extends Controller
                      ->leftJoin('add_help_types', 'add_help_types.id', '=', 'help_addhelptypes.add_help_id')
                      ->leftJoin('regions', 'helps.region_id', '=', 'regions.region_id')
                      ->leftJoin('users', 'helps.user_id', '=', 'users.id');
-            $helps = $helps->leftJoin('history', 'helps.id', '=', 'history.help_id');
+            $helps = $helps->leftJoin('history', 'helps.id', '=', 'history.help_id')->leftJoin('admins', 'history.admin_id', '=', 'admins.id');
 
             if(isset($request->date_from)){
                 $date_from = $request->date_from;
@@ -126,10 +128,10 @@ class ExcelController extends Controller
                 }
             }else{
                 foreach ($helps as $help) {
-                    $this->sheet->setCellValue('A' . $this->i, $help->getFullUserName());
+                    $this->sheet->setCellValue('A' . $this->i, $help->admin_email. ' ('.$help->admin_id.')') ;
                     $this->sheet->setCellValue('B' . $this->i, $help->help_id);
                     $this->sheet->setCellValue('C' . $this->i, Carbon::parse($help->history_create_date)->format('d.m.Y'));
-                    $this->sheet->setCellValue('D' . $this->i, $help->history_status);
+                    $this->sheet->setCellValue('D' . $this->i, $this->getStatus($help->history_status));
                     $this->sheet->setCellValue('E' . $this->i, $help->desc);
                     $this->sheet->setCellValue('F' . $this->i, $help->region_title);
                     $this->sheet->setCellValue('G' . $this->i, $help->add_help_name);
@@ -164,6 +166,18 @@ class ExcelController extends Controller
             header('Content-Disposition: attachment; filename="' . urlencode(date('d-m-Y') . '.xlsx') . '"');
             $writer->save('php://output');
 
+        }
+    }
+
+    public function getStatus($status){
+        if($status == 'finished'){
+            return 'Одобрено';
+        }elseif($status == 'edit'){
+            return 'Отправлено на доработку';
+        }elseif($status == 'cancel'){
+            return 'Отклонено';
+        }elseif($status == 'kh') {
+            return 'Одобрено';
         }
     }
 

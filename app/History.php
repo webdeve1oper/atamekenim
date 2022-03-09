@@ -12,4 +12,8 @@ class History extends Model
     public function fond(){
         return $this->hasOne(Fond::class, 'id', 'fond_id');
     }
+
+    public function user(){
+        return $this->hasOne(Admin::class, 'id','user_id');
+    }
 }

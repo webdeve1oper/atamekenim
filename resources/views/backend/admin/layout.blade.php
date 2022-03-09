@@ -56,11 +56,7 @@
                                 Новости
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin_export') }}">
-                                Отчет
-                            </a>
-                        </li>
+
                     @elseif(is_operator() or is_moderator())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin_helps') }}">
@@ -75,6 +71,13 @@
                             </li>
                         @endif
                     @endif
+                        @if(is_operator() or is_admin())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin_export') }}">
+                                Отчет
+                            </a>
+                        </li>
+                            @endif
                 </ul>
             </div>
         </nav>
