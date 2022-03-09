@@ -6,6 +6,7 @@ use App\AddHelpType;
 use App\CashHelpType;
 use App\Http\Controllers\Controller;
 use App\Region;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Help;
@@ -89,6 +90,7 @@ class AdminController extends Controller
                 $helps = $helps->whereId($request->id);
             }
         }
+
         if(Auth::user()->role_id <= 2){
             switch ($category) {
                 case 'moderate':
@@ -109,6 +111,9 @@ class AdminController extends Controller
                     }
                     if(isset($request->date_to)){
                         $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
+                    }
+                    if(isset($request->user_id)){
+                        $helps = $helps->where('helps.user_id', $request->user_id);
                     }
                     $title = 'На модерации';
                     $helps = $helps->where('admin_status', $category)->groupBy('helps.id')->paginate(8);
@@ -201,6 +206,11 @@ class AdminController extends Controller
             return view('backend.admin.category-helps')->with(compact('helps','title', 'baseHelpTypes', 'cashHelpTypes','regions','category'));
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
+    }
+
+    public function getUsers(Request $request){
+        $users = User::select('id', 'last_name as text','first_name as text2')->where('last_name', 'LIKE','%'.$request->name.'%')->get();
+        return $users;
     }
 
     public function showFondsFromCategory($category){
