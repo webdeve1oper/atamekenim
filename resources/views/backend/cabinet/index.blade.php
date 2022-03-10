@@ -120,17 +120,30 @@
                                                 </div>
                                             @endif
                                             @if($help->admin_status == 'edit')
-                                                    <div class="alert alert-info mt-4">
-                                                        {{ trans('home.cabinet-edit-moderate-notif') }}
-                                                    </div>
+{{--                                                    <div class="alert alert-info mt-4">--}}
+{{--                                                        {{ trans('home.cabinet-edit-moderate-notif') }}--}}
+{{--                                                    </div>--}}
                                                 <?php $last_comment = $help->lastComment->last() ?>
                                                 @if($last_comment)
-                                                    @if($last_comment->cause_value && $last_comment->cause_value != 'edit_5')
+                                                    @if($last_comment->cause_value)
                                                         <div class="alert alert-info mt-4">
                                                             {{ trans('home.new_alert_'.$last_comment->cause_value) }}
                                                         </div>
                                                     @endif
                                                 @endif
+                                            @endif
+
+                                            @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED)
+                                                @if($help->id > 31205)
+                                                    <div class="alert alert-danger mt-4">
+                                                        {{ trans('home.without-kh') }}
+                                                    </div>
+                                                @endif
+                                            @endif
+                                            @if($help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
+                                                <div class="alert alert-success mt-4">
+                                                    {{ trans('home.kh_possibly_message_for_user') }}
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -241,9 +254,9 @@
                                                     </div>
                                                 @endif
                                             @endif
-                                            @if($help->status_kh == \App\Help::STATUS_KH_APPROVED)
+                                            @if($help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
                                                 <div class="alert alert-success mt-4">
-                                                    {{ trans('home.kh_approved_message_for_user') }}
+                                                    {{ trans('home.kh_possibly_message_for_user') }}
                                                 </div>
                                             @endif
                                         </div>
@@ -312,9 +325,18 @@
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                         <div class="col-sm-4">
-                                            <div class="alert alert-danger mt-4">
-                                                {{ trans('home.cabinet-cancel-notif') }}
-                                            </div>
+                                                <?php $last_comment = $help->lastComment->last() ?>
+                                                @if($last_comment)
+                                                    @if($last_comment->cause_value)
+                                                        <div class="alert alert-danger mt-4">
+                                                            {{ trans('home.new_alert_'.$last_comment->cause_value) }}
+                                                        </div>
+                                                    @else
+                                                        <div class="alert alert-danger mt-4">
+                                                            {{ trans('home.cabinet-cancel-notif') }}
+                                                        </div>
+                                                    @endif
+                                                @endif
                                         </div>
                                     </div>
                                 </div>
