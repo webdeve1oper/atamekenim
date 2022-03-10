@@ -12,9 +12,7 @@
                 </div>
             </form>
         </div>
-        @if($category == 'moderate')
         @include('backend.admin.filter')
-        @endif
         <div class="col-sm-12 mt-2 mb-4">
             <h1>Заявки от получателей помощи : {{ $title }}</h1>
             @include('frontend.alerts')

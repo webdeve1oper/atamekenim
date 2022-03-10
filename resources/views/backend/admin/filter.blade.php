@@ -14,6 +14,7 @@
                     @endforeach
                 </select>
             </div>
+            @if($category!='health' and $category != 'health-moderated')
             <div class="col-3">
                 <p>Сфера</p>
                 <select class="form-control" name="baseHelpTypes[]" id="baseHelpTypes" multiple>
@@ -24,6 +25,7 @@
                     @endforeach
                 </select>
             </div>
+            @endif
             <div class="col-3">
                 <p>Вид помощи </p>
                 <select class="form-control" name="cashHelpTypes[]" id="cashHelpTypes" multiple>

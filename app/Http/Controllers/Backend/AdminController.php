@@ -91,30 +91,34 @@ class AdminController extends Controller
             }
         }
 
+        if(isset($request->region)){
+            $helps = $helps->whereIn('region_id', $request->region);
+        }
+        if($category!='health'){
+            if(isset($request->baseHelpTypes)){
+                $helps = $helps->leftJoin('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')->whereIn('help_addhelptypes.add_help_id', $request->baseHelpTypes);
+            }
+            if(isset($request->cashHelpTypes)){
+                $helps = $helps->leftJoin('help_cashhelptypes', 'helps.id', '=', 'help_cashhelptypes.help_id')->whereIn('help_cashhelptypes.cash_help_id', $request->cashHelpTypes);
+            }
+        }
+
+        if(isset($request->urgency_date)){
+            $helps = $helps->whereIn('urgency_date', $request->urgency_date);
+        }
+        if(isset($request->date_from)){
+            $helps = $helps->where('helps.created_at','>=', $request->date_from.' 00:00:00');
+        }
+        if(isset($request->date_to)){
+            $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
+        }
+        if(isset($request->user_id)){
+            $helps = $helps->where('helps.user_id', $request->user_id);
+        }
         if(Auth::user()->role_id <= 2){
             switch ($category) {
                 case 'moderate':
-                    if(isset($request->region)){
-                        $helps = $helps->whereIn('region_id', $request->region);
-                    }
-                    if(isset($request->baseHelpTypes)){
-                        $helps = $helps->leftJoin('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')->whereIn('help_addhelptypes.add_help_id', $request->baseHelpTypes);
-                    }
-                    if(isset($request->cashHelpTypes)){
-                        $helps = $helps->leftJoin('help_cashhelptypes', 'helps.id', '=', 'help_cashhelptypes.help_id')->whereIn('help_cashhelptypes.cash_help_id', $request->cashHelpTypes);
-                    }
-                    if(isset($request->urgency_date)){
-                        $helps = $helps->whereIn('urgency_date', $request->urgency_date);
-                    }
-                    if(isset($request->date_from)){
-                        $helps = $helps->where('helps.created_at','>=', $request->date_from.' 00:00:00');
-                    }
-                    if(isset($request->date_to)){
-                        $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
-                    }
-                    if(isset($request->user_id)){
-                        $helps = $helps->where('helps.user_id', $request->user_id);
-                    }
+
                     $title = 'На модерации';
                     $helps = $helps->where('admin_status', $category)->groupBy('helps.id')->paginate(8);
                     break;
@@ -125,6 +129,7 @@ class AdminController extends Controller
                             ->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
                             ->where('help_addhelptypes.add_help_id', '=', 1)->paginate(8);
                     }catch (\Exception $exception){
+
                     }
                     break;
                 case 'health-moderated':
