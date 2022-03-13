@@ -224,6 +224,7 @@
                                             <option value="2">Доработка документы</option>
                                             <option value="3">Доработка описание</option>
                                             <option value="4">Доработка сферы</option>
+                                            <option value="6">Доработка по описанию болезни ребенка и доп.документы</option>
                                             <option value="5">Иное</option>
                                         </select>
                                         <label for="floatingSelect">Причина отклонения?</label>
@@ -264,6 +265,9 @@
                                         <select class="form-select" id="floatingSelect" aria-label="Причина отклонения?" name="whycancel">
                                             <option disabled selected>Выбрать причину:</option>
                                             <option value="1">Дубликат заявки</option>
+                                            <option value="3">Лечение зарубежом (онкология)</option>
+                                            <option value="4">Лечение, протезирование зубов, ЭКО</option>
+                                            <option value="5">Лечение других заболеваний зарубежом</option>
                                             <option value="2">Иное</option>
                                         </select>
                                         <label for="floatingSelect">Причина отклонения?</label>
@@ -282,6 +286,16 @@
             </div>
         </div>
     </div>
+    <script>
+        $('#exampleModal2 #floatingSelect').change(function (){
+            var new_value = $('#exampleModal2 #floatingSelect option:selected').val();
+            if(new_value == '5'){
+                $('#exampleModal2 #floatingTextarea').attr('required',true);
+            }else{
+                $('#exampleModal2 #floatingTextarea').attr('required',false);
+            }
+        });
+    </script>
 @endsection
 <style>
     .controlButton{
