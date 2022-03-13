@@ -106,12 +106,22 @@ class AdminController extends Controller
         if(isset($request->urgency_date)){
             $helps = $helps->whereIn('urgency_date', $request->urgency_date);
         }
-        if(isset($request->date_from)){
-            $helps = $helps->where('helps.created_at','>=', $request->date_from.' 00:00:00');
+        if($category == 'finished' or $category == 'health-moderated'){
+            if(isset($request->date_from)){
+                $helps = $helps->where('helps.updated_at','>=', $request->date_from.' 00:00:00');
+            }
+            if(isset($request->date_to)){
+                $helps = $helps->where('helps.updated_at','<=', $request->date_to.' 23:59:59');
+            }
+        }else{
+            if(isset($request->date_from)){
+                $helps = $helps->where('helps.created_at','>=', $request->date_from.' 00:00:00');
+            }
+            if(isset($request->date_to)){
+                $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
+            }
         }
-        if(isset($request->date_to)){
-            $helps = $helps->where('helps.created_at','<=', $request->date_to.' 23:59:59');
-        }
+
         if(isset($request->user_id)){
             $helps = $helps->where('helps.user_id', $request->user_id);
         }
