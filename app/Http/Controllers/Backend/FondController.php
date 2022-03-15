@@ -307,7 +307,8 @@ class FondController extends Controller
             return redirect()->route('fond_cabinet')->with('error', 'Заявка уже принята другим фондом');
         }
         $cashHelpTypes = CashHelpType::all();
-        $finished_helps = Help::whereFondStatus('finished')->where('id','!=',$id)->take(4)->get();
+        $finished_helps = [];
+//        $finished_helps = Auth::user()->containsHelps()->where('helps.fond_status', 'finished')->where('help_id','!=', $id)->take(4)->get();
         return view('backend.fond_cabinet.help_page')->with(compact('help', 'finished_helps', 'cashHelpTypes'));
     }
 }

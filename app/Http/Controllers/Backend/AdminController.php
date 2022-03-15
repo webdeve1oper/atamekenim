@@ -106,7 +106,7 @@ class AdminController extends Controller
         if(isset($request->urgency_date)){
             $helps = $helps->whereIn('urgency_date', $request->urgency_date);
         }
-        if($category == 'finished' or $category == 'health-moderated'){
+        if($category == 'finished' or $category == 'health-moderated' or $category == 'cancel' or $category == 'edit'){
             if(isset($request->date_from)){
                 $helps = $helps->where('helps.updated_at','>=', $request->date_from.' 00:00:00');
             }
