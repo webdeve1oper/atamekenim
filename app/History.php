@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class History extends Model
 {
-    // status
+    // HISTORY STATUSES
     const STATUS_FINISHED = 'finished'; // Заявка одобрена только для фондов (без КХ)
     const STATUS_EDIT = 'edit'; // Заявка отправлена на доработку
     const STATUS_CANCEL = 'cancel'; // Заявка отклонена
