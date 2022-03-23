@@ -4,6 +4,7 @@
 //Route::post('logins', 'UserAuthController@postLogin');
 Route::group(['middleware'=>'auth'], function(){
     Route::match(['get','post'], 'request-for-help', 'Frontend\FondController@requestHelp')->name('request_help');
+    Route::get('test-request', 'Frontend\FondController@testRequestHelp')->name('test_request');
     Route::get('cabinet/edit', 'Backend\CabinetController@editUser')->name('editUser');
     Route::post('cabinet/update-info', 'Backend\CabinetController@updateUser')->name('updateUser')->middleware('throttle:10,1');
     Route::post('cabinet/{id}/edit', 'Frontend\FondController@requestHelp')->name('update_help')->middleware('throttle:10,1');

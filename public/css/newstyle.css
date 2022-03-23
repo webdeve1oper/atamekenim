@@ -266,3 +266,279 @@ header a.logo img {
     object-fit: contain;
     margin: 14px auto 0;
 }
+
+/*new Request Page Styles*/
+.newRequestHelpPage {
+    width: 100%;
+    position: relative;
+}
+
+.newRequestHelpPage h1 {
+    display: table;
+    margin: 0 0 20px;
+    color: #0053A5;
+}
+
+.newRequestHelpPage .miniFormBlock {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    background: #F6F6F9;
+    padding: 28px 24px 5px;
+    margin: 0 0 15px;
+}
+
+.newRequestHelpPage .miniFormBlock p.headTitle {
+    display: table;
+    margin: 0 0 16px;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup {
+    position: relative;
+    margin: 0 0 25px;
+    padding-right: 0;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup label {
+    display: table;
+    margin: 0 0 5px;
+    position: relative;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup label span {
+    display: table;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup label.required span:after {
+    content: ' *';
+    color: red;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup input,.newRequestHelpPage .miniFormBlock .formGroup textarea, .newRequestHelpPage .miniFormBlock .formGroup select, .newRequestHelpPage .miniFormBlock .formGroup span.select2-selection {
+    background: #fff;
+    display: table;
+    width: 100%;
+    border: aliceblue;
+    padding: 10px 15px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup span.select2-selection{
+    padding: 5px 15px;
+}
+.newRequestHelpPage .miniFormBlock .formGroup span.select2-search.select2-search--inline{
+    display: none;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image:
+        linear-gradient(45deg, transparent 50%, gray 50%),
+        linear-gradient(135deg, gray 50%, transparent 50%),
+        linear-gradient(to right, #ccc, #ccc);
+    background-position:
+        calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 16px) calc(1em + 2px),
+        calc(100% - 2.5em) 0.5em;
+    background-size:
+        5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+.newRequestHelpPage .miniFormBlock>.row {
+    margin-right: 0;
+}
+
+
+.newRequestHelpPage .miniFormBlock .formGroup label i {
+    display: table;
+    margin: 0;
+    color: #9D9D9D;
+    text-decoration: none;
+    font-style: unset;
+    font-weight: 400;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup>button {
+    font-weight: 600;
+    display: table;
+    margin: 10px 0 0;
+    padding: 10px 15px;
+    border: 1px solid #0066CC;
+    border-radius: 4px;
+    background: #f6f6f9;
+    color: #0066CC;
+    line-height: 1.3;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup>button img {
+    display: inline-table;
+    vertical-align: middle;
+    height: 12px;
+    margin: 0 0 0 10px;
+}
+
+.newRequestHelpPage .agreeBlock {
+    display: table;
+    margin: 0;
+}
+
+.newRequestHelpPage .agreeBlock * {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0 10px 0 0;
+    line-height: 1;
+}
+
+.newRequestHelpPage .agreeBlock button {
+    font-weight: 600;
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: 1px solid #0066CC;
+    border-radius: 4px;
+    background: #0066CC;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.newRequestHelpPage .agreeBlock p a {
+    color: #0066cc;
+    display: inline-table;
+    border-bottom: 1px solid #0066cc;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin: 0 8px 10px 0;
+    background: #06c;
+    color: #fff!important;
+    font-weight: 300!important;
+    padding: 4px 30px 4px 10px;
+    border: 1px solid #06c;
+    border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice span {
+    font-weight: 300;
+    font-size: 12px;
+    padding: 0;
+    display: block;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice button {
+    position: absolute;
+    right: 0;
+    left: unset;
+    top: 0;
+    border: none;
+    background: transparent!important;
+    height: 100%;
+    padding: 0 8px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice button span {
+    color: #fff;
+    font-size: 24px;
+    line-height: 1;
+}
+
+button.select2-selection__clear {
+    display: none;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup span.select2-selection {
+    padding: 8px 15px 0;
+    min-height: 38px;
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 16px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+    width: 100%;
+    display: block;
+}
+
+span.select2-selection__arrow {
+    display: none;
+}
+
+span.select2-selection__rendered {
+    line-height: 1.5!important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    display: block;
+    max-width: 90%;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup textarea {
+    min-height: 100px;
+}
+.newRequestHelpPage .agreeBlock {
+    margin: 0 0 60px;
+}
+.newRequestHelpPage .miniFormBlock .formGroup .input-group+.input-group {
+    margin-top: 10px;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup .input-group {
+    width: 93%;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup .input-group .input-group-append {
+    position: absolute;
+    right: -7%;
+    width: 7%;
+    height: 100%;
+}
+
+.newRequestHelpPage .miniFormBlock .formGroup .input-group .input-group-append button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-weight: 100;
+    color: #06c!important;
+}
+.newRequestHelpPage .alert {
+    display: block;
+    width: 100%;
+    margin: 0 0 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 10px;
+}
+
+.newRequestHelpPage .alert img {
+    display: inline-table;
+    margin: 0 10px 0 0;
+    vertical-align: top;
+}
+
+.newRequestHelpPage .alert span {
+    display: inline-table;
+    width: 85%;
+    vertical-align: top;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.newRequestHelpPage .alert.danger {
+    background: #FFF0F0;
+    color: #DA1E28;
+}
+.newRequestHelpPage .agreeBlock button:disabled {
+    background: #C6C6C6;
+    border-color: #C6C6C6;
+    color: #9D9D9D;
+}
+/*new Request Page Styles*/
