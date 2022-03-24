@@ -49,6 +49,7 @@
                                     <div class="col-sm-6 formGroup">
                                         <label class="required"><span>Регион оказания помощи</span></label>
                                         <select name="region_id" class="select2 w-100" placeholder="Выберете область" id="regions" required>
+                                             <option value="" disabled selected>Выбрать из списка</option>Выбрать из списка</option>
                                             @foreach($regions as $region)
                                                 @if($region->region_id != 728)
                                                     <option value="{{$region->region_id}}">{{$region->text}}</option>
@@ -70,7 +71,8 @@
                                         <label class="required"><span>Пожалуйста, укажите, кому необходима помощь</span>
                                             <i>Вы можете подавать заявку от своего имени или от имени своего несовершеннолетнего ребенка.</i>
                                         </label>
-                                        <select name="who_need_help" id="who_need_help" class="">
+                                        <select name="who_need_help" id="who_need_help" class="" required>
+                                             <option value="" disabled selected>Выбрать из списка</option>Выбрать из списка</option>
                                             @if($help)
                                                 @foreach($scenarios as $value => $scenario)
                                                     @if($scenario['id'] != 6)
@@ -116,8 +118,8 @@
                                         </p>
                                     </div>
                                     <div class="col-sm-12 formGroup">
-                                        <label><span>Укажите, в каком именно вопросе Вам требуется помощь.</span>
-                                            <i>Сфера необходимой помощи</i>
+                                        <label class="required">
+                                            <span>Сфера необходимой помощи</span>
                                         </label>
                                         <select name="baseHelpTypes" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes" required>
                                             @foreach($baseHelpTypes as $destionation)
@@ -132,16 +134,17 @@
                                         <select name="destinations[]" class="select2 w-100" multiple placeholder="{{trans('fonds.check-stat-health')}}" id="destinations4"></select>
                                     </div>
                                     <div class="col-sm-12 formGroup">
-                                        <label>
+                                        <label class="required">
                                             <span>Укажите, в каком именно вопросе Вам требуется помощь.</span>
                                         </label>
-                                        <textarea name="body" placeholder="{{trans('fonds.desc-help')}}*" id="helpBody" required>@if($help) {{$help->body}} @else {{old('body')}} @endif</textarea>
+                                        <textarea name="body" required placeholder="{{trans('fonds.desc-help')}}*" id="helpBody" required>@if($help){{$help->body}}@else{{old('body')}}@endif</textarea>
                                     </div>
                                     <div class="col-sm-12 formGroup">
                                         <label>
                                             <span>Укажите, насколько срочным является Ваш случай.</span>
                                         </label>
                                         <select name="urgency_date" class="select2 w-100" placeholder="{{trans('fonds.indicate-urgency-help2')}}" id="helpUrgencyDate" required>
+                                             <option value="" disabled selected>Выбрать из списка</option>Выбрать из списка</option>
                                             <option value="1">{{trans('fonds.flow-month-1')}}</option>
                                             <option value="2">{{trans('fonds.flow-month-3')}}</option>
                                             <option value="3">{{trans('fonds.flow-month-6')}}</option>
@@ -157,7 +160,7 @@
                                     </div>
                                     <div class="col-sm-12 formGroup">
                                         <label>
-                                            <span>Прикрепите фото/видео заявителя или ситуации, в которую Вы попали.</span>
+                                            <span>Прикрепите фото заявителя или ситуации, в которую Вы попали. (max 2 Mb)</span>
                                             <i>Так организации смогут убедиться в том, что Вам действительно нужна помощь. <br>Например, Вы можете прикрепить фото сгоревшего дома или своих жилищных условий.</i>
                                         </label>
                                         @if($help)
@@ -188,7 +191,8 @@
                                         <label>
                                             <span>Если у Вас есть, прикрепите документы, подтверждающие действительность Вашей ситуации.</span>
                                             <i>
-                                                Например, медицинские справки, выписки,  подтверждающие правдивость Ваших слов. <br>Укажите название документа и прикрепите файл в формате doc, jpeg или pdf.  Максимальный вес файла “Сколько то мегабайт”
+                                                Например, медицинские справки, выписки,  подтверждающие правдивость Ваших слов.
+                                                <br>Укажите название документа и прикрепите файл в формате doc, jpeg или pdf. (max 2 Mb)
                                             </i>
                                         </label>
                                         @if($help)
@@ -213,9 +217,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="agreeBlock">
-                                        <input type="checkbox" name="agree" id="agreeButton" required>
-                                        <p>Согласие на обработку ваших данных <a href="#">Политика конфиденциальности</a></p>
-                                        <button type="submit" id="request_help_button" disabled="disabled">Подать заявку</button>
+{{--                                        <input type="checkbox" name="agree" id="agreeButton" required>--}}
+{{--                                        <p>Согласие на обработку ваших данных <a href="#">Политика конфиденциальности</a></p>--}}
+                                        <button type="submit" id="request_help_button" style="margin-left: 0">Подать заявку</button>
                                     </div>
                                 </div>
                             </div>
