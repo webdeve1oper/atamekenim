@@ -36,33 +36,35 @@ class ExcelController extends Controller
         if($request->method() == 'GET'){
             return view('backend.admin.export_xls');
         }elseif($request->method() == 'POST'){
+            ini_set('max_execution_time', 120);
+            ini_set('memory_limit', '512M');
             $this->spreadsheet = new Spreadsheet();
             $this->sheet = $this->spreadsheet->getActiveSheet();
             $date_from = null;
             $date_to = null;
             $type = null;
 //            $helps = Help::with('region', 'addHelpTypes', 'adminHistory');
-            $helps =  Help::select('helps.id as help_id',
-                'helps.created_at as help_create_date',
-                'helps.region_id',
-                'history.created_at as history_create_date',
-                'history.status as history_status',
-                'helps.admin_status',
-                'helps.fond_status',
-                'regions.title_ru as region_title',
-                'regions.region_id',
-                'users.id as user_id',
-                'admins.email as admin_email',
-                'admins.id as admin_id',
-                'add_help_types.id',
-                'history.desc as desc',
-                'add_help_types.name_ru as add_help_name'
-            );
-            $helps = $helps->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
-                     ->leftJoin('add_help_types', 'add_help_types.id', '=', 'help_addhelptypes.add_help_id')
-                     ->leftJoin('regions', 'helps.region_id', '=', 'regions.region_id')
-                     ->leftJoin('users', 'helps.user_id', '=', 'users.id');
-            $helps = $helps->leftJoin('history', 'helps.id', '=', 'history.help_id')->leftJoin('admins', 'history.admin_id', '=', 'admins.id');
+//            $helps =  Help::select('helps.id as help_id',
+//                'helps.created_at as help_create_date',
+//                'helps.region_id',
+//                'history.created_at as history_create_date',
+//                'history.status as history_status',
+//                'helps.admin_status',
+//                'helps.fond_status',
+//                'regions.title_ru as region_title',
+//                'regions.region_id',
+//                'users.id as user_id',
+//                'admins.email as admin_email',
+//                'admins.id as admin_id',
+//                'add_help_types.id',
+//                'history.desc as desc',
+//                'add_help_types.name_ru as add_help_name'
+//            );
+//            $helps = $helps->join('help_addhelptypes', 'helps.id', '=', 'help_addhelptypes.help_id')
+//                     ->leftJoin('add_help_types', 'add_help_types.id', '=', 'help_addhelptypes.add_help_id')
+//                     ->leftJoin('regions', 'helps.region_id', '=', 'regions.region_id')
+//                     ->leftJoin('users', 'helps.user_id', '=', 'users.id');
+//            $helps = $helps->leftJoin('history', 'helps.id', '=', 'history.help_id')->leftJoin('admins', 'history.admin_id', '=', 'admins.id');
 
             if(isset($request->date_from)){
                 $date_from = $request->date_from;
@@ -77,6 +79,7 @@ class ExcelController extends Controller
             $this->sheet->setCellValue('B' . $this->i, 'Дата до '. date('d.m.Y', strtotime($date_to)));
 
             if($type == 1){
+                $helps = Help::with(['addHelpTypes', 'region']);
 
                 if($date_from){
                     $helps = $helps->where('helps.created_at', '>=', $date_from.' 00:00:00');
@@ -84,20 +87,40 @@ class ExcelController extends Controller
                 if($date_to){
                     $helps = $helps->where('helps.created_at', '<=', $date_to . ' 23:59:59');
                 }
-                $this->sheet->setCellValue('C' . $this->i, 'Поступило');
+
+            }else{
+                $helps = History::with(['help.region', 'admin', 'help.addHelpTypes']);
+                if($date_from){
+                    $helps = $helps->where('created_at', '>=', $date_from.' 00:00:00');
+                }
+                if($date_to){
+                    $helps = $helps->where('created_at', '<=', $date_to . ' 23:59:59');
+                }
+
+            }
+            $helps = $helps->get();
+//            dd($helps->take(10));
+
+            if($type == 1){
+                $this->sheet->setCellValue('C' . $this->i, 'Поступило: '.$helps->count());
                 $this->nextRow();
                 $this->nextRow();
                 foreach ($this->new_headers as $alpha => $value){
                     $this->sheet->setCellValue($alpha . $this->i, $value);
                 }
                 $this->nextRow();
+                foreach ($helps as $help) {
+                    $this->sheet->setCellValue('A' . $this->i, $help->id);
+                    $this->sheet->setCellValue('B' . $this->i, Carbon::parse($help->created_at)->format('d.m.Y'));
+                    $addHelpTypes = '';
+                    foreach ($help->addHelpTypes as $addHelpType){
+                        $addHelpTypes .= $addHelpType->name_ru . ',';
+                    }
+                    $this->sheet->setCellValue('C' . $this->i, $addHelpTypes);
+                    $this->sheet->setCellValue('D' . $this->i, $help->region->title_ru);
+                    $this->nextRow();
+                }
             }else{
-                if($date_from){
-                    $helps = $helps->where('history.created_at', '>=', $date_from.' 00:00:00');
-                }
-                if($date_to){
-                    $helps = $helps->where('history.created_at', '<=', $date_to . ' 23:59:59');
-                }
                 $this->sheet->setCellValue('C' . $this->i, 'Отработано');
                 $this->nextRow();
                 $this->nextRow();
@@ -105,55 +128,19 @@ class ExcelController extends Controller
                     $this->sheet->setCellValue($alpha . $this->i, $value);
                 }
                 $this->nextRow();
-            }
-            $helps = $helps->get();
-
-
-            if($type == 1){
                 foreach ($helps as $help) {
-                    $this->sheet->setCellValue('A' . $this->i, $help->help_id);
-                    $this->sheet->setCellValue('B' . $this->i, Carbon::parse($help->help_create_date)->format('d.m.Y'));
-                    $this->sheet->setCellValue('C' . $this->i, $help->add_help_name);
-//                    $sphere='';
-//                    foreach ($help->addHelpTypes as $i=> $addHelpType){
-//                        $commar= '';
-//                        if($i!=(count($help->addHelpTypes)-1) && $i !=0){
-//                            $commar = ',';
-//                        }
-//                        $sphere .=$addHelpType->name_ru . $commar;
-//                    }
-//                    $this->sheet->setCellValue('C' . $this->i, $sphere);
-                    $this->sheet->setCellValue('D' . $this->i, $help->region_title);
-                    $this->nextRow();
-                }
-            }else{
-                foreach ($helps as $help) {
-                    $this->sheet->setCellValue('A' . $this->i, $help->admin_email. ' ('.$help->admin_id.')') ;
-                    $this->sheet->setCellValue('B' . $this->i, $help->help_id);
-                    $this->sheet->setCellValue('C' . $this->i, Carbon::parse($help->history_create_date)->format('d.m.Y'));
-                    $this->sheet->setCellValue('D' . $this->i, $this->getStatus($help->history_status));
+                    $this->sheet->setCellValue('A' . $this->i, $help->admin->email. ' ('.$help->admin->id.')') ;
+                    $this->sheet->setCellValue('B' . $this->i, $help->help->id);
+                    $this->sheet->setCellValue('C' . $this->i, Carbon::parse($help->created_at)->format('d.m.Y H:i'));
+                    $this->sheet->setCellValue('D' . $this->i, $this->getStatus($help->status));
                     $this->sheet->setCellValue('E' . $this->i, $help->desc);
-                    $this->sheet->setCellValue('F' . $this->i, $help->region_title);
-                    $this->sheet->setCellValue('G' . $this->i, $help->add_help_name);
+                    $this->sheet->setCellValue('F' . $this->i, $help->help->region->title_ru);
+                    $addHelpTypes = '';
+                    foreach ($help->help->addHelpTypes as $addHelpType){
+                        $addHelpTypes .= $addHelpType->name_ru . ',';
+                    }
+                    $this->sheet->setCellValue('G' . $this->i, $addHelpTypes);
                     $this->nextRow();
-//                    foreach ($help->adminHistory as $adminHistory) {
-//                        $this->sheet->setCellValue('A' . $this->i, $help->user->id);
-//                        $this->sheet->setCellValue('B' . $this->i, $help->id);
-//                        $this->sheet->setCellValue('C' . $this->i, Carbon::parse($adminHistory->created_at)->format('d.m.Y'));
-//                        $this->sheet->setCellValue('D' . $this->i, $adminHistory->status);
-//                        $this->sheet->setCellValue('E' . $this->i, $adminHistory->desc);
-//                        $this->sheet->setCellValue('F' . $this->i, $help->region_title);
-//                        $sphere = '';
-//                        foreach ($help->addHelpTypes as $i=> $addHelpType){
-//                            $commar= '';
-//                            if($i!=(count($help->addHelpTypes)-1) && $i !=0){
-//                                $commar = ',';
-//                            }
-//                            $sphere .=$addHelpType->name_ru . $commar;
-//                        }
-//                        $this->sheet->setCellValue('G' . $this->i, $sphere);
-//                        $this->nextRow();
-//                    }
 
                 }
             }
