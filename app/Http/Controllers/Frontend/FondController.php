@@ -272,6 +272,16 @@ class FondController extends Controller
         }
         return view('frontend.fond.request_help')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios', 'help'));
     }
+    public function testRequestHelp(){
+        $help = null;
+        $scenarios = Scenario::select('id', 'name_ru', 'name_kz')->with(['addHelpTypes', 'destinations'])->get()->toArray();
+        $baseHelpTypes = AddHelpType::all();
+        $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->get();
+        $destinations = Destination::all();
+        $cashHelpTypes = CashHelpType::all();
+        $cashHelpSizes = CashHelpSize::all();
+        return view('frontend.fond.request_help_new')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios', 'help'));
+    }
 
     public function fonds(Request $request)
     {
