@@ -30,6 +30,9 @@
                     <div class="col-sm-8">
                         <form action="{{route('request_help')}}" method="POST" id="request_help" enctype="multipart/form-data">
                             @csrf
+                            @if($help)
+                                <input type="hidden" name="help_id" value="{{$help->id}}">
+                            @endif
                             <div class="miniFormBlock">
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -156,6 +159,31 @@
                                             <span>Укажите, в каком именно вопросе Вам требуется помощь.</span>
                                         </label>
                                         <textarea name="body" required placeholder="{{trans('fonds.desc-help')}}*" id="helpBody" required>@if($help){{$help->body}}@else{{old('body')}}@endif</textarea>
+                                    </div>
+                                    
+                                    <div class="col-sm-12 formGroup">
+                                        <label class="required">
+                                            <span>Укажите, какой тип помощи Вам необходим.</span>
+                                            <i>Возможно, Вам нужна финансовая разовая помощь (например, оплатить операцию), или финансовая помощь, но на постоянной основе (например, если Вы мать-одиночка, и Вам нужно каждый месяц содержать детей). Возможно, Вам нужна помощь волонтеров (если Вы одинокий пожилой человек, которому требуется уход), или материальная помощь (например, закупить мебель в детский дом). Возможно, Вам требуется консультация (например, Вы не знаете, как оформить алименты в случае развода), или сопровождение (например, Вы проживаете в селе, но Вам нужно сделать операцию в городе, и у Вас нет возможности добраться до него самостоятельно). Возможно, Вам нужна помощь в логистике (например, привезти закупленные в городе лекарства в Ваше село), или Вам негде жить, и Вам необходимо временное жилье.</i>
+                                        </label>
+                                        <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes" required>
+                                            @foreach($cashHelpTypes as $destination)
+                                                @if($destination['id'] != 3)
+                                                    <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 formGroup">
+                                        <label class="required">
+                                            <span>Укажите примерную сумму требуемой помощи.</span>
+                                            <i>Понимая размер необходимой помощи, организации могут определить, обладают ли они нужными ресурсами, чтобы Вам помочь.</i>
+                                        </label>
+                                        <select name="cash_help_size_id" class="select2 w-100" placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes" required>
+                                            @foreach($cashHelpSizes as $destination)
+                                                <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="col-sm-12 formGroup">
                                         <label class="required">
