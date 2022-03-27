@@ -108,18 +108,29 @@
         $('#destinations2').empty();
         $('#destinations3').empty();
         $('#destinations4').empty();
+
+        var show_array2 = [17,18,23,24];
+        var show_array3 = [25,26];
+        var show_array4 = [28,29,30,31,32,33,34,35,36,37];
+
         for (let [key, value] of Object.entries(scenarios[scenario_index].destinations)) {
             if (value.parent_id == 0) {
                 firstDestinations.push({id: value.id, text: value.name_ru});
             }
             if (value.parent_id == 1) {
-                secondDestinations.push({id: value.id, text: value.name_ru});
+                if(show_array2.indexOf(value.id) !== -1){
+                    secondDestinations.push({id: value.id, text: value.name_ru});
+                }
             }
             if (value.parent_id == 2) {
-                thirdDestinations.push({id: value.id, text: value.name_ru});
+                if(show_array3.indexOf(value.id) !== -1) {
+                    thirdDestinations.push({id: value.id, text: value.name_ru});
+                }
             }
             if (value.parent_id == 3) {
-                fourDestinations.push({id: value.id, text: value.name_ru});
+                if(show_array4.indexOf(value.id) !== -1) {
+                    fourDestinations.push({id: value.id, text: value.name_ru});
+                }
             }
         }
 

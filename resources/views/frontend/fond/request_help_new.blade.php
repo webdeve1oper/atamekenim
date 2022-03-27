@@ -57,6 +57,23 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col-sm-6 districts" style="display: none">
+                                        <div class="formGroup">
+                                            <label><span>{{trans('fonds.disctrit')}}</span></label>
+                                            <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts">
+                                                <option value="0"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 cities" style="display: none">
+                                        <div class="formGroup">
+                                            <label><span>{{trans('fonds.city')}}</span></label>
+                                            <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities">
+                                                <option value="0"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -73,15 +90,16 @@
                                         </label>
                                         <select name="who_need_help" id="who_need_help" class="" required>
                                              <option value="" disabled selected>Выбрать из списка</option>Выбрать из списка</option>
+                                            <?php $show_array1 = [2,3] ?>
                                             @if($help)
                                                 @foreach($scenarios as $value => $scenario)
-                                                    @if($scenario['id'] != 6)
+                                                    @if(in_array($scenario['id'], $show_array1))
                                                         <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
                                                     @endif
                                                 @endforeach
                                             @else
                                                 @foreach($scenarios as $value => $scenario)
-                                                    @if($scenario['id'] != 6)
+                                                    @if(in_array($scenario['id'], $show_array1))
                                                         <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
                                                     @endif
                                                 @endforeach
@@ -140,7 +158,7 @@
                                         <textarea name="body" required placeholder="{{trans('fonds.desc-help')}}*" id="helpBody" required>@if($help){{$help->body}}@else{{old('body')}}@endif</textarea>
                                     </div>
                                     <div class="col-sm-12 formGroup">
-                                        <label>
+                                        <label class="required">
                                             <span>Укажите, насколько срочным является Ваш случай.</span>
                                         </label>
                                         <select name="urgency_date" class="select2 w-100" placeholder="{{trans('fonds.indicate-urgency-help2')}}" id="helpUrgencyDate" required>

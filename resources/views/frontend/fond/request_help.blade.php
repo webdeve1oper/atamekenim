@@ -74,20 +74,20 @@
                                             </i>
                                         </label>
                                         <select name="who_need_help" id="who_need_help" class="form-control">
-                                            @if($help)
-                                                @foreach($scenarios as $value => $scenario)
-                                                    @if($scenario['id'] != 6)
-                                                        <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                @foreach($scenarios as $value => $scenario)
-                                                    @if($scenario['id'] != 6)
-                                                        <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
-                                                    @endif
-                                                @endforeach
-                                            @endif
-
+                                                <?php $show_array1 = [2,3] ?>
+                                                @if($help)
+                                                    @foreach($scenarios as $value => $scenario)
+                                                        @if(in_array($scenario['id'], $show_array1))
+                                                            <option value="{{$scenario['id']}}" @if($help->whoNeedHelp->id== $scenario['id']) selected @endif>{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    @foreach($scenarios as $value => $scenario)
+                                                        @if(in_array($scenario['id'], $show_array1))
+                                                            <option value="{{$scenario['id']}}">{{$scenario['name_'.app()->getLocale()] ?? $scenario['name_ru']}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                         </select>
                                     </div>
                                 </div>
