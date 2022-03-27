@@ -106,7 +106,9 @@
                                         </div>
                                         <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @if(isset($help->cashHelpSize->name_ru))
+                                                <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @endif
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
@@ -136,7 +138,7 @@
                                             @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED)
                                                 @if($help->id > 31205)
                                                     <div class="alert alert-danger mt-4">
-                                                        {{ trans('home.without-kh') }}
+                                                        {{ trans('home.help_registered') }}
                                                     </div>
                                                 @endif
                                             @endif
@@ -172,9 +174,11 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @if(isset($help->cashHelpSize->name_ru))
+                                                <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @endif
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">Кому:</p>
@@ -234,11 +238,15 @@
                                         </div>
                                         <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @if(isset($help->cashHelpSize->name_ru))
+                                                <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @endif
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
+                                            @if(isset($help->whoNeedHelp->name_ru))
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                         <div class="col-sm-4">
@@ -284,11 +292,15 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @if(isset($help->cashHelpSize->name_ru))
+                                                <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @endif
                                         </div>
                                         <div class="col-sm-3">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
-                                            <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @if(isset($help->whoNeedHelp->name_ru))
+                                                <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                     </div>
@@ -317,11 +329,15 @@
                                         </div>
                                         <div class="col-sm-1">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
-                                            <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @if(isset($help->cashHelpSize->name_ru))
+                                                <p>{{ $help->cashHelpSize->name_ru }}</p>
+                                            @endif
                                         </div>
                                         <div class="col-sm-2">
                                             <p class="name">{{trans('cabinet-appl.who')}}</p>
-                                            <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @if(isset($help->whoNeedHelp->name_ru))
+                                                <p>{{$help->whoNeedHelp->name_ru}}</p>
+                                            @endif
                                             <a href="{{ route('cabinet_help_page',$help->id) }}" class="btn btn-success mt-4">{{trans('cabinet-appl.more-appl')}}</a>
                                         </div>
                                         <div class="col-sm-4">
