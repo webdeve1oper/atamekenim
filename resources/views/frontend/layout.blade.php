@@ -152,7 +152,7 @@
             <div class="col-sm-2">
                 <ul>
                     {{--<li><a href="{{route('dev')}}">{{trans('home.call-center')}}</a></li>--}}
-                    <li><a href="https://wa.me/7763337766">WhatsApp</a></li>
+                    {{--<li><a href="https://wa.me/7763337766">WhatsApp</a></li>--}}
 {{--                    <li><a href="{{route('dev')}}">{{trans('home.social')}}</a></li>--}}
                 </ul>
             </div>
