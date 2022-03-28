@@ -191,7 +191,7 @@ class CabinetController extends Controller
             $destinations = Destination::all();
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
-            return view('frontend.fond.request_help')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
+            return view('frontend.fond.request_help_new')->with(compact('help', 'scenarios', 'baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes'));
         } else {
             return redirect()->route('cabinet')->with(['error' => 'Это заявка не пренадлежит Вам!']);
         }
@@ -272,16 +272,22 @@ class CabinetController extends Controller
     public function deleteImage(Request $request)
     {
         $image = HelpImage::find($request->id);
-        \File::delete(public_path($image->image));
-        $image->delete();
-        return 'success';
+        if(isset($image->image)){
+            \File::delete(public_path($image->image));
+            $image->delete();
+            return 'success';
+        }
+       return  'error';
     }
 
     public function deleteFile(Request $request)
     {
         $file = HelpDoc::find($request->id);
-        \File::delete(public_path($file->path));
-        $file->delete();
-        return 'success';
+        if(isset($file->path)){
+            \File::delete(public_path($file->path));
+            $file->delete();
+            return 'success';
+        }
+        return 'error';
     }
 }

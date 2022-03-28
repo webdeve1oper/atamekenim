@@ -166,6 +166,7 @@ class UserAuthController extends Controller
                 ],
             ]);
         } catch (GuzzleException $e) {
+            Log::info($e);
             return false;
         }
         if($response){
@@ -226,6 +227,7 @@ class UserAuthController extends Controller
 //                }
                 return $attempts;
             } catch (GuzzleException $e) {
+                Log::info($e);
                 return false;
             }
         }

@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware'=>['auth:fond','check.fond.status']], function(){
+Route::group(['middleware'=>['auth:fond','check.fond.status', 'throttle:100,1']], function(){
     Route::get('/cabinet/fond', 'Backend\FondController@index')->name('fond_cabinet');
     Route::post('/cabinet/fond/requisite/create', 'Backend\FondController@requisiteCreate')->name('requisite_create');
     Route::post('/cabinet/fond/requisite/edit/{id}', 'Backend\FondController@requisiteEdit')->name('requisite_edit');

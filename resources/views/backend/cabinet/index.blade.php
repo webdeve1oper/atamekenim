@@ -104,7 +104,7 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 d-none">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             @if(isset($help->cashHelpSize->name_ru))
                                                 <p>{{ $help->cashHelpSize->name_ru }}</p>
@@ -174,7 +174,7 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 d-none">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             @if(isset($help->cashHelpSize->name_ru))
                                                 <p>{{ $help->cashHelpSize->name_ru }}</p>
@@ -236,7 +236,7 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 d-none">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             @if(isset($help->cashHelpSize->name_ru))
                                                 <p>{{ $help->cashHelpSize->name_ru }}</p>
@@ -290,7 +290,7 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-2 d-none">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             @if(isset($help->cashHelpSize->name_ru))
                                                 <p>{{ $help->cashHelpSize->name_ru }}</p>
@@ -327,7 +327,7 @@
                                             <p class="name">{{trans('cabinet-appl.desc-appl')}}</p>
                                             <p>{{mb_substr($help->body, 0, 50)}}...</p>
                                         </div>
-                                        <div class="col-sm-1">
+                                        <div class="col-sm-1 d-none">
                                             <p class="name">{{trans('cabinet-appl.summ')}}</p>
                                             @if(isset($help->cashHelpSize->name_ru))
                                                 <p>{{ $help->cashHelpSize->name_ru }}</p>

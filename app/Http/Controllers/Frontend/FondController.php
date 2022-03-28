@@ -96,6 +96,8 @@ class FondController extends Controller
                     $data['fond_status'] = 'moderate';
                     $help->update($data);
                 } else {
+                    $data['cashHelpTypes'] = [10];
+                    $data['cash_help_size_id'] = 13;
                     $help = Help::create($data);
                     $is_created = true;
                 }
@@ -194,7 +196,7 @@ class FondController extends Controller
                             }
                         }
                     }
-
+                    $inputs['cashHelpTypes'] = [10];
                     foreach ($fond['cash_help_types'] as $cashHelpType) {
                         if (in_array($cashHelpType['id'], $inputs['cashHelpTypes'])) {
                             $fondsByPoints[$key]['points'] += 5;
@@ -256,7 +258,8 @@ class FondController extends Controller
                     }
                 }
                 if (isset($request->cashHelpTypes) && !empty($request->cashHelpTypes)) {
-                    $help->cashHelpTypes()->sync($request->cashHelpTypes);
+//                    $help->cashHelpTypes()->sync($request->cashHelpTypes);
+                    $help->cashHelpTypes()->sync([10]);
                 }
             $help->fonds()->sync($fondsids);
             return redirect()->route('cabinet')->with(['success' => 'Ваша заявка успешно отправлена!', 'info' => 'Заявка отправлена на модерацию']);
@@ -270,7 +273,7 @@ class FondController extends Controller
             $cashHelpTypes = CashHelpType::all();
             $cashHelpSizes = CashHelpSize::all();
         }
-        return view('frontend.fond.request_help')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios', 'help'));
+        return view('frontend.fond.request_help_new')->with(compact('baseHelpTypes', 'regions', 'destinations', 'cashHelpTypes', 'cashHelpSizes', 'scenarios', 'help'));
     }
     public function testRequestHelp(){
         $help = null;

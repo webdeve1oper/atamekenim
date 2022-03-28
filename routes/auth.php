@@ -11,10 +11,10 @@ Route::get('dev-auth', 'UserAuthController@userDevAuth')->name('user_dev_auth')-
 
 //Fond Auth
 Route::get('login-fond', 'FondAuthController@index')->name('login-fond');
-Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond')->middleware('throttle:3,5');
+Route::post('post-login-fond', 'FondAuthController@postLogin')->name('post_login_fond')->middleware('throttle:5,5');
 Route::get('registration_fond', 'FondAuthController@registration')->name('registration_fond');
-Route::post('post-registration-fond', 'FondAuthController@postRegistration')->name('post_registration_fond')->middleware('throttle:3,5');
+Route::post('post-registration-fond', 'FondAuthController@postRegistration')->name('post_registration_fond')->middleware('throttle:5,5');
 
 //Admin Auth
 Route::get('admin-login', 'AdminAuthController@index')->name('admin_login');
-Route::post('admin-post-login', 'AdminAuthController@postLogin')->name('admin_post_login')->middleware('throttle:3,5');
+Route::post('admin-post-login', 'AdminAuthController@postLogin')->name('admin_post_login')->middleware('throttle:5,5');

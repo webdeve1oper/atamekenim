@@ -32,7 +32,7 @@ Route::get('/help/{id}', 'Frontend\MainController@helpPage')->name('help');
 Route::get('/help-page', 'Frontend\MainController@help')->name('help-page');
 Route::get('/reviews', 'Frontend\MainController@reviews')->name('allreviews');
 //Route::get('/fonds', 'Frontend\FondController@fonds')->name('fonds');
-Route::get('/organizations', 'Frontend\FondController@fonds')->name('fonds')->middleware('throttle:5,1');
+Route::get('/organizations', 'Frontend\FondController@fonds')->name('fonds')->middleware('throttle:8,1');
 Route::get('/news', 'Frontend\MainController@news')->name('news');
 Route::get('/news/{slug}', 'Frontend\MainController@new')->name('new');
 Route::get('/export', 'ExcelController@export');

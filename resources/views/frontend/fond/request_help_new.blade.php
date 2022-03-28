@@ -160,13 +160,13 @@
                                         </label>
                                         <textarea name="body" required placeholder="{{trans('fonds.desc-help')}}*" id="helpBody" required>@if($help){{$help->body}}@else{{old('body')}}@endif</textarea>
                                     </div>
-                                    
-                                    <div class="col-sm-12 formGroup">
+
+                                    <div class="col-sm-12 formGroup d-none">
                                         <label class="required">
                                             <span>Укажите, какой тип помощи Вам необходим.</span>
                                             <i>Возможно, Вам нужна финансовая разовая помощь (например, оплатить операцию), или финансовая помощь, но на постоянной основе (например, если Вы мать-одиночка, и Вам нужно каждый месяц содержать детей). Возможно, Вам нужна помощь волонтеров (если Вы одинокий пожилой человек, которому требуется уход), или материальная помощь (например, закупить мебель в детский дом). Возможно, Вам требуется консультация (например, Вы не знаете, как оформить алименты в случае развода), или сопровождение (например, Вы проживаете в селе, но Вам нужно сделать операцию в городе, и у Вас нет возможности добраться до него самостоятельно). Возможно, Вам нужна помощь в логистике (например, привезти закупленные в городе лекарства в Ваше село), или Вам негде жить, и Вам необходимо временное жилье.</i>
                                         </label>
-                                        <select name="cashHelpTypes[]" class="select2 w-100" multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes" required>
+                                        <select name="cashHelpTypes[]" class="select2 w-100 " multiple placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpTypes" >
                                             @foreach($cashHelpTypes as $destination)
                                                 @if($destination['id'] != 3)
                                                     <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
@@ -174,12 +174,12 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 formGroup">
+                                    <div class="col-sm-12 formGroup d-none">
                                         <label class="required">
                                             <span>Укажите примерную сумму требуемой помощи.</span>
                                             <i>Понимая размер необходимой помощи, организации могут определить, обладают ли они нужными ресурсами, чтобы Вам помочь.</i>
                                         </label>
-                                        <select name="cash_help_size_id" class="select2 w-100" placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes" required>
+                                        <select name="cash_help_size_id" class="select2 w-100 " placeholder="{{trans('fonds.type-rendered-help')}}" id="cashHelpSizes" >
                                             @foreach($cashHelpSizes as $destination)
                                                 <option value="{{$destination['id']}}">{{$destination['name_'.app()->getLocale()] ?? $destination['name_ru']}}</option>
                                             @endforeach
@@ -201,7 +201,7 @@
                                         <label>
                                             <span>Видео (загрузите ссылку на видеообращение в социальных сетях или средствах массовой информации)</span>
                                         </label>
-                                        <input type="text" name="video" value="@if($help) {{$help->video}} @endif" class="" placeholder="Выберете один или несколько социальных статусов">
+                                        <input type="text" name="video" value="@if($help) {{$help->video}} @endif" class="" placeholder="">
                                         {{--                                        <button>Добавить еще ссылку <img src="" alt=""></button>--}}
                                     </div>
                                     <div class="col-sm-12 formGroup">
