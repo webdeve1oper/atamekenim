@@ -354,20 +354,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header" id="headingThree">
-                                    <p class="mb-0">
-                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                            {{trans('home.how-to-needy')}}<i class="fas fa-angle-down"></i>
-                                        </button>
-                                    </p>
-                                </div>
-                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                                    <div class="card-body">
-                                        {{trans('home.how-to-needy-text')}}
-                                    </div>
-                                </div>
-                            </div>
+                            {{--<div class="card">--}}
+                                {{--<div class="card-header" id="headingThree">--}}
+                                    {{--<p class="mb-0">--}}
+                                        {{--<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">--}}
+                                            {{--{{trans('home.how-to-needy')}}<i class="fas fa-angle-down"></i>--}}
+                                        {{--</button>--}}
+                                    {{--</p>--}}
+                                {{--</div>--}}
+                                {{--<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">--}}
+                                    {{--<div class="card-body">--}}
+                                        {{--{{trans('home.how-to-needy-text')}}--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                             <div class="card">
                                 <div class="card-header" id="headingFour">
                                     <p class="mb-0">
@@ -447,34 +447,34 @@
                                      </div>
                                  </div>
                              </div>
-                             <div class="card">
-                                 <div class="card-header" id="headinThree">
-                                     <p class="mb-0">
-                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeThree" aria-expanded="false" aria-controls="collapeThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                             {{trans('home.rfaq3')}}<i class="fas fa-angle-down"></i>
-                                         </button>
-                                     </p>
-                                 </div>
-                                 <div id="collapeThree" class="collapse" aria-labelledby="headinThree" data-parent="#accordion">
-                                     <div class="card-body">
-                                         {{trans('home.rfaq3-text')}}
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="card">
-                                 <div class="card-header" id="headinFour">
-                                     <p class="mb-0">
-                                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeFour" aria-expanded="false" aria-controls="collapeFour" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">
-                                             {{trans('home.rfaq4')}}<i class="fas fa-angle-down"></i>
-                                         </button>
-                                     </p>
-                                 </div>
-                                 <div id="collapeFour" class="collapse" aria-labelledby="headinFour" data-parent="#accordion">
-                                     <div class="card-body">
-                                         {{trans('home.rfaq4-text')}}
-                                     </div>
-                                 </div>
-                             </div>
+                             {{--<div class="card">--}}
+                                 {{--<div class="card-header" id="headinThree">--}}
+                                     {{--<p class="mb-0">--}}
+                                         {{--<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeThree" aria-expanded="false" aria-controls="collapeThree" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">--}}
+                                             {{--{{trans('home.rfaq3')}}<i class="fas fa-angle-down"></i>--}}
+                                         {{--</button>--}}
+                                     {{--</p>--}}
+                                 {{--</div>--}}
+                                 {{--<div id="collapeThree" class="collapse" aria-labelledby="headinThree" data-parent="#accordion">--}}
+                                     {{--<div class="card-body">--}}
+                                         {{--{{trans('home.rfaq3-text')}}--}}
+                                     {{--</div>--}}
+                                 {{--</div>--}}
+                             {{--</div>--}}
+                             {{--<div class="card">--}}
+                                 {{--<div class="card-header" id="headinFour">--}}
+                                     {{--<p class="mb-0">--}}
+                                         {{--<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapeFour" aria-expanded="false" aria-controls="collapeFour" onclick="$('.card').removeClass('active');$(this).parents('.card').addClass('active');">--}}
+                                             {{--{{trans('home.rfaq4')}}<i class="fas fa-angle-down"></i>--}}
+                                         {{--</button>--}}
+                                     {{--</p>--}}
+                                 {{--</div>--}}
+                                 {{--<div id="collapeFour" class="collapse" aria-labelledby="headinFour" data-parent="#accordion">--}}
+                                     {{--<div class="card-body">--}}
+                                         {{--{{trans('home.rfaq4-text')}}--}}
+                                     {{--</div>--}}
+                                 {{--</div>--}}
+                             {{--</div>--}}
                              <div class="card">
                                  <div class="card-header" id="headinFive">
                                      <p class="mb-0">
