@@ -56,9 +56,9 @@
 {{--                    <li>--}}
 {{--                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:1432">1432</a></p>--}}
 {{--                    </li>--}}
-                    <li>
-                        <p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>
-                    </li>
+                    {{--<li>--}}
+                        {{--<p class="call"><span>{{trans('home.call-center')}}</span><a href="tel:+77763337766">+7 776 333 77 66</a></p>--}}
+                    {{--</li>--}}
                     <li>
                         <a class="nav-link langSwitcher" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             {{ strtoupper(app()->getLocale()) }}<i class="fas fa-chevron-down"></i>
