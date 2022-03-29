@@ -132,8 +132,8 @@
                             @endif
                         </p>
                         <p><span>Сфера необходимой помощи:</span>@foreach($help->addHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
-                        <p class="d-none"><span>Тип помощи:</span>@foreach($help->cashHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
-                        <p class="d-none"><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>
+{{--                        <p class="d-none"><span>Тип помощи:</span>@foreach($help->cashHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>--}}
+{{--                        <p class="d-none"><span>Сумма необходимой помощи:</span>{{ $help->cashHelpSize->name_ru }}</p>--}}
                         <p><span>Ссылка на видео:</span>--</p>
                         <p><span>Срочность:</span><?php
                             switch ($help->urgency_date) {

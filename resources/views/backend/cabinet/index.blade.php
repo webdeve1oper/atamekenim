@@ -135,7 +135,7 @@
                                                 @endif
                                             @endif
 
-                                            @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED)
+                                            @if($help->status_kh == \App\Help::STATUS_KH_NOT_APPROVED and $help->admin_status == 'moderate')
                                                 @if($help->id > 31205)
                                                     <div class="alert alert-danger mt-4">
                                                         {{ trans('home.help_registered') }}
