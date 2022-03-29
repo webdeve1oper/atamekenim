@@ -1,6 +1,8 @@
 @extends('backend.admin.layout')
 
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <div class="row">
         @include('frontend.alerts')
         <div class="col-sm-5 mt-2 mb-2">
@@ -96,6 +98,56 @@
 
             <form action="{{ route('update_help_from_admin',$help->id) }}" method="POST">
                 @csrf
+                <div class="form-group mb-4 baseHelpTypes">
+                    <label for="baseHelpTypes">{{trans('fonds.check-scope-help')}}</label>
+                    <?php $help_add_helps = $help->addHelpTypes->pluck('id')->toArray(); ?>
+                    <select name="baseHelpTypes[]" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
+                        @foreach($baseHelpTypes as $id=> $baseHelpType)
+                            @if(in_array($id, $help_add_helps))
+                                <option value="{{$id}}" selected>{{$baseHelpType}}</option>
+                            @else
+                                <option value="{{$id}}">{{$baseHelpType}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <small class="form-text text-muted">{{trans('fonds.scope-help')}}</small>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 regions">
+                        <div class="form-group mb-4">
+                            {{--<label for="regions">{{trans('fonds.indicate-place-help')}}</label>--}}
+                            <label for="regions">
+                                Укажите, где Вы сейчас проживаете.
+                            </label>
+                            <select name="region_id" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="regions" required>
+                                @foreach($regions as $region)
+                                    @if($region->region_id != 728)
+                                        <option value="{{$region->region_id}}">{{$region->text}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <small>{{trans('fonds.name-settlement')}}</small>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 districts" style="display: none">
+                        <div class="form-group mb-4">
+                            <label for="">{{trans('fonds.disctrit')}}</label>
+                            <select name="district_id" class="select2 w-100" placeholder="Тип помощи" id="districts">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 cities" style="display: none">
+                        <div class="form-group mb-4">
+                            <label for="">{{trans('fonds.city')}}</label>
+                            <select name="city_id" class="select2 w-100" placeholder="Тип помощи" id="cities">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <textarea name="help_body" id="helpBody" style="width: 100%;height: 400px" placeholder="Введите описание">
                     {{ $help->body }}
                 </textarea>
@@ -286,7 +338,96 @@
             </div>
         </div>
     </div>
+
     <script>
+        var json = {!! $regions->toJson() !!};
+        var region = null;
+        var city = null;
+        var district = null;
+        region = {{$help->region->region_id}};
+        city = {!! $help->city->city_id??'""' !!};
+        district = {!! $help->district->district_id??'""' !!};
+        $(document).ready(function(){
+            $('#baseHelpTypes').select2({
+                width: '100%',
+                placeholder: 'Сфера необходимой помощи',
+                minimumResultsForSearch: -1
+            });
+
+            $('#regions').change(function () {
+                var ind = $('#regions').children('option:selected').val();
+                var datas = [];
+                json.forEach(function (value, index) {
+                    if (value.region_id == ind) {
+                        ind = index;
+                    }
+                });
+
+                $('#districts').empty();
+                datas.push({id: '0', text: ''});
+                for (let [key, value] of Object.entries(json[ind].districts)) {
+                    datas.push({id: value.district_id, text: value.text});
+                }
+
+
+                if(datas.length > 1){
+                    $('.districts').show();
+                    $('#districts').select2({data: datas, allowClear: true});
+                }else{
+                    $('.districts').hide();
+                    $('#districts').select2({data: [{id: '0', text: ''}], allowClear: true});
+                    $('.districts option').first().prop('selected', true);
+                    $('.cities').hide();
+                    $('.cities option').first().prop('selected', true);
+                }
+            });
+
+            $('#districts').change(function () {
+                var region_id = $('#regions').children('option:selected').val();
+                var district_id = $('#districts').children('option:selected').val();
+                var datas = [];
+
+                json.forEach(function (value, index) {
+                    if (value.region_id == region_id) {
+                        region_id = index;
+                        value.districts.forEach(function (v, i) {
+                            if (v.district_id == district_id) {
+                                district_id = i;
+                            }
+                        });
+                    }
+                });
+
+                $('#cities').empty();
+                datas.push({id: 0, text: '-'});
+                for (let [key, value] of Object.entries(json[region_id].districts[district_id].cities)) {
+                    datas.push({id: value.city_id, text: value.title_ru});
+                }
+                if(datas.length > 1){
+                    $('.cities').show();
+                    $('#cities').select2({data: datas, allowClear: true});
+                }else{
+                    $('.cities').hide();
+                    $('#districts').select2({data: [{id: '0', text: ''}], allowClear: true});
+                }
+
+            });
+            if(region){
+                $("select#regions option[value='"+region+"']").prop('selected', true);
+                $("select#regions option[value='"+region+"']").change();
+            }
+            if(district){
+                // Выбор района
+                $("select#districts option[value='"+district+"']").prop('selected', true);
+                $("select#districts option[value='"+district+"']").change();
+            }
+            if(city){
+                // Выбор города
+                $("select#cities option[value='"+city+"']").prop('selected', true);
+                $("select#cities option[value='"+city+"']").change();
+            }
+
+        });
         $('#exampleModal2 #floatingSelect').change(function (){
             var new_value = $('#exampleModal2 #floatingSelect option:selected').val();
             if(new_value == '5'){

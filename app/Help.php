@@ -107,7 +107,7 @@ class Help extends Model
 
     public function comments()
     {
-        return $this->hasMany(History::class, 'help_id', 'id')->orderBy('created_at', 'desc');
+        return $this->hasMany(History::class, 'help_id', 'id')->orderBy('created_at', 'desc')->where('status', '!=', 'edited_by_admin');
     }
 
     public function lastComment()

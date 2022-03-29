@@ -250,7 +250,9 @@ class AdminController extends Controller
     public function checkHelp($id){
         if(Auth::user()->role_id <= 3){
             $help = Help::whereId($id)->first();
-            return view('backend.admin.help-layout')->with(compact('help'));
+            $baseHelpTypes = AddHelpType::pluck('name_ru', 'id')->toArray();
+            $regions = Region::select('region_id', 'title_ru as text')->with('districts.cities')->get();
+            return view('backend.admin.help-layout')->with(compact('help', 'baseHelpTypes', 'regions'));
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
@@ -258,9 +260,52 @@ class AdminController extends Controller
     public function editHelpBodyFromAdmin(Request $request, $id){
         if(Auth::user()->role_id <= 2){
             $help = Help::whereId($id)->first();
-            $help->body = $request->help_body;
-            $help->save();
-            return view('backend.admin.help-layout')->with(compact('help'));
+            $data = $request->all();
+            $description = '';
+            $data['body'] = $request->help_body;
+            if($data['body']!=$help->body){
+                $description .= 'Описание';
+            }
+            if (array_key_exists('region_id', $data)) {
+                if ($data['region_id'] == 0) {
+                    unset($data['region_id']);
+                }
+                if($data['region_id']!=$help->region_id){
+                    $description .= ' регион';
+                }
+            }
+            if (array_key_exists('district_id', $data)) {
+                if ($data['district_id'] == 0) {
+                    unset($data['district_id']);
+                }
+                if($data['district_id']!=$help->district_id) {
+                    $description .= ' район';
+                }
+            }
+            if (array_key_exists('city_id', $data)) {
+                if ($data['city_id'] == 0) {
+                    unset($data['city_id']);
+                }
+                if($data['city_id']!=$help->city_id) {
+                    $description .= ' город';
+                }
+            }
+            $current_help_types = $help->addHelpTypes()->pluck('id');
+            if(isset($current_help_types)){
+                if($current_help_types[0]!=$request->baseHelpTypes[0]){
+                    $description .= ' сфера';
+                }
+            }
+            $help->addHelpTypes()->sync($request->baseHelpTypes);
+            $help->update($data);
+            $new_history = new History();
+            $new_history->desc = $description;
+            $new_history->help_id = $help->id;
+            $new_history->admin_id = Auth::user()->id;
+            $new_history->status = 'edited_by_admin';
+            $new_history->save();
+//            return view('backend.admin.help-layout')->with(compact('help'));
+            return redirect()->back();
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
