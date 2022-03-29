@@ -372,6 +372,7 @@
 
                 if(datas.length > 1){
                     $('.districts').show();
+                    $('#cities').empty();
                     $('#districts').select2({data: datas, allowClear: true});
                 }else{
                     $('.districts').hide();

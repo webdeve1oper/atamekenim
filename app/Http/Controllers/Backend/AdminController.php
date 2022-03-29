@@ -268,7 +268,7 @@ class AdminController extends Controller
             }
             if (array_key_exists('region_id', $data)) {
                 if ($data['region_id'] == 0) {
-                    unset($data['region_id']);
+                    $data['region_id'] = null;
                 }
                 if($data['region_id']!=$help->region_id){
                     $description .= ' регион';
@@ -276,7 +276,7 @@ class AdminController extends Controller
             }
             if (array_key_exists('district_id', $data)) {
                 if ($data['district_id'] == 0) {
-                    unset($data['district_id']);
+                    $data['district_id'] = null;
                 }
                 if($data['district_id']!=$help->district_id) {
                     $description .= ' район';
@@ -286,7 +286,7 @@ class AdminController extends Controller
             }
             if (array_key_exists('city_id', $data)) {
                 if ($data['city_id'] == 0) {
-                    unset($data['city_id']);
+                    $data['city_id'] = null;
                 }
                 if($data['city_id']!=$help->city_id) {
                     $description .= ' город';
