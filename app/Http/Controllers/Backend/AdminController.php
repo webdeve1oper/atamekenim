@@ -281,6 +281,8 @@ class AdminController extends Controller
                 if($data['district_id']!=$help->district_id) {
                     $description .= ' район';
                 }
+            }else{
+                $data['district_id'] = null;
             }
             if (array_key_exists('city_id', $data)) {
                 if ($data['city_id'] == 0) {
@@ -289,6 +291,8 @@ class AdminController extends Controller
                 if($data['city_id']!=$help->city_id) {
                     $description .= ' город';
                 }
+            }else{
+                $data['city_id'] = null;
             }
             $current_help_types = $help->addHelpTypes()->pluck('id');
             if(isset($current_help_types)){

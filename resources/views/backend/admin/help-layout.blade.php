@@ -98,7 +98,7 @@
 
             <form action="{{ route('update_help_from_admin',$help->id) }}" method="POST">
                 @csrf
-                <div class="form-group mb-4 baseHelpTypes">
+                <div class="form-group mb-4 baseHelpTypes  mt-sm-5">
                     <label for="baseHelpTypes">{{trans('fonds.check-scope-help')}}</label>
                     <?php $help_add_helps = $help->addHelpTypes->pluck('id')->toArray(); ?>
                     <select name="baseHelpTypes[]" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
