@@ -296,6 +296,27 @@ class AdminController extends Controller
                 if($data['region_id']!=$help->region_id){
                     $description .= ' регион';
                 }
+            }else{
+                if(array_key_exists('district_id', $data)) {
+                    if ($data['district_id'] == 0) {
+                        unset($data['district_id']);
+                    }
+                    else if($data['district_id']!=$help->district_id) {
+                        $description .= ' район';
+                    }
+                }else{
+                    unset($data['district_id']);
+                }
+                if(array_key_exists('city_id', $data)) {
+                    if ($data['city_id'] == 0) {
+                        unset($data['city_id']);
+                    }
+                    else if($data['city_id']!=$help->city_id) {
+                        $description .= ' город';
+                    }
+                }else{
+                    unset($data['city_id']);
+                }
             }
             if($request->baseHelpTypes){
                 $current_help_types = $help->addHelpTypes()->pluck('id');
