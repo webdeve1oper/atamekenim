@@ -269,40 +269,45 @@ class AdminController extends Controller
             if (array_key_exists('region_id', $data)) {
                 if ($data['region_id'] == 0) {
                     $data['region_id'] = null;
+                    unset($data['district_id']);
+                    unset($data['city_id']);
+                }else{
+                    if (array_key_exists('district_id', $data)) {
+                        if ($data['district_id'] == 0) {
+                            $data['district_id'] = null;
+                        }
+                        else if($data['district_id']!=$help->district_id) {
+                            $description .= ' район';
+                        }
+                    }else{
+                        $data['district_id'] = null;
+                    }
+                    if (array_key_exists('city_id', $data)) {
+                        if ($data['city_id'] == 0) {
+                            $data['city_id'] = null;
+                        }
+                        else if($data['city_id']!=$help->city_id) {
+                            $description .= ' город';
+                        }
+                    }else{
+                        $data['city_id'] = null;
+                    }
                 }
                 if($data['region_id']!=$help->region_id){
                     $description .= ' регион';
                 }
             }
-            if (array_key_exists('district_id', $data)) {
-                if ($data['district_id'] == 0) {
-                    $data['district_id'] = null;
-                }
-                if($data['district_id']!=$help->district_id) {
-                    $description .= ' район';
-                }
-            }else{
-                $data['district_id'] = null;
-            }
-            if (array_key_exists('city_id', $data)) {
-                if ($data['city_id'] == 0) {
-                    $data['city_id'] = null;
-                }
-                if($data['city_id']!=$help->city_id) {
-                    $description .= ' город';
-                }
-            }else{
-                $data['city_id'] = null;
-            }
-            $current_help_types = $help->addHelpTypes()->pluck('id');
-            if(isset($current_help_types[0])){
-                if($current_help_types[0]!=$request->baseHelpTypes[0]){
+            if($request->baseHelpTypes){
+                $current_help_types = $help->addHelpTypes()->pluck('id');
+                if(isset($current_help_types[0])){
+                    if($current_help_types[0]!=$request->baseHelpTypes[0]){
+                        $description .= ' сфера';
+                    }
+                }else{
                     $description .= ' сфера';
                 }
-            }elseif($request->baseHelpTypes){
-                $description .= ' сфера';
+                $help->addHelpTypes()->sync($request->baseHelpTypes);
             }
-            $help->addHelpTypes()->sync($request->baseHelpTypes);
             $help->update($data);
             $new_history = new History();
             $new_history->desc = $description;

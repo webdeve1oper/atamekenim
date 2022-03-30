@@ -9,7 +9,7 @@
             <h1>Обращение: ID{{ getHelpId($help->id) }}</h1>
         </div>
         <div class="col-sm-7">
-            @if(is_operator() && $help->admin_status == 'moderate' or is_operator() && $help->admin_status == 'edit' or is_admin() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'edit')
+            @if(is_operator() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'moderate')
                 <ul class="controlButton">
 {{--                    <li>--}}
 {{--                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>--}}
@@ -100,14 +100,16 @@
                 @csrf
                 <div class="form-group mb-4 baseHelpTypes  mt-sm-5">
                     <label for="baseHelpTypes">{{trans('fonds.check-scope-help')}}</label>
-                    <?php $help_add_helps = $help->addHelpTypes->pluck('id')->toArray(); ?>
+<!--                    --><?php //$help_add_helps = $help->addHelpTypes->pluck('id')->toArray(); ?>
                     <select name="baseHelpTypes[]" class="select2 w-100" placeholder="{{trans('fonds.scope-help')}}" id="baseHelpTypes">
+                        <option value="" selected disabled></option>
                         @foreach($baseHelpTypes as $id=> $baseHelpType)
-                            @if(in_array($id, $help_add_helps))
-                                <option value="{{$id}}" selected>{{$baseHelpType}}</option>
-                            @else
+{{--                            @if(in_array($id, $help_add_helps))--}}
+{{--                                <option value="{{$id}}" selected>{{$baseHelpType}}</option>--}}
+{{--                            @else--}}
+{{--                                <option value="{{$id}}">{{$baseHelpType}}</option>--}}
+{{--                            @endif--}}
                                 <option value="{{$id}}">{{$baseHelpType}}</option>
-                            @endif
                         @endforeach
                     </select>
                     <small class="form-text text-muted">{{trans('fonds.scope-help')}}</small>
@@ -119,7 +121,8 @@
                             <label for="regions">
                                 Укажите, где Вы сейчас проживаете.
                             </label>
-                            <select name="region_id" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="regions" required>
+                            <select name="region_id" class="select2 w-100" placeholder="{{trans('fonds.type-help')}}" id="regions">
+                                <option value="" selected disabled>Выбрать из списка</option>
                                 @foreach($regions as $region)
                                     @if($region->region_id != 728)
                                         <option value="{{$region->region_id}}">{{$region->text}}</option>
@@ -151,7 +154,7 @@
                 <textarea name="help_body" id="helpBody" style="width: 100%;height: 400px" placeholder="Введите описание">
                     {{ $help->body }}
                 </textarea>
-                <button class="btn btn-primary" type="submit" style="margin-top: 15px">Изменить описание</button>
+                <button class="btn btn-primary" type="submit" style="margin-top: 15px">Сохранить изменения</button>
             </form>
             <br>
             <br>
@@ -413,20 +416,20 @@
                 }
 
             });
-            if(region){
-                $("select#regions option[value='"+region+"']").prop('selected', true);
-                $("select#regions option[value='"+region+"']").change();
-            }
-            if(district){
-                // Выбор района
-                $("select#districts option[value='"+district+"']").prop('selected', true);
-                $("select#districts option[value='"+district+"']").change();
-            }
-            if(city){
-                // Выбор города
-                $("select#cities option[value='"+city+"']").prop('selected', true);
-                $("select#cities option[value='"+city+"']").change();
-            }
+            // if(region){
+            //     $("select#regions option[value='"+region+"']").prop('selected', true);
+            //     $("select#regions option[value='"+region+"']").change();
+            // }
+            // if(district){
+            //     // Выбор района
+            //     $("select#districts option[value='"+district+"']").prop('selected', true);
+            //     $("select#districts option[value='"+district+"']").change();
+            // }
+            // if(city){
+            //     // Выбор города
+            //     $("select#cities option[value='"+city+"']").prop('selected', true);
+            //     $("select#cities option[value='"+city+"']").change();
+            // }
 
         });
         $('#exampleModal2 #floatingSelect').change(function (){
