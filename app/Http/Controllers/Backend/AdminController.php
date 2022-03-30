@@ -295,10 +295,12 @@ class AdminController extends Controller
                 $data['city_id'] = null;
             }
             $current_help_types = $help->addHelpTypes()->pluck('id');
-            if(isset($current_help_types)){
+            if(isset($current_help_types[0])){
                 if($current_help_types[0]!=$request->baseHelpTypes[0]){
                     $description .= ' сфера';
                 }
+            }elseif($request->baseHelpTypes){
+                $description .= ' сфера';
             }
             $help->addHelpTypes()->sync($request->baseHelpTypes);
             $help->update($data);
