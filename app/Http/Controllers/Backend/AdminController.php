@@ -363,9 +363,16 @@ class AdminController extends Controller
 
             $status_name = $request->get('status_name');
             $help = Help::whereId($request->get('help_id'))->first();
-            if($help->admin_status != 'moderate'){
-                return redirect()->back()->with('error', 'Заявка уже была отработана');
+            if(is_moderator()){
+                if($help->status_kh != Help::STATUS_KH_POSSIBLY){
+                    return redirect()->back()->with('error', 'Заявка уже была отработана');
+                }
+            }else{
+                if($help->admin_status != 'moderate'){
+                    return redirect()->back()->with('error', 'Заявка уже была отработана');
+                }
             }
+
             $new_history = new History();
 
             // if finished
