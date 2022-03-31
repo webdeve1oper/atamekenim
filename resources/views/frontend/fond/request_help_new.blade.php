@@ -265,7 +265,7 @@
                                     <div class="agreeBlock">
 {{--                                        <input type="checkbox" name="agree" id="agreeButton" required>--}}
 {{--                                        <p>Согласие на обработку ваших данных <a href="#">Политика конфиденциальности</a></p>--}}
-                                        <button type="submit" id="request_help_button" style="margin-left: 0">Подать заявку</button>
+                                        <button type="submit" id="request_help_button" style="margin-left: 0" onsubmit="$(this).attr('disabled',true)">Подать заявку</button>
                                     </div>
                                 </div>
                             </div>
@@ -302,6 +302,9 @@
         }
     </style>
     <script>
+        $('#request_help').submit(function(){
+            $('#request_help_button').attr('disabled', true);
+        });
         $('#agreeButton').change(function(){
             if($(this).is(":checked")){
                 $('#request_help_button').attr('disabled', false);
