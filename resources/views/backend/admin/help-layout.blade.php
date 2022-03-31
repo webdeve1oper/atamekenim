@@ -76,7 +76,7 @@
             <p><span>Тип помощи:</span> @foreach($help->cashHelpTypes as $helps){{$helps->name_ru}}@endforeach</p>
             <p><span>Сумма необходимой помощи:</span> {{ $help->cashHelpSize->name_ru }}</p>
             <p><span>Срочность:</span> <?php
-                switch ($help->urgency_date) {
+                use Carbon\Carbon;switch ($help->urgency_date) {
                     case 1:
                         echo "в течение 1 месяца";
                         break;
@@ -340,7 +340,92 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <h5>История оператора</h5>
+        <div class="col-12 p-4" style="background-color: #ededed">
+            <?php
+            $comments = [];
+            $histories = $help->adminHistory()->orderBy('created_at', 'desc')->get();
+                foreach ($histories as $history) {
+                    $exist = false;
+                    if(isset($comments[$history->status])){
+                        foreach ($comments[$history->status] as $comment) {
+                            if($exist){
+                                break;
+                            }
+                            $comm =  Carbon::createFromTimeString($comment->created_at);
+                            $comm2 = Carbon::createFromTimeString($history->created_at);
+
+                            if($comm->format('dmy') == $comm2->format('dmy')){
+                                if($comm2->diff($comm)->i<=5){
+                                    $exist = true;
+                                }
+                            }
+                        }
+                    }
+                    if (!$exist){
+                        $comments[$history->status][] = $history;
+                    }
+                }
+            ?>
+            @if(count($comments)>0)
+                @foreach($comments as $comment_types)
+                    @if(count($comment_types)>0)
+                        @foreach($comment_types as $key=> $comment)
+                            @if($comment->admin_id)
+                                <div class="card mb-3" style="border: 1px solid #cfcfff;">
+                                    <div class="card-header" style="background: #f9f9ff;">
+                                        {{$comment->id}}
+                                        <b>
+                                            {{$comment->admin->email}} &nbsp;
+                                            <span>{{\Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s')}}</span>
+                                            <span style="display: none">{{getTranslate($comment->status)}}</span>
+                                        </b>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>
+                                            @if($comment->status == 'edited_by_admin')
+                                                {{trans('home.'.$comment->status)}}
+                                            @elseif($comment->cause_value)
+                                                {{trans('home.'.$comment->cause_value)}}
+                                            @endif
+                                            <br>
+                                            <b>Описание:</b>
+                                            <br>
+                                            {{$comment->desc}}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                @endforeach
+            @endif
+        </div>
     </div>
+    <?php
+    function getTranslate($status){
+        $translate = '';
+        switch ($status){
+            case 'edit':
+                $translate = 'отправлено на доработку';
+                break;
+            case 'finished':
+                $translate = 'Заявка одобрена для фондов';
+                break;
+            case 'cancel':
+                $translate = ' Заявка отклонена';
+                break;
+            case 'kh':
+                $translate = ' Заявка отправлена модератору КХ';
+                break;
+            case 'kh_approved':
+                $translate = ' Заявка одобрена с поддержкой КХ';
+                break;
+        }
+        return $translate;
+    }
+    ?>
 
     <script>
         var json = {!! $regions->toJson() !!};
