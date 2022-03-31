@@ -376,7 +376,7 @@
                                @if($comment->admin_id)
                                    <div class="card mb-3" style="border: 1px solid #cfcfff;">
                                        <div class="card-header" style="background: #f9f9ff;">
-                                           {{$comment->id}}
+{{--                                           {{$comment->id}}--}}
                                            <b>
                                                {{$comment->admin->email}} &nbsp;
                                                <span>{{\Carbon\Carbon::parse($comment->created_at)->format('d.m.Y H:i:s')}}</span>
