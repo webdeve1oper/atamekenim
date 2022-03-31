@@ -26,9 +26,9 @@
                 </ul>
             @elseif(is_moderator() && $help->admin_status == 'finished' && $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
                 <ul class="controlButton">
-                    <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>
-                    </li>
+{{--                    <li>--}}
+{{--                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>--}}
+{{--                    </li>--}}
                     <li>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">Требует правок</button>
                     </li>
@@ -183,29 +183,29 @@
 
 
             <!-- Одобрить запрос -->
-            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Одобрить запрос {{ $help->id }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('edit_help_status') }}" method="post">
-                                @csrf
-                                <input type="text" name="help_id" class="d-none" value="{{ $help->id }}">
-                                <div class="form-check my-3 border-bottom pb-3">
-                                    <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="finished" checked="checked">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                        Направляется всем фондам, кроме фонда “Қазақстан Халқына”
-                                    </label>
-                                </div>
-                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить и отправить фондам</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{--            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
+{{--                <div class="modal-dialog">--}}
+{{--                    <div class="modal-content">--}}
+{{--                        <div class="modal-header">--}}
+{{--                            <h5 class="modal-title" id="exampleModalLabel">Одобрить запрос {{ $help->id }}</h5>--}}
+{{--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--                        </div>--}}
+{{--                        <div class="modal-body">--}}
+{{--                            <form action="{{ route('edit_help_status') }}" method="post">--}}
+{{--                                @csrf--}}
+{{--                                <input type="text" name="help_id" class="d-none" value="{{ $help->id }}">--}}
+{{--                                <div class="form-check my-3 border-bottom pb-3">--}}
+{{--                                    <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="finished" checked="checked">--}}
+{{--                                    <label class="form-check-label" for="flexRadioDefault1">--}}
+{{--                                        Направляется всем фондам, кроме фонда “Қазақстан Халқына”--}}
+{{--                                    </label>--}}
+{{--                                </div>--}}
+{{--                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Одобрить и отправить фондам</button>--}}
+{{--                            </form>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!-- Одобрить запрос Возможно КХ -->
             <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
