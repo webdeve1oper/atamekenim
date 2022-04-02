@@ -516,4 +516,36 @@ class AdminController extends Controller
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
+
+    public function globalSearch(Request $request){
+        $request_isset = false;
+        $helps = Help::query();
+        if(isset($request->help_id)){
+            $helps = $helps->where('id', $request->help_id);
+            $request_isset = true;
+        }
+        if(isset($request->phone)){
+            if ($request->phone) {
+                $phone = str_replace(['+7', '(', ')', ' ', '-'], ['8', '', '', '', ''], $request->phone);
+                $helps = $helps->where('helps.phone', $phone);
+            }
+            $request_isset = true;
+        }
+        if(isset($request->body)){
+            $request_isset = true;
+            $helps = $helps->where('body', 'LIKE', '%'.$request->body.'%');
+        }
+
+        if(isset($request->user_id)){
+            $helps = $helps->where('helps.user_id', $request->user_id);
+            $request_isset = true;
+        }
+        if($request_isset){
+            $helps =  $helps->paginate(8);
+        }else{
+            $helps = null;
+        }
+        return view('backend.admin.global_search')->with(compact('helps'));
+
+    }
 }

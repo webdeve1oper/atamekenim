@@ -88,6 +88,11 @@ class FondController extends Controller
                         unset($data['district_id']);
                     }
                 }
+                if (array_key_exists('phone', $data)) {
+                    if ($data['phone']) {
+                        $data['phone'] = str_replace(['+7', '(', ')', ' ', '-'], ['8', '', '', '', ''], $data['phone']);
+                    }
+                }
 
                 $data['statuses'] = $this->getPersonStatus(Auth::user()->iin);
                 if ($request->help_id) {

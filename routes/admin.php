@@ -29,4 +29,5 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth:admin']], function(){
     Route::post('/active-fonds/{id}/edit', 'Backend\AdminController@editActiveFond')->name('active_fond_edit');
     Route::match(['GET', 'POST'], '/active-export', 'ExcelController@exportXls')->name('admin_export');
     Route::get('/get-users', 'Backend\AdminController@getUsers')->name('get_users');
+    Route::get('/search', 'Backend\AdminController@globalSearch')->name('admin_helps_search');
 });

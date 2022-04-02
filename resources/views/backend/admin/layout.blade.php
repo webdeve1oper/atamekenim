@@ -13,6 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js" integrity="sha512-D30F0yegJduD5FxOxI3qM1Z0YrbtXE3YLoyNDYvps4Qq63Y0l/ObPmjlsj27pgFx8mLdMQ24I3gGtdYZO741HQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
@@ -63,6 +64,7 @@
                                 Заявки от получателей помощи
                             </a>
                         </li>
+
                         @if(is_operator())
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin_fonds') }}">
@@ -78,6 +80,13 @@
                             </a>
                         </li>
                             @endif
+                        @if(is_admin())
+                            <li>
+                                <a class="nav-link" href="{{ route('admin_helps_search') }}">
+                                    поиск
+                                </a>
+                            </li>
+                        @endif
                 </ul>
             </div>
         </nav>
@@ -88,5 +97,10 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+        $("#phone").mask("+7(999) 999-99-99");
+    });
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 @section('content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js" integrity="sha512-D30F0yegJduD5FxOxI3qM1Z0YrbtXE3YLoyNDYvps4Qq63Y0l/ObPmjlsj27pgFx8mLdMQ24I3gGtdYZO741HQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div class="fatherBlock">
         <div class="container-fluid default breadCrumbs">
             <div class="container">
@@ -304,6 +304,9 @@
     <script>
         $('#request_help').submit(function(){
             $('#request_help_button').attr('disabled', true);
+        });
+        $(document).ready(function(){
+            $("#phone_number").mask("+7(999) 999-99-99");
         });
         $('#agreeButton').change(function(){
             if($(this).is(":checked")){
