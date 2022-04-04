@@ -40,15 +40,13 @@
                     </li>
                 </ul>
             @else
-                <div class="alert alert-info" role="alert">
+               <!-- <div class="alert alert-info d-none" role="alert">
                     Статус указанный оператора - <strong>{{ $help->admin_status }}</strong><br>
                     Статус указанный модератор КХ - <strong>{{ $help->status_kh }}</strong>
-                </div>
+                </div> -->
             @endif
         </div>
         <div class="col-12">
-            <p><span>Статус Админа:</span> {{ $help->admin_status }},<br><span>Статус Фонда:</span>  {{ $help->fond_status }}</p>
-            <p><span>Благотворительная организация, которой адресован запрос:</span><span class="fondNames">@foreach($help->fonds as $fond) Фонд: {{$fond->title_ru}}<br> @endforeach</span></p>
             <style>
                 span.fondNames {
                     display: table;
