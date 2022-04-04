@@ -340,7 +340,7 @@
                 </div>
             </div>
         </div>
-       <div class="history d-none">
+       <div class="history">
            <hr>
            <h5>История оператора</h5>
            <div class="col-12 p-4" style="background-color: #ededed">
@@ -349,30 +349,35 @@
                $histories = $help->adminHistory()->orderBy('created_at', 'desc')->get();
                foreach ($histories as $history) {
                    $exist = false;
-                   if(isset($comments[$history->status])){
-                       foreach ($comments[$history->status] as $comment) {
-                           if($exist){
-                               break;
-                           }
-                           $comm =  Carbon::createFromTimeString($comment->created_at);
+                   $key = null;
+                   if(count($comments)>0){
+//                       foreach ($comments as $k=> $comment) {
+                       if($comments[count($comments)-1]->status == $history->status){
+                           $comm = Carbon::createFromTimeString($comments[count($comments)-1]->created_at);
                            $comm2 = Carbon::createFromTimeString($history->created_at);
 
                            if($comm->format('dmy') == $comm2->format('dmy')){
                                if($comm2->diff($comm)->i<=5){
                                    $exist = true;
+                                   $key = count($comments)-1;
+                                   $replace_comment = $comments[count($comments)-1];
                                }
                            }
                        }
+
+//                       }
                    }
                    if (!$exist){
-                       $comments[$history->status][] = $history;
+                       $comments[] = $history;
+                   }else{
+                       $comments[$key] = $replace_comment;
                    }
                }
                ?>
                @if(count($comments)>0)
-                   @foreach($comments as $comment_types)
-                       @if(count($comment_types)>0)
-                           @foreach($comment_types as $key=> $comment)
+                   @foreach($comments as $comment)
+{{--                       @if(count($comment)>0)--}}
+{{--                           @foreach($comment_types as $key=> $comment)--}}
                                @if($comment->admin_id)
                                    <div class="card mb-3" style="border: 1px solid #cfcfff;">
                                        <div class="card-header" style="background: #f9f9ff;">
@@ -385,21 +390,25 @@
                                        </div>
                                        <div class="card-body">
                                            <p>
+                                               <b>{{getTranslate($comment->status)}}</b> <br>
                                                @if($comment->status == 'edited_by_admin')
-                                                   {{trans('home.'.$comment->status)}}
+{{--                                                   {{trans('home.'.$comment->status)}}--}}
                                                @elseif($comment->cause_value)
                                                    {{trans('home.'.$comment->cause_value)}}
                                                @endif
-                                               <br>
+
+                                               @if($comment->desc)
+                                                   <br>
                                                <b>Описание:</b>
                                                <br>
                                                {{$comment->desc}}
+                                                   @endif
                                            </p>
                                        </div>
                                    </div>
                                @endif
-                           @endforeach
-                       @endif
+{{--                           @endforeach--}}
+{{--                       @endif--}}
                    @endforeach
                @endif
            </div>
@@ -407,7 +416,7 @@
     </div>
     <?php
     function getTranslate($status){
-        $translate = '';
+        $translate = $status;
         switch ($status){
             case 'edit':
                 $translate = 'отправлено на доработку';
@@ -420,6 +429,9 @@
                 break;
             case 'kh':
                 $translate = ' Заявка отправлена модератору КХ';
+                break;
+            case 'edited_by_admin':
+                $translate = 'изменено оператором / модератором';
                 break;
             case 'kh_approved':
                 $translate = ' Заявка одобрена с поддержкой КХ';

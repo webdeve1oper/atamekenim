@@ -166,6 +166,7 @@ class UserAuthController extends Controller
                 ],
             ]);
         } catch (GuzzleException $e) {
+//            Log::info('qr scanner');
 //            Log::info($e);
             return false;
         }
@@ -228,6 +229,7 @@ class UserAuthController extends Controller
                 return $attempts;
             } catch (GuzzleException $e) {
 //                Log::info($e);
+//                Log::info('qr scanner2');
                 return false;
             }
         }
