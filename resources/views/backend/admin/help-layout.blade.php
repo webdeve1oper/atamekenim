@@ -9,6 +9,13 @@
             <h1>Обращение: ID{{ getHelpId($help->id) }}</h1>
         </div>
         <div class="col-sm-7">
+            @if(is_admin() && $help->admin_status == 'cancel')
+                <ul class="controlButton">
+                    <li>
+                        <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal6">Вернуть оператору</button>
+                    </li>
+                </ul>
+            @endif
             @if(is_operator() && $help->admin_status == 'moderate' or is_admin() && $help->admin_status == 'moderate')
                 <ul class="controlButton">
 {{--                    <li>--}}
@@ -252,6 +259,30 @@
                     </div>
                 </div>
             </div>
+            <!-- Вернуть оператору -->
+            <div class="modal fade" id="exampleModal6" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Одобрить запрос {{ $help->id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('return_to_moderate') }}" method="post">
+                                @csrf
+                                <input type="text" name="help_id" class="d-none" value="{{ $help->id }}">
+                                <div class="form-check my-3 border-bottom pb-3">
+                                    <input class="form-check-input d-none" type="radio" name="status_name" id="flexRadioDefault1" value="return_to_moderate" checked="checked">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Вернуть заявку оператору
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success mt-4 mx-auto d-table">Вернуть оператору</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Отправить на доработку -->
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabe2" aria-hidden="true">
                 <div class="modal-dialog">
@@ -433,6 +464,9 @@
                 break;
             case 'kh_approved':
                 $translate = ' Заявка одобрена с поддержкой КХ';
+                break;
+            case 'return_to_moderate':
+                $translate = ' Заявка возвращена на модерацию';
                 break;
         }
         return $translate;

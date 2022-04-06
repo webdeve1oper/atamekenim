@@ -429,6 +429,13 @@ class AdminController extends Controller
                 $help->status_kh = Help::STATUS_KH_APPROVED;
             }
 
+            //if return to moderate
+            if($status_name == 'return_to_moderate'){
+                $help->admin_status = 'moderate';
+                $help->fond_status = 'moderate';
+                $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
+            }
+
             $new_history->admin_id = Auth::user()->id;
             $new_history->help_id = $help->id;
             $new_history->status = $status_name;
@@ -437,6 +444,40 @@ class AdminController extends Controller
             $new_history->save();
 
             return redirect()->route('admin_helps')->with('success', 'Статус запроса изменен!');
+        }
+        return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
+    }
+
+    public function returnHelpToModerate(Request $request){
+        if(is_admin()){
+            $validator = Validator::make($request->all(),[
+                'status_name' => 'required',
+            ], [
+                'status_name.required'=>'Не выбран вариант!',
+            ]);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $status_name = $request->get('status_name');
+            $help = Help::whereId($request->get('help_id'))->first();
+
+            if($help->admin_status != 'cancel'){
+                return redirect()->route('admin_home')->with('error', 'Нельзя менять статус заявки!');
+            }
+            //if return to moderate
+            if($status_name == 'return_to_moderate'){
+                $new_history = new History();
+                $help->admin_status = 'moderate';
+                $help->fond_status = 'moderate';
+                $help->status_kh = Help::STATUS_KH_NOT_APPROVED;
+                $new_history->admin_id = Auth::user()->id;
+                $new_history->help_id = $help->id;
+                $new_history->status = $status_name;
+                $help->save();
+                $new_history->save();
+                return redirect()->route('admin_helps')->with('success', 'Статус запроса изменен!');
+            }
+            return redirect()->route('admin_home')->with('error', 'Нельзя менять статус заявки!');
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
