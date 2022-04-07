@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\AddHelpType;
 use App\CashHelpType;
+use App\FinishAdminComment;
 use App\Http\Controllers\Controller;
 use App\Region;
 use App\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Help;
@@ -38,6 +40,7 @@ class AdminController extends Controller
         $helps8 = null;
         $helps9 = null;
         $helps10 = null;
+        $kh_finished_count = null;
         if(in_array(Auth::user()->role_id, [1,2,3])){
             if(is_operator() or is_admin()){
                 $helps1 = Help::where('admin_status','moderate')->count();
@@ -62,9 +65,10 @@ class AdminController extends Controller
             if (is_moderator() or is_admin()){
                 $helps9 = Help::getPossibleKHhelps()->count();
                 $helps10 = Help::getApprovedKHhelps()->count();
+                $kh_finished_count = Help::getFinishedKHhelps()->count();
             }
 
-            return view('backend.admin.helps')->with(compact('helps1','helps2','helps3','helps4','helps5','helps6','helps7','helps8', 'helps9', 'helps10'));
+            return view('backend.admin.helps')->with(compact('helps1','helps2','helps3','helps4','helps5','helps6','helps7','helps8', 'helps9', 'helps10', 'kh_finished_count'));
         }
         return redirect()->route('admin_home')->with('error', 'Недостаточно прав!');
     }
@@ -200,6 +204,10 @@ class AdminController extends Controller
                 case 'finished':
                     $title = 'В ожидании благотворителя';
                     $helps = $helps->where('admin_status', $category)->where('fond_status', 'wait')->where('status_kh',Help::STATUS_KH_APPROVED)->paginate(8);
+                    break;
+                case 'kh_finished':
+                    $title = 'Исполнены';
+                    $helps = $helps->where('admin_status', 'finished')->where('status_kh', Help::STATUS_KH_FINISHED)->paginate(8);
                     break;
                 case 'fond_process':
                     $title = 'В работе';
@@ -587,6 +595,33 @@ class AdminController extends Controller
             $helps = null;
         }
         return view('backend.admin.global_search')->with(compact('helps'));
+    }
 
+    public function finishHelpAction(Request $request){
+       if(is_moderator()){
+           $validator = Validator::make($request->all(),[
+               'body' => 'required|min:3',
+               'help_id' => 'required',
+           ], [
+               'body.required'=>'Не выбран вариант!',
+               'body.min'=>'Поле комментарии должно быть заполнено',
+           ]);
+           if($validator->fails()){
+               return redirect()->back()->withErrors($validator)->withInput();
+           }
+           $data = $request->all();
+           $data['desc'] = $request->body;
+           $data['admin_id'] = Auth::user()->id;
+           $data['status'] = History::FINISH_HELP;
+           $help = Help::whereId($request->get('help_id'))->firstOrFail();
+           $help->admin_status = 'finished';
+           $help->fond_status = 'finished';
+           $help->status_kh = Help::STATUS_KH_FINISHED;
+           $help->save();
+           History::create($data);
+           FinishAdminComment::create($data);
+           return redirect()->route('admin_helps')->with('success', 'Статус запроса изменен!');
+       }
+        return redirect()->back()->with('error', 'Недостаточно прав!');
     }
 }

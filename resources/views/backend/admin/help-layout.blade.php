@@ -31,7 +31,7 @@
                         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal4">Отправить модератору КХ</button>
                     </li>
                 </ul>
-            @elseif(is_moderator() && $help->admin_status == 'finished' && $help->status_kh == \App\Help::STATUS_KH_POSSIBLY)
+            @elseif(is_moderator() && $help->admin_status == 'finished' && $help->status_kh == \App\Help::STATUS_KH_POSSIBLY or is_admin())
                 <ul class="controlButton">
 {{--                    <li>--}}
 {{--                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal1">Одобрить и отправить фондам</button>--}}
@@ -43,7 +43,8 @@
                         <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Отклонить</button>
                     </li>
                     <li>
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрено от КХ</button>
+{{--                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal5">Одобрено от КХ</button>--}}
+                        <button class="btn btn-success d-none" id="btn_finih_help" type="button" data-bs-toggle="modal" data-bs-target="#finish_help">Исполнить</button>
                     </li>
                 </ul>
             @else
@@ -369,6 +370,7 @@
                 </div>
             </div>
         </div>
+        @include('backend.admin.action_modals.finish_help')
        <div class="history">
            <hr>
            <h5>История оператора</h5>

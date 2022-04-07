@@ -12,6 +12,7 @@ class History extends Model
     const STATUS_CANCEL = 'cancel'; // Заявка отклонена
     const STATUS_KH = 'kh'; // Заявка отправлена модератору КХ
     const STATUS_KH_APPROVED = 'kh_approved'; // Заявка одобрена с поддержкой КХ (от КХ)
+    const FINISH_HELP = 'help_finished'; // Заявка завершена
 
     protected $table = 'history';
     protected $fillable = ['desc', 'admin_id', 'fond_id', 'help_id', 'status'];

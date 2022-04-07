@@ -24,6 +24,15 @@
                 </div>
             </div>
         @endif
+        @if($kh_finished_count)
+            <div class="col-sm-3">
+                <div class="categoryBlock">
+                    <a href="{{ route('admin_helps_category','kh_finished') }}">
+                        <span>Исполнены <b>Кол-во: {{ $kh_finished_count }}</b></span>
+                    </a>
+                </div>
+            </div>
+        @endif
         @if($helps1)
             <div class="col-sm-3">
                 <div class="categoryBlock">

@@ -184,9 +184,9 @@
                                             <p class="name">Кому:</p>
                                             <p>{{$help->whoNeedHelp->name_ru}}</p>
                                             @if(!$help->reviews)
-                                                <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue mt-3">{{trans('cabinet-appl.leave-rev')}}</button>
+{{--                                                <button data-target="#review" data-toggle="modal" onclick="$('#help_id').val({{$help->id}})" class="btn-default blue mt-3">{{trans('cabinet-appl.leave-rev')}}</button>--}}
                                             @else
-                                                <button data-target="#review{{$help->reviews->id}}" data-toggle="modal" class="btn-default blue mt-3">Читать отзыв</button>
+{{--                                                <button data-target="#review{{$help->reviews->id}}" data-toggle="modal" class="btn-default blue mt-3">Читать отзыв</button>--}}
                                                 <div id="review{{$help->reviews->id}}" class="modal fade" role="dialog">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">

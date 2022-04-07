@@ -10,6 +10,7 @@ class Help extends Model
     const STATUS_KH_POSSIBLY = 'possible';//возможно подходит кх
     const STATUS_KH_APPROVED = 'approved'; // одобрено для кх
     const STATUS_KH_NOT_APPROVED = 'not_approved'; // не одобрено
+    const STATUS_KH_FINISHED = 'finished'; // не одобрено
 
     // fond_status
     const MODERATE = 'moderate'; // фонд не видит заявки
@@ -129,9 +130,18 @@ class Help extends Model
         return self::where('status_kh', self::STATUS_KH_APPROVED);
     }
 
+    public static function getFinishedKHhelps()
+    {
+        return self::where('status_kh', self::STATUS_KH_FINISHED);
+    }
+
     public function getFullUserName(){
         return $this->user->last_name . ' '. $this->user->first_name;
 //            $this->user->patron;
+    }
+
+    public function finishedAdminComment(){
+        return $this->hasMany(FinishAdminComment::class);
     }
 
 }
