@@ -464,6 +464,9 @@
             case 'edited_by_admin':
                 $translate = 'изменено оператором / модератором';
                 break;
+            case 'help_finished':
+                $translate = ' Заявка исполнена';
+                break;
             case 'kh_approved':
                 $translate = ' Заявка одобрена с поддержкой КХ';
                 break;
