@@ -181,7 +181,7 @@ class UserAuthController extends Controller
                 ]);
                 $password = symbolGeneration(10);
                 $content = $response->getBody()->getContents();
-//                Log::info($content);
+                Log::info($content);
                 $idpPerson = json_decode($content);
                 $user = User::where('iin', $idpPerson->person->iin)->first();
                 $personData = $idpPerson->person;
